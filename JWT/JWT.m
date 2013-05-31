@@ -8,7 +8,7 @@
 
 #import "JWT.h"
 
-#import "Base64.h"
+#import "MF_Base64Additions.h"
 
 #import "JWTAlgorithmHS512.h"
 #import "JWTClaimsSetSerializer.h"
@@ -35,7 +35,7 @@
 {
     NSDictionary *header = @{@"type": @"JWT", @"alg": theAlgorithm.name};
     NSString *segments = [self segmentsFromHeader:header payload:thePayload];
-    return [[theAlgorithm encodePayload:segments withSecret:theSecret] base64EncodedString];
+    return [[theAlgorithm encodePayload:segments withSecret:theSecret] base64String];
 }
 
 + (NSString *)segmentsFromHeader:(NSDictionary *)theHeader payload:(NSDictionary *)thePayload;
@@ -48,7 +48,7 @@
 + (NSString *)encodeSegment:(id)theSegment;
 {
     NSError *error;
-    NSString *encodedSegment = [[NSJSONSerialization dataWithJSONObject:theSegment options:0 error:&error] base64EncodedString];
+    NSString *encodedSegment = [[NSJSONSerialization dataWithJSONObject:theSegment options:0 error:&error] base64String];
     
     NSAssert(!error, @"Could not encode segment: %@", [error localizedDescription]);
     

@@ -1,17 +1,13 @@
 PODS:
-  - Base64 (1.1)
+  - Base64 (1.0.1)
   - Kiwi (2.1)
 
 DEPENDENCIES:
-  - Base64 (from `https://raw.github.com/klaaspieter/Base64/aa474f670523966816dc6029563ba0b75e714423/Base64.podspec`)
+  - Base64
   - Kiwi
 
-EXTERNAL SOURCES:
-  Base64:
-    :podspec: https://raw.github.com/klaaspieter/Base64/aa474f670523966816dc6029563ba0b75e714423/Base64.podspec
-
 SPEC CHECKSUMS:
-  Base64: 8df192290c8560fc1825587ecfcdc3927e8587f2
+  Base64: eaac9f2088ba659c5db1db960576eb0f2969ebaf
   Kiwi: 054ef97d0e50c279b21113a0880a906fa153a7fd
 
 COCOAPODS: 0.20.2

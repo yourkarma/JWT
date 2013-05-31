@@ -8,7 +8,7 @@
 
 #import "Kiwi.h"
 
-#import "Base64.h"
+#import "MF_Base64Additions.h"
 
 #import "JWT.h"
 #import "JWTClaimsSetSerializer.h"
@@ -23,7 +23,7 @@ it(@"encodes JWTs with arbitrary payloads", ^{
     [algorithmMock stub:@selector(name) andReturn:@"Test"];
     [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:@"encoded" withArguments:@"eyJhbGciOiJUZXN0IiwidHlwZSI6IkpXVCJ9.eyJrZXkiOiJ2YWx1ZSJ9", secret];
     
-    [[[JWT encodePayload:payload withSecret:secret algorithm:algorithmMock] should] equal:[@"encoded" base64EncodedString]];
+    [[[JWT encodePayload:payload withSecret:secret algorithm:algorithmMock] should] equal:[@"encoded" base64String]];
 });
 
 it(@"encodes JWTs with JWTClaimsSet payloads", ^{
@@ -39,8 +39,8 @@ it(@"encodes JWTs with JWTClaimsSet payloads", ^{
     };
     JWTClaimsSet *claimsSet = [JWTClaimsSetSerializer claimsSetWithDictionary:dictionary];
     
-    NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:@{@"type": @"JWT", @"alg": @"Test"} options:0 error:nil] base64EncodedString];
-    NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil] base64EncodedString];
+    NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:@{@"type": @"JWT", @"alg": @"Test"} options:0 error:nil] base64String];
+    NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil] base64String];
     NSString *segments = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
 
     id algorithmMock = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
@@ -49,7 +49,7 @@ it(@"encodes JWTs with JWTClaimsSet payloads", ^{
     
     [JWTClaimsSetSerializer stub:@selector(dictionaryWithClaimsSet:) andReturn:dictionary];
 
-    [[[JWT encodeClaimsSet:claimsSet withSecret:@"secret" algorithm:algorithmMock] should] equal:[@"encoded" base64EncodedString]];
+    [[[JWT encodeClaimsSet:claimsSet withSecret:@"secret" algorithm:algorithmMock] should] equal:[@"encoded" base64String]];
 });
 
 SPEC_END
