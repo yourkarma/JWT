@@ -13,5 +13,6 @@
 @interface JWTClaimsSetSerializer : NSObject
 
 + (NSDictionary *)dictionaryWithClaimsSet:(JWTClaimsSet *)theClaimsSet;
++ (JWTClaimsSet *)claimsSetWithDictionary:(NSDictionary *)theDictionary;
 
 @end
