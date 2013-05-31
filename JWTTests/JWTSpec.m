@@ -9,6 +9,7 @@
 #import "Kiwi.h"
 
 #import "JWT.h"
+#import "Base64.h"
 
 SPEC_BEGIN(JWTSpec)
 
@@ -18,9 +19,10 @@ it(@"encodes JWTs", ^{
     
     id algorithmMock = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
     
-    [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:@"encoded" withArguments:any(), secret];
+    [algorithmMock stub:@selector(name) andReturn:@"Test"];
+    [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:@"encoded" withArguments:@"eyJhbGciOiJUZXN0IiwidHlwZSI6IkpXVCJ9.eyJrZXkiOiJ2YWx1ZSJ9", secret];
     
-    [[[JWT encodePayload:payload withSecret:secret algorithm:algorithmMock] should] equal:@"encoded"];
+    [[[JWT encodePayload:payload withSecret:secret algorithm:algorithmMock] should] equal:[@"encoded" base64EncodedString]];
 });
 
 SPEC_END

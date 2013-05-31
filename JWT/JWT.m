@@ -8,11 +8,32 @@
 
 #import "JWT.h"
 
+#import "Base64.h"
+
 @implementation JWT
 
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
 {
-    return [theAlgorithm encodePayload:@"" withSecret:theSecret];
+    NSDictionary *header = @{@"type": @"JWT", @"alg": theAlgorithm.name};
+    NSString *segments = [self segmentsFromHeader:header payload:thePayload];
+    return [[theAlgorithm encodePayload:segments withSecret:theSecret] base64EncodedString];
+}
+
++ (NSString *)segmentsFromHeader:(NSDictionary *)theHeader payload:(NSDictionary *)thePayload;
+{
+    NSString *headerSegment = [self encodeSegment:theHeader];
+    NSString *payloadSegment = [self encodeSegment:thePayload];
+    return [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
+}
+
++ (NSString *)encodeSegment:(id)theSegment;
+{
+    NSError *error;
+    NSString *encodedSegment = [[NSJSONSerialization dataWithJSONObject:theSegment options:0 error:&error] base64EncodedString];
+    
+    NSAssert(!error, @"Could not encode segment: %@", [error localizedDescription]);
+    
+    return encodedSegment;
 }
 
 @end
