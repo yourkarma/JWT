@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'JWT' target in the 'JWT' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif
