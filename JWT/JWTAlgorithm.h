@@ -13,6 +13,6 @@
 @required
 @property (nonatomic, readonly, copy) NSString *name;
 
-- (NSString *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret;
+- (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret;
 
 @end

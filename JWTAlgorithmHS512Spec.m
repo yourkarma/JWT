@@ -9,6 +9,7 @@
 #import "Kiwi.h"
 
 #import "JWTAlgorithmHS512.h"
+#import "Base64.h"
 
 SPEC_BEGIN(JWTAlgorithmHS512Spec)
 
@@ -22,8 +23,9 @@ it(@"name is HS512", ^{
     [[algorithm.name should] equal:@"HS512"];
 });
 
-pending(@"HMAC encodes the payload using SHA512", ^{
-    
+it(@"HMAC encodes the payload using SHA512", ^{
+    NSData *encodedPayload = [algorithm encodePayload:@"payload" withSecret:@"secret"];
+    [[[encodedPayload base64EncodedString] should] equal:@"KR3aqiPK+jqq4cl1U5H0vvNbvby5JzmlYYpciW9lINKw0o0tKYfayXR54xIUpR2Wz86voo5GpPlhtjxGNSoYng=="];
 });
 
 SPEC_END
