@@ -10,7 +10,14 @@
 
 #import "Base64.h"
 
+#import "JWTAlgorithmHS512.h"
+
 @implementation JWT
+
++ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret;
+{
+    return [self encodePayload:thePayload withSecret:theSecret algorithm:[[JWTAlgorithmHS512 alloc] init]];
+}
 
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
 {

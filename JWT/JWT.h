@@ -12,6 +12,7 @@
 
 @interface JWT : NSObject
 
++ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret;
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
 
 @end
