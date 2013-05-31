@@ -10,4 +10,9 @@
 
 @implementation JWTAlgorithmHS512
 
+- (NSString *)name;
+{
+    return @"HS512";
+}
+
 @end

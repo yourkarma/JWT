@@ -8,10 +8,18 @@
 
 #import "Kiwi.h"
 
+#import "JWTAlgorithmHS512.h"
+
 SPEC_BEGIN(JWTAlgorithmHS512Spec)
 
-pending(@"name is HS512", ^{
-    
+__block JWTAlgorithmHS512 *algorithm;
+
+beforeEach(^{
+    algorithm = [[JWTAlgorithmHS512 alloc] init];
+});
+
+it(@"name is HS512", ^{
+    [[algorithm.name should] equal:@"HS512"];
 });
 
 pending(@"HMAC encodes the payload using SHA512", ^{
