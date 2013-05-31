@@ -8,39 +8,56 @@
 
 #import "Kiwi.h"
 
+#import "JWTClaimsSetSerializer.h"
 
 SPEC_BEGIN(JWTClaimsSerializerSpec)
 
-pending(@"serializes the issuer property", ^{
-    
+__block JWTClaimsSet *claimsSet;
+__block NSDictionary *serialized;
+
+beforeEach(^{
+    claimsSet = [[JWTClaimsSet alloc] init];
+    claimsSet.issuer = @"Facebook";
+    claimsSet.subject = @"Token";
+    claimsSet.audience = @"http://yourkarma.com";
+    claimsSet.expirationDate = [NSDate distantFuture];
+    claimsSet.notBeforeDate = [NSDate distantPast];
+    claimsSet.issuedAt = [NSDate date];
+    claimsSet.identifier = @"thisisunique";
+    claimsSet.type = @"test";
+    serialized = [JWTClaimsSetSerializer dictionaryWithClaimsSet:claimsSet];
 });
 
-pending(@"serializes the subject property", ^{
-    
+it(@"serializes the issuer property", ^{
+    [[serialized should] haveValue:claimsSet.issuer forKey:@"iss"];
 });
 
-pending(@"serializes the audience property", ^{
-    
+it(@"serializes the subject property", ^{
+    [[serialized should] haveValue:claimsSet.subject forKey:@"sub"];
 });
 
-pending(@"serializes the expiration date property", ^{
-    
+it(@"serializes the audience property", ^{
+    [[serialized should] haveValue:claimsSet.audience forKey:@"aud"];
 });
 
-pending(@"serializes the not before date property", ^{
-    
+it(@"serializes the expiration date property", ^{
+    [[serialized should] haveValue:theValue([claimsSet.expirationDate timeIntervalSince1970]) forKey:@"exp"];
 });
 
-pending(@"serializes the issued at property", ^{
-    
+it(@"serializes the not before date property", ^{
+    [[serialized should] haveValue:theValue([claimsSet.notBeforeDate timeIntervalSince1970])  forKey:@"nbf"];
 });
 
-pending(@"serializes the JWT ID property", ^{
-    
+it(@"serializes the issued at property", ^{
+    [[serialized should] haveValue:theValue([claimsSet.issuedAt timeIntervalSince1970]) forKey:@"iat"];
 });
 
-pending(@"serializes the type property", ^{
-    
+it(@"serializes the JWT ID property", ^{
+    [[serialized should] haveValue:claimsSet.identifier forKey:@"jti"];
+});
+
+it(@"serializes the type property", ^{
+    [[serialized should] haveValue:claimsSet.type forKey:@"typ"];
 });
 
 SPEC_END

@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+#import "JWTClaimsSet.h"
+
 @interface JWTClaimsSetSerializer : NSObject
+
++ (NSDictionary *)dictionaryWithClaimsSet:(JWTClaimsSet *)theClaimsSet;
 
 @end
