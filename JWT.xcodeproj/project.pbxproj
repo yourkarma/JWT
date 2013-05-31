@@ -61,7 +61,7 @@
 		A1951DE317589BCF00AF73D9 /* JWT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWT.h; sourceTree = "<group>"; };
 		A1951DE417589BCF00AF73D9 /* JWT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWT.m; sourceTree = "<group>"; };
 		A1951DE91758A42C00AF73D9 /* JWTAlgorithm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithm.h; sourceTree = "<group>"; };
-		A1951DEA1758B38A00AF73D9 /* JWTAlgorithmHS512Spec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JWTAlgorithmHS512Spec.m; path = ../JWTAlgorithmHS512Spec.m; sourceTree = "<group>"; };
+		A1951DEA1758B38A00AF73D9 /* JWTAlgorithmHS512Spec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmHS512Spec.m; sourceTree = "<group>"; };
 		A1951DED1758B3C400AF73D9 /* JWTAlgorithmHS512.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithmHS512.h; sourceTree = "<group>"; };
 		A1951DEE1758B3C400AF73D9 /* JWTAlgorithmHS512.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmHS512.m; sourceTree = "<group>"; };
 		A1951DF01758CBB200AF73D9 /* JWTClaimsSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTClaimsSet.h; sourceTree = "<group>"; };
