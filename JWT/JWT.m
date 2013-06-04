@@ -34,8 +34,9 @@
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
 {
     NSDictionary *header = @{@"type": @"JWT", @"alg": theAlgorithm.name};
-    NSString *segments = [self segmentsFromHeader:header payload:thePayload];
-    return [[theAlgorithm encodePayload:segments withSecret:theSecret] base64String];
+    NSString *signingInput = [self segmentsFromHeader:header payload:thePayload];
+    NSString *signedOutput = [[theAlgorithm encodePayload:signingInput withSecret:theSecret] base64String];
+    return [@[signingInput, signedOutput] componentsJoinedByString:@"."];
 }
 
 + (NSString *)segmentsFromHeader:(NSDictionary *)theHeader payload:(NSDictionary *)thePayload;
