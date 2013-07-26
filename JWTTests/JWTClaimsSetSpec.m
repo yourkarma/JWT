@@ -12,9 +12,18 @@
 
 SPEC_BEGIN(JWTClaimsSetSpec)
 
+__block JWTClaimsSet *claims;
+
+beforeEach(^{
+    claims = [[JWTClaimsSet alloc] init];
+});
+
 it(@"should have a future expiration date if none was set", ^{
-    JWTClaimsSet *claims = [[JWTClaimsSet alloc] init];
     [[claims.expirationDate should] beGreaterThan:[NSDate date]];
+});
+
+it(@"should have a past before date if none was set", ^{
+    [[claims.notBeforeDate should] beLessThanOrEqualTo:[NSDate date]];
 });
 
 SPEC_END

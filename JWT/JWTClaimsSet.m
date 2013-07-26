@@ -18,4 +18,12 @@
     return _expirationDate;
 }
 
+- (NSDate *)notBeforeDate;
+{
+    if (!_notBeforeDate)
+        _notBeforeDate = [NSDate distantPast];
+
+    return _notBeforeDate;
+}
+
 @end
