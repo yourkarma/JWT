@@ -26,6 +26,10 @@ it(@"should have a past before date if none was set", ^{
     [[claims.notBeforeDate should] beLessThanOrEqualTo:[NSDate date]];
 });
 
+it(@"should have the current date as issuedAt date if none was set", ^{
+    [[claims.issuedAt should] beBetween:[NSDate dateWithTimeIntervalSinceNow:-1.0] and:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+});
+
 SPEC_END
 
 

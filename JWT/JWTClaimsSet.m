@@ -26,4 +26,12 @@
     return _notBeforeDate;
 }
 
+- (NSDate *)issuedAt;
+{
+    if (!_issuedAt)
+        _issuedAt = [NSDate date];
+
+    return _issuedAt;
+}
+
 @end
