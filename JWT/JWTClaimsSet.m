@@ -10,4 +10,12 @@
 
 @implementation JWTClaimsSet
 
+- (NSDate *)expirationDate;
+{
+    if (!_expirationDate)
+        _expirationDate = [NSDate distantFuture];
+
+    return _expirationDate;
+}
+
 @end

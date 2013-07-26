@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		51853EAF9C314D24B5F7681D /* libPods-JWTTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 912330953D2D4E06BC44E9BA /* libPods-JWTTests.a */; };
 		69FF89B6E0DC473E91BAABCD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FD31A232E7A4E6E99D15C23 /* libPods.a */; };
+		A15B74C317A2FE3A0009799B /* JWTClaimsSetSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A15B74C217A2FE3A0009799B /* JWTClaimsSetSpec.m */; };
 		A1951DBA1758990700AF73D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1951DB91758990700AF73D9 /* Foundation.framework */; };
 		A1951DC91758990700AF73D9 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1951DC81758990700AF73D9 /* SenTestingKit.framework */; };
 		A1951DCB1758990700AF73D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1951DCA1758990700AF73D9 /* UIKit.framework */; };
@@ -49,6 +50,7 @@
 /* Begin PBXFileReference section */
 		1FD31A232E7A4E6E99D15C23 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		912330953D2D4E06BC44E9BA /* libPods-JWTTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JWTTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A15B74C217A2FE3A0009799B /* JWTClaimsSetSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSetSpec.m; sourceTree = "<group>"; };
 		A1951DB61758990700AF73D9 /* libJWT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJWT.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1951DB91758990700AF73D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A1951DBD1758990700AF73D9 /* JWT-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JWT-Prefix.pch"; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				A1951DE117589BC000AF73D9 /* JWTSpec.m */,
 				A1951DEA1758B38A00AF73D9 /* JWTAlgorithmHS512Spec.m */,
 				A1951DF81758CD9000AF73D9 /* JWTClaimsSerializerSpec.m */,
+				A15B74C217A2FE3A0009799B /* JWTClaimsSetSpec.m */,
 			);
 			path = JWTTests;
 			sourceTree = "<group>";
@@ -348,6 +351,7 @@
 				A1951DE217589BC000AF73D9 /* JWTSpec.m in Sources */,
 				A1951DEC1758B3A100AF73D9 /* JWTAlgorithmHS512Spec.m in Sources */,
 				A1951DF91758CD9000AF73D9 /* JWTClaimsSerializerSpec.m in Sources */,
+				A15B74C317A2FE3A0009799B /* JWTClaimsSetSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
