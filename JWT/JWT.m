@@ -8,7 +8,7 @@
 
 #import "JWT.h"
 
-#import "MF_Base64Additions.h"
+#import "MF_Base64Additions+JWT.h"
 
 #import "JWTAlgorithmHS512.h"
 #import "JWTClaimsSetSerializer.h"
@@ -39,14 +39,14 @@
     NSString *payloadSegment = [self encodeSegment:thePayload];
     
     NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
-    NSString *signedOutput = [[theAlgorithm encodePayload:signingInput withSecret:theSecret] base64String];
+    NSString *signedOutput = [[theAlgorithm encodePayload:signingInput withSecret:theSecret] base64SafeString];
     return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
 }
 
 + (NSString *)encodeSegment:(id)theSegment;
 {
     NSError *error;
-    NSString *encodedSegment = [[NSJSONSerialization dataWithJSONObject:theSegment options:0 error:&error] base64String];
+    NSString *encodedSegment = [[NSJSONSerialization dataWithJSONObject:theSegment options:0 error:&error] base64SafeString];
     
     NSAssert(!error, @"Could not encode segment: %@", [error localizedDescription]);
     
