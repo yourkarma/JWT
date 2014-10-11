@@ -20,6 +20,24 @@
     
     return base64String;
 }
+
+-(NSString *)stringFromBase64SafeString
+{
+    NSString *base64SafeString = self;
+
+    base64SafeString = [base64SafeString stringByReplacingOccurrencesOfString:@"-" withString:@"+"];
+    base64SafeString = [base64SafeString stringByReplacingOccurrencesOfString:@"_" withString:@"/"];
+
+    switch (base64SafeString.length % 4) {     // Pad with trailing '='s
+        case 0: break; // No pad chars in this case
+        case 2: base64SafeString = [base64SafeString stringByAppendingString:@"=="]; break; // Two pad chars
+        case 3: base64SafeString = [base64SafeString stringByAppendingString:@"="]; break; // One pad char
+        default: NSLog(@"Illegal base64url string!");
+    }
+    
+    NSData *utf8encoding = [MF_Base64Codec dataFromBase64String:base64SafeString];
+    return [[NSString alloc] initWithData:utf8encoding encoding:NSUTF8StringEncoding];
+}
 @end
 
 @implementation NSData (JWT)

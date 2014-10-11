@@ -11,6 +11,7 @@
 
 @interface NSString (JWT)
 -(NSString *)base64SafeString;
+-(NSString *)stringFromBase64SafeString;
 @end
 
 @interface NSData (JWT)

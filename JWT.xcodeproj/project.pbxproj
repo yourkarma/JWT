@@ -24,6 +24,7 @@
 		A1951DF71758CD8400AF73D9 /* JWTClaimsSetSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = A1951DF61758CD8300AF73D9 /* JWTClaimsSetSerializer.m */; };
 		A1951DF91758CD9000AF73D9 /* JWTClaimsSerializerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A1951DF81758CD9000AF73D9 /* JWTClaimsSerializerSpec.m */; };
 		DE2042D919E70B7E00692832 /* MF_Base64Additions+JWT.m in Sources */ = {isa = PBXBuildFile; fileRef = DE2042D819E70B7E00692832 /* MF_Base64Additions+JWT.m */; };
+		DE94094519E7336500365734 /* JWTAlgorithmEd25519.m in Sources */ = {isa = PBXBuildFile; fileRef = DE94094419E7336500365734 /* JWTAlgorithmEd25519.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,8 @@
 		CAF67FC887886F01D5893E96 /* Pods-JWTTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWTTests/Pods-JWTTests.release.xcconfig"; sourceTree = "<group>"; };
 		DE2042D719E70B7E00692832 /* MF_Base64Additions+JWT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MF_Base64Additions+JWT.h"; sourceTree = "<group>"; };
 		DE2042D819E70B7E00692832 /* MF_Base64Additions+JWT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MF_Base64Additions+JWT.m"; sourceTree = "<group>"; };
+		DE94094319E7336500365734 /* JWTAlgorithmEd25519.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithmEd25519.h; sourceTree = "<group>"; };
+		DE94094419E7336500365734 /* JWTAlgorithmEd25519.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmEd25519.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +160,8 @@
 				A1951DE91758A42C00AF73D9 /* JWTAlgorithm.h */,
 				A1951DED1758B3C400AF73D9 /* JWTAlgorithmHS512.h */,
 				A1951DEE1758B3C400AF73D9 /* JWTAlgorithmHS512.m */,
+				DE94094319E7336500365734 /* JWTAlgorithmEd25519.h */,
+				DE94094419E7336500365734 /* JWTAlgorithmEd25519.m */,
 				A1951DF01758CBB200AF73D9 /* JWTClaimsSet.h */,
 				A1951DF11758CBB200AF73D9 /* JWTClaimsSet.m */,
 				A1951DF51758CD8300AF73D9 /* JWTClaimsSetSerializer.h */,
@@ -356,6 +361,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1951DE517589BCF00AF73D9 /* JWT.m in Sources */,
+				DE94094519E7336500365734 /* JWTAlgorithmEd25519.m in Sources */,
 				A1951DEF1758B3C400AF73D9 /* JWTAlgorithmHS512.m in Sources */,
 				A1951DF21758CBB300AF73D9 /* JWTClaimsSet.m in Sources */,
 				DE2042D919E70B7E00692832 /* MF_Base64Additions+JWT.m in Sources */,
@@ -420,7 +426,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -443,7 +449,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

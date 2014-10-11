@@ -17,29 +17,45 @@
 
 + (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret;
 {
-    return [self encodeClaimsSet:theClaimsSet withSecret:theSecret algorithm:[[JWTAlgorithmHS512 alloc] init]];
+    return [self encodeClaimsSet:theClaimsSet withSecret:theSecret withAlgorithm:[[JWTAlgorithmHS512 alloc] init] withExtraHeader: nil];
 }
 
-+ (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
++ (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret withAlgorithm:(id<JWTAlgorithm>)theAlgorithm;
+{
+    return [self encodeClaimsSet:theClaimsSet withSecret:theSecret withAlgorithm:theAlgorithm withExtraHeader: nil];
+}
+
++ (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret withAlgorithm:(id<JWTAlgorithm>)theAlgorithm withExtraHeader:(NSDictionary *)theExtraHeader;
 {
     NSDictionary *payload = [JWTClaimsSetSerializer dictionaryWithClaimsSet:theClaimsSet];
-    return [self encodePayload:payload withSecret:theSecret algorithm:theAlgorithm];
+    return [self encodePayload:payload withSecret:theSecret withAlgorithm:theAlgorithm withExtraHeader:theExtraHeader];
 }
 
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret;
 {
-    return [self encodePayload:thePayload withSecret:theSecret algorithm:[[JWTAlgorithmHS512 alloc] init]];
+    return [self encodePayload:thePayload withSecret:theSecret withAlgorithm:[[JWTAlgorithmHS512 alloc] init] withExtraHeader: nil];
 }
 
-+ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
++ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret withAlgorithm:(id<JWTAlgorithm>)theAlgorithm;
 {
-    NSDictionary *header = @{@"type": @"JWT", @"alg": theAlgorithm.name};
-    
+    return [self encodePayload:thePayload withSecret:theSecret withAlgorithm:[[JWTAlgorithmHS512 alloc] init] withExtraHeader: nil];
+}
+
++ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret withAlgorithm:(id<JWTAlgorithm>)theAlgorithm withExtraHeader:(NSDictionary *)theExtraHeader;
+{
+    NSMutableDictionary *header = [NSMutableDictionary
+                                   dictionaryWithObjects:@[@"JWT",theAlgorithm.name]
+                                   forKeys:@[@"type",@"alg"]];
+
+    if (theExtraHeader) {
+        [header addEntriesFromDictionary:theExtraHeader];
+    }
+
     NSString *headerSegment = [self encodeSegment:header];
     NSString *payloadSegment = [self encodeSegment:thePayload];
     
     NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
-    NSString *signedOutput = [[theAlgorithm encodePayload:signingInput withSecret:theSecret] base64SafeString];
+    NSString *signedOutput = [[theAlgorithm encodePayload:signingInput withSecret:theSecret withHeader:header] base64SafeString];
     return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
 }
 

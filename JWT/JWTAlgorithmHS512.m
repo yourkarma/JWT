@@ -18,7 +18,7 @@
     return @"HS512";
 }
 
-- (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret;
+- (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret withHeader:(NSDictionary *)theHeader;
 {
     const char *cString = [theString cStringUsingEncoding:NSUTF8StringEncoding];
     const char *cSecret = [theSecret cStringUsingEncoding:NSUTF8StringEncoding];
