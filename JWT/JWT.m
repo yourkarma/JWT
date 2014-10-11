@@ -17,21 +17,21 @@
 
 + (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret;
 {
-    return [self encodeClaimsSet:theClaimsSet withSecret:theSecret withAlgorithm:[[JWTAlgorithmHS512 alloc] init]];
+    return [self encodeClaimsSet:theClaimsSet withSecret:theSecret algorithm:[[JWTAlgorithmHS512 alloc] init]];
 }
 
-+ (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret withAlgorithm:(id<JWTAlgorithm>)theAlgorithm;
++ (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
 {
     NSDictionary *payload = [JWTClaimsSetSerializer dictionaryWithClaimsSet:theClaimsSet];
-    return [self encodePayload:payload withSecret:theSecret withAlgorithm:theAlgorithm];
+    return [self encodePayload:payload withSecret:theSecret algorithm:theAlgorithm];
 }
 
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret;
 {
-    return [self encodePayload:thePayload withSecret:theSecret withAlgorithm:[[JWTAlgorithmHS512 alloc] init]];
+    return [self encodePayload:thePayload withSecret:theSecret algorithm:[[JWTAlgorithmHS512 alloc] init]];
 }
 
-+ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret withAlgorithm:(id<JWTAlgorithm>)theAlgorithm;
++ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
 {
     NSMutableDictionary *header = [NSMutableDictionary
                                    dictionaryWithObjects:@[@"JWT",theAlgorithm.name]
