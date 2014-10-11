@@ -35,7 +35,7 @@
 {
     NSMutableDictionary *header = [NSMutableDictionary
                                    dictionaryWithObjects:@[@"JWT",theAlgorithm.name]
-                                   forKeys:@[@"type",@"alg"]];
+                                   forKeys:@[@"typ",@"alg"]];
 
     NSMutableDictionary *algorithmExtraHeaders = [[theAlgorithm initWithSecret:theSecret] headers];
     if (algorithmExtraHeaders) {
