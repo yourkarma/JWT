@@ -13,9 +13,16 @@
 
 @implementation JWTAlgorithmHS512
 
+@synthesize headers;
+
 - (NSString *)name;
 {
     return @"HS512";
+}
+
+- (id)initWithSecret:(NSString *)theSecret;
+{
+    return self;
 }
 
 - (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret;

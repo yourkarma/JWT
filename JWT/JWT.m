@@ -17,24 +17,31 @@
 
 + (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret;
 {
-    return [self encodeClaimsSet:theClaimsSet withSecret:theSecret algorithm:[[JWTAlgorithmHS512 alloc] init]];
+    return [self encodeClaimsSet:theClaimsSet withSecret:theSecret withAlgorithm:[[JWTAlgorithmHS512 alloc] init]];
 }
 
-+ (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
++ (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret withAlgorithm:(id<JWTAlgorithm>)theAlgorithm;
 {
     NSDictionary *payload = [JWTClaimsSetSerializer dictionaryWithClaimsSet:theClaimsSet];
-    return [self encodePayload:payload withSecret:theSecret algorithm:theAlgorithm];
+    return [self encodePayload:payload withSecret:theSecret withAlgorithm:theAlgorithm];
 }
 
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret;
 {
-    return [self encodePayload:thePayload withSecret:theSecret algorithm:[[JWTAlgorithmHS512 alloc] init]];
+    return [self encodePayload:thePayload withSecret:theSecret withAlgorithm:[[JWTAlgorithmHS512 alloc] init]];
 }
 
-+ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
++ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret withAlgorithm:(id<JWTAlgorithm>)theAlgorithm;
 {
-    NSDictionary *header = @{@"type": @"JWT", @"alg": theAlgorithm.name};
-    
+    NSMutableDictionary *header = [NSMutableDictionary
+                                   dictionaryWithObjects:@[@"JWT",theAlgorithm.name]
+                                   forKeys:@[@"type",@"alg"]];
+
+    NSMutableDictionary *algorithmExtraHeaders = [[theAlgorithm initWithSecret:theSecret] headers];
+    if (algorithmExtraHeaders) {
+        [header addEntriesFromDictionary:algorithmExtraHeaders];
+    }
+
     NSString *headerSegment = [self encodeSegment:header];
     NSString *payloadSegment = [self encodeSegment:thePayload];
     

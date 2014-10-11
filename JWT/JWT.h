@@ -9,14 +9,15 @@
 #import <Foundation/Foundation.h>
 
 #import "JWTAlgorithm.h"
+#import "JWTAlgorithmEd25519.h"
 #import "JWTClaimsSet.h"
 
 @interface JWT : NSObject
 
 + (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret;
-+ (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
++ (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret withAlgorithm:(id<JWTAlgorithm>)theAlgorithm;
 
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret;
-+ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
++ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret withAlgorithm:(id<JWTAlgorithm>)theAlgorithm;
 
 @end
