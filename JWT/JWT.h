@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "JWTAlgorithm.h"
+#import "JWTAlgorithmEd25519.h"
 #import "JWTClaimsSet.h"
 
 @interface JWT : NSObject

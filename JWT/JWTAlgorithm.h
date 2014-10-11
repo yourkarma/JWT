@@ -12,6 +12,9 @@
 
 @required
 @property (nonatomic, readonly, copy) NSString *name;
+@property (nonatomic, copy) NSMutableDictionary *headers;
+
+- (id)initWithSecret:(NSString *)theSecret;
 
 - (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret;
 
