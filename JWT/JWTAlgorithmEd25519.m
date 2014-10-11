@@ -55,7 +55,10 @@
     NSData *signedData;
     signedData = [theString signedDataUsingPrivateKey:self.signingKeyPair.privateKey error:nil];
 
-    return signedData;
+    // get the first 64bytes where the signature is
+    NSData *signature = [signedData subdataWithRange:NSMakeRange(0, 64)];
+    
+    return signature;
 }
 
 @end
