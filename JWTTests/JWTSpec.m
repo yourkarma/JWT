@@ -19,7 +19,7 @@ it(@"encodes JWTs with arbitrary payloads", ^{
     NSString *secret = @"secret";
     NSDictionary *payload = @{@"key": @"value"};
     
-    NSString *headerSegment = @"eyJhbGciOiJUZXN0IiwidHlwZSI6IkpXVCJ9";
+    NSString *headerSegment = @"eyJ0eXBlIjoiSldUIiwiYWxnIjoiVGVzdCJ9";
     NSString *payloadSegment = @"eyJrZXkiOiJ2YWx1ZSJ9";
     NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
     NSString *signedOutput = @"signed";
@@ -56,7 +56,7 @@ it(@"encodes JWTs with JWTClaimsSet payloads", ^{
     id algorithmMock = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
     [algorithmMock stub:@selector(name) andReturn:@"Test"];
     [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withArguments:signingInput, @"secret"];
-    
+
     [JWTClaimsSetSerializer stub:@selector(dictionaryWithClaimsSet:) andReturn:dictionary];
 
     [[[JWT encodeClaimsSet:claimsSet withSecret:@"secret" algorithm:algorithmMock] should] equal:jwt];

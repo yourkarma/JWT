@@ -11,7 +11,6 @@
 		69FF89B6E0DC473E91BAABCD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FD31A232E7A4E6E99D15C23 /* libPods.a */; };
 		A15B74C317A2FE3A0009799B /* JWTClaimsSetSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A15B74C217A2FE3A0009799B /* JWTClaimsSetSpec.m */; };
 		A1951DBA1758990700AF73D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1951DB91758990700AF73D9 /* Foundation.framework */; };
-		A1951DC91758990700AF73D9 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1951DC81758990700AF73D9 /* SenTestingKit.framework */; };
 		A1951DCB1758990700AF73D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1951DCA1758990700AF73D9 /* UIKit.framework */; };
 		A1951DCC1758990800AF73D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1951DB91758990700AF73D9 /* Foundation.framework */; };
 		A1951DCF1758990800AF73D9 /* libJWT.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1951DB61758990700AF73D9 /* libJWT.a */; };
@@ -57,8 +56,7 @@
 		A1951DB61758990700AF73D9 /* libJWT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJWT.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1951DB91758990700AF73D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A1951DBD1758990700AF73D9 /* JWT-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JWT-Prefix.pch"; sourceTree = "<group>"; };
-		A1951DC71758990700AF73D9 /* JWTTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JWTTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1951DC81758990700AF73D9 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		A1951DC71758990700AF73D9 /* JWTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JWTTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1951DCA1758990700AF73D9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		A1951DD21758990800AF73D9 /* JWTTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JWTTests-Info.plist"; sourceTree = "<group>"; };
 		A1951DD41758990800AF73D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -91,7 +89,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1951DC91758990700AF73D9 /* SenTestingKit.framework in Frameworks */,
 				A1951DCB1758990700AF73D9 /* UIKit.framework in Frameworks */,
 				A1951DCC1758990800AF73D9 /* Foundation.framework in Frameworks */,
 				A1951DCF1758990800AF73D9 /* libJWT.a in Frameworks */,
@@ -128,7 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				A1951DB61758990700AF73D9 /* libJWT.a */,
-				A1951DC71758990700AF73D9 /* JWTTests.octest */,
+				A1951DC71758990700AF73D9 /* JWTTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -137,7 +134,6 @@
 			isa = PBXGroup;
 			children = (
 				A1951DB91758990700AF73D9 /* Foundation.framework */,
-				A1951DC81758990700AF73D9 /* SenTestingKit.framework */,
 				A1951DCA1758990700AF73D9 /* UIKit.framework */,
 				912330953D2D4E06BC44E9BA /* libPods-JWTTests.a */,
 				1FD31A232E7A4E6E99D15C23 /* libPods.a */,
@@ -231,8 +227,8 @@
 			);
 			name = JWTTests;
 			productName = JWTTests;
-			productReference = A1951DC71758990700AF73D9 /* JWTTests.octest */;
-			productType = "com.apple.product-type.bundle.ocunit-test";
+			productReference = A1951DC71758990700AF73D9 /* JWTTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -240,6 +236,7 @@
 		A1951DAE1758990700AF73D9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastTestingUpgradeCheck = 0610;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Karma;
 			};
@@ -474,7 +471,6 @@
 				GCC_PREFIX_HEADER = "JWT/JWT-Prefix.pch";
 				INFOPLIST_FILE = "JWTTests/JWTTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -486,7 +482,6 @@
 				GCC_PREFIX_HEADER = "JWT/JWT-Prefix.pch";
 				INFOPLIST_FILE = "JWTTests/JWTTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};
