@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		51853EAF9C314D24B5F7681D /* libPods-JWTTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 912330953D2D4E06BC44E9BA /* libPods-JWTTests.a */; };
+		5FD39A3919F9A57700C539BC /* JWTAlgorithmRS256.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD39A3819F9A57700C539BC /* JWTAlgorithmRS256.m */; };
+		5FD39A3B19F9A93C00C539BC /* JWTAlgorithmRS256Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD39A3A19F9A93C00C539BC /* JWTAlgorithmRS256Spec.m */; };
 		69FF89B6E0DC473E91BAABCD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FD31A232E7A4E6E99D15C23 /* libPods.a */; };
 		A15B74C317A2FE3A0009799B /* JWTClaimsSetSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A15B74C217A2FE3A0009799B /* JWTClaimsSetSpec.m */; };
 		A1951DBA1758990700AF73D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1951DB91758990700AF73D9 /* Foundation.framework */; };
@@ -48,6 +50,9 @@
 
 /* Begin PBXFileReference section */
 		1FD31A232E7A4E6E99D15C23 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FD39A3719F9A57700C539BC /* JWTAlgorithmRS256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithmRS256.h; sourceTree = "<group>"; };
+		5FD39A3819F9A57700C539BC /* JWTAlgorithmRS256.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmRS256.m; sourceTree = "<group>"; };
+		5FD39A3A19F9A93C00C539BC /* JWTAlgorithmRS256Spec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmRS256Spec.m; sourceTree = "<group>"; };
 		70AED78093B0A8112D5C4A69 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		817B4A02C2E1623BC636A4C2 /* Pods-JWTTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWTTests/Pods-JWTTests.release.xcconfig"; sourceTree = "<group>"; };
 		84F4A5888AE1E9EBD54D7DB7 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -154,6 +159,8 @@
 				A1951DF11758CBB200AF73D9 /* JWTClaimsSet.m */,
 				A1951DF51758CD8300AF73D9 /* JWTClaimsSetSerializer.h */,
 				A1951DF61758CD8300AF73D9 /* JWTClaimsSetSerializer.m */,
+				5FD39A3719F9A57700C539BC /* JWTAlgorithmRS256.h */,
+				5FD39A3819F9A57700C539BC /* JWTAlgorithmRS256.m */,
 			);
 			path = JWT;
 			sourceTree = "<group>";
@@ -174,6 +181,7 @@
 				A1951DEA1758B38A00AF73D9 /* JWTAlgorithmHS512Spec.m */,
 				A1951DF81758CD9000AF73D9 /* JWTClaimsSerializerSpec.m */,
 				A15B74C217A2FE3A0009799B /* JWTClaimsSetSpec.m */,
+				5FD39A3A19F9A93C00C539BC /* JWTAlgorithmRS256Spec.m */,
 			);
 			path = JWTTests;
 			sourceTree = "<group>";
@@ -350,6 +358,7 @@
 				A1951DEF1758B3C400AF73D9 /* JWTAlgorithmHS512.m in Sources */,
 				A1951DF21758CBB300AF73D9 /* JWTClaimsSet.m in Sources */,
 				A1951DF71758CD8400AF73D9 /* JWTClaimsSetSerializer.m in Sources */,
+				5FD39A3919F9A57700C539BC /* JWTAlgorithmRS256.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,6 +368,7 @@
 			files = (
 				A1951DE217589BC000AF73D9 /* JWTSpec.m in Sources */,
 				A1951DEC1758B3A100AF73D9 /* JWTAlgorithmHS512Spec.m in Sources */,
+				5FD39A3B19F9A93C00C539BC /* JWTAlgorithmRS256Spec.m in Sources */,
 				A1951DF91758CD9000AF73D9 /* JWTClaimsSerializerSpec.m in Sources */,
 				A15B74C317A2FE3A0009799B /* JWTClaimsSetSpec.m in Sources */,
 			);
