@@ -33,7 +33,7 @@
 
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
 {
-    NSDictionary *header = @{@"type": @"JWT", @"alg": theAlgorithm.name};
+    NSDictionary *header = @{@"typ": @"JWT", @"alg": theAlgorithm.name};
     
     NSString *headerSegment = [self encodeSegment:header];
     NSString *payloadSegment = [self encodeSegment:thePayload];
