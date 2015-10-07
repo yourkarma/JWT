@@ -9,9 +9,11 @@
 #import "JWT.h"
 
 #import "JWTAlgorithmHS512.h"
+#import "JWTAlgorithmFactory.h"
 #import "JWTClaimsSetSerializer.h"
 #import "NSString+JWT.h"
 #import "NSData+JWT.h"
+#import <MF_Base64Additions.h>
 
 @implementation JWT
 
@@ -66,6 +68,58 @@
     NSString *signedOutput = [[theAlgorithm encodePayload:signingInput withSecret:theSecret] base64UrlEncodedString];
     
     return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
+}
+
+#pragma mark - Decode
+
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret;
+{
+    NSArray *parts = [theMessage componentsSeparatedByString:@"."];
+    
+    if (parts.count < 3) {
+        // generate error?
+        return nil;
+    }
+    
+    NSString *headerPart = parts[0];
+    NSString *payloadPart = parts[1];
+    NSString *signedPart = parts[2];
+    
+    // decode headerPart
+    NSDictionary *header = (NSDictionary *)headerPart.jsonObjectFromBase64String;
+
+    // find algorithm
+    id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:header[@"alg"]];
+    
+    if (!algorithm) {
+        return nil;
+        //    NSAssert(!algorithm, @"Can't decode segment!, %@", header);
+    }
+    
+    // check signed part equality
+    NSString *signingInput = [@[headerPart, payloadPart] componentsJoinedByString:@"."];
+
+    NSString *validityPart = [[algorithm encodePayload:signingInput withSecret:theSecret] base64UrlEncodedString];
+    
+    BOOL signatureValid = [validityPart isEqualToString:signedPart];
+    
+    if (!signatureValid) {
+        return nil;
+    }
+    
+    // and decode payload
+    NSDictionary *payload = (NSDictionary *)payloadPart.jsonObjectFromBase64String;
+    
+    if (!payload) {
+        return nil;
+    }
+    
+    NSDictionary *result = @{
+      @"header" : header,
+      @"payload" : payload
+      };
+    
+    return result;
 }
 
 @end
