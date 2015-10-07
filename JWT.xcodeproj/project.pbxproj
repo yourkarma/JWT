@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		044397841BC527E7003F9D64 /* NSString+JWT.m in Sources */ = {isa = PBXBuildFile; fileRef = 044397831BC527E7003F9D64 /* NSString+JWT.m */; settings = {ASSET_TAGS = (); }; };
 		044397871BC529D8003F9D64 /* NSData+JWT.m in Sources */ = {isa = PBXBuildFile; fileRef = 044397861BC529D8003F9D64 /* NSData+JWT.m */; settings = {ASSET_TAGS = (); }; };
+		0443978A1BC56590003F9D64 /* JWTAlgorithmFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 044397891BC56590003F9D64 /* JWTAlgorithmFactory.m */; settings = {ASSET_TAGS = (); }; };
 		3E069D911BAC736700280422 /* JWTAlgorithmHS256.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E069D901BAC736700280422 /* JWTAlgorithmHS256.m */; };
 		3E069D931BAC738E00280422 /* JWTAlgorithmHS256Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E069D921BAC738E00280422 /* JWTAlgorithmHS256Spec.m */; };
 		51853EAF9C314D24B5F7681D /* libPods-JWTTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 912330953D2D4E06BC44E9BA /* libPods-JWTTests.a */; };
@@ -55,6 +56,8 @@
 		044397831BC527E7003F9D64 /* NSString+JWT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+JWT.m"; sourceTree = "<group>"; };
 		044397851BC529D8003F9D64 /* NSData+JWT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+JWT.h"; sourceTree = "<group>"; };
 		044397861BC529D8003F9D64 /* NSData+JWT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+JWT.m"; sourceTree = "<group>"; };
+		044397881BC56590003F9D64 /* JWTAlgorithmFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithmFactory.h; sourceTree = "<group>"; };
+		044397891BC56590003F9D64 /* JWTAlgorithmFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmFactory.m; sourceTree = "<group>"; };
 		1FD31A232E7A4E6E99D15C23 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E069D8F1BAC736700280422 /* JWTAlgorithmHS256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithmHS256.h; sourceTree = "<group>"; };
 		3E069D901BAC736700280422 /* JWTAlgorithmHS256.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmHS256.m; sourceTree = "<group>"; };
@@ -171,6 +174,8 @@
 				044397831BC527E7003F9D64 /* NSString+JWT.m */,
 				044397851BC529D8003F9D64 /* NSData+JWT.h */,
 				044397861BC529D8003F9D64 /* NSData+JWT.m */,
+				044397881BC56590003F9D64 /* JWTAlgorithmFactory.h */,
+				044397891BC56590003F9D64 /* JWTAlgorithmFactory.m */,
 			);
 			path = JWT;
 			sourceTree = "<group>";
@@ -368,6 +373,7 @@
 				3E069D911BAC736700280422 /* JWTAlgorithmHS256.m in Sources */,
 				A1951DEF1758B3C400AF73D9 /* JWTAlgorithmHS512.m in Sources */,
 				044397841BC527E7003F9D64 /* NSString+JWT.m in Sources */,
+				0443978A1BC56590003F9D64 /* JWTAlgorithmFactory.m in Sources */,
 				A1951DF21758CBB300AF73D9 /* JWTClaimsSet.m in Sources */,
 				A1951DF71758CD8400AF73D9 /* JWTClaimsSetSerializer.m in Sources */,
 				044397871BC529D8003F9D64 /* NSData+JWT.m in Sources */,
