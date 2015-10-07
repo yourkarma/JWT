@@ -15,6 +15,19 @@
 
 @implementation JWT
 
+#pragma mark - Private Methods
++ (NSString *)encodeSegment:(id)theSegment;
+{
+    NSError *error;
+    NSString *encodedSegment = [[NSJSONSerialization dataWithJSONObject:theSegment options:0 error:&error] base64UrlEncodedString];
+    
+    NSAssert(!error, @"Could not encode segment: %@", error.localizedDescription);
+    
+    return encodedSegment;
+}
+
+#pragma mark - Public Methods
+
 + (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret;
 {
     return [self encodeClaimsSet:theClaimsSet withSecret:theSecret algorithm:[[JWTAlgorithmHS512 alloc] init]];
@@ -33,25 +46,26 @@
 
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
 {
-    NSDictionary *header = @{@"typ": @"JWT", @"alg": theAlgorithm.name};
+    return [self encodePayload:thePayload withSecret:theSecret withHeaders:nil algorithm:theAlgorithm];
+}
+
++ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret withHeaders:(NSDictionary *)theHeaders algorithm:(id<JWTAlgorithm>)theAlgorithm;
+{
     
-    NSString *headerSegment = [self encodeSegment:header];
+    NSDictionary *header = @{@"typ": @"JWT", @"alg": theAlgorithm.name};
+    NSMutableDictionary *allHeaders = [header mutableCopy];
+    
+    if (theHeaders.allKeys.count) {
+        [allHeaders addEntriesFromDictionary:theHeaders];
+    }
+    
+    NSString *headerSegment = [self encodeSegment:[allHeaders copy]];
     NSString *payloadSegment = [self encodeSegment:thePayload];
     
     NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
     NSString *signedOutput = [[theAlgorithm encodePayload:signingInput withSecret:theSecret] base64UrlEncodedString];
     
     return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
-}
-
-+ (NSString *)encodeSegment:(id)theSegment;
-{
-    NSError *error;
-    NSString *encodedSegment = [[NSJSONSerialization dataWithJSONObject:theSegment options:0 error:&error] base64UrlEncodedString];
-    
-    NSAssert(!error, @"Could not encode segment: %@", error.localizedDescription);
-    
-    return encodedSegment;
 }
 
 @end
