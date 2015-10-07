@@ -12,22 +12,30 @@
 
 #import "JWT.h"
 #import "JWTClaimsSetSerializer.h"
+#import "NSData+JWT.h"
+#import "NSString+JWT.h"
 
 SPEC_BEGIN(JWTSpec)
 
 it(@"encodes JWTs with arbitrary payloads", ^{
+
+    NSString *algorithmName = @"Test";
     NSString *secret = @"secret";
     NSDictionary *payload = @{@"key": @"value"};
+
+    NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:@{@"typ":@"JWT", @"alg":algorithmName} options:0 error:nil] base64UrlEncodedString];
     
-    NSString *headerSegment = @"eyJ0eXBlIjoiSldUIiwiYWxnIjoiVGVzdCJ9";
-    NSString *payloadSegment = @"eyJrZXkiOiJ2YWx1ZSJ9";
+    NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] base64UrlEncodedString];
+    
     NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
+    
     NSString *signedOutput = @"signed";
     
-    NSString *jwt = [@[headerSegment, payloadSegment, [signedOutput base64String]] componentsJoinedByString:@"."];
-    
+    NSString *jwt = [@[headerSegment, payloadSegment, [signedOutput base64UrlEncodedString]] componentsJoinedByString:@"."];
+
     id algorithmMock = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
-    [algorithmMock stub:@selector(name) andReturn:@"Test"];
+    [algorithmMock stub:@selector(name) andReturn:algorithmName];
+    [algorithmMock stub:@selector(encodePayload:withSecret:) andReturn:signedOutput];
     [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withArguments:signingInput, secret];
     
     [[[JWT encodePayload:payload withSecret:secret algorithm:algorithmMock] should] equal:jwt];
@@ -44,22 +52,29 @@ it(@"encodes JWTs with JWTClaimsSet payloads", ^{
         @"jti": @"thisisunique",
         @"typ": @"test"
     };
+    
+    NSString *algorithmName = @"Test";
+    NSString *secret = @"secret";
     JWTClaimsSet *claimsSet = [JWTClaimsSetSerializer claimsSetWithDictionary:dictionary];
     
-    NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:@{@"type": @"JWT", @"alg": @"Test"} options:0 error:nil] base64String];
-    NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil] base64String];
+    NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:@{@"typ": @"JWT", @"alg": algorithmName} options:0 error:nil] base64UrlEncodedString];
+    
+    NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil] base64UrlEncodedString];
+    
     NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
+    
     NSString *signedOutput = @"signed";
     
-    NSString *jwt = [@[headerSegment, payloadSegment, [signedOutput base64String]] componentsJoinedByString:@"."];
+    NSString *jwt = [@[headerSegment, payloadSegment, [signedOutput base64UrlEncodedString]] componentsJoinedByString:@"."];
 
     id algorithmMock = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
-    [algorithmMock stub:@selector(name) andReturn:@"Test"];
-    [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withArguments:signingInput, @"secret"];
+    [algorithmMock stub:@selector(name) andReturn:algorithmName];
+    [algorithmMock stub:@selector(encodePayload:withSecret:) andReturn:signedOutput];
+    [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withArguments:signingInput, secret];
 
     [JWTClaimsSetSerializer stub:@selector(dictionaryWithClaimsSet:) andReturn:dictionary];
 
-    [[[JWT encodeClaimsSet:claimsSet withSecret:@"secret" algorithm:algorithmMock] should] equal:jwt];
+    [[[JWT encodeClaimsSet:claimsSet withSecret:secret algorithm:algorithmMock] should] equal:jwt];
 });
 
 SPEC_END
