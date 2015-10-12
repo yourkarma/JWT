@@ -9,6 +9,7 @@
 #import "Kiwi.h"
 
 #import "JWT.h"
+#import "JWTAlgorithmFactory.h"
 #import "JWTClaimsSetSerializer.h"
 #import "NSData+JWT.h"
 #import "NSString+JWT.h"
@@ -16,11 +17,11 @@
 SPEC_BEGIN(JWTSpec)
 
 it(@"encodes JWTs with arbitrary payloads", ^{
-
+    
     NSString *algorithmName = @"Test";
     NSString *secret = @"secret";
     NSDictionary *payload = @{@"key": @"value"};
-
+    
     NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:@{@"typ":@"JWT", @"alg":algorithmName} options:0 error:nil] base64UrlEncodedString];
     
     NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] base64UrlEncodedString];
@@ -30,7 +31,7 @@ it(@"encodes JWTs with arbitrary payloads", ^{
     NSString *signedOutput = @"signed";
     
     NSString *jwt = [@[headerSegment, payloadSegment, [signedOutput base64UrlEncodedString]] componentsJoinedByString:@"."];
-
+    
     id algorithmMock = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
     [algorithmMock stub:@selector(name) andReturn:algorithmName];
     [algorithmMock stub:@selector(encodePayload:withSecret:) andReturn:signedOutput];
@@ -70,15 +71,15 @@ it(@"encodes JWTs with headers", ^{
 
 it(@"encodes JWTs with JWTClaimsSet payloads", ^{
     NSDictionary *dictionary = @{
-        @"iss": @"Facebook",
-        @"sub": @"Token",
-        @"aud": @"http://yourkarma.com",
-        @"exp": @(64092211200),
-        @"nbf": @(-62135769600),
-        @"iat": @(1370005175.80196),
-        @"jti": @"thisisunique",
-        @"typ": @"test"
-    };
+                                 @"iss": @"Facebook",
+                                 @"sub": @"Token",
+                                 @"aud": @"http://yourkarma.com",
+                                 @"exp": @(64092211200),
+                                 @"nbf": @(-62135769600),
+                                 @"iat": @(1370005175.80196),
+                                 @"jti": @"thisisunique",
+                                 @"typ": @"test"
+                                 };
     
     NSString *algorithmName = @"Test";
     NSString *secret = @"secret";
@@ -93,15 +94,45 @@ it(@"encodes JWTs with JWTClaimsSet payloads", ^{
     NSString *signedOutput = @"signed";
     
     NSString *jwt = [@[headerSegment, payloadSegment, [signedOutput base64UrlEncodedString]] componentsJoinedByString:@"."];
-
+    
     id algorithmMock = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
     [algorithmMock stub:@selector(name) andReturn:algorithmName];
     [algorithmMock stub:@selector(encodePayload:withSecret:) andReturn:signedOutput];
     [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withArguments:signingInput, secret];
-
+    
     [JWTClaimsSetSerializer stub:@selector(dictionaryWithClaimsSet:) andReturn:dictionary];
-
+    
     [[[JWT encodeClaimsSet:claimsSet withSecret:secret algorithm:algorithmMock] should] equal:jwt];
+});
+
+it(@"decodes JWTs with headers and arbitrary payloads", ^{
+    
+    NSString *algorithmName = @"HS256";
+    NSString *secret = @"secret";
+    NSDictionary *payload = @{@"key": @"value"};
+    NSDictionary *headers = @{@"header" : @"value"};
+    
+    NSMutableDictionary *allHeaders = [@{@"typ":@"JWT", @"alg":algorithmName} mutableCopy];
+    
+    [allHeaders addEntriesFromDictionary:headers];
+    
+    NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:allHeaders options:0 error:nil] base64UrlEncodedString];
+    
+    NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] base64UrlEncodedString];
+    
+    NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
+    
+    NSString *signingOutput =
+    [[[JWTAlgorithmFactory algorithmByName:algorithmName] encodePayload:signingInput withSecret:secret] base64UrlEncodedString];
+    
+    NSString *jwt = [@[headerSegment, payloadSegment, signingOutput] componentsJoinedByString:@"."];//@"eyJhbGciOiJIUzI1NiIsInNha3R5IjoiaGVsbG8ifQ.eyJoZWFkZXIiOiJ2YWx1ZSJ9.5SLxUjp_8gBrD4NByWyiCda4sQw7E0H5G-Upw5-YULM";
+
+    NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret];
+    
+    NSLog(@"info is: %@", info);
+    
+    [[info[@"payload"] should] equal:payload];
+    [[info[@"header"] should] equal:allHeaders];
 });
 
 SPEC_END

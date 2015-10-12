@@ -18,6 +18,10 @@
     return [self.class base64UrlEncodedStringFromBase64String:base64String];
 }
 
+- (NSObject *)jsonObjectFromBase64String {
+    return [self.class JSONObjectFromBase64String:self];
+}
+
 + (NSString *)base64UrlEncodedStringFromBase64String:(NSString *)base64String {
     
     NSString *encodedSegment = [base64String copy];
@@ -26,6 +30,16 @@
     encodedSegment = [encodedSegment stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
     
     return encodedSegment;
+}
+
++ (NSObject *)JSONObjectFromBase64String:(NSString *)base64String;
+{
+    NSData *data = [NSData dataWithBase64String:base64String];
+    
+    NSObject *object =
+    [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    
+    return object;
 }
 
 @end

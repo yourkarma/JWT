@@ -11,7 +11,10 @@
 @interface NSString (JWT)
 
 @property (nonatomic, readonly) NSString *base64UrlEncodedString;
+@property (nonatomic, readonly) NSObject *jsonObjectFromBase64String;
 
 + (NSString *)base64UrlEncodedStringFromBase64String:(NSString *)base64String;
+
++ (NSObject *)JSONObjectFromBase64String:(NSString *)base64String;
 
 @end
