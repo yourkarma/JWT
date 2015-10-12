@@ -18,5 +18,6 @@
 
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret;
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
++ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret withHeaders:(NSDictionary *)theHeaders algorithm:(id<JWTAlgorithm>)theAlgorithm;
 
 @end
