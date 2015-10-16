@@ -9,20 +9,30 @@
 #import "JWTAlgorithmFactory.h"
 #import "JWTAlgorithmHS256.h"
 #import "JWTAlgorithmHS512.h"
+#import "JWTAlgorithmNone.h"
 
 @implementation JWTAlgorithmFactory
+
++ (NSArray *)algorithms {
+    return @[
+            [JWTAlgorithmNone new],
+            [JWTAlgorithmHS256 new],
+            [JWTAlgorithmHS512 new]
+            ];
+}
 
 + (id<JWTAlgorithm>)algorithmByName:(NSString *)name {
     id<JWTAlgorithm> algorithm = nil;
     
     NSString *algName = [name copy];
     
-    if ([[[JWTAlgorithmHS256 new] name] isEqualToString:algName]) {
-        algorithm = [JWTAlgorithmHS256 new];
-    }
+    NSUInteger index = [[self algorithms] indexOfObjectPassingTest:^BOOL(id<JWTAlgorithm>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        // lowercase comparison
+        return [obj.name.lowercaseString isEqualToString:algName.lowercaseString];
+    }];
     
-    if ([[[JWTAlgorithmHS512 new] name] isEqualToString:algName]) {
-        algorithm = [JWTAlgorithmHS512 new];
+    if (index != NSNotFound) {
+        algorithm = [self algorithms][index];
     }
     
     return algorithm;
