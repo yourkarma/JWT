@@ -122,13 +122,41 @@ it(@"decodes JWTs with headers and arbitrary payloads", ^{
     
     NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
     
-    NSString *signingOutput =
-    [[[JWTAlgorithmFactory algorithmByName:algorithmName] encodePayload:signingInput withSecret:secret] base64UrlEncodedString];
+    NSString *signingOutput = [[[JWTAlgorithmFactory algorithmByName:algorithmName] encodePayload:signingInput withSecret:secret] base64UrlEncodedString];
     
-    NSString *jwt = [@[headerSegment, payloadSegment, signingOutput] componentsJoinedByString:@"."];//@"eyJhbGciOiJIUzI1NiIsInNha3R5IjoiaGVsbG8ifQ.eyJoZWFkZXIiOiJ2YWx1ZSJ9.5SLxUjp_8gBrD4NByWyiCda4sQw7E0H5G-Upw5-YULM";
+    NSString *jwt = [@[headerSegment, payloadSegment, signingOutput] componentsJoinedByString:@"."];
 
     NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret];
     
+    NSLog(@"info is: %@", info);
+    
+    [[info[@"payload"] should] equal:payload];
+    [[info[@"header"] should] equal:allHeaders];
+});
+
+// JWT "none" algorithm part
+
+it(@"encodes and decodes JWT with none algorithm", ^{
+    NSString *algorithmName = @"none";
+    NSString *secret = @"secret";
+    NSDictionary *payload = @{@"key": @"value"};
+    NSDictionary *headers = @{@"header" : @"value"};
+
+    NSMutableDictionary *allHeaders = [@{@"typ":@"JWT", @"alg":algorithmName} mutableCopy];
+    
+    [allHeaders addEntriesFromDictionary:headers];
+    
+    NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:allHeaders options:0 error:nil] base64UrlEncodedString];
+    
+    NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] base64UrlEncodedString];
+    
+    NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
+    
+    NSString *signingOutput = [[[JWTAlgorithmFactory algorithmByName:algorithmName] encodePayload:signingInput withSecret:secret] base64UrlEncodedString];
+    
+    NSString *jwt = [@[headerSegment, payloadSegment, signingOutput] componentsJoinedByString:@"."];
+    
+    NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret];
     NSLog(@"info is: %@", info);
     
     [[info[@"payload"] should] equal:payload];
