@@ -15,7 +15,49 @@
 #import "NSData+JWT.h"
 #import <MF_Base64Additions.h>
 
+static NSString *JWTErrorDomain = @"com.karma.jwt";
+
 @implementation JWT
+
++ (NSString *)userDescriptionForErrorCode:(JWTError)code {
+    NSString *resultString = nil;
+    switch (code) {
+        case JWTInvalidFormatError: {
+            resultString = @"Invalid format! Try to check your encoding algorithm. Maybe you put too much dots as delimiters?";
+            break;
+        }
+        case JWTUnsupportedAlgorithmError: {
+            resultString = @"Unsupported algorithm! You could implement it by yourself";
+            break;
+        }
+        case JWTInvalidSignatureError: {
+            resultString = @"Invalid signature! It seems that signed part of jwt mismatch generated part by algorithm provided in header.";
+            break;
+        }
+        case JWTNoPayloadError: {
+            resultString = @"No payload! Hey, forget payload?";
+            break;
+        }
+        case JWTNoHeaderError: {
+            resultString = @"No header! Hmm";
+            break;
+        }
+        default: {
+            resultString = @"Unexpected error";
+            break;
+        }
+    }
+    
+    return resultString;
+}
+
++ (NSError *)errorWithCode:(JWTError)code {
+    return [self errorWithCode:code withUserDescription:[self userDescriptionForErrorCode:code]];
+}
+
++ (NSError *)errorWithCode:(NSInteger)code withUserDescription:(NSString *)string {
+    return [NSError errorWithDomain:JWTErrorDomain code:code userInfo:@{NSLocalizedDescriptionKey: string}];
+}
 
 #pragma mark - Private Methods
 + (NSString *)encodeSegment:(id)theSegment;
@@ -71,13 +113,13 @@
 }
 
 #pragma mark - Decode
-
-+ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret;
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError * __autoreleasing *)theError;
 {
     NSArray *parts = [theMessage componentsSeparatedByString:@"."];
     
     if (parts.count < 3) {
         // generate error?
+        *theError = [self errorWithCode:JWTInvalidFormatError];
         return nil;
     }
     
@@ -87,23 +129,29 @@
     
     // decode headerPart
     NSDictionary *header = (NSDictionary *)headerPart.jsonObjectFromBase64String;
+    if (!header) {
+        *theError = [self errorWithCode:JWTNoHeaderError];
+        return nil;
+    }
 
     // find algorithm
     id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:header[@"alg"]];
     
     if (!algorithm) {
+        *theError = [self errorWithCode:JWTUnsupportedAlgorithmError];
         return nil;
         //    NSAssert(!algorithm, @"Can't decode segment!, %@", header);
     }
     
     // check signed part equality
     NSString *signingInput = [@[headerPart, payloadPart] componentsJoinedByString:@"."];
-
+    
     NSString *validityPart = [[algorithm encodePayload:signingInput withSecret:theSecret] base64UrlEncodedString];
     
     BOOL signatureValid = [validityPart isEqualToString:signedPart];
     
     if (!signatureValid) {
+        *theError = [self errorWithCode:JWTInvalidSignatureError];
         return nil;
     }
     
@@ -111,15 +159,26 @@
     NSDictionary *payload = (NSDictionary *)payloadPart.jsonObjectFromBase64String;
     
     if (!payload) {
+        *theError = [self errorWithCode:JWTNoPayloadError];
         return nil;
     }
     
     NSDictionary *result = @{
-      @"header" : header,
-      @"payload" : payload
-      };
+                             @"header" : header,
+                             @"payload" : payload
+                             };
     
     return result;
+}
+
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret;
+{
+    NSError *error = nil;
+    NSDictionary *dictionary = [self decodeMessage:theMessage withSecret:theSecret withError:&error];
+    if (error) {
+        // do something
+    }
+    return dictionary;
 }
 
 @end
