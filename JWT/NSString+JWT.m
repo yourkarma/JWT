@@ -6,8 +6,10 @@
 //  Copyright © 2015 Karma. All rights reserved.
 //
 
+#import <Base64/MF_Base64Additions.h>
+
 #import "NSString+JWT.h"
-#import <MF_Base64Additions.h>
+
 @implementation NSString (JWT)
 
 - (NSString *)base64UrlEncodedString {

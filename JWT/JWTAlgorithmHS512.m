@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Karma. All rights reserved.
 //
 
-#import "JWTAlgorithmHS512.h"
-
 #import <CommonCrypto/CommonCrypto.h>
 #import <CommonCrypto/CommonHMAC.h>
+
+#import "JWTAlgorithmHS512.h"
 
 @implementation JWTAlgorithmHS512
 
