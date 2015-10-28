@@ -6,9 +6,10 @@
 //  Copyright © 2015 Karma. All rights reserved.
 //
 
+#import <Base64/MF_Base64Additions.h>
+
 #import "NSData+JWT.h"
 #import "NSString+JWT.h"
-#import <MF_Base64Additions.h>
 
 @implementation NSData (JWT)
 

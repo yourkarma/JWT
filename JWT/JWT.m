@@ -6,14 +6,14 @@
 //  Copyright (c) 2013 Karma. All rights reserved.
 //
 
-#import "JWT.h"
+#import <Base64/MF_Base64Additions.h>
 
+#import "JWT.h"
 #import "JWTAlgorithmHS512.h"
 #import "JWTAlgorithmFactory.h"
 #import "JWTClaimsSetSerializer.h"
 #import "NSString+JWT.h"
 #import "NSData+JWT.h"
-#import <MF_Base64Additions.h>
 
 static NSString *JWTErrorDomain = @"com.karma.jwt";
 

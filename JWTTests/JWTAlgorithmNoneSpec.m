@@ -6,10 +6,10 @@
 //  Copyright © 2015 Karma. All rights reserved.
 //
 
-#import "Kiwi.h"
+#import <Kiwi/Kiwi.h>
+#import <Base64/MF_Base64Additions.h>
 
 #import "JWTAlgorithmNone.h"
-#import "MF_Base64Additions.h"
 
 SPEC_BEGIN(JWTAlgorithmNoneSpec)
 

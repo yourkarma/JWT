@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "JWTAlgorithm.h"
+
 @interface JWTAlgorithmFactory : NSObject
 
 + (id<JWTAlgorithm>)algorithmByName:(NSString *)name;

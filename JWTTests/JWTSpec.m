@@ -6,7 +6,7 @@
 //  Copyright 2013 Karma. All rights reserved.
 //
 
-#import "Kiwi.h"
+#import <Kiwi/Kiwi.h>
 
 #import "JWT.h"
 #import "JWTAlgorithmFactory.h"
