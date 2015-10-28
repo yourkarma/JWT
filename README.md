@@ -8,7 +8,7 @@ A [JSON Web Token][] implementation in Objective-C.
 
 Add the following to your [Cocoapods][] Podfile:
 
-    pod 'JWT', git: 'https://github.com/yourkarma/JWT.git', tag: '1.0.0'
+    pod "JWT"
 
 [Cocoapods]: http://cocoapods.org
 
@@ -33,7 +33,11 @@ If you're using reserved claim names you can encode your claim set like so (all 
 
 # Algorithms
 
-The library currently only supports HS512 - HMAC using SHA-512. Additional algorithms can be added by implementing the `KWTAlgorithm` protocol.
+    * HS512 - HMAC using SHA-512. 
+    * HS256
+    * None
+    
+    Additional algorithms can be added by implementing the `KWTAlgorithm` protocol.
 
 # Contributing
 
