@@ -33,11 +33,13 @@ If you're using reserved claim names you can encode your claim set like so (all 
 
 # Algorithms
 
-    * HS512 - HMAC using SHA-512. 
-    * HS256
-    * None
+The following algorithms are supported:
+
+* HS512 - HMAC using SHA-512. 
+* HS256
+* None
     
-    Additional algorithms can be added by implementing the `KWTAlgorithm` protocol.
+Additional algorithms can be added by implementing the `JWTAlgorithm` protocol.
 
 # Contributing
 
