@@ -113,7 +113,12 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 }
 
 #pragma mark - Decode
-+ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError * __autoreleasing *)theError;
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError * __autoreleasing *)theError
+{
+    return [self decodeMessage:theMessage withSecret:theSecret withDoCheckSignature:TRUE withError:theError];
+}
+
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withDoCheckSignature:(BOOL)doCheckSignature withError:(NSError * __autoreleasing *)theError;
 {
     NSArray *parts = [theMessage componentsSeparatedByString:@"."];
     
@@ -134,25 +139,28 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         return nil;
     }
 
-    // find algorithm
-    id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:header[@"alg"]];
-    
-    if (!algorithm) {
-        *theError = [self errorWithCode:JWTUnsupportedAlgorithmError];
-        return nil;
-        //    NSAssert(!algorithm, @"Can't decode segment!, %@", header);
-    }
-    
     // check signed part equality
-    NSString *signingInput = [@[headerPart, payloadPart] componentsJoinedByString:@"."];
+    if (doCheckSignature) {
+        // find algorithm
+        id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:header[@"alg"]];
+        
+        if (!algorithm) {
+            *theError = [self errorWithCode:JWTUnsupportedAlgorithmError];
+            return nil;
+            //    NSAssert(!algorithm, @"Can't decode segment!, %@", header);
+        }
     
-    NSString *validityPart = [[algorithm encodePayload:signingInput withSecret:theSecret] base64UrlEncodedString];
     
-    BOOL signatureValid = [validityPart isEqualToString:signedPart];
-    
-    if (!signatureValid) {
-        *theError = [self errorWithCode:JWTInvalidSignatureError];
-        return nil;
+        NSString *signingInput = [@[headerPart, payloadPart] componentsJoinedByString:@"."];
+        
+        NSString *validityPart = [[algorithm encodePayload:signingInput withSecret:theSecret] base64UrlEncodedString];
+        
+        BOOL signatureValid = [validityPart isEqualToString:signedPart];
+        
+        if (!signatureValid) {
+            *theError = [self errorWithCode:JWTInvalidSignatureError];
+            return nil;
+        }
     }
     
     // and decode payload

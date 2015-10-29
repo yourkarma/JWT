@@ -30,6 +30,7 @@ typedef NS_ENUM(NSInteger, JWTError) {
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret withHeaders:(NSDictionary *)theHeaders algorithm:(id<JWTAlgorithm>)theAlgorithm;
 
 #pragma mark - Decode
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withDoCheckSignature:(BOOL)doCheckSignature withError:(NSError * __autoreleasing *)theError;
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError * __autoreleasing *)theError;
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret;
 

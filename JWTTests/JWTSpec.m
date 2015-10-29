@@ -172,6 +172,39 @@ it(@"should generate errors", ^{
     [[@(error.code) should] equal:@(JWTInvalidFormatError)];
 });
 
+
+it(@"decodes RS256 payload without verifying signature", ^{
+    NSString *token = @"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.EkN-DOsnsuRjRO6BxXemmJDm3HbxrbRzXglbN2S4sOkopdU4IsDxTI8jO19W_A4K8ZPJijNLis4EZsHeY559a4DFOd50_OqgHGuERTqYZyuhtF39yxJPAjUESwxk2J5k_4zM3O-vtd1Ghyo4IbqKKSy6J9mTniYJPenn5-HIirE";
+    
+    NSError *decodeError = nil;
+    NSDictionary *decodedToken = [JWT decodeMessage:token withSecret:nil withDoCheckSignature:FALSE withError:&decodeError];
+    if (decodeError) {
+        NSLog(@"Decode Error: %@", decodeError);
+    }
+    
+    [[decodeError should] beNil];
+    
+    NSDictionary *expectedHeader = @{@"alg": @"RS256", @"typ": @"JWT"};
+    NSDictionary *expectedPayload = @{@"admin": @TRUE, @"name": @"John Doe", @"sub": @"1234567890"};
+    
+    [[expectedHeader should] equal:decodedToken[@"header"]];
+    [[expectedPayload should] equal:decodedToken[@"payload"]];
+    
+});
+
+it(@"fails to decode RS256 payload with verifying signature", ^{
+    NSString *token = @"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.EkN-DOsnsuRjRO6BxXemmJDm3HbxrbRzXglbN2S4sOkopdU4IsDxTI8jO19W_A4K8ZPJijNLis4EZsHeY559a4DFOd50_OqgHGuERTqYZyuhtF39yxJPAjUESwxk2J5k_4zM3O-vtd1Ghyo4IbqKKSy6J9mTniYJPenn5-HIirE";
+    
+    NSError *decodeError = nil;
+    NSDictionary *decodedToken = [JWT decodeMessage:token withSecret:nil withDoCheckSignature:TRUE withError:&decodeError];
+    if (decodeError) {
+        NSLog(@"Decode Error: %@", decodeError);
+    }
+    [[decodedToken should] beNil];
+    [[decodeError shouldNot] beNil];
+});
+
+
 SPEC_END
 
 
