@@ -163,13 +163,26 @@ it(@"encodes and decodes JWT with none algorithm", ^{
     [[info[@"header"] should] equal:allHeaders];
 });
 
-it(@"should generate errors", ^{
+it(@"decode should generate errors", ^{
     NSString *secret = @"secret";
     NSString *jwt = @"jwt";
     NSError *error = nil;
     NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret withError:&error];
     NSLog(@"info is: %@\n error is: %@", info, error);
     [[@(error.code) should] equal:@(JWTInvalidFormatError)];
+});
+
+it(@"encode should generate errors", ^{
+    NSString *secret = @"secret";
+    NSDictionary *headers = @{};
+    id<JWTAlgorithm> algorithm = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
+    NSError *error = nil;
+    
+    NSString *encoded = [JWT encodePayload:nil withSecret:secret withHeaders:headers algorithm:algorithm withError:&error];
+    
+    NSLog(@"info is: %@\n error is: %@", encoded, error);
+    
+    [[@(error.code) should] equal:@(JWTEncodingPayloadError)];
 });
 
 SPEC_END
