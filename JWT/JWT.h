@@ -16,7 +16,9 @@ typedef NS_ENUM(NSInteger, JWTError) {
     JWTUnsupportedAlgorithmError,
     JWTInvalidSignatureError,
     JWTNoPayloadError,
-    JWTNoHeaderError
+    JWTNoHeaderError,
+    JWTEncodingHeaderError,
+    JWTEncodingPayloadError
 };
 
 @interface JWT : NSObject
@@ -27,7 +29,10 @@ typedef NS_ENUM(NSInteger, JWTError) {
 
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret;
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
+
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret withHeaders:(NSDictionary *)theHeaders algorithm:(id<JWTAlgorithm>)theAlgorithm;
+
++ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret withHeaders:(NSDictionary *)theHeaders algorithm:(id<JWTAlgorithm>)theAlgorithm withError:(NSError * __autoreleasing *)theError;
 
 #pragma mark - Decode
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError * __autoreleasing *)theError;

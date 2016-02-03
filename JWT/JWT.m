@@ -42,6 +42,14 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
             resultString = @"No header! Hmm";
             break;
         }
+        case JWTEncodingHeaderError: {
+            resultString = @"It seems that header encoding failed";
+            break;
+        }
+        case JWTEncodingPayloadError: {
+            resultString = @"It seems that payload encoding failed";
+            break;
+        }
         default: {
             resultString = @"Unexpected error";
             break;
@@ -60,14 +68,27 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 }
 
 #pragma mark - Private Methods
++ (NSString *)encodeSegment:(id)theSegment withError:(NSError **)error
+{
+    NSData *encodedSegmentData = [NSJSONSerialization dataWithJSONObject:theSegment options:0 error:error];
+    
+    NSString *encodedSegment = nil;
+    
+    if (!(*error) && encodedSegmentData) {
+        encodedSegment = [encodedSegmentData base64UrlEncodedString];
+    }
+    
+    if ((*error)) {
+        NSLog(@"%@ Could not encode segment: %@", self.class, (*error).localizedDescription);
+    }
+    
+    return encodedSegment;
+}
+
 + (NSString *)encodeSegment:(id)theSegment;
 {
     NSError *error;
-    NSString *encodedSegment = [[NSJSONSerialization dataWithJSONObject:theSegment options:0 error:&error] base64UrlEncodedString];
-    
-    NSAssert(!error, @"Could not encode segment: %@", error.localizedDescription);
-    
-    return encodedSegment;
+    return [self encodeSegment:theSegment withError:&error];
 }
 
 #pragma mark - Public Methods
@@ -96,6 +117,19 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret withHeaders:(NSDictionary *)theHeaders algorithm:(id<JWTAlgorithm>)theAlgorithm;
 {
     
+    NSError *error = nil;
+    NSString *encodedString = [self encodePayload:thePayload withSecret:theSecret withHeaders:theHeaders algorithm:theAlgorithm withError:&error];
+    
+    if (error) {
+        // do something
+    }
+    
+    return encodedString;
+}
+
++ (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret withHeaders:(NSDictionary *)theHeaders algorithm:(id<JWTAlgorithm>)theAlgorithm withError:(NSError * __autoreleasing *)theError;
+{
+    
     NSDictionary *header = @{@"typ": @"JWT", @"alg": theAlgorithm.name};
     NSMutableDictionary *allHeaders = [header mutableCopy];
     
@@ -103,8 +137,21 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         [allHeaders addEntriesFromDictionary:theHeaders];
     }
     
-    NSString *headerSegment = [self encodeSegment:[allHeaders copy]];
-    NSString *payloadSegment = [self encodeSegment:thePayload];
+    NSString *headerSegment = [self encodeSegment:[allHeaders copy] withError:theError];
+    
+    if (!headerSegment) {
+        // encode header segment error
+        *theError = [self errorWithCode:JWTEncodingHeaderError];
+        return nil;
+    }
+    
+    NSString *payloadSegment = [self encodeSegment:thePayload withError:theError];
+    
+    if (!payloadSegment) {
+        // encode payment segment error
+        *theError = [self errorWithCode:JWTEncodingPayloadError];
+        return nil;
+    }
     
     NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
     NSString *signedOutput = [[theAlgorithm encodePayload:signingInput withSecret:theSecret] base64UrlEncodedString];
