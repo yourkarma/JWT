@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04B0B85B1C62744600551C99 /* JWTAlgorithmRS256.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B0B85A1C62744600551C99 /* JWTAlgorithmRS256.m */; };
+		04B0B85D1C62744C00551C99 /* JWTAlgorithmRS256Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B0B85C1C62744C00551C99 /* JWTAlgorithmRS256Spec.m */; };
 		04BA85391BD1598C00BBED08 /* JWTAlgorithmNoneSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 04BA85381BD1598C00BBED08 /* JWTAlgorithmNoneSpec.m */; };
 		04F1BC921C010A2900E09BB1 /* JWTAlgorithmFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F1BC7F1C010A2900E09BB1 /* JWTAlgorithmFactory.m */; };
 		04F1BC931C010A2900E09BB1 /* JWTAlgorithmHS256.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F1BC811C010A2900E09BB1 /* JWTAlgorithmHS256.m */; };
@@ -54,6 +56,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04B0B8591C62744500551C99 /* JWTAlgorithmRS256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithmRS256.h; sourceTree = "<group>"; };
+		04B0B85A1C62744600551C99 /* JWTAlgorithmRS256.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmRS256.m; sourceTree = "<group>"; };
+		04B0B85C1C62744C00551C99 /* JWTAlgorithmRS256Spec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmRS256Spec.m; sourceTree = "<group>"; };
 		04BA85381BD1598C00BBED08 /* JWTAlgorithmNoneSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmNoneSpec.m; sourceTree = "<group>"; };
 		04F1BC7D1C010A2900E09BB1 /* JWTAlgorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithm.h; sourceTree = "<group>"; };
 		04F1BC7E1C010A2900E09BB1 /* JWTAlgorithmFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithmFactory.h; sourceTree = "<group>"; };
@@ -121,6 +126,8 @@
 		04F1BC7C1C010A2900E09BB1 /* JWTAlgorithms */ = {
 			isa = PBXGroup;
 			children = (
+				04B0B8591C62744500551C99 /* JWTAlgorithmRS256.h */,
+				04B0B85A1C62744600551C99 /* JWTAlgorithmRS256.m */,
 				04F1BC7D1C010A2900E09BB1 /* JWTAlgorithm.h */,
 				04F1BC7E1C010A2900E09BB1 /* JWTAlgorithmFactory.h */,
 				04F1BC7F1C010A2900E09BB1 /* JWTAlgorithmFactory.m */,
@@ -222,6 +229,7 @@
 		A1951DD01758990800AF73D9 /* JWTTests */ = {
 			isa = PBXGroup;
 			children = (
+				04B0B85C1C62744C00551C99 /* JWTAlgorithmRS256Spec.m */,
 				A1951DD11758990800AF73D9 /* Supporting Files */,
 				A1951DE117589BC000AF73D9 /* JWTSpec.m */,
 				3E069D921BAC738E00280422 /* JWTAlgorithmHS256Spec.m */,
@@ -421,6 +429,7 @@
 				04F1BC971C010A2900E09BB1 /* JWTClaimsSet.m in Sources */,
 				04F1BC921C010A2900E09BB1 /* JWTAlgorithmFactory.m in Sources */,
 				04F1BC951C010A2900E09BB1 /* JWTAlgorithmNone.m in Sources */,
+				04B0B85B1C62744600551C99 /* JWTAlgorithmRS256.m in Sources */,
 				04F1BC941C010A2900E09BB1 /* JWTAlgorithmHS512.m in Sources */,
 				04F1BC931C010A2900E09BB1 /* JWTAlgorithmHS256.m in Sources */,
 				04F1BC9A1C010A2900E09BB1 /* NSString+JWT.m in Sources */,
@@ -439,6 +448,7 @@
 				A1951DEC1758B3A100AF73D9 /* JWTAlgorithmHS512Spec.m in Sources */,
 				A1951DF91758CD9000AF73D9 /* JWTClaimsSerializerSpec.m in Sources */,
 				A15B74C317A2FE3A0009799B /* JWTClaimsSetSpec.m in Sources */,
+				04B0B85D1C62744C00551C99 /* JWTAlgorithmRS256Spec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
