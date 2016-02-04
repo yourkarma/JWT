@@ -175,7 +175,14 @@ it(@"decode should generate errors", ^{
 it(@"encode should generate errors", ^{
     NSString *secret = @"secret";
     NSDictionary *headers = @{};
-    id<JWTAlgorithm> algorithm = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
+    NSString *algorithmName = @"none";
+    NSString *signedOutput = @"oh";
+    //NSString *signingInput = @"uh";
+    id algorithm = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
+    [algorithm stub:@selector(name) andReturn:algorithmName];
+    [algorithm stub:@selector(encodePayload:withSecret:) andReturn:signedOutput];
+    //[[algorithm should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withArguments:signingInput, secret];
+
     NSError *error = nil;
     
     NSString *encoded = [JWT encodePayload:nil withSecret:secret withHeaders:headers algorithm:algorithm withError:&error];

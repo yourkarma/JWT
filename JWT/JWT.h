@@ -18,7 +18,8 @@ typedef NS_ENUM(NSInteger, JWTError) {
     JWTNoPayloadError,
     JWTNoHeaderError,
     JWTEncodingHeaderError,
-    JWTEncodingPayloadError
+    JWTEncodingPayloadError,
+    JWTInvalidSegmentSerializationError
 };
 
 @interface JWT : NSObject
