@@ -50,6 +50,10 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
             resultString = @"It seems that payload encoding failed";
             break;
         }
+        case JWTInvalidSegmentSerializationError: {
+            resultString = @"It seems that json serialization failed for segment";
+            break;
+        }
         default: {
             resultString = @"Unexpected error";
             break;
@@ -70,7 +74,15 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 #pragma mark - Private Methods
 + (NSString *)encodeSegment:(id)theSegment withError:(NSError **)error
 {
-    NSData *encodedSegmentData = [NSJSONSerialization dataWithJSONObject:theSegment options:0 error:error];
+    NSData *encodedSegmentData = nil;
+    
+    if (theSegment) {
+         encodedSegmentData = [NSJSONSerialization dataWithJSONObject:theSegment options:0 error:error];
+    }
+    else {
+        // error!
+        *error = [self errorWithCode:JWTInvalidSegmentSerializationError];
+    }
     
     NSString *encodedSegment = nil;
     
