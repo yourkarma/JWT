@@ -28,7 +28,7 @@
     
     NSString *algName = [name copy];
     
-    NSUInteger index = [[self algorithms] indexOfObjectPassingTest:^BOOL(id<JWTAlgorithm>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    NSUInteger index = [[self algorithms] indexOfObjectPassingTest:^BOOL(id<JWTAlgorithm> obj, NSUInteger idx, BOOL *stop) {
         // lowercase comparison
         return [obj.name.lowercaseString isEqualToString:algName.lowercaseString];
     }];
