@@ -14,8 +14,7 @@
 
 SPEC_BEGIN(JWTAlgorithmRS256Spec)
 
-__block JWTAlgorithmRS256
-*algorithm;
+__block JWTAlgorithmRS256 *algorithm;
 
 beforeEach(^{
   algorithm = [[JWTAlgorithmRS256 alloc] init];

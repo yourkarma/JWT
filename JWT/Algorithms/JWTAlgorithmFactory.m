@@ -8,6 +8,7 @@
 
 #import "JWTAlgorithmFactory.h"
 #import "JWTAlgorithmHS256.h"
+#import "JWTAlgorithmHS384.h"
 #import "JWTAlgorithmHS512.h"
 #import "JWTAlgorithmRS256.h"
 #import "JWTAlgorithmNone.h"
@@ -18,6 +19,7 @@
     return @[
             [JWTAlgorithmNone new],
             [JWTAlgorithmHS256 new],
+            [JWTAlgorithmHS384 new],
             [JWTAlgorithmHS512 new],
             [JWTAlgorithmRS256 new]
             ];
