@@ -2,6 +2,8 @@
 [![Build Status](https://travis-ci.org/yourkarma/JWT.svg?branch=master)](https://travis-ci.org/yourkarma/JWT)
 [![Pod Version](http://img.shields.io/cocoapods/v/JWT.svg?style=flat)](http://cocoadocs.org/docsets/JWT)
 [![Pod Platform](http://img.shields.io/cocoapods/p/JWT.svg?style=flat)](http://cocoadocs.org/docsets/JWT)
+[![Code Climate](https://codeclimate.com/github/yourkarma/JWT/badges/gpa.svg)](https://codeclimate.com/github/yourkarma/JWT)
+[![Test Coverage](https://codeclimate.com/github/yourkarma/JWT/badges/coverage.svg)](https://codeclimate.com/github/yourkarma/JWT/coverage)
 [![Reference Status](https://www.versioneye.com/objective-c/jwt/reference_badge.svg?style=flat)](https://www.versioneye.com/objective-c/jwt/references)
 
 # JWT
