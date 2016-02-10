@@ -324,6 +324,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 
 @property (copy, nonatomic, readwrite) NSString *jwtMessage;
 @property (copy, nonatomic, readwrite) NSDictionary *jwtPayload;
+@property (copy, nonatomic, readwrite) NSDictionary *jwtHeaders;
 @property (copy, nonatomic, readwrite) JWTClaimsSet *jwtClaimsSet;
 @property (copy, nonatomic, readwrite) NSString *jwtSecret;
 @property (copy, nonatomic, readwrite) NSError *jwtError;
@@ -331,6 +332,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 
 @property (copy, nonatomic, readwrite) JWTBuilder *(^message)(NSString *message);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^payload)(NSDictionary *payload);
+@property (copy, nonatomic, readwrite) JWTBuilder *(^headers)(NSDictionary *headers);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^secret)(NSString *secret);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm);
@@ -354,6 +356,11 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 
 - (instancetype)payload:(NSDictionary *)payload {
     self.jwtPayload = payload;
+    return self;
+}
+
+- (instancetype)headers:(NSDictionary *)headers {
+    self.jwtHeaders = headers;
     return self;
 }
 
@@ -381,6 +388,10 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         
         self.payload = ^(NSDictionary *payload) {
             return [weakSelf payload:payload];
+        };
+        
+        self.headers = ^(NSDictionary *headers) {
+            return [weakSelf headers:headers];
         };
 
         self.claimsSet = ^(JWTClaimsSet *claimSet) {

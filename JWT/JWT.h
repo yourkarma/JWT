@@ -54,6 +54,7 @@ typedef NS_ENUM(NSInteger, JWTError) {
 
 @property (copy, nonatomic, readonly) NSString *jwtMessage;
 @property (copy, nonatomic, readonly) NSDictionary *jwtPayload;
+@property (copy, nonatomic, readonly) NSDictionary *jwtHeaders;
 @property (copy, nonatomic, readonly) JWTClaimsSet *jwtClaimsSet;
 @property (copy, nonatomic, readonly) NSString *jwtSecret;
 @property (copy, nonatomic, readonly) NSError *jwtError;
@@ -61,6 +62,7 @@ typedef NS_ENUM(NSInteger, JWTError) {
 
 @property (copy, nonatomic, readonly) JWTBuilder *(^message)(NSString *message);
 @property (copy, nonatomic, readonly) JWTBuilder *(^payload)(NSDictionary *payload);
+@property (copy, nonatomic, readonly) JWTBuilder *(^headers)(NSDictionary *headers);
 @property (copy, nonatomic, readonly) JWTBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
 @property (copy, nonatomic, readonly) JWTBuilder *(^secret)(NSString *secret);
 @property (copy, nonatomic, readonly) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm);
