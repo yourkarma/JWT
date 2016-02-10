@@ -174,7 +174,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 #pragma mark - Decode
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedOption:(BOOL)theForcedOption;
 {
-    //TODO: add forcedOptionNoValidation ( equality is a bad point :/ )
+    //Add:
     NSString *forcedAlgorithName = theForcedOption ? @"none" : nil;
     return [self decodeMessage:theMessage withSecret:theSecret withError:theError withForcedAlgorithmByName:forcedAlgorithName];
 }
@@ -216,7 +216,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     
     NSString *validityPart = [[algorithm encodePayload:signingInput withSecret:theSecret] base64UrlEncodedString];
     
-    BOOL signatureValid = [validityPart isEqualToString:signedPart] || forcedOptionNoValidation;
+    BOOL signatureValid = [algorithm respondsToSelector:@selector(verifySignedInput:withSignature:)] || [algorithm verifySignedInput:signingInput withSignature:validityPart] || [validityPart isEqualToString:signedPart];
     
     if (!signatureValid) {
         *theError = [self errorWithCode:JWTInvalidSignatureError];
@@ -376,6 +376,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 
 - (instancetype)algorithm:(id<JWTAlgorithm>)algorithm {
     self.jwtAlgorithm = algorithm;
+    return self;
 }
 
 - (instancetype)init {
@@ -411,21 +412,27 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 }
 
 - (NSString *)encode {
+    NSString *result = nil;
     if (self.jwtClaimsSet) {
         if (self.jwtAlgorithm) {
-            [JWT encodeClaimsSet:self.jwtClaimsSet withSecret:self.jwtSecret algorithm:self.jwtAlgorithm];
+            result = [JWT encodeClaimsSet:self.jwtClaimsSet withSecret:self.jwtSecret algorithm:self.jwtAlgorithm];
         }
         else {
-            [JWT encodeClaimsSet:self.jwtClaimsSet withSecret:self.jwtSecret];
+            result = [JWT encodeClaimsSet:self.jwtClaimsSet withSecret:self.jwtSecret];
         }
     }
     else {
-        [JWT encodePayload:self.jwtPayload withSecret:self.jwtSecret];
+        result = [JWT encodePayload:self.jwtPayload withSecret:self.jwtSecret];
     }
+    return result;
 }
 
 - (NSDictionary *)decode {
-    
+    NSDictionary *result = nil;
+    if (self.jwtMessage) {
+        result = [JWT decodeMessage:self.jwtMessage withSecret:self.jwtSecret];
+    }
+    return result;
 }
 
 @end

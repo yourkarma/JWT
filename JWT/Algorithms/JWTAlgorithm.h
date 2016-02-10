@@ -15,4 +15,6 @@
 
 - (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret;
 
+@optional - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature;
+
 @end

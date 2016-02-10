@@ -251,9 +251,8 @@ it(@"decode should generate errors on unsupported algorithms without forced opti
     NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret];
     
     NSLog(@"info is: %@", info);
-    
-    [[info[@"payload"] should] equal:payload];
-    [[info[@"header"] should] equal:allHeaders];
+    BOOL notDecoded = info == nil;
+    [[@(notDecoded) should] equal:@(1)];
 });
 
 it(@"decode by builder", ^{
