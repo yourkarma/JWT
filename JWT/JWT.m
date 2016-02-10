@@ -270,15 +270,17 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     }
     
     // check signed part equality
-    NSString *signingInput = [@[headerPart, payloadPart] componentsJoinedByString:@"."];
-    
-    NSString *validityPart = [[algorithm encodePayload:signingInput withSecret:theSecret] base64UrlEncodedString];
-    
-    BOOL signatureValid = [validityPart isEqualToString:signedPart];
-    
-    if (!signatureValid) {
-        *theError = [self errorWithCode:JWTInvalidSignatureError];
-        return nil;
+    if (theSecret) {
+        NSString *signingInput = [@[headerPart, payloadPart] componentsJoinedByString:@"."];
+        
+        NSString *validityPart = [[algorithm encodePayload:signingInput withSecret:theSecret] base64UrlEncodedString];
+        
+        BOOL signatureValid = [validityPart isEqualToString:signedPart];
+        
+        if (!signatureValid) {
+            *theError = [self errorWithCode:JWTInvalidSignatureError];
+            return nil;
+        }        
     }
     
     // and decode payload
