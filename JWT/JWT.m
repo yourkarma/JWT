@@ -172,6 +172,73 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 }
 
 #pragma mark - Decode
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedOption:(BOOL)theForcedOption;
+{
+    //TODO: add forcedOptionNoValidation ( equality is a bad point :/ )
+    NSString *forcedAlgorithName = theForcedOption ? @"none" : nil;
+    return [self decodeMessage:theMessage withSecret:theSecret withError:theError withForcedAlgorithmByName:forcedAlgorithName];
+}
+
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName;
+{
+    NSArray *parts = [theMessage componentsSeparatedByString:@"."];
+    
+    if (parts.count < 3) {
+        // generate error?
+        *theError = [self errorWithCode:JWTInvalidFormatError];
+        return nil;
+    }
+    
+    NSString *headerPart = parts[0];
+    NSString *payloadPart = parts[1];
+    NSString *signedPart = parts[2];
+    
+    // decode headerPart
+    NSDictionary *header = (NSDictionary *)headerPart.jsonObjectFromBase64String;
+    if (!header) {
+        *theError = [self errorWithCode:JWTNoHeaderError];
+        return nil;
+    }
+    
+    // find algorithm
+    id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:header[@"alg"]];
+    id<JWTAlgorithm> alternativeAlgorithm = [JWTAlgorithmFactory algorithmByName:theAlgorithmName];
+    algorithm = alternativeAlgorithm ? alternativeAlgorithm : algorithm;
+    
+    if (!algorithm) {
+        *theError = [self errorWithCode:JWTUnsupportedAlgorithmError];
+        return nil;
+        //    NSAssert(!algorithm, @"Can't decode segment!, %@", header);
+    }
+    
+    // check signed part equality
+    NSString *signingInput = [@[headerPart, payloadPart] componentsJoinedByString:@"."];
+    
+    NSString *validityPart = [[algorithm encodePayload:signingInput withSecret:theSecret] base64UrlEncodedString];
+    
+    BOOL signatureValid = [validityPart isEqualToString:signedPart] || forcedOptionNoValidation;
+    
+    if (!signatureValid) {
+        *theError = [self errorWithCode:JWTInvalidSignatureError];
+        return nil;
+    }
+    
+    // and decode payload
+    NSDictionary *payload = (NSDictionary *)payloadPart.jsonObjectFromBase64String;
+    
+    if (!payload) {
+        *theError = [self errorWithCode:JWTNoPayloadError];
+        return nil;
+    }
+    
+    NSDictionary *result = @{
+                             @"header" : header,
+                             @"payload" : payload
+                             };
+    
+    return result;
+}
+
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError * __autoreleasing *)theError;
 {
     NSArray *parts = [theMessage componentsSeparatedByString:@"."];
@@ -195,7 +262,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 
     // find algorithm
     id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:header[@"alg"]];
-    
+
     if (!algorithm) {
         *theError = [self errorWithCode:JWTUnsupportedAlgorithmError];
         return nil;
@@ -238,6 +305,116 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         // do something
     }
     return dictionary;
+}
+
+#pragma mark - Builder
+
++ (JWTBuilder *)encodePayload:(NSDictionary *)payload {
+    return [JWTBuilder encodePayload:payload];
+}
+
++ (JWTBuilder *)decodeMessage:(NSString *)message {
+    return [JWTBuilder decodeMessage:message];
+}
+
+@end
+
+
+@interface JWTBuilder()
+
+@property (copy, nonatomic, readwrite) NSString *jwtMessage;
+@property (copy, nonatomic, readwrite) NSDictionary *jwtPayload;
+@property (copy, nonatomic, readwrite) JWTClaimsSet *jwtClaimsSet;
+@property (copy, nonatomic, readwrite) NSString *jwtSecret;
+@property (copy, nonatomic, readwrite) NSError *jwtError;
+@property (copy, nonatomic, readwrite) id<JWTAlgorithm> jwtAlgorithm;
+
+@property (copy, nonatomic, readwrite) JWTBuilder *(^message)(NSString *message);
+@property (copy, nonatomic, readwrite) JWTBuilder *(^payload)(NSDictionary *payload);
+@property (copy, nonatomic, readwrite) JWTBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
+@property (copy, nonatomic, readwrite) JWTBuilder *(^secret)(NSString *secret);
+@property (copy, nonatomic, readwrite) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm);
+
+@end
+
+@implementation JWTBuilder
+
++ (JWTBuilder *)encodePayload:(NSDictionary *)payload {
+    return [[JWTBuilder alloc] init].payload(payload);
+}
+
++ (JWTBuilder *)decodeMessage:(NSString *)message {
+    return [[JWTBuilder alloc] init].message(message);
+}
+
+- (instancetype)message:(NSString *)message {
+    self.jwtMessage = message;
+    return self;
+}
+
+- (instancetype)payload:(NSDictionary *)payload {
+    self.jwtPayload = payload;
+    return self;
+}
+
+- (instancetype)claimSet:(JWTClaimsSet *)claimSet {
+    self.jwtClaimsSet = claimSet;
+    return self;
+}
+
+- (instancetype)secret:(NSString *)secret {
+    self.jwtSecret = secret;
+    return self;
+}
+
+- (instancetype)algorithm:(id<JWTAlgorithm>)algorithm {
+    self.jwtAlgorithm = algorithm;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        __weak typeof(self) weakSelf = self;
+        self.message = ^(NSString *message) {
+            return [weakSelf message:message];
+        };
+        
+        self.payload = ^(NSDictionary *payload) {
+            return [weakSelf payload:payload];
+        };
+
+        self.claimsSet = ^(JWTClaimsSet *claimSet) {
+            return [weakSelf claimSet:claimSet];
+        };
+
+        self.secret = ^(NSString *secret) {
+            return [weakSelf secret:secret];
+        };
+
+        self.algorithm = ^(id<JWTAlgorithm> algorithm) {
+            return [weakSelf algorithm:algorithm];
+        };
+    }
+
+    return self;
+}
+
+- (NSString *)encode {
+    if (self.jwtClaimsSet) {
+        if (self.jwtAlgorithm) {
+            [JWT encodeClaimsSet:self.jwtClaimsSet withSecret:self.jwtSecret algorithm:self.jwtAlgorithm];
+        }
+        else {
+            [JWT encodeClaimsSet:self.jwtClaimsSet withSecret:self.jwtSecret];
+        }
+    }
+    else {
+        [JWT encodePayload:self.jwtPayload withSecret:self.jwtSecret];
+    }
+}
+
+- (NSDictionary *)decode {
+    
 }
 
 @end
