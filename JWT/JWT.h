@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, JWTError) {
     JWTInvalidSegmentSerializationError
 };
 
+@class JWTBuilder;
 @interface JWT : NSObject
 
 #pragma mark - Encode
@@ -36,7 +37,37 @@ typedef NS_ENUM(NSInteger, JWTError) {
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret withHeaders:(NSDictionary *)theHeaders algorithm:(id<JWTAlgorithm>)theAlgorithm withError:(NSError * __autoreleasing *)theError;
 
 #pragma mark - Decode
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedOption:(BOOL)theForcedOption;
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError * __autoreleasing *)theError;
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret;
+
+#pragma mark - Builder
++ (JWTBuilder *)encodePayload:(NSDictionary *)payload;
++ (JWTBuilder *)decodeMessage:(NSString *)message;
+
+@end
+
+@interface JWTBuilder : NSObject 
+
++ (JWTBuilder *)encodePayload:(NSDictionary *)payload;
++ (JWTBuilder *)decodeMessage:(NSString *)message;
+
+@property (copy, nonatomic, readonly) NSString *jwtMessage;
+@property (copy, nonatomic, readonly) NSDictionary *jwtPayload;
+@property (copy, nonatomic, readonly) NSDictionary *jwtHeaders;
+@property (copy, nonatomic, readonly) JWTClaimsSet *jwtClaimsSet;
+@property (copy, nonatomic, readonly) NSString *jwtSecret;
+@property (copy, nonatomic, readonly) NSError *jwtError;
+@property (copy, nonatomic, readonly) id<JWTAlgorithm> jwtAlgorithm;
+
+@property (copy, nonatomic, readonly) JWTBuilder *(^message)(NSString *message);
+@property (copy, nonatomic, readonly) JWTBuilder *(^payload)(NSDictionary *payload);
+@property (copy, nonatomic, readonly) JWTBuilder *(^headers)(NSDictionary *headers);
+@property (copy, nonatomic, readonly) JWTBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
+@property (copy, nonatomic, readonly) JWTBuilder *(^secret)(NSString *secret);
+@property (copy, nonatomic, readonly) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm);
+
+@property (copy, nonatomic, readonly) NSString *encode;
+@property (copy, nonatomic, readonly) NSDictionary *decode;
 
 @end

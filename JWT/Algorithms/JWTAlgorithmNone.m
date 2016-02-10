@@ -18,4 +18,8 @@
     return [NSData data];
 }
 
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature {
+	return YES;
+}
+
 @end

@@ -192,6 +192,96 @@ it(@"encode should generate errors", ^{
     [[@(error.code) should] equal:@(JWTEncodingPayloadError)];
 });
 
+it(@"decode message forced option works correctly", ^{
+    NSString *algorithmName = @"HS256";
+    NSString *secret = @"secret";
+    NSDictionary *payload = @{@"key": @"value"};
+    NSDictionary *headers = @{@"header" : @"value"};
+    
+    NSMutableDictionary *allHeaders = [@{@"typ":@"JWT", @"alg":@"HS16"} mutableCopy];
+    
+    [allHeaders addEntriesFromDictionary:headers];
+    
+    NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:allHeaders options:0 error:nil] base64UrlEncodedString];
+    
+    NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] base64UrlEncodedString];
+    
+    NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
+    
+    NSString *signingOutput = [[[JWTAlgorithmFactory algorithmByName:algorithmName] encodePayload:signingInput withSecret:secret] base64UrlEncodedString];
+    
+    NSString *jwt = [@[headerSegment, payloadSegment, signingOutput] componentsJoinedByString:@"."];
+    
+    
+    NSError *forcedError = nil;
+    NSDictionary *forcedInfo = [JWT decodeMessage:jwt withSecret:secret withError:&forcedError withForcedOption:YES];
+    
+    NSLog(@"forcedInfo is: %@ forcedError: %@", forcedInfo, forcedError);
+    
+    [[forcedInfo[@"payload"] should] equal:payload];
+    [[forcedInfo[@"header"] should] equal:allHeaders];
+    
+    NSError *error = nil;
+    NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret withError:&error withForcedOption:NO];
+    
+    NSLog(@"info is: %@ error: %@", info, error);
+    [[@(error.code) should] equal:@(JWTUnsupportedAlgorithmError)];
+});
+
+it(@"decode should generate errors on unsupported algorithms without forced option", ^{
+    NSString *algorithmName = @"HS256";
+    NSString *secret = @"secret";
+    NSDictionary *payload = @{@"key": @"value"};
+    NSDictionary *headers = @{@"header" : @"value"};
+    
+    NSMutableDictionary *allHeaders = [@{@"typ":@"JWT", @"alg":@"HS16"} mutableCopy];
+    
+    [allHeaders addEntriesFromDictionary:headers];
+    
+    NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:allHeaders options:0 error:nil] base64UrlEncodedString];
+    
+    NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] base64UrlEncodedString];
+    
+    NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
+    
+    NSString *signingOutput = [[[JWTAlgorithmFactory algorithmByName:algorithmName] encodePayload:signingInput withSecret:secret] base64UrlEncodedString];
+    
+    NSString *jwt = [@[headerSegment, payloadSegment, signingOutput] componentsJoinedByString:@"."];
+    
+    NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret];
+    
+    NSLog(@"info is: %@", info);
+    BOOL notDecoded = info == nil;
+    [[@(notDecoded) should] equal:@(1)];
+});
+
+it(@"decode by builder", ^{
+    NSString *algorithmName = @"HS256";
+    NSString *secret = @"secret";
+    NSDictionary *payload = @{@"key": @"value"};
+    NSDictionary *headers = @{@"header" : @"value"};
+    
+    NSMutableDictionary *allHeaders = [@{@"typ":@"JWT", @"alg":algorithmName} mutableCopy];
+    
+    [allHeaders addEntriesFromDictionary:headers];
+    
+    NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:allHeaders options:0 error:nil] base64UrlEncodedString];
+    
+    NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] base64UrlEncodedString];
+    
+    NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
+    
+    NSString *signingOutput = [[[JWTAlgorithmFactory algorithmByName:algorithmName] encodePayload:signingInput withSecret:secret] base64UrlEncodedString];
+    
+    NSString *jwt = [@[headerSegment, payloadSegment, signingOutput] componentsJoinedByString:@"."];
+    NSDictionary *info = [JWT decodeMessage:jwt].secret(secret).decode;
+    
+    NSLog(@"info is: %@", info);
+    
+    [[info[@"payload"] should] equal:payload];
+    [[info[@"header"] should] equal:allHeaders];
+});
+
 SPEC_END
 
 
