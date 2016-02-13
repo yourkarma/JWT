@@ -1,5 +1,5 @@
 //
-//  JWTClaimSetVerifier.m
+//  JWTClaimsSetVerifier.m
 //  JWT
 //
 //  Created by Lobanov Dmitry on 13.02.16.
