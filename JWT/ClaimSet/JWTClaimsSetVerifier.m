@@ -6,7 +6,7 @@
 //  Copyright © 2016 Karma. All rights reserved.
 //
 
-#import "JWTClaimSetVerifier.h"
+#import "JWTClaimsSetVerifier.h"
 #import "JWTClaimsSetSerializer.h"
 #import "JWTClaim.h"
 
@@ -25,6 +25,28 @@
     return result;
 }
 
++ (BOOL)verifyClaimsSetDictionary:(NSDictionary *)theClaimsSetDictionary withTrustedClaimsSetDictionary:(NSDictionary *)trustedClaimsSetDictionary {
+    
+    NSArray *claimsSets = [JWTClaimsSetSerializer claimsSetKeys];
+    
+    if (!trustedClaimsSetDictionary) {
+        return YES;
+    }
+    
+    if (!theClaimsSetDictionary) {
+        return NO;
+    }
+    
+    BOOL result = YES;
+    
+    for (NSString *key in claimsSets) {
+        result = result && [self verifyDictionary:theClaimsSetDictionary withTrustedDictionary:trustedClaimsSetDictionary byKey:key];
+    }
+    
+    return result;
+}
+
+
 + (BOOL)verifyClaimsSet:(JWTClaimsSet *)theClaimsSet withTrustedClaimsSet:(JWTClaimsSet *)trustedClaimsSet {
     
     NSDictionary *dictionary = [JWTClaimsSetSerializer dictionaryWithClaimsSet:theClaimsSet];
@@ -39,6 +61,12 @@
     }
     
     return result;
+}
+
++ (BOOL)verifyClaimsSetDictionary:(NSDictionary *)theClaimsSetDictionary withTrustedClaimsSet:(JWTClaimsSet *)trustedClaimsSet {
+    NSDictionary *trustedDictionary = [JWTClaimsSetSerializer dictionaryWithClaimsSet:trustedClaimsSet];
+
+    return [self verifyClaimsSetDictionary:theClaimsSetDictionary withTrustedClaimsSetDictionary:trustedDictionary];
 }
 
 @end

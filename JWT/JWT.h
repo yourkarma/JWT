@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, JWTError) {
     JWTNoHeaderError,
     JWTEncodingHeaderError,
     JWTEncodingPayloadError,
+    JWTClaimsSetVerificationFailed,
     JWTInvalidSegmentSerializationError
 };
 
@@ -36,7 +37,9 @@ typedef NS_ENUM(NSInteger, JWTError) {
 
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret withHeaders:(NSDictionary *)theHeaders algorithm:(id<JWTAlgorithm>)theAlgorithm withError:(NSError * __autoreleasing *)theError;
 
+//Will be deprecated in later releases
 #pragma mark - Decode
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withTrustedClaimsSet:(JWTClaimsSet *)theTrustedClaimsSet withError:(NSError *__autoreleasing *)theError withForcedOption:(BOOL)theForcedOption;
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedOption:(BOOL)theForcedOption;
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError * __autoreleasing *)theError;
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret;
@@ -59,6 +62,7 @@ typedef NS_ENUM(NSInteger, JWTError) {
 @property (copy, nonatomic, readonly) NSString *jwtSecret;
 @property (copy, nonatomic, readonly) NSError *jwtError;
 @property (copy, nonatomic, readonly) id<JWTAlgorithm> jwtAlgorithm;
+@property (copy, nonatomic, readonly) NSNumber *jwtOptions;
 
 @property (copy, nonatomic, readonly) JWTBuilder *(^message)(NSString *message);
 @property (copy, nonatomic, readonly) JWTBuilder *(^payload)(NSDictionary *payload);
@@ -66,6 +70,7 @@ typedef NS_ENUM(NSInteger, JWTError) {
 @property (copy, nonatomic, readonly) JWTBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
 @property (copy, nonatomic, readonly) JWTBuilder *(^secret)(NSString *secret);
 @property (copy, nonatomic, readonly) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm);
+@property (copy, nonatomic, readonly) JWTBuilder *(^options)(NSNumber *options);
 
 @property (copy, nonatomic, readonly) NSString *encode;
 @property (copy, nonatomic, readonly) NSDictionary *decode;

@@ -15,6 +15,7 @@
 // "nbf" (Not Before) Claim
 // "iat" (Issued At) Claim
 // "jti" (JWT ID) Claim
+// "typ" (Type) Claim
 
 @interface JWTClaimIssuer : JWTClaim
 
@@ -141,6 +142,22 @@
 
 @end
 
+@interface JWTClaimType : JWTClaim
+
+@end
+
+@implementation JWTClaimType
+
++ (NSString *)name {
+    return @"typ";
+}
+
++ (BOOL)verifyValue:(NSString *)value withTrustedValue:(NSString *)trustedValue {
+    return [trustedValue isEqualToString:value];
+}
+
+@end
+
 
 @implementation JWTClaim
 + (NSString *)name {
@@ -177,9 +194,12 @@
 	if ([name isEqualToString:[JWTClaimJWTID name]]) {
 		claim = [JWTClaimJWTID new];
 	}
+    
+    if ([name isEqualToString:[JWTClaimType name]]) {
+        claim = [JWTClaimType new];
+    }
 
-
-    return nil;
+    return claim;
 }
 
 + (BOOL)verifyValue:(NSObject *)value withTrustedValue:(NSObject *)trustedValue {

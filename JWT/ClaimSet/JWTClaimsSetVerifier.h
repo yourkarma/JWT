@@ -13,4 +13,6 @@
 
 + (BOOL)verifyClaimsSet:(JWTClaimsSet *)theClaimsSet withTrustedClaimsSet:(JWTClaimsSet *)trustedClaimsSet;
 
++ (BOOL)verifyClaimsSetDictionary:(NSDictionary *)theClaimsSetDictionary withTrustedClaimsSet:(JWTClaimsSet *)trustedClaimsSet;
+
 @end
