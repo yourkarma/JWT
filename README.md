@@ -39,12 +39,39 @@ If you're using reserved claim names you can encode your claim set like so (all 
     claimsSet.type = @"test";
     [JWT encodeClaimsSet:claimsSet withSecret:@"secret"];
 
+If you want to check claims while decoding, you could use next sample of code (all properties are optional):
+    
+    // Trusted Claims Set
+    JWTClaimsSet *trustedClaimsSet = [[JWTClaimsSet alloc] init];
+    trustedClaimsSet.issuer = @"Facebook";
+    trustedClaimsSet.subject = @"Token";
+    trustedClaimsSet.audience = @"http://yourkarma.com";
+    trustedClaimsSet.expirationDate = [NSDate date];
+    trustedClaimsSet.notBeforeDate = [NSDate date];
+    trustedClaimsSet.issuedAt = [NSDate date];
+    trustedClaimsSet.identifier = @"thisisunique";
+    trustedClaimsSet.type = @"test";
+
+    NSString *message = @"encodedJwt";
+    NSString *secret = @"secret";
+
+    JWTBuilder *builder = [JWT decodeMessage:jwt].secret(secret).claimsSet(trustedClaimsSet);
+    NSDictionary *payload = builder.decode;
+    
+    if (!builder.jwtError) {
+        // do your work here
+    }
+    else {
+        // handle error
+    }
+
+
 # Algorithms
 
 The following algorithms are supported:
 
 * HS512 - HMAC using SHA-512. 
-* HS256
+* HS256 / HS384 / HS512
 * None
     
 Additional algorithms can be added by implementing the `JWTAlgorithm` protocol.
