@@ -14,11 +14,11 @@ A [JSON Web Token][] implementation in Objective-C.
 
 # Installation
 
-Add the following to your [Cocoapods][] Podfile:
+Add the following to your [CocoaPods][] Podfile:
 
     pod "JWT"
 
-[Cocoapods]: http://cocoapods.org
+[CocoaPods]: http://cocoapods.org
 
 # Usage
 
