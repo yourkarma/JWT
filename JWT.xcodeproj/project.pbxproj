@@ -24,6 +24,8 @@
 		042AC6C21C66226100BEA78D /* JWTClaimsSerializerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 042AC6BC1C66226100BEA78D /* JWTClaimsSerializerSpec.m */; };
 		042AC6C31C66226100BEA78D /* JWTClaimsSetSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 042AC6BD1C66226100BEA78D /* JWTClaimsSetSpec.m */; };
 		042AC6C51C66230600BEA78D /* JWTAlgorithmHS384Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 042AC6C41C66230600BEA78D /* JWTAlgorithmHS384Spec.m */; };
+		04F835B31C6F43B700A792A5 /* JWTClaim.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F835B21C6F43B700A792A5 /* JWTClaim.m */; };
+		04F835B61C6F560E00A792A5 /* JWTClaimsSetVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F835B51C6F560E00A792A5 /* JWTClaimsSetVerifier.m */; };
 		51853EAF9C314D24B5F7681D /* libPods-JWTTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 912330953D2D4E06BC44E9BA /* libPods-JWTTests.a */; };
 		69FF89B6E0DC473E91BAABCD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FD31A232E7A4E6E99D15C23 /* libPods.a */; };
 		A1951DBA1758990700AF73D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1951DB91758990700AF73D9 /* Foundation.framework */; };
@@ -86,6 +88,10 @@
 		042AC6BC1C66226100BEA78D /* JWTClaimsSerializerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSerializerSpec.m; sourceTree = "<group>"; };
 		042AC6BD1C66226100BEA78D /* JWTClaimsSetSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSetSpec.m; sourceTree = "<group>"; };
 		042AC6C41C66230600BEA78D /* JWTAlgorithmHS384Spec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmHS384Spec.m; sourceTree = "<group>"; };
+		04F835B11C6F43B700A792A5 /* JWTClaim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTClaim.h; sourceTree = "<group>"; };
+		04F835B21C6F43B700A792A5 /* JWTClaim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaim.m; sourceTree = "<group>"; };
+		04F835B41C6F560E00A792A5 /* JWTClaimsSetVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTClaimsSetVerifier.h; sourceTree = "<group>"; };
+		04F835B51C6F560E00A792A5 /* JWTClaimsSetVerifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSetVerifier.m; sourceTree = "<group>"; };
 		1FD31A232E7A4E6E99D15C23 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		70AED78093B0A8112D5C4A69 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		817B4A02C2E1623BC636A4C2 /* Pods-JWTTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWTTests/Pods-JWTTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -151,10 +157,14 @@
 		042AC6A21C66225400BEA78D /* ClaimSet */ = {
 			isa = PBXGroup;
 			children = (
+				04F835B41C6F560E00A792A5 /* JWTClaimsSetVerifier.h */,
+				04F835B51C6F560E00A792A5 /* JWTClaimsSetVerifier.m */,
 				042AC6A31C66225400BEA78D /* JWTClaimsSet.h */,
 				042AC6A41C66225400BEA78D /* JWTClaimsSet.m */,
 				042AC6A51C66225400BEA78D /* JWTClaimsSetSerializer.h */,
 				042AC6A61C66225400BEA78D /* JWTClaimsSetSerializer.m */,
+				04F835B11C6F43B700A792A5 /* JWTClaim.h */,
+				04F835B21C6F43B700A792A5 /* JWTClaim.m */,
 			);
 			path = ClaimSet;
 			sourceTree = "<group>";
@@ -454,8 +464,10 @@
 				042AC6AF1C66225400BEA78D /* JWTAlgorithmHS512.m in Sources */,
 				042AC6B51C66225400BEA78D /* NSString+JWT.m in Sources */,
 				042AC6AC1C66225400BEA78D /* JWTAlgorithmFactory.m in Sources */,
+				04F835B61C6F560E00A792A5 /* JWTClaimsSetVerifier.m in Sources */,
 				042AC6B21C66225400BEA78D /* JWTClaimsSet.m in Sources */,
 				042AC6B01C66225400BEA78D /* JWTAlgorithmNone.m in Sources */,
+				04F835B31C6F43B700A792A5 /* JWTClaim.m in Sources */,
 				042AC6B41C66225400BEA78D /* NSData+JWT.m in Sources */,
 				042AC6B11C66225400BEA78D /* JWTAlgorithmRS256.m in Sources */,
 				042AC6AD1C66225400BEA78D /* JWTAlgorithmHS256.m in Sources */,

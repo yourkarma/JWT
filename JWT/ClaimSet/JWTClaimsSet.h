@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JWTClaimsSet : NSObject
+@interface JWTClaimsSet : NSObject<NSCopying>
 
 @property (nonatomic, readwrite, copy) NSString *issuer;
 @property (nonatomic, readwrite, copy) NSString *subject;

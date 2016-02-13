@@ -10,6 +10,11 @@
 
 @implementation JWTClaimsSetSerializer
 
++ (NSArray *)claimsSetKeys
+{
+    return @[@"iss", @"sub", @"aud", @"exp", @"nbf", @"iat", @"jtu", @"typ"];
+}
+
 + (NSDictionary *)dictionaryWithClaimsSet:(JWTClaimsSet *)theClaimsSet;
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
@@ -21,7 +26,7 @@
     [self dictionary:dictionary setObjectIfNotNil:@([theClaimsSet.issuedAt timeIntervalSince1970]) forKey:@"iat"];
     [self dictionary:dictionary setObjectIfNotNil:theClaimsSet.identifier forKey:@"jti"];
     [self dictionary:dictionary setObjectIfNotNil:theClaimsSet.type forKey:@"typ"];
-    return dictionary;
+    return [dictionary copy];
 }
 
 + (JWTClaimsSet *)claimsSetWithDictionary:(NSDictionary *)theDictionary;
