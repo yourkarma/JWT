@@ -10,6 +10,11 @@
 
 @implementation JWTClaimsSetSerializer
 
++ (NSArray *)claimsSetKeys
+{
+    return @[@"iss", @"sub", @"aud", @"exp", @"nbf", @"iat", @"jtu", @"typ"];
+}
+
 + (NSDictionary *)dictionaryWithClaimsSet:(JWTClaimsSet *)theClaimsSet;
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
