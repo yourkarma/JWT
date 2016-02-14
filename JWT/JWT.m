@@ -169,6 +169,12 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         return nil;
     }
     
+    if (!theAlgorithm) {
+        // error
+        *theError = [self errorWithCode:JWTUnsupportedAlgorithmError];
+        return nil;
+    }
+    
     NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
     NSString *signedOutput = [[theAlgorithm encodePayload:signingInput withSecret:theSecret] base64UrlEncodedString];
     
@@ -285,6 +291,10 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     return [JWTBuilder encodePayload:payload];
 }
 
++ (JWTBuilder *)encodeClaimsSet:(JWTClaimsSet *)claimsSet {
+    return [JWTBuilder encodeClaimsSet:claimsSet];
+}
+
 + (JWTBuilder *)decodeMessage:(NSString *)message {
     return [JWTBuilder decodeMessage:message];
 }
@@ -300,7 +310,8 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 @property (copy, nonatomic, readwrite) JWTClaimsSet *jwtClaimsSet;
 @property (copy, nonatomic, readwrite) NSString *jwtSecret;
 @property (copy, nonatomic, readwrite) NSError *jwtError;
-@property (copy, nonatomic, readwrite) id<JWTAlgorithm> jwtAlgorithm;
+@property (strong, nonatomic, readwrite) id<JWTAlgorithm> jwtAlgorithm;
+@property (copy, nonatomic, readwrite) NSString *jwtAlgorithmName;
 @property (copy, nonatomic, readwrite) NSNumber *jwtOptions;
 
 @property (copy, nonatomic, readwrite) JWTBuilder *(^message)(NSString *message);
@@ -309,20 +320,23 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 @property (copy, nonatomic, readwrite) JWTBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^secret)(NSString *secret);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm);
+@property (copy, nonatomic, readwrite) JWTBuilder *(^algorithmName)(NSString *algorithmName);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^options)(NSNumber *options);
 
 @end
 
 @implementation JWTBuilder
 
-+ (JWTBuilder *)encodePayload:(NSDictionary *)payload {
-    return [[JWTBuilder alloc] init].payload(payload);
+#pragma mark - Getters
+- (id<JWTAlgorithm>)jwtAlgorithm {
+    return _jwtAlgorithm ? _jwtAlgorithm : [JWTAlgorithmFactory algorithmByName:_jwtAlgorithmName];
 }
 
-+ (JWTBuilder *)decodeMessage:(NSString *)message {
-    return [[JWTBuilder alloc] init].message(message);
+- (NSDictionary *)jwtPayload {
+    return _jwtClaimsSet ? [JWTClaimsSetSerializer dictionaryWithClaimsSet:_jwtClaimsSet] : _jwtPayload;
 }
 
+#pragma mark - Fluent
 - (instancetype)message:(NSString *)message {
     self.jwtMessage = message;
     return self;
@@ -353,9 +367,27 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     return self;
 }
 
+- (instancetype)algorithmName:(NSString *)algorithmName {
+    self.jwtAlgorithmName = algorithmName;
+    return self;
+}
+
 - (instancetype)options:(NSNumber *)options {
     self.jwtOptions = options;
     return self;
+}
+
+#pragma mark - Initialization
++ (JWTBuilder *)encodePayload:(NSDictionary *)payload {
+    return [[JWTBuilder alloc] init].payload(payload);
+}
+
++ (JWTBuilder *)encodeClaimsSet:(JWTClaimsSet *)claimsSet {
+    return [[JWTBuilder alloc] init].claimsSet(claimsSet);
+}
+
++ (JWTBuilder *)decodeMessage:(NSString *)message {
+    return [[JWTBuilder alloc] init].message(message);
 }
 
 - (instancetype)init {
@@ -385,6 +417,10 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         self.algorithm = ^(id<JWTAlgorithm> algorithm) {
             return [weakSelf algorithm:algorithm];
         };
+
+        self.algorithmName = ^(NSString *algorithmName) {
+            return [weakSelf algorithmName:algorithmName];
+        };
         
         self.options = ^(NSNumber *options) {
             return [weakSelf options:options];
@@ -394,32 +430,21 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     return self;
 }
 
+#pragma mark - Encoding/Decoding
 - (NSString *)encode {
     NSString *result = nil;
-    if (self.jwtClaimsSet) {
-        if (self.jwtAlgorithm) {
-            result = [JWT encodeClaimsSet:self.jwtClaimsSet withSecret:self.jwtSecret algorithm:self.jwtAlgorithm];
-        }
-        else {
-            result = [JWT encodeClaimsSet:self.jwtClaimsSet withSecret:self.jwtSecret];
-        }
-    }
-    else {
-        result = [JWT encodePayload:self.jwtPayload withSecret:self.jwtSecret];
-    }
+    NSError *error = nil;
+    result = [JWT encodePayload:self.jwtPayload withSecret:self.jwtSecret withHeaders:self.jwtHeaders algorithm:self.jwtAlgorithm withError:&error];
+    self.jwtError = error;
     return result;
 }
 
 - (NSDictionary *)decode {
     NSDictionary *result = nil;
-    if (self.jwtMessage) {
-        if (self.jwtClaimsSet) {
-            NSError *error = nil;
-            result = [JWT decodeMessage:self.jwtMessage withSecret:self.jwtSecret withTrustedClaimsSet:self.jwtClaimsSet withError:&error withForcedOption:self.jwtOptions.boolValue];
-            self.jwtError = error;
-        }
-        result = [JWT decodeMessage:self.jwtMessage withSecret:self.jwtSecret];
-    }
+    NSError *error = nil;
+    result = [JWT decodeMessage:self.jwtMessage withSecret:self.jwtSecret withTrustedClaimsSet:self.jwtClaimsSet withError:&error withForcedOption:self.jwtOptions.boolValue];
+    self.jwtError = error;
+    
     return result;
 }
 
