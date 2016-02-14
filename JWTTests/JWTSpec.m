@@ -16,6 +16,53 @@
 
 SPEC_BEGIN(JWTSpec)
 
+describe(@"markdown examples", ^{
+    it(@"fluent example should work correctly", ^{
+        // suppose, that you create ClaimsSet
+        JWTClaimsSet *claimsSet = [[JWTClaimsSet alloc] init];
+        // fill it
+        claimsSet.issuer = @"Facebook";
+        claimsSet.subject = @"Token";
+        claimsSet.audience = @"http://yourkarma.com";
+        
+        // encode it
+        NSString *secret = @"secret";
+        NSString *algorithmName = @"HS384";
+        NSDictionary *headers = @{@"custom":@"value"};
+        JWTBuilder *encodeBuilder = [JWT encodeClaimsSet:claimsSet];
+        NSString *encodedResult = encodeBuilder.secret(secret).algorithmName(algorithmName).headers(headers).encode;
+        
+        if (encodeBuilder.jwtError) {
+            // handle error
+            NSLog(@"encode failed, error: %@", encodeBuilder.jwtError);
+        }
+        else {
+            // handle encoded result
+            NSLog(@"encoded result: %@", encodedResult);
+        }
+        
+        // decode it
+        // you can set any property that you want, all properties are optional
+        JWTClaimsSet *trustedClaimsSet = [claimsSet copy];
+        
+        // decode forced ? try YES
+        BOOL decodeForced = NO;
+        NSNumber *options = @(decodeForced);
+        NSString *yourJwt = encodedResult; // from previous example
+        NSString *yourSecret = secret; // from previous example
+        JWTBuilder *decodeBuilder = [JWT decodeMessage:yourJwt];
+        NSDictionary *decodedResult = decodeBuilder.message(yourJwt).secret(yourSecret).claimsSet(trustedClaimsSet).options(options).decode;
+        if (decodeBuilder.jwtError) {
+            // handle error
+            NSLog(@"decode failed, error: %@", decodeBuilder.jwtError);
+        }
+        else {
+            // handle decoded result
+            NSLog(@"decoded result: %@", decodedResult);
+        }
+    });
+});
+
 describe(@"encoding", ^{
     context(@"general", ^{
         it(@"encodes JWTs with arbitrary payloads", ^{
