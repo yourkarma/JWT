@@ -164,42 +164,22 @@
     return @"";
 }
 
-+ (instancetype)claimByName:(NSString *)name {
-    JWTClaim *claim = nil;
-	
-	if ([name isEqualToString:[JWTClaimIssuer name]]) {
-		claim = [JWTClaimIssuer new];
-	}
++ (NSDictionary *)claimsAndNames {
+    static NSDictionary *dictionary = nil;
+    return dictionary ? dictionary : (dictionary = @{
+		[JWTClaimIssuer name] : [JWTClaimIssuer new],
+		[JWTClaimSubject name] : [JWTClaimSubject new],
+		[JWTClaimAudience name] : [JWTClaimAudience new],
+		[JWTClaimExpirationTime name] : [JWTClaimExpirationTime new],
+		[JWTClaimNotBefore name] : [JWTClaimNotBefore new],
+		[JWTClaimIssuedAt name] : [JWTClaimIssuedAt new],
+		[JWTClaimJWTID name] : [JWTClaimJWTID new],
+		[JWTClaimType name] : [JWTClaimType new]
+	}, dictionary);
+}
 
-	if ([name isEqualToString:[JWTClaimSubject name]]) {
-		claim = [JWTClaimSubject new];
-	}
-
-	if ([name isEqualToString:[JWTClaimAudience name]]) {
-		claim = [JWTClaimAudience new];
-	}
-
-	if ([name isEqualToString:[JWTClaimExpirationTime name]]) {
-		claim = [JWTClaimExpirationTime new];
-	}
-
-	if ([name isEqualToString:[JWTClaimNotBefore name]]) {
-		claim = [JWTClaimNotBefore new];
-	}
-
-	if ([name isEqualToString:[JWTClaimIssuedAt name]]) {
-		claim = [JWTClaimIssuedAt new];
-	}
-
-	if ([name isEqualToString:[JWTClaimJWTID name]]) {
-		claim = [JWTClaimJWTID new];
-	}
-    
-    if ([name isEqualToString:[JWTClaimType name]]) {
-        claim = [JWTClaimType new];
-    }
-
-    return claim;
++ (instancetype)claimByName:(NSString *)name {    
+    return [self claimsAndNames][name];
 }
 
 + (BOOL)verifyValue:(NSObject *)value withTrustedValue:(NSObject *)trustedValue {
