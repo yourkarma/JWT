@@ -65,6 +65,76 @@ If you want to check claims while decoding, you could use next sample of code (a
         // handle error
     }
 
+## Fluent Style
+
+If you want to use fluent style, you could start with `JWTBuilder` interface and use it via JWT methods
+
+    + (JWTBuilder *)encodePayload:(NSDictionary *)payload;
+    + (JWTBuilder *)encodeClaimsSet:(JWTClaimsSet *)claimsSet;
+    + (JWTBuilder *)decodeMessage:(NSString *)message;
+
+As you can see, JWTBuilder has interface from both decoding and encoding.
+
+Note: some attributes are encode-only or decode-only.
+
+    #pragma mark - Encode only
+    *payload;
+    *headers;
+    *algorithm;
+    *algorithmName;
+
+    #pragma mark - Decode only
+    *message
+    *options // as forcedOption from jwt decode functions interface.
+
+You can inspect JWTBuilder by `jwt`-prefixed attributes.
+
+You can set JWTBuilder attributes by fluent style (block interface).
+
+### Fluent Example
+
+    // suppose, that you create ClaimsSet
+    JWTClaimsSet *claimsSet = [[JWTClaimsSet alloc] init];
+    // fill it
+    claimsSet.issuer = @"Facebook";
+    claimsSet.subject = @"Token";
+    claimsSet.audience = @"http://yourkarma.com";
+    
+    // encode it
+    NSString *secret = @"secret";
+    NSString *algorithmName = @"HS384";
+    NSDictionary *headers = @{@"custom":@"value"};
+    JWTBuilder *encodeBuilder = [JWT encodeClaimsSet:claimsSet];
+    NSString *encodedResult = encodeBuilder.secret(secret).algorithmName(algorithmName).headers(headers).encode;
+    
+    if (encodeBuilder.jwtError) {
+        // handle error
+        NSLog(@"encode failed, error: %@", encodeBuilder.jwtError);
+    }
+    else {
+        // handle encoded result
+        NSLog(@"encoded result: %@", encodedResult);
+    }
+    
+    // decode it
+    // you can set any property that you want, all properties are optional
+    JWTClaimsSet *trustedClaimsSet = [claimsSet copy];
+    
+    // decode forced ? try YES
+    BOOL decodeForced = NO;
+    NSNumber *options = @(decodeForced);
+    NSString *yourJwt = encodedResult; // from previous example
+    NSString *yourSecret = secret; // from previous example
+    JWTBuilder *decodeBuilder = [JWT decodeMessage:yourJwt];
+    NSDictionary *decodedResult = decodeBuilder.message(yourJwt).secret(yourSecret).claimsSet(trustedClaimsSet).options(options).decode;
+    if (decodeBuilder.jwtError) {
+        // handle error
+        NSLog(@"decode failed, error: %@", decodeBuilder.jwtError);
+    }
+    else {
+        // handle decoded result
+        NSLog(@"decoded result: %@", decodedResult);
+    }
 
 # Algorithms
 
