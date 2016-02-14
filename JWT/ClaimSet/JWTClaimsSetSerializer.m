@@ -12,7 +12,7 @@
 
 + (NSArray *)claimsSetKeys
 {
-    return @[@"iss", @"sub", @"aud", @"exp", @"nbf", @"iat", @"jtu", @"typ"];
+    return @[@"iss", @"sub", @"aud", @"exp", @"nbf", @"iat", @"jti", @"typ"];
 }
 
 + (NSDictionary *)dictionaryWithClaimsSet:(JWTClaimsSet *)theClaimsSet;

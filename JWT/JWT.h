@@ -46,13 +46,14 @@ typedef NS_ENUM(NSInteger, JWTError) {
 
 #pragma mark - Builder
 + (JWTBuilder *)encodePayload:(NSDictionary *)payload;
++ (JWTBuilder *)encodeClaimsSet:(JWTClaimsSet *)claimsSet;
 + (JWTBuilder *)decodeMessage:(NSString *)message;
-
 @end
 
 @interface JWTBuilder : NSObject 
 
 + (JWTBuilder *)encodePayload:(NSDictionary *)payload;
++ (JWTBuilder *)encodeClaimsSet:(JWTClaimsSet *)claimsSet;
 + (JWTBuilder *)decodeMessage:(NSString *)message;
 
 @property (copy, nonatomic, readonly) NSString *jwtMessage;
@@ -61,7 +62,8 @@ typedef NS_ENUM(NSInteger, JWTError) {
 @property (copy, nonatomic, readonly) JWTClaimsSet *jwtClaimsSet;
 @property (copy, nonatomic, readonly) NSString *jwtSecret;
 @property (copy, nonatomic, readonly) NSError *jwtError;
-@property (copy, nonatomic, readonly) id<JWTAlgorithm> jwtAlgorithm;
+@property (strong, nonatomic, readonly) id<JWTAlgorithm> jwtAlgorithm;
+@property (copy, nonatomic, readonly) NSString *jwtAlgorithmName;
 @property (copy, nonatomic, readonly) NSNumber *jwtOptions;
 
 @property (copy, nonatomic, readonly) JWTBuilder *(^message)(NSString *message);
@@ -70,6 +72,7 @@ typedef NS_ENUM(NSInteger, JWTError) {
 @property (copy, nonatomic, readonly) JWTBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
 @property (copy, nonatomic, readonly) JWTBuilder *(^secret)(NSString *secret);
 @property (copy, nonatomic, readonly) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm);
+@property (copy, nonatomic, readonly) JWTBuilder *(^algorithmName)(NSString *algorithmName);
 @property (copy, nonatomic, readonly) JWTBuilder *(^options)(NSNumber *options);
 
 @property (copy, nonatomic, readonly) NSString *encode;

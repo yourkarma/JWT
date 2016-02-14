@@ -37,9 +37,13 @@ describe(@"encoding", ^{
         id algorithmMock = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
         [algorithmMock stub:@selector(name) andReturn:algorithmName];
         [algorithmMock stub:@selector(encodePayload:withSecret:) andReturn:signedOutput];
-        [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withArguments:signingInput, secret];
+//        [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withArguments:signingInput, secret];
+        [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withCount:2 arguments:signingInput, secret];
+
         
         [[[JWT encodePayload:payload withSecret:secret algorithm:algorithmMock] should] equal:jwt];
+
+        [[[JWT encodePayload:payload].secret(secret).algorithm(algorithmMock).encode should] equal:jwt];
         });
     });
     context(@"errors", ^{
@@ -60,6 +64,15 @@ describe(@"encoding", ^{
             
             NSLog(@"info is: %@\n error is: %@", encoded, error);
             
+            [[@(error.code) should] equal:@(JWTEncodingPayloadError)];
+            //fluent            
+            JWTBuilder *builder = [JWT encodePayload:nil].secret(secret).headers(headers).algorithm(algorithm);
+            encoded = builder.encode;
+
+            error = builder.jwtError;
+
+            NSLog(@"info is: %@\n error is: %@", encoded, error);
+
             [[@(error.code) should] equal:@(JWTEncodingPayloadError)];
         });
         });
@@ -87,9 +100,12 @@ describe(@"encoding", ^{
         
         id algorithmMock = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
         [algorithmMock stub:@selector(name) andReturn:algorithmName];
-        [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withArguments:signingInput, secret];
+        [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withCount:2 arguments:signingInput, secret];
+//        [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withArguments:signingInput, secret];
         
         [[[JWT encodePayload:payload withSecret:secret withHeaders:headers algorithm:algorithmMock] should] equal:jwt];
+        //fluent
+        [[[JWT encodePayload:payload].secret(secret).headers(headers).algorithm(algorithmMock).encode should] equal:jwt];
         });
     });
 
@@ -123,11 +139,15 @@ describe(@"encoding", ^{
         id algorithmMock = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
         [algorithmMock stub:@selector(name) andReturn:algorithmName];
         [algorithmMock stub:@selector(encodePayload:withSecret:) andReturn:signedOutput];
-        [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withArguments:signingInput, secret];
+//        [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withArguments:signingInput, secret];
+        
+        [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withCount:2 arguments:signingInput, secret];
         
         [JWTClaimsSetSerializer stub:@selector(dictionaryWithClaimsSet:) andReturn:dictionary];
         
         [[[JWT encodeClaimsSet:claimsSet withSecret:secret algorithm:algorithmMock] should] equal:jwt];
+        //fluent
+        [[[JWT encodeClaimsSet:claimsSet].secret(secret).algorithm(algorithmMock).encode should] equal:jwt];
         });
     });
     
@@ -153,6 +173,13 @@ describe(@"encoding", ^{
         NSString *jwt = [@[headerSegment, payloadSegment, signingOutput] componentsJoinedByString:@"."];
         
         NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret];
+        NSLog(@"info is: %@", info);
+        
+        [[info[@"payload"] should] equal:payload];
+        [[info[@"header"] should] equal:allHeaders];
+
+        // fluent
+        info = [JWT decodeMessage:jwt].secret(secret).decode;
         NSLog(@"info is: %@", info);
         
         [[info[@"payload"] should] equal:payload];
@@ -190,6 +217,14 @@ describe(@"decoding", ^{
             
             [[info[@"payload"] should] equal:payload];
             [[info[@"header"] should] equal:allHeaders];
+
+            //fluent
+            info = [JWT decodeMessage:jwt].secret(secret).decode;
+            
+            NSLog(@"info is: %@", info);
+            
+            [[info[@"payload"] should] equal:payload];
+            [[info[@"header"] should] equal:allHeaders];
         });
     });
     
@@ -199,6 +234,14 @@ describe(@"decoding", ^{
             NSString *jwt = @"jwt";
             NSError *error = nil;
             NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret withError:&error];
+            NSLog(@"info is: %@\n error is: %@", info, error);
+            [[@(error.code) should] equal:@(JWTInvalidFormatError)];
+
+            //fluent
+            error = nil;
+            JWTBuilder *builder = [JWT decodeMessage:jwt];
+            info = builder.secret(secret).decode;
+            error = builder.jwtError;
             NSLog(@"info is: %@\n error is: %@", info, error);
             [[@(error.code) should] equal:@(JWTInvalidFormatError)];
         });
@@ -239,6 +282,14 @@ describe(@"decoding", ^{
             
             NSLog(@"info is: %@ error: %@", info, error);
             [[@(error.code) should] equal:@(JWTUnsupportedAlgorithmError)];
+
+            //fluent
+            error = nil;
+            JWTBuilder *builder = [JWT decodeMessage:jwt];
+            info = builder.secret(secret).options(@NO).decode;
+            error = builder.jwtError;
+            NSLog(@"info is: %@ error: %@", info, error);
+            [[@(error.code) should] equal:@(JWTUnsupportedAlgorithmError)];
         });
         
         it(@"decode should generate errors on unsupported algorithms without forced option", ^{
@@ -265,6 +316,11 @@ describe(@"decoding", ^{
             
             NSLog(@"info is: %@", info);
             BOOL notDecoded = info == nil;
+            [[@(notDecoded) should] equal:@(1)];
+
+            info = [JWT decodeMessage:jwt].secret(secret).decode;            
+            NSLog(@"info is: %@", info);
+            notDecoded = info == nil;
             [[@(notDecoded) should] equal:@(1)];
         });
     });
@@ -346,5 +402,7 @@ describe(@"decoding", ^{
 });
 
 SPEC_END
+
+
 
 
