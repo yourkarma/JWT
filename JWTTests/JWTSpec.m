@@ -199,39 +199,108 @@ describe(@"encoding", ^{
     });
     
     context(@"none algorithm", ^{
-        it(@"encodes and decodes JWT with none algorithm", ^{
-        NSString *algorithmName = @"none";
-        NSString *secret = @"secret";
-        NSDictionary *payload = @{@"key": @"value"};
-        NSDictionary *headers = @{@"header" : @"value"};
-        
-        NSMutableDictionary *allHeaders = [@{@"typ":@"JWT", @"alg":algorithmName} mutableCopy];
-        
-        [allHeaders addEntriesFromDictionary:headers];
-        
-        NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:allHeaders options:0 error:nil] base64UrlEncodedString];
-        
-        NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] base64UrlEncodedString];
-        
-        NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
-        
-        NSString *signingOutput = [[[JWTAlgorithmFactory algorithmByName:algorithmName] encodePayload:signingInput withSecret:secret] base64UrlEncodedString];
-        
-        NSString *jwt = [@[headerSegment, payloadSegment, signingOutput] componentsJoinedByString:@"."];
-        
-        NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret];
-        NSLog(@"info is: %@", info);
-        
-        [[info[@"payload"] should] equal:payload];
-        [[info[@"header"] should] equal:allHeaders];
+        it(@"encodes and decodes JWT with none algorithm & nil secret", ^{
+            NSString *algorithmName = @"none";
+            NSString *secret = nil;
+            NSDictionary *payload = @{@"key": @"value"};
+            NSDictionary *headers = @{@"header" : @"value"};
+            
+            NSMutableDictionary *allHeaders = [@{@"typ":@"JWT", @"alg":algorithmName} mutableCopy];
+            
+            [allHeaders addEntriesFromDictionary:headers];
+            
+            NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:allHeaders options:0 error:nil] base64UrlEncodedString];
+            
+            NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] base64UrlEncodedString];
+            
+            NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
+            
+            NSString *signingOutput = [[[JWTAlgorithmFactory algorithmByName:algorithmName] encodePayload:signingInput withSecret:secret] base64UrlEncodedString];
+            
+            NSString *jwt = [@[headerSegment, payloadSegment, signingOutput] componentsJoinedByString:@"."];
+            
+            NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret];
+            NSLog(@"info is: %@", info);
+            
+            [[info[@"payload"] should] equal:payload];
+            [[info[@"header"] should] equal:allHeaders];
 
-        // fluent
-        info = [JWT decodeMessage:jwt].secret(secret).decode;
-        NSLog(@"info is: %@", info);
-        
-        [[info[@"payload"] should] equal:payload];
-        [[info[@"header"] should] equal:allHeaders];
+            // fluent
+            info = [JWT decodeMessage:jwt].secret(secret).decode;
+            NSLog(@"info is: %@", info);
+            
+            [[info[@"payload"] should] equal:payload];
+            [[info[@"header"] should] equal:allHeaders];
         });
+        
+        it(@"encodes and decodes JWT with none algorithm & blank secret", ^{
+            NSString *algorithmName = @"none";
+            NSString *secret = @"";
+            NSDictionary *payload = @{@"key": @"value"};
+            NSDictionary *headers = @{@"header" : @"value"};
+            
+            NSMutableDictionary *allHeaders = [@{@"typ":@"JWT", @"alg":algorithmName} mutableCopy];
+            
+            [allHeaders addEntriesFromDictionary:headers];
+            
+            NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:allHeaders options:0 error:nil] base64UrlEncodedString];
+            
+            NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] base64UrlEncodedString];
+            
+            NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
+            
+            NSString *signingOutput = [[[JWTAlgorithmFactory algorithmByName:algorithmName] encodePayload:signingInput withSecret:secret] base64UrlEncodedString];
+            
+            NSString *jwt = [@[headerSegment, payloadSegment, signingOutput] componentsJoinedByString:@"."];
+            
+            NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret];
+            NSLog(@"info is: %@", info);
+            
+            [[info[@"payload"] should] equal:payload];
+            [[info[@"header"] should] equal:allHeaders];
+            
+            // fluent
+            info = [JWT decodeMessage:jwt].secret(secret).decode;
+            NSLog(@"info is: %@", info);
+            
+            [[info[@"payload"] should] equal:payload];
+            [[info[@"header"] should] equal:allHeaders];
+        });
+        
+        it(@"fails to decoded JWT with none algorithm when secret specified", ^{
+            NSString *algorithmName = @"none";
+            NSString *secret = @"secret";
+            NSDictionary *payload = @{@"key": @"value"};
+            NSDictionary *headers = @{@"header" : @"value"};
+            
+            NSMutableDictionary *allHeaders = [@{@"typ":@"JWT", @"alg":algorithmName} mutableCopy];
+            
+            [allHeaders addEntriesFromDictionary:headers];
+            
+            NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:allHeaders options:0 error:nil] base64UrlEncodedString];
+            
+            NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] base64UrlEncodedString];
+            
+            NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
+            
+            NSString *signingOutput = [[[JWTAlgorithmFactory algorithmByName:algorithmName] encodePayload:signingInput withSecret:secret] base64UrlEncodedString];
+            
+            NSString *jwt = [@[headerSegment, payloadSegment, signingOutput] componentsJoinedByString:@"."];
+            
+            NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret];
+            NSLog(@"info is: %@", info);
+            
+            [[info[@"payload"] should] beNil];
+            [[info[@"header"] should] beNil];
+            
+            // fluent
+            info = [JWT decodeMessage:jwt].secret(secret).decode;
+            NSLog(@"info is: %@", info);
+            
+            [[info[@"payload"] should] beNil];
+            [[info[@"header"] should] beNil];
+        });
+
     });
 });
 

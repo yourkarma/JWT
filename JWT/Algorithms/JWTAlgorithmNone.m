@@ -18,8 +18,19 @@
     return [NSData data];
 }
 
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature {
-	return YES;
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey
+{
+    //if a secret is provided, this isn't the None algorithm
+    if (verificationKey && ![verificationKey isEqualToString:@""]) {
+        return NO;
+    }
+    
+    //If the signature isn't blank, this isn't the None algorithm
+    if (signature && ![signature isEqualToString:@""]) {
+        return NO;
+    }
+    
+    return YES;
 }
 
 @end

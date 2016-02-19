@@ -206,7 +206,22 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedOption:(BOOL)theForcedOption;
 {
-    NSString *forcedAlgorithName = theForcedOption ? @"none" : nil;
+    NSString *forcedAlgorithName = nil;
+    
+    /*
+     * If you're forcing the JWT to be validated, force the algoritm to 'none' and
+     * strip the signature.
+     * Should only be used for debugging
+     */
+    if (theForcedOption) {
+        forcedAlgorithName = @"none";
+        theSecret = nil;
+        NSArray *messageComponents = [theMessage componentsSeparatedByString:@"."];
+        if (messageComponents.count >= 2) {
+            theMessage = [NSString stringWithFormat:@"%@.%@.", messageComponents[0], messageComponents[1]];
+        }
+    }
+    
     return [self decodeMessage:theMessage withSecret:theSecret withError:theError withForcedAlgorithmByName:forcedAlgorithName];
 }
 
@@ -242,12 +257,9 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         //    NSAssert(!algorithm, @"Can't decode segment!, %@", header);
     }
     
-    // check signed part equality
+    // Verify the signed part
     NSString *signingInput = [@[headerPart, payloadPart] componentsJoinedByString:@"."];
-    
-    NSString *validityPart = [[algorithm encodePayload:signingInput withSecret:theSecret] base64UrlEncodedString];
-    
-    BOOL signatureValid = ([algorithm respondsToSelector:@selector(verifySignedInput:withSignature:)] && [algorithm verifySignedInput:signingInput withSignature:validityPart]) || [validityPart isEqualToString:signedPart];
+    BOOL signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKey:theSecret];
     
     if (!signatureValid) {
         *theError = [self errorWithCode:JWTInvalidSignatureError];

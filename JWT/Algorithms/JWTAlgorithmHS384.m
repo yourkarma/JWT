@@ -10,6 +10,7 @@
 #import <CommonCrypto/CommonHMAC.h>
 
 #import "JWTAlgorithmHS384.h"
+#import "NSData+JWT.h"
 
 @implementation JWTAlgorithmHS384
 
@@ -26,6 +27,13 @@
     unsigned char cHMAC[CC_SHA384_DIGEST_LENGTH];
     CCHmac(kCCHmacAlgSHA384, cSecret, strlen(cSecret), cString, strlen(cString), cHMAC);
     return [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+}
+
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey
+{
+    NSString *expectedSignature = [[self encodePayload:input withSecret:verificationKey] base64UrlEncodedString];
+    
+    return [expectedSignature isEqualToString:signature];
 }
 
 @end
