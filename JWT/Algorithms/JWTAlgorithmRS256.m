@@ -20,4 +20,9 @@
   return nil;
 }
 
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature
+{
+    return NO;
+}
+
 @end
