@@ -16,6 +16,10 @@
 
 SPEC_BEGIN(JWTSpec)
 
+beforeEach(^{
+    [JWT setWhitelistEnabled:NO];
+});
+
 describe(@"markdown examples", ^{
     it(@"fluent example should work correctly", ^{
         // suppose, that you create ClaimsSet
@@ -219,14 +223,14 @@ describe(@"encoding", ^{
             
             NSString *jwt = [@[headerSegment, payloadSegment, signingOutput] componentsJoinedByString:@"."];
             
-            NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret];
+            NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret withError:nil withForcedAlgorithmByName:algorithmName];
             NSLog(@"info is: %@", info);
             
             [[info[@"payload"] should] equal:payload];
             [[info[@"header"] should] equal:allHeaders];
 
             // fluent
-            info = [JWT decodeMessage:jwt].secret(secret).decode;
+            info = [JWT decodeMessage:jwt].secret(secret).algorithmName(algorithmName).decode;
             NSLog(@"info is: %@", info);
             
             [[info[@"payload"] should] equal:payload];
@@ -253,14 +257,14 @@ describe(@"encoding", ^{
             
             NSString *jwt = [@[headerSegment, payloadSegment, signingOutput] componentsJoinedByString:@"."];
             
-            NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret];
+            NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret withError:nil withForcedAlgorithmByName:algorithmName];
             NSLog(@"info is: %@", info);
             
             [[info[@"payload"] should] equal:payload];
             [[info[@"header"] should] equal:allHeaders];
             
             // fluent
-            info = [JWT decodeMessage:jwt].secret(secret).decode;
+            info = [JWT decodeMessage:jwt].secret(secret).algorithmName(algorithmName).decode;
             NSLog(@"info is: %@", info);
             
             [[info[@"payload"] should] equal:payload];
@@ -308,7 +312,7 @@ describe(@"decoding", ^{
     context(@"general", ^{
         it(@"decodes JWTs with headers and arbitrary payloads", ^{
             
-            NSString *algorithmName = @"HS256";
+            NSString *algorithmName = @"HS512";
             NSString *secret = @"secret";
             NSDictionary *payload = @{@"key": @"value"};
             NSDictionary *headers = @{@"header" : @"value"};
@@ -335,13 +339,39 @@ describe(@"decoding", ^{
             [[info[@"header"] should] equal:allHeaders];
 
             //fluent
-            info = [JWT decodeMessage:jwt].secret(secret).decode;
+            info = [JWT decodeMessage:jwt].secret(secret).algorithmName(algorithmName).decode;
             
             NSLog(@"info is: %@", info);
             
             [[info[@"payload"] should] equal:payload];
             [[info[@"header"] should] equal:allHeaders];
         });
+        
+        it(@"decode should fail if algorithm type isn't specified", ^{
+            NSString *secret = @"secret";
+            NSString *message = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
+            
+            NSError *error = nil;
+            NSDictionary *decoded = nil;
+            
+            decoded = [JWT decodeMessage:message withSecret:secret withError:&error withForcedAlgorithmByName:nil];
+            
+            [[error shouldNot] beNil];
+            [[theValue(error.code) should] equal:theValue(JWTUnspecifiedAlgorithmError)];
+            [[decoded should] beNil];
+            
+            decoded = nil;
+            error = nil;
+            
+            JWTClaimsSet *claimsSet = [[JWTClaimsSet alloc] init];
+            
+            decoded = [JWT decodeMessage:message withSecret:secret withTrustedClaimsSet:claimsSet withError:&error withForcedAlgorithmByName:nil];
+            
+            [[error shouldNot] beNil];
+            [[theValue(error.code) should] equal:theValue(JWTUnspecifiedAlgorithmError)];
+            [[decoded should] beNil];
+        });
+        
     });
     
     context(@"errors", ^{
@@ -386,7 +416,7 @@ describe(@"decoding", ^{
             
             
             NSError *forcedError = nil;
-            NSDictionary *forcedInfo = [JWT decodeMessage:jwt withSecret:secret withError:&forcedError withForcedOption:YES];
+            NSDictionary *forcedInfo = [JWT decodeMessage:jwt withSecret:secret withError:&forcedError withForcedAlgorithmByName:algorithmName skipVerification:YES];
             
             NSLog(@"forcedInfo is: %@ forcedError: %@", forcedInfo, forcedError);
             
@@ -394,7 +424,7 @@ describe(@"decoding", ^{
             [[forcedInfo[@"header"] should] equal:allHeaders];
             
             NSError *error = nil;
-            NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret withError:&error withForcedOption:NO];
+            NSDictionary *info = [JWT decodeMessage:jwt withSecret:secret withError:&error withForcedAlgorithmByName:algorithmName skipVerification:NO];
             
             NSLog(@"info is: %@ error: %@", info, error);
             [[@(error.code) should] equal:@(JWTUnsupportedAlgorithmError)];
@@ -402,7 +432,7 @@ describe(@"decoding", ^{
             //fluent
             error = nil;
             JWTBuilder *builder = [JWT decodeMessage:jwt];
-            info = builder.secret(secret).options(@NO).decode;
+            info = builder.secret(secret).options(@NO).algorithmName(algorithmName).decode;
             error = builder.jwtError;
             NSLog(@"info is: %@ error: %@", info, error);
             [[@(error.code) should] equal:@(JWTUnsupportedAlgorithmError)];
@@ -454,6 +484,7 @@ describe(@"decoding", ^{
             claimsSet.identifier = @"thisisunique";
             claimsSet.type = @"test";
             
+            
             NSDictionary *payload = [JWTClaimsSetSerializer dictionaryWithClaimsSet:claimsSet];//@{@"key": @"value"};
             NSDictionary *headers = @{@"header" : @"value"};
             
@@ -474,7 +505,7 @@ describe(@"decoding", ^{
             trustedClaimsSet.expirationDate = [NSDate date];
             trustedClaimsSet.notBeforeDate = [NSDate date];
             trustedClaimsSet.issuedAt = [NSDate date];
-            JWTBuilder *builder = [JWT decodeMessage:jwt].secret(secret).claimsSet(trustedClaimsSet);
+            JWTBuilder *builder = [JWT decodeMessage:jwt].secret(secret).claimsSet(trustedClaimsSet).algorithmName(algorithmName);
             NSDictionary *info = builder.decode;
             
             NSLog(@"info is: %@", info);
@@ -507,13 +538,129 @@ describe(@"decoding", ^{
             NSString *signingOutput = [[[JWTAlgorithmFactory algorithmByName:algorithmName] encodePayload:signingInput withSecret:secret] base64UrlEncodedString];
             
             NSString *jwt = [@[headerSegment, payloadSegment, signingOutput] componentsJoinedByString:@"."];
-            NSDictionary *info = [JWT decodeMessage:jwt].secret(secret).decode;
+            NSDictionary *info = [JWT decodeMessage:jwt].secret(secret).algorithmName(algorithmName).decode;
             
             NSLog(@"info is: %@", info);
             
             [[info[@"payload"] should] equal:payload];
             [[info[@"header"] should] equal:allHeaders];
         });
+    });
+});
+
+describe(@"Whitelist tests", ^{
+    it(@"Adding algorithms to whitelist should work", ^{
+        
+        NSString *alg1 = @"HS256";
+        NSString *alg2 = @"HS512";
+
+        [JWT setWhitelistEnabled:YES];
+        
+        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(0)];
+        
+        [JWT addAlgorithmToWhitelist:alg1];
+        
+        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(1)];
+        [[theValue([[JWT algorithmWhitelist] containsObject:alg1]) should] beTrue];
+
+        [JWT addAlgorithmToWhitelist:alg2];
+        
+        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(2)];
+        [[theValue([[JWT algorithmWhitelist] containsObject:alg2]) should] beTrue];
+        
+        [JWT addAlgorithmToWhitelist:alg2];
+        
+        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(2)];
+    });
+    it(@"Removing algorithms from whitelist should work", ^{
+        
+        NSString *alg1 = @"HS256";
+        NSString *alg2 = @"HS512";
+        
+        [JWT setWhitelistEnabled:YES];
+        [JWT addAlgorithmToWhitelist:alg1];
+        [JWT addAlgorithmToWhitelist:alg2];
+        
+        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(2)];
+        
+        [JWT removeAlgorithmFromWhitelist:alg1];
+        
+        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(1)];
+        [[theValue([[JWT algorithmWhitelist] containsObject:alg1]) should] beFalse];
+        
+        [JWT removeAlgorithmFromWhitelist:alg2];
+        
+        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(0)];
+        [[theValue([[JWT algorithmWhitelist] containsObject:alg2]) should] beFalse];
+    });
+    
+    it(@"Toggling whitelist enabled should clear whitelist", ^{
+        
+        NSString *alg1 = @"HS256";
+        NSString *alg2 = @"HS512";
+        
+        [JWT setWhitelistEnabled:YES];
+        [JWT addAlgorithmToWhitelist:alg1];
+        [JWT addAlgorithmToWhitelist:alg2];
+
+        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(2)];
+        [[theValue([[JWT algorithmWhitelist] containsObject:alg1]) should] beTrue];
+        [[theValue([[JWT algorithmWhitelist] containsObject:alg2]) should] beTrue];
+        
+        [JWT setWhitelistEnabled:NO];
+        
+        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(0)];
+        [[theValue([[JWT algorithmWhitelist] containsObject:alg1]) should] beFalse];
+        [[theValue([[JWT algorithmWhitelist] containsObject:alg2]) should] beFalse];
+        
+        [JWT setWhitelistEnabled:YES];
+        
+        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(0)];
+        [[theValue([[JWT algorithmWhitelist] containsObject:alg1]) should] beFalse];
+        [[theValue([[JWT algorithmWhitelist] containsObject:alg2]) should] beFalse];
+        
+        
+    });
+    
+    it(@"Enabling whitelist should enforce whitelist algorithms", ^{
+        NSString *algorithmName = @"HS256";
+        NSString *secret = @"secret";
+        NSString *message = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
+        
+        [JWT setWhitelistEnabled:YES];
+
+        
+        NSDictionary *expectedHeader = @{
+                                         @"alg": @"HS256",
+                                         @"typ": @"JWT"
+                                         };
+        NSDictionary *expectedPayload = @{
+                                          @"sub": @"1234567890",
+                                          @"name": @"John Doe",
+                                          @"admin": @(YES)
+                                          };
+        
+        NSError *error = nil;
+        NSDictionary *decoded = [JWT decodeMessage:message withSecret:secret withError:&error withForcedAlgorithmByName:algorithmName];
+        
+        [[error shouldNot] beNil];
+        [[theValue(error.code) should] equal:theValue(JWTUnsupportedAlgorithmError)];
+        [[decoded should] beNil];
+        
+        [JWT addAlgorithmToWhitelist:algorithmName];
+
+        error = nil;
+        
+        decoded = [JWT decodeMessage:message withSecret:secret withError:&error withForcedAlgorithmByName:algorithmName];
+        
+        [[error should] beNil];
+        [[decoded shouldNot] beNil];
+        NSDictionary *header = [decoded objectForKey:@"header"];
+        NSDictionary *payload = [decoded objectForKey:@"payload"];
+        
+        [[theValue([header isEqualToDictionary:expectedHeader]) should] beTrue];
+        [[theValue([payload isEqualToDictionary:expectedPayload]) should] beTrue];
+        
     });
 });
 

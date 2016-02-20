@@ -20,11 +20,58 @@ typedef NS_ENUM(NSInteger, JWTError) {
     JWTEncodingHeaderError,
     JWTEncodingPayloadError,
     JWTClaimsSetVerificationFailed,
-    JWTInvalidSegmentSerializationError
+    JWTInvalidSegmentSerializationError,
+    JWTUnspecifiedAlgorithmError
 };
 
 @class JWTBuilder;
 @interface JWT : NSObject
+
+#pragma mark - Algorithm Whitelist
+
+/**
+ Enables/Disables the whitelisting mechanism. When enabled, only algorithms
+ added to the whitelist can be used to verify JWTs. Any other algorithms will fail 
+ validation.
+ Whitelist is reset when toggled.
+ 
+ Defaults to disabled.
+ @param enabled YES to enable whitelist, NO to disable.
+ */
++ (void)setWhitelistEnabled:(BOOL)enabled;
+
+/**
+ The set of allowed algorithms for decoding. Verifying a JWT will fail if algorithm
+ specified isn't on the whitelist.
+ @return A copy of the Set of allowed algorithms
+ */
++ (NSSet *)algorithmWhitelist;
+
+/**
+ Check if the current whitelist contains the given algorithm
+ @param algorithmName The name of the algorithm to check for
+ @return YES if the algorithm is whitelisted, NO otherwise.
+ */
++ (BOOL)whitelistContainsAlgorithm:(NSString *)algorithmName;
+
+/**
+ Adds the specified algorithm name to the whitelist. Does nothing if the whitelist
+ already contains the given algorithm.
+ @param The name of the algorithm to add
+ */
++ (void)addAlgorithmToWhitelist:(NSString *)algorithmName;
+
+/**
+ Removes the specified algorithm name to the whitelist. Does nothing if the whitelist
+ doesn't contain the given algorithm.
+ @param The name of the algorithm to remove
+ */
++ (void)removeAlgorithmFromWhitelist:(NSString *)algorithmName;
+
+/**
+ Clears all entries from the algorithm whitelist
+ */
++ (void)clearWhitelist;
 
 #pragma mark - Encode
 + (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret;
@@ -39,9 +86,95 @@ typedef NS_ENUM(NSInteger, JWTError) {
 
 //Will be deprecated in later releases
 #pragma mark - Decode
-+ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withTrustedClaimsSet:(JWTClaimsSet *)theTrustedClaimsSet withError:(NSError *__autoreleasing *)theError withForcedOption:(BOOL)theForcedOption;
-+ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedOption:(BOOL)theForcedOption;
+
+/**
+ Decodes a JWT and returns the decoded Header and Payload
+ @param theMessage The encoded JWT
+ @param theSecret The verification key to use for validating the JWT signature
+ @param theTrustedClaimsSet The JWTClaimsSet to use for verifying the JWT values
+ @param theError Error pointer, if there is an error decoding the message, upon return contains an NSError object that describes the problem.
+ @param theAlgorithmName The name of the algorithm to use for verifying the signature. Required, unless skipping verification
+ @param theForcedOption BOOL indicating if verifying the JWT signature should be skipped. Should only be used for debugging
+ @return A dictionary containing the header and payload dictionaries. Keyed to "header" and "payload", respectively. Or nil if an error occurs.
+ */
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withTrustedClaimsSet:(JWTClaimsSet *)theTrustedClaimsSet withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName withForcedOption:(BOOL)theForcedOption;
+
+/**
+ Decodes a JWT and returns the decoded Header and Payload
+ @param theMessage The encoded JWT
+ @param theSecret The verification key to use for validating the JWT signature
+ @param theTrustedClaimsSet The JWTClaimsSet to use for verifying the JWT values
+ @param theError Error pointer, if there is an error decoding the message, upon return contains an NSError object that describes the problem.
+ @param theAlgorithmName The name of the algorithm to use for verifying the signature. Required.
+ @return A dictionary containing the header and payload dictionaries. Keyed to "header" and "payload", respectively. Or nil if an error occurs.
+ */
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withTrustedClaimsSet:(JWTClaimsSet *)theTrustedClaimsSet withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName;
+
+/**
+ Decodes a JWT and returns the decoded Header and Payload.
+ 
+ Uses the JWTAlgorithmHS512 for decoding
+ 
+ @param theMessage The encoded JWT
+ @param theSecret The verification key to use for validating the JWT signature
+ @param theTrustedClaimsSet The JWTClaimsSet to use for verifying the JWT values
+ @param theError Error pointer, if there is an error decoding the message, upon return contains an NSError object that describes the problem.
+ @param theForcedOption BOOL indicating if verifying the JWT signature should be skipped. Should only be used for debugging
+ @return A dictionary containing the header and payload dictionaries. Keyed to "header" and "payload", respectively. Or nil if an error occurs.
+ */
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withTrustedClaimsSet:(JWTClaimsSet *)theTrustedClaimsSet withError:(NSError *__autoreleasing *)theError withForcedOption:(BOOL)theForcedOption __attribute__((deprecated));
+
+/**
+ Decodes a JWT and returns the decoded Header and Payload
+ @param theMessage The encoded JWT
+ @param theSecret The verification key to use for validating the JWT signature
+ @param theError Error pointer, if there is an error decoding the message, upon return contains an NSError object that describes the problem.
+ @param theAlgorithmName The name of the algorithm to use for verifying the signature. Required, unless skipping verification
+ @param skipVerification BOOL indicating if verifying the JWT signature should be skipped. Should only be used for debugging
+ @return A dictionary containing the header and payload dictionaries. Keyed to "header" and "payload", respectively. Or nil if an error occurs.
+ */
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName skipVerification:(BOOL)skipVerification;
+
+/**
+ Decodes a JWT and returns the decoded Header and Payload
+ @param theMessage The encoded JWT
+ @param theSecret The verification key to use for validating the JWT signature
+ @param theError Error pointer, if there is an error decoding the message, upon return contains an NSError object that describes the problem.
+ @param theAlgorithmName The name of the algorithm to use for verifying the signature. Required.
+ @return A dictionary containing the header and payload dictionaries. Keyed to "header" and "payload", respectively. Or nil if an error occurs.
+ */
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName;
+
+/**
+ Decodes a JWT and returns the decoded Header and Payload
+ 
+ Uses the JWTAlgorithmHS512 for decoding
+ 
+ @param theMessage The encoded JWT
+ @param theSecret The verification key to use for validating the JWT signature
+ @param theError Error pointer, if there is an error decoding the message, upon return contains an NSError object that describes the problem.
+ @param theForcedOption BOOL indicating if verifying the JWT signature should be skipped.
+ @return A dictionary containing the header and payload dictionaries. Keyed to "header" and "payload", respectively. Or nil if an error occurs.
+ */
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedOption:(BOOL)theForcedOption __attribute__((deprecated));
+
+/**
+ Decodes a JWT and returns the decoded Header and Payload.
+ Uses the JWTAlgorithmHS512 for decoding
+ @param theMessage The encoded JWT
+ @param theSecret The verification key to use for validating the JWT signature
+ @param theError Error pointer, if there is an error decoding the message, upon return contains an NSError object that describes the problem.
+ @return A dictionary containing the header and payload dictionaries. Keyed to "header" and "payload", respectively. Or nil if an error occurs.
+ */
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError * __autoreleasing *)theError;
+
+/**
+ Decodes a JWT and returns the decoded Header and Payload.
+ Uses the JWTAlgorithmHS512 for decoding
+ @param theMessage The encoded JWT
+ @param theSecret The verification key to use for validating the JWT signature
+ @return A dictionary containing the header and payload dictionaries. Keyed to "header" and "payload", respectively. Or nil if an error occurs. 
+ */
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret;
 
 #pragma mark - Builder
