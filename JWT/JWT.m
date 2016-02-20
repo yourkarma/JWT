@@ -69,6 +69,10 @@ static NSObject *JWTAlgorithmWhitelistLock;
             resultString = @"It seems that json serialization failed for segment";
             break;
         }
+        case JWTUnspecifiedAlgorithmError: {
+            resultString = @"Unspecified algorithm! You must explicitly choose an algorithm to decode with.";
+            break;
+        }
         default: {
             resultString = @"Unexpected error";
             break;
