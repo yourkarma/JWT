@@ -16,10 +16,6 @@
 
 SPEC_BEGIN(JWTSpec)
 
-beforeEach(^{
-    [JWT setWhitelistEnabled:NO];
-});
-
 describe(@"markdown examples", ^{
     it(@"fluent example should work correctly", ^{
         // suppose, that you create ClaimsSet
@@ -549,86 +545,11 @@ describe(@"decoding", ^{
 });
 
 describe(@"Whitelist tests", ^{
-    it(@"Adding algorithms to whitelist should work", ^{
-        
-        NSString *alg1 = @"HS256";
-        NSString *alg2 = @"HS512";
-
-        [JWT setWhitelistEnabled:YES];
-        
-        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(0)];
-        
-        [JWT addAlgorithmToWhitelist:alg1];
-        
-        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(1)];
-        [[theValue([[JWT algorithmWhitelist] containsObject:alg1]) should] beTrue];
-
-        [JWT addAlgorithmToWhitelist:alg2];
-        
-        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(2)];
-        [[theValue([[JWT algorithmWhitelist] containsObject:alg2]) should] beTrue];
-        
-        [JWT addAlgorithmToWhitelist:alg2];
-        
-        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(2)];
-    });
-    it(@"Removing algorithms from whitelist should work", ^{
-        
-        NSString *alg1 = @"HS256";
-        NSString *alg2 = @"HS512";
-        
-        [JWT setWhitelistEnabled:YES];
-        [JWT addAlgorithmToWhitelist:alg1];
-        [JWT addAlgorithmToWhitelist:alg2];
-        
-        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(2)];
-        
-        [JWT removeAlgorithmFromWhitelist:alg1];
-        
-        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(1)];
-        [[theValue([[JWT algorithmWhitelist] containsObject:alg1]) should] beFalse];
-        
-        [JWT removeAlgorithmFromWhitelist:alg2];
-        
-        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(0)];
-        [[theValue([[JWT algorithmWhitelist] containsObject:alg2]) should] beFalse];
-    });
-    
-    it(@"Toggling whitelist enabled should clear whitelist", ^{
-        
-        NSString *alg1 = @"HS256";
-        NSString *alg2 = @"HS512";
-        
-        [JWT setWhitelistEnabled:YES];
-        [JWT addAlgorithmToWhitelist:alg1];
-        [JWT addAlgorithmToWhitelist:alg2];
-
-        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(2)];
-        [[theValue([[JWT algorithmWhitelist] containsObject:alg1]) should] beTrue];
-        [[theValue([[JWT algorithmWhitelist] containsObject:alg2]) should] beTrue];
-        
-        [JWT setWhitelistEnabled:NO];
-        
-        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(0)];
-        [[theValue([[JWT algorithmWhitelist] containsObject:alg1]) should] beFalse];
-        [[theValue([[JWT algorithmWhitelist] containsObject:alg2]) should] beFalse];
-        
-        [JWT setWhitelistEnabled:YES];
-        
-        [[theValue([[JWT algorithmWhitelist] count]) should] equal:theValue(0)];
-        [[theValue([[JWT algorithmWhitelist] containsObject:alg1]) should] beFalse];
-        [[theValue([[JWT algorithmWhitelist] containsObject:alg2]) should] beFalse];
-        
-        
-    });
-    
     it(@"Enabling whitelist should enforce whitelist algorithms", ^{
         NSString *algorithmName = @"HS256";
         NSString *secret = @"secret";
         NSString *message = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
         
-        [JWT setWhitelistEnabled:YES];
-
         
         NSDictionary *expectedHeader = @{
                                          @"alg": @"HS256",
@@ -640,20 +561,19 @@ describe(@"Whitelist tests", ^{
                                           @"admin": @(YES)
                                           };
         
-        NSError *error = nil;
-        NSDictionary *decoded = [JWT decodeMessage:message withSecret:secret withError:&error withForcedAlgorithmByName:algorithmName];
+        JWTBuilder *builder = [JWT decodeMessage:message].algorithmName(algorithmName).secret(secret).whitelist(@[]);
         
-        [[error shouldNot] beNil];
-        [[theValue(error.code) should] equal:theValue(JWTUnsupportedAlgorithmError)];
+        NSDictionary *decoded = builder.decode;
+        
+        [[builder.jwtError shouldNot] beNil];
+        [[theValue(builder.jwtError.code) should] equal:theValue(JWTUnsupportedAlgorithmError)];
         [[decoded should] beNil];
         
-        [JWT addAlgorithmToWhitelist:algorithmName];
 
-        error = nil;
+        builder = [JWT decodeMessage:message].algorithmName(algorithmName).secret(secret).whitelist(@[algorithmName]);
+        decoded = builder.decode;
         
-        decoded = [JWT decodeMessage:message withSecret:secret withError:&error withForcedAlgorithmByName:algorithmName];
-        
-        [[error should] beNil];
+        [[builder.jwtError should] beNil];
         [[decoded shouldNot] beNil];
         NSDictionary *header = [decoded objectForKey:@"header"];
         NSDictionary *payload = [decoded objectForKey:@"payload"];
@@ -661,6 +581,63 @@ describe(@"Whitelist tests", ^{
         [[theValue([header isEqualToDictionary:expectedHeader]) should] beTrue];
         [[theValue([payload isEqualToDictionary:expectedPayload]) should] beTrue];
         
+    });
+    it(@"Using whitelist should be optional", ^{
+        NSString *algorithmName = @"HS256";
+        NSString *secret = @"secret";
+        NSString *message = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
+        
+        
+        NSDictionary *expectedHeader = @{
+                                         @"alg": @"HS256",
+                                         @"typ": @"JWT"
+                                         };
+        NSDictionary *expectedPayload = @{
+                                          @"sub": @"1234567890",
+                                          @"name": @"John Doe",
+                                          @"admin": @(YES)
+                                          };
+        
+        JWTBuilder *builder = [JWT decodeMessage:message].algorithmName(algorithmName).secret(secret);
+        
+        NSDictionary *decoded = builder.decode;
+        
+        [[builder.jwtError should] beNil];
+        [[decoded shouldNot] beNil];
+        
+        NSDictionary *header = [decoded objectForKey:@"header"];
+        NSDictionary *payload = [decoded objectForKey:@"payload"];
+        
+        [[theValue([header isEqualToDictionary:expectedHeader]) should] beTrue];
+        [[theValue([payload isEqualToDictionary:expectedPayload]) should] beTrue];
+    });
+    it(@"Whitelist should be enforced", ^{
+        NSString *algorithmName = @"HS256";
+        NSString *secret = @"secret";
+        NSString *message = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
+        
+        JWTBuilder *builder = [JWT decodeMessage:message].algorithmName(algorithmName).secret(secret).whitelist(@[@"HS512"]);
+        
+        NSDictionary *decoded = builder.decode;
+        
+        [[builder.jwtError shouldNot] beNil];
+        [[theValue(builder.jwtError.code) should] equal:theValue(JWTUnsupportedAlgorithmError)];
+        [[decoded should] beNil];
+        
+    });
+    it(@"Whitelist algorithms should still be able to fail verification", ^{
+        NSString *algorithmName = @"HS512";
+        NSString *secret = @"secret";
+        //Incorrect signature
+        NSString *message = @"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
+        
+        JWTBuilder *builder = [JWT decodeMessage:message].algorithmName(algorithmName).secret(secret).whitelist(@[algorithmName]);
+        
+        NSDictionary *decoded = builder.decode;
+        
+        [[builder.jwtError shouldNot] beNil];
+        [[theValue(builder.jwtError.code) should] equal:theValue(JWTInvalidSignatureError)];
+        [[decoded should] beNil];
     });
 });
 

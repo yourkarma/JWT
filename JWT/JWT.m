@@ -17,18 +17,8 @@
 #import "JWTClaimsSetVerifier.h"
 
 static NSString *JWTErrorDomain = @"com.karma.jwt";
-static NSSet *JWTAlgorithmWhitelist;
-static BOOL JWTAlgorithmWhitelistEnabled;
-static NSObject *JWTAlgorithmWhitelistLock;
 
 @implementation JWT
-
-+ (void)initialize
-{
-    JWTAlgorithmWhitelist = [NSSet set];
-    JWTAlgorithmWhitelistLock = [[NSObject alloc] init];
-    JWTAlgorithmWhitelistEnabled = NO;
-}
 
 + (NSString *)userDescriptionForErrorCode:(JWTError)code {
     NSString *resultString = nil;
@@ -88,55 +78,6 @@ static NSObject *JWTAlgorithmWhitelistLock;
 
 + (NSError *)errorWithCode:(NSInteger)code withUserDescription:(NSString *)string {
     return [NSError errorWithDomain:JWTErrorDomain code:code userInfo:@{NSLocalizedDescriptionKey: string}];
-}
-
-#pragma mark - Algorithm Whitelist
-
-+ (void)setWhitelistEnabled:(BOOL)enabled
-{
-    if ((!JWTAlgorithmWhitelistEnabled && enabled) || (JWTAlgorithmWhitelistEnabled && !enabled)) {
-        //need to toggle
-        JWTAlgorithmWhitelistEnabled = enabled;
-        [self clearWhitelist];
-    }
-}
-+ (NSSet *)algorithmWhitelist
-{
-    @synchronized(JWTAlgorithmWhitelistLock) {
-        return [JWTAlgorithmWhitelist copy];
-    }
-}
-
-+ (BOOL)whitelistContainsAlgorithm:(NSString *)algorithmName
-{
-    @synchronized(JWTAlgorithmWhitelistLock) {
-        return [JWTAlgorithmWhitelist containsObject:algorithmName];
-    }
-}
-
-+ (void)addAlgorithmToWhitelist:(NSString *)algorithmName
-{
-    @synchronized(JWTAlgorithmWhitelistLock) {
-        JWTAlgorithmWhitelist = [JWTAlgorithmWhitelist setByAddingObject:algorithmName];
-    }
-}
-
-+ (void)removeAlgorithmFromWhitelist:(NSString *)algorithmName
-{
-    @synchronized(JWTAlgorithmWhitelistLock) {
-        if ([JWTAlgorithmWhitelist containsObject:algorithmName]) {
-            NSMutableSet *tempSet = [NSMutableSet setWithSet:JWTAlgorithmWhitelist];
-            [tempSet removeObject:algorithmName];
-            JWTAlgorithmWhitelist = [NSSet setWithSet:tempSet];
-        }
-    }
-}
-
-+ (void)clearWhitelist
-{
-    @synchronized(JWTAlgorithmWhitelistLock) {
-        JWTAlgorithmWhitelist = [NSSet set];
-    }
 }
 
 #pragma mark - Private Methods
@@ -259,7 +200,12 @@ static NSObject *JWTAlgorithmWhitelistLock;
 
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withTrustedClaimsSet:(JWTClaimsSet *)theTrustedClaimsSet withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName withForcedOption:(BOOL)theForcedOption
 {
-    NSDictionary *dictionary = [self decodeMessage:theMessage withSecret:theSecret withError:theError withForcedAlgorithmByName:theAlgorithmName skipVerification:theForcedOption];
+    return [self decodeMessage:theMessage withSecret:theSecret withTrustedClaimsSet:theTrustedClaimsSet withError:theError withForcedAlgorithmByName:theAlgorithmName withForcedOption:theForcedOption withAlgorithmWhiteList:nil];
+}
+
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withTrustedClaimsSet:(JWTClaimsSet *)theTrustedClaimsSet withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName withForcedOption:(BOOL)theForcedOption withAlgorithmWhiteList:(NSSet *)theWhitelist
+{
+    NSDictionary *dictionary = [self decodeMessage:theMessage withSecret:theSecret withError:theError withForcedAlgorithmByName:theAlgorithmName skipVerification:theForcedOption whitelist:theWhitelist];
     
     if (*theError) {
         // do something
@@ -291,6 +237,11 @@ static NSObject *JWTAlgorithmWhitelistLock;
 }
 
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName skipVerification:(BOOL)skipVerification
+{
+    return [self decodeMessage:theMessage withSecret:theSecret withError:theError withForcedAlgorithmByName:theAlgorithmName skipVerification:skipVerification whitelist:nil];
+}
+
++ (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName skipVerification:(BOOL)skipVerification whitelist:(NSSet *)theWhitelist
 {
     NSArray *parts = [theMessage componentsSeparatedByString:@"."];
     
@@ -329,9 +280,9 @@ static NSObject *JWTAlgorithmWhitelistLock;
             return nil;
         }
         
-        //If whitelisting is enabled, ensure the chosen algorithm is allowed
-        if (JWTAlgorithmWhitelistEnabled) {
-            if (![self whitelistContainsAlgorithm:theAlgorithmName]) {
+        //If a whitelist is passed in, ensure the chosen algorithm is allowed
+        if (theWhitelist) {
+            if (![theWhitelist containsObject:theAlgorithmName]) {
                 *theError = [self errorWithCode:JWTUnsupportedAlgorithmError];
                 return nil;
             }
@@ -414,6 +365,7 @@ static NSObject *JWTAlgorithmWhitelistLock;
 @property (strong, nonatomic, readwrite) id<JWTAlgorithm> jwtAlgorithm;
 @property (copy, nonatomic, readwrite) NSString *jwtAlgorithmName;
 @property (copy, nonatomic, readwrite) NSNumber *jwtOptions;
+@property (copy, nonatomic, readwrite) NSSet *algorithmWhitelist;
 
 @property (copy, nonatomic, readwrite) JWTBuilder *(^message)(NSString *message);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^payload)(NSDictionary *payload);
@@ -423,6 +375,7 @@ static NSObject *JWTAlgorithmWhitelistLock;
 @property (copy, nonatomic, readwrite) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^algorithmName)(NSString *algorithmName);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^options)(NSNumber *options);
+@property (copy, nonatomic, readwrite) JWTBuilder *(^whitelist)(NSArray *whitelist);
 
 @end
 
@@ -478,6 +431,15 @@ static NSObject *JWTAlgorithmWhitelistLock;
     return self;
 }
 
+- (instancetype)whitelist:(NSArray *)whitelist {
+    if (whitelist) {
+        self.algorithmWhitelist = [NSSet setWithArray:whitelist];
+    } else {
+        self.algorithmWhitelist = nil;
+    }
+    return self;
+}
+
 #pragma mark - Initialization
 + (JWTBuilder *)encodePayload:(NSDictionary *)payload {
     return [[JWTBuilder alloc] init].payload(payload);
@@ -526,6 +488,10 @@ static NSObject *JWTAlgorithmWhitelistLock;
         self.options = ^(NSNumber *options) {
             return [weakSelf options:options];
         };
+        
+        self.whitelist = ^(NSArray *whitelist) {
+            return [weakSelf whitelist:whitelist];
+        };
     }
 
     return self;
@@ -543,7 +509,7 @@ static NSObject *JWTAlgorithmWhitelistLock;
 - (NSDictionary *)decode {
     NSDictionary *result = nil;
     NSError *error = nil;
-    result = [JWT decodeMessage:self.jwtMessage withSecret:self.jwtSecret withTrustedClaimsSet:self.jwtClaimsSet withError:&error withForcedAlgorithmByName:self.jwtAlgorithmName withForcedOption:self.jwtOptions.boolValue];
+    result = [JWT decodeMessage:self.jwtMessage withSecret:self.jwtSecret withTrustedClaimsSet:self.jwtClaimsSet withError:&error withForcedAlgorithmByName:self.jwtAlgorithmName withForcedOption:self.jwtOptions.boolValue withAlgorithmWhiteList:self.algorithmWhitelist];
     self.jwtError = error;
     
     return result;

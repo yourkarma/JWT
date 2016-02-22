@@ -27,52 +27,6 @@ typedef NS_ENUM(NSInteger, JWTError) {
 @class JWTBuilder;
 @interface JWT : NSObject
 
-#pragma mark - Algorithm Whitelist
-
-/**
- Enables/Disables the whitelisting mechanism. When enabled, only algorithms
- added to the whitelist can be used to verify JWTs. Any other algorithms will fail 
- validation.
- Whitelist is reset when toggled.
- 
- Defaults to disabled.
- @param enabled YES to enable whitelist, NO to disable.
- */
-+ (void)setWhitelistEnabled:(BOOL)enabled;
-
-/**
- The set of allowed algorithms for decoding. Verifying a JWT will fail if algorithm
- specified isn't on the whitelist.
- @return A copy of the Set of allowed algorithms
- */
-+ (NSSet *)algorithmWhitelist;
-
-/**
- Check if the current whitelist contains the given algorithm
- @param algorithmName The name of the algorithm to check for
- @return YES if the algorithm is whitelisted, NO otherwise.
- */
-+ (BOOL)whitelistContainsAlgorithm:(NSString *)algorithmName;
-
-/**
- Adds the specified algorithm name to the whitelist. Does nothing if the whitelist
- already contains the given algorithm.
- @param The name of the algorithm to add
- */
-+ (void)addAlgorithmToWhitelist:(NSString *)algorithmName;
-
-/**
- Removes the specified algorithm name to the whitelist. Does nothing if the whitelist
- doesn't contain the given algorithm.
- @param The name of the algorithm to remove
- */
-+ (void)removeAlgorithmFromWhitelist:(NSString *)algorithmName;
-
-/**
- Clears all entries from the algorithm whitelist
- */
-+ (void)clearWhitelist;
-
 #pragma mark - Encode
 + (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret;
 + (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
@@ -198,6 +152,7 @@ typedef NS_ENUM(NSInteger, JWTError) {
 @property (strong, nonatomic, readonly) id<JWTAlgorithm> jwtAlgorithm;
 @property (copy, nonatomic, readonly) NSString *jwtAlgorithmName;
 @property (copy, nonatomic, readonly) NSNumber *jwtOptions;
+@property (copy, nonatomic, readonly) NSSet *algorithmWhitelist;
 
 @property (copy, nonatomic, readonly) JWTBuilder *(^message)(NSString *message);
 @property (copy, nonatomic, readonly) JWTBuilder *(^payload)(NSDictionary *payload);
@@ -207,6 +162,7 @@ typedef NS_ENUM(NSInteger, JWTError) {
 @property (copy, nonatomic, readonly) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm);
 @property (copy, nonatomic, readonly) JWTBuilder *(^algorithmName)(NSString *algorithmName);
 @property (copy, nonatomic, readonly) JWTBuilder *(^options)(NSNumber *options);
+@property (copy, nonatomic, readonly) JWTBuilder *(^whitelist)(NSArray *whitelist);
 
 @property (copy, nonatomic, readonly) NSString *encode;
 @property (copy, nonatomic, readonly) NSDictionary *decode;
