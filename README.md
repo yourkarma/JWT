@@ -54,8 +54,9 @@ If you want to check claims while decoding, you could use next sample of code (a
 
     NSString *message = @"encodedJwt";
     NSString *secret = @"secret";
+    NSString *algorithmName = @"chosenAlgorithm"
 
-    JWTBuilder *builder = [JWT decodeMessage:jwt].secret(secret).claimsSet(trustedClaimsSet);
+    JWTBuilder *builder = [JWT decodeMessage:jwt].secret(secret).algorithmName(algorithmName).claimsSet(trustedClaimsSet);
     NSDictionary *payload = builder.decode;
     
     if (!builder.jwtError) {
@@ -81,7 +82,6 @@ Note: some attributes are encode-only or decode-only.
     *payload;
     *headers;
     *algorithm;
-    *algorithmName;
 
     #pragma mark - Decode only
     *message
@@ -125,8 +125,9 @@ You can set JWTBuilder attributes by fluent style (block interface).
     NSNumber *options = @(decodeForced);
     NSString *yourJwt = encodedResult; // from previous example
     NSString *yourSecret = secret; // from previous example
+    NSString *yourAlgorithm = algorithmName; // from previous example
     JWTBuilder *decodeBuilder = [JWT decodeMessage:yourJwt];
-    NSDictionary *decodedResult = decodeBuilder.message(yourJwt).secret(yourSecret).claimsSet(trustedClaimsSet).options(options).decode;
+    NSDictionary *decodedResult = decodeBuilder.message(yourJwt).secret(yourSecret).algorithmName(yourAlgorithm).claimsSet(trustedClaimsSet).options(options).decode;
     if (decodeBuilder.jwtError) {
         // handle error
         NSLog(@"decode failed, error: %@", decodeBuilder.jwtError);
