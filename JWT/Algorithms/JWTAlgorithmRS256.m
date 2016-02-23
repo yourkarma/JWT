@@ -20,4 +20,10 @@
   return nil;
 }
 
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey
+{
+    //Algorithm isn't implemented
+    return NO;
+}
+
 @end
