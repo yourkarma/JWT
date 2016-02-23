@@ -90,17 +90,18 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     }
     else {
         // error!
-        *error = [self errorWithCode:JWTInvalidSegmentSerializationError];
+        NSError *generatedError = [self errorWithCode:JWTInvalidSegmentSerializationError];
+        if (error) {
+            *error = generatedError;
+        }
+        NSLog(@"%@ Could not encode segment: %@", self.class, generatedError.localizedDescription);
+        return nil;
     }
     
     NSString *encodedSegment = nil;
     
-    if (!(*error) && encodedSegmentData) {
+    if (encodedSegmentData) {
         encodedSegment = [encodedSegmentData base64UrlEncodedString];
-    }
-    
-    if ((*error)) {
-        NSLog(@"%@ Could not encode segment: %@", self.class, (*error).localizedDescription);
     }
     
     return encodedSegment;
@@ -498,19 +499,160 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 }
 
 #pragma mark - Encoding/Decoding
+
 - (NSString *)encode {
     NSString *result = nil;
-    NSError *error = nil;
-    result = [JWT encodePayload:self.jwtPayload withSecret:self.jwtSecret withHeaders:self.jwtHeaders algorithm:self.jwtAlgorithm withError:&error];
-    self.jwtError = error;
+    result = [self encodePayload];
     return result;
 }
 
 - (NSDictionary *)decode {
     NSDictionary *result = nil;
     NSError *error = nil;
-    result = [JWT decodeMessage:self.jwtMessage withSecret:self.jwtSecret withTrustedClaimsSet:self.jwtClaimsSet withError:&error withForcedAlgorithmByName:self.jwtAlgorithmName withForcedOption:self.jwtOptions.boolValue withAlgorithmWhiteList:self.algorithmWhitelist];
+    result = [self decodeMessage:self.jwtMessage withSecret:self.jwtSecret withTrustedClaimsSet:self.jwtClaimsSet withError:&error withForcedAlgorithmByName:self.jwtAlgorithmName withForcedOption:self.jwtOptions.boolValue withAlgorithmWhiteList:self.algorithmWhitelist];
     self.jwtError = error;
+    
+    return result;
+}
+
+#pragma mark - Private Helpers
+
+- (NSString *)encodePayload
+{
+    if (!self.jwtAlgorithm) {
+        self.jwtError = [JWT errorWithCode:JWTUnspecifiedAlgorithmError];
+        return nil;
+    }
+    
+    NSDictionary *header = @{@"typ": @"JWT", @"alg": self.jwtAlgorithm.name};
+    NSMutableDictionary *allHeaders = [header mutableCopy];
+    
+    if (self.jwtHeaders.allKeys.count > 0) {
+        [allHeaders addEntriesFromDictionary:self.jwtHeaders];
+    }
+    
+    NSString *headerSegment = [JWT encodeSegment:[allHeaders copy] withError:nil];
+    
+    if (!headerSegment) {
+        // encode header segment error
+        self.jwtError = [JWT errorWithCode:JWTEncodingHeaderError];
+        return nil;
+    }
+    
+    NSString *payloadSegment = [JWT encodeSegment:self.jwtPayload withError:nil];
+    
+    if (!payloadSegment) {
+        // encode payment segment error
+        self.jwtError = [JWT errorWithCode:JWTEncodingPayloadError];
+        return nil;
+    }
+    
+    NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
+    NSString *signedOutput = [[self.jwtAlgorithm encodePayload:signingInput withSecret:self.jwtSecret] base64UrlEncodedString];
+    
+    return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
+}
+
+- (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withTrustedClaimsSet:(JWTClaimsSet *)theTrustedClaimsSet withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName withForcedOption:(BOOL)theForcedOption withAlgorithmWhiteList:(NSSet *)theWhitelist
+{
+    NSDictionary *dictionary = [self decodeMessage:theMessage withSecret:theSecret withError:theError withForcedAlgorithmByName:theAlgorithmName skipVerification:theForcedOption whitelist:theWhitelist];
+    
+    if (*theError) {
+        // do something
+        return dictionary;
+    }
+    
+    if (theTrustedClaimsSet) {
+        BOOL claimVerified = [JWTClaimsSetVerifier verifyClaimsSet:[JWTClaimsSetSerializer claimsSetWithDictionary:dictionary[@"payload"]] withTrustedClaimsSet:theTrustedClaimsSet];
+        if (claimVerified) {
+            return dictionary;
+        }
+        else {
+            *theError = [JWT errorWithCode:JWTClaimsSetVerificationFailed];
+            return nil;
+        }
+    }
+    
+    return dictionary;
+}
+
+- (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName skipVerification:(BOOL)skipVerification whitelist:(NSSet *)theWhitelist
+{
+    NSArray *parts = [theMessage componentsSeparatedByString:@"."];
+    
+    if (parts.count < 3) {
+        // generate error?
+        *theError = [JWT errorWithCode:JWTInvalidFormatError];
+        return nil;
+    }
+    
+    NSString *headerPart = parts[0];
+    NSString *payloadPart = parts[1];
+    NSString *signedPart = parts[2];
+    
+    // decode headerPart
+    NSDictionary *header = (NSDictionary *)headerPart.jsonObjectFromBase64String;
+    if (!header) {
+        *theError = [JWT errorWithCode:JWTNoHeaderError];
+        return nil;
+    }
+    
+    if (!skipVerification) {
+        // find algorithm
+        
+        //It is insecure to trust the header's value for the algorithm, since
+        //the signature hasn't been verified yet, so an algorithm must be provided
+        if (!theAlgorithmName) {
+            *theError = [JWT errorWithCode:JWTUnspecifiedAlgorithmError];
+            return nil;
+        }
+        
+        NSString *headerAlgorithmName = header[@"alg"];
+        
+        //If the algorithm in the header doesn't match what's expected, verification fails
+        if (![theAlgorithmName isEqualToString:headerAlgorithmName]) {
+            *theError = [JWT errorWithCode:JWTUnsupportedAlgorithmError];
+            return nil;
+        }
+        
+        //If a whitelist is passed in, ensure the chosen algorithm is allowed
+        if (theWhitelist) {
+            if (![theWhitelist containsObject:theAlgorithmName]) {
+                *theError = [JWT errorWithCode:JWTUnsupportedAlgorithmError];
+                return nil;
+            }
+        }
+        
+        id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:theAlgorithmName];
+        
+        if (!algorithm) {
+            *theError = [JWT errorWithCode:JWTUnsupportedAlgorithmError];
+            return nil;
+            //    NSAssert(!algorithm, @"Can't decode segment!, %@", header);
+        }
+        
+        // Verify the signed part
+        NSString *signingInput = [@[headerPart, payloadPart] componentsJoinedByString:@"."];
+        BOOL signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKey:theSecret];
+        
+        if (!signatureValid) {
+            *theError = [JWT errorWithCode:JWTInvalidSignatureError];
+            return nil;
+        }
+    }
+    
+    // and decode payload
+    NSDictionary *payload = (NSDictionary *)payloadPart.jsonObjectFromBase64String;
+    
+    if (!payload) {
+        *theError = [JWT errorWithCode:JWTNoPayloadError];
+        return nil;
+    }
+    
+    NSDictionary *result = @{
+                             @"header" : header,
+                             @"payload" : payload
+                             };
     
     return result;
 }

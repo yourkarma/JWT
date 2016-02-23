@@ -641,6 +641,25 @@ describe(@"Whitelist tests", ^{
     });
 });
 
+describe(@"Header tests", ^{
+    it(@"Header alg mismatch should fail verify", ^{
+        NSString *algorithmName = @"HS256";
+        NSString *secret = @"secret";
+        //Header specifies HS512
+        NSString *message = @"eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
+
+        
+        JWTBuilder *builder = [JWT decodeMessage:message].algorithmName(algorithmName).secret(secret);
+        
+        NSDictionary *decoded = builder.decode;
+        
+        [[builder.jwtError shouldNot] beNil];
+        [[theValue(builder.jwtError.code) should] equal:theValue(JWTUnsupportedAlgorithmError)];
+        [[decoded should] beNil];
+        
+    });
+});
+
 SPEC_END
 
 
