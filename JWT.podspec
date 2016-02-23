@@ -11,5 +11,5 @@ Pod::Spec.new do |s|
   s.source_files = 'JWT/**/*.{h,m}'
   s.requires_arc = true
 
-  s.dependency 'Base64', '~> 1.0.1'
+  s.dependency 'Base64', '~> 1.1.2'
 end
