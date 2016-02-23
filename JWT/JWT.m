@@ -502,15 +502,15 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 
 - (NSString *)encode {
     NSString *result = nil;
-    result = [self encodePayload];
+    self.jwtError = nil;
+    result = [self encodeHelper];
     return result;
 }
 
 - (NSDictionary *)decode {
     NSDictionary *result = nil;
-    NSError *error = nil;
-    result = [self decodeMessage:self.jwtMessage withSecret:self.jwtSecret withTrustedClaimsSet:self.jwtClaimsSet withError:&error withForcedAlgorithmByName:self.jwtAlgorithmName withForcedOption:self.jwtOptions.boolValue withAlgorithmWhiteList:self.algorithmWhitelist];
-    self.jwtError = error;
+    self.jwtError = nil;
+    result = [self decodeHelper];
     
     return result;
 }
@@ -519,7 +519,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 
 #pragma mark - Encode Helpers
 
-- (NSString *)encodePayload
+- (NSString *)encodeHelper
 {
     if (!self.jwtAlgorithm) {
         self.jwtError = [JWT errorWithCode:JWTUnspecifiedAlgorithmError];
@@ -583,22 +583,23 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 
 #pragma mark - Decode Helpers
 
-- (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withTrustedClaimsSet:(JWTClaimsSet *)theTrustedClaimsSet withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName withForcedOption:(BOOL)theForcedOption withAlgorithmWhiteList:(NSSet *)theWhitelist
+- (NSDictionary *)decodeHelper
 {
-    NSDictionary *dictionary = [self decodeMessage:theMessage withSecret:theSecret withError:theError withForcedAlgorithmByName:theAlgorithmName skipVerification:theForcedOption whitelist:theWhitelist];
+    NSError *error = nil;
+    NSDictionary *dictionary = [self decodeMessage:self.jwtMessage withSecret:self.jwtSecret withError:&error withForcedAlgorithmByName:self.jwtAlgorithmName skipVerification:[self.jwtOptions boolValue] whitelist:self.algorithmWhitelist];
     
-    if (*theError) {
-        // do something
-        return dictionary;
+    if (error) {
+        self.jwtError = error;
+        return nil;
     }
     
-    if (theTrustedClaimsSet) {
-        BOOL claimVerified = [JWTClaimsSetVerifier verifyClaimsSet:[JWTClaimsSetSerializer claimsSetWithDictionary:dictionary[@"payload"]] withTrustedClaimsSet:theTrustedClaimsSet];
+    if (self.jwtClaimsSet) {
+        BOOL claimVerified = [JWTClaimsSetVerifier verifyClaimsSet:[JWTClaimsSetSerializer claimsSetWithDictionary:dictionary[@"payload"]] withTrustedClaimsSet:self.jwtClaimsSet];
         if (claimVerified) {
             return dictionary;
         }
         else {
-            *theError = [JWT errorWithCode:JWTClaimsSetVerificationFailed];
+            self.jwtError = [JWT errorWithCode:JWTClaimsSetVerificationFailed];
             return nil;
         }
     }
