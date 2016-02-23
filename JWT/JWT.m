@@ -515,7 +515,9 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     return result;
 }
 
-#pragma mark - Private Helpers
+#pragma mark - Private
+
+#pragma mark - Encode Helpers
 
 - (NSString *)encodePayload
 {
@@ -531,7 +533,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         [allHeaders addEntriesFromDictionary:self.jwtHeaders];
     }
     
-    NSString *headerSegment = [JWT encodeSegment:[allHeaders copy] withError:nil];
+    NSString *headerSegment = [self encodeSegment:[allHeaders copy] withError:nil];
     
     if (!headerSegment) {
         // encode header segment error
@@ -539,7 +541,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         return nil;
     }
     
-    NSString *payloadSegment = [JWT encodeSegment:self.jwtPayload withError:nil];
+    NSString *payloadSegment = [self encodeSegment:self.jwtPayload withError:nil];
     
     if (!payloadSegment) {
         // encode payment segment error
@@ -552,6 +554,34 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     
     return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
 }
+
+- (NSString *)encodeSegment:(id)theSegment withError:(NSError **)error
+{
+    NSData *encodedSegmentData = nil;
+    
+    if (theSegment) {
+        encodedSegmentData = [NSJSONSerialization dataWithJSONObject:theSegment options:0 error:error];
+    }
+    else {
+        // error!
+        NSError *generatedError = [JWT errorWithCode:JWTInvalidSegmentSerializationError];
+        if (error) {
+            *error = generatedError;
+        }
+        NSLog(@"%@ Could not encode segment: %@", self.class, generatedError.localizedDescription);
+        return nil;
+    }
+    
+    NSString *encodedSegment = nil;
+    
+    if (encodedSegmentData) {
+        encodedSegment = [encodedSegmentData base64UrlEncodedString];
+    }
+    
+    return encodedSegment;
+}
+
+#pragma mark - Decode Helpers
 
 - (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withTrustedClaimsSet:(JWTClaimsSet *)theTrustedClaimsSet withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName withForcedOption:(BOOL)theForcedOption withAlgorithmWhiteList:(NSSet *)theWhitelist
 {
