@@ -32,6 +32,17 @@ it(@"HMAC encodes the payload using RSA256", ^{
     [[result should] equal:@(1)];//@"uC/LeRrOxXhZuYm0MKgmSIzi5Hn9+SMmvQoug3WkK6Q="];
 });
 
+it(@"HMAC encodes the payload Data using RSA256", ^{
+    NSData *payloadData = [NSData dataWithBase64String:[@"payload" base64String]];
+    NSData *secretData = [NSData dataWithBase64String:[@"secret" base64String]];
+    
+    NSData *encodedPayload = [algorithm encodePayloadData:payloadData withSecret:secretData];
+    
+    // not implemented yet, always return nil
+    NSNumber *result  = @([encodedPayload base64String] == nil);
+    [[result should] equal:@(1)];//@"uC/LeRrOxXhZuYm0MKgmSIzi5Hn9+SMmvQoug3WkK6Q="];
+});
+
 it(@"should fail to verify JWT with valid signature and secret - RS256 not implemented yet", ^{
     NSString *secret = @"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDdlatRjRjogo3WojgGHFHYLugdUWAY9iR3fy4arWNA1KoS8kVw33cJibXr8bvwUAUparCwlvdbH6dvEOfou0/gCFQsHUfQrSDv+MuSUMAe8jzKE4qW+jK+xQU9a03GUnKHkkle+Q0pX/g6jXZ7r1/xAK5Do2kQ+X5xK9cipRgEKwIDAQAB";
     NSString *signingInput = @"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9";

@@ -8,7 +8,6 @@
 
 #import <Kiwi/Kiwi.h>
 #import <Base64/MF_Base64Additions.h>
-#import "NSData+JWT.h"
 
 #import "JWTAlgorithmNone.h"
 
@@ -26,6 +25,14 @@ it(@"name is none", ^{
 
 it(@"should not encode payload and return emptry signature instead", ^{
     NSData *encodedPayload = [algorithm encodePayload:@"payload" withSecret:@"secret"];
+    [[[encodedPayload base64Encoding] should] equal:@""];
+});
+
+it(@"should not encode payload data and return emptry signature instead", ^{
+    NSData *payloadData = [NSData dataWithBase64String:[@"payload" base64String]];
+    NSData *secretData = [NSData dataWithBase64String:[@"secret" base64String]];
+    
+    NSData *encodedPayload = [algorithm encodePayloadData:payloadData withSecret:secretData];
     [[[encodedPayload base64Encoding] should] equal:@""];
 });
 
@@ -52,5 +59,7 @@ it(@"should verify JWT with no signature and no secret provided", ^{
     
     [[theValue([algorithm verifySignedInput:signingInput withSignature:signature verificationKey:secret]) should] beTrue];
 });
+
+
 
 SPEC_END

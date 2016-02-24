@@ -362,6 +362,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 @property (copy, nonatomic, readwrite) NSDictionary *jwtHeaders;
 @property (copy, nonatomic, readwrite) JWTClaimsSet *jwtClaimsSet;
 @property (copy, nonatomic, readwrite) NSString *jwtSecret;
+@property (copy, nonatomic, readwrite) NSData *jwtSecretData;
 @property (copy, nonatomic, readwrite) NSError *jwtError;
 @property (strong, nonatomic, readwrite) id<JWTAlgorithm> jwtAlgorithm;
 @property (copy, nonatomic, readwrite) NSString *jwtAlgorithmName;
@@ -373,6 +374,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 @property (copy, nonatomic, readwrite) JWTBuilder *(^headers)(NSDictionary *headers);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^secret)(NSString *secret);
+@property (copy, nonatomic, readwrite) JWTBuilder *(^secretData)(NSData *secretData);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^algorithmName)(NSString *algorithmName);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^options)(NSNumber *options);
@@ -414,6 +416,11 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 
 - (instancetype)secret:(NSString *)secret {
     self.jwtSecret = secret;
+    return self;
+}
+
+- (instancetype)secretData:(NSData *)secretData {
+    self.jwtSecretData = secretData;
     return self;
 }
 
@@ -476,6 +483,10 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 
         self.secret = ^(NSString *secret) {
             return [weakSelf secret:secret];
+        };
+        
+        self.secretData = ^(NSData *secretData) {
+            return [weakSelf secretData:secretData];
         };
 
         self.algorithm = ^(id<JWTAlgorithm> algorithm) {
@@ -550,7 +561,14 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     }
     
     NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
-    NSString *signedOutput = [[self.jwtAlgorithm encodePayload:signingInput withSecret:self.jwtSecret] base64UrlEncodedString];
+    
+    NSString *signedOutput;
+    
+    if (self.jwtSecretData && [self.jwtAlgorithm respondsToSelector:@selector(encodePayloadData:withSecret:)]) {
+        signedOutput = [[self.jwtAlgorithm encodePayloadData:[signingInput dataUsingEncoding:NSUTF8StringEncoding] withSecret:self.jwtSecretData] base64UrlEncodedString];
+    } else {
+        signedOutput = [[self.jwtAlgorithm encodePayload:signingInput withSecret:self.jwtSecret] base64UrlEncodedString];
+    }
     
     return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
 }

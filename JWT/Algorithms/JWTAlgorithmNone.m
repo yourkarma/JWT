@@ -18,6 +18,11 @@
     return [NSData data];
 }
 
+- (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData
+{
+    return [NSData data];
+}
+
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey
 {
     //if a secret is provided, this isn't the None algorithm

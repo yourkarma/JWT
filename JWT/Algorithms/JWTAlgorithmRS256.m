@@ -20,6 +20,11 @@
   return nil;
 }
 
+- (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData
+{
+    return nil;
+}
+
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey
 {
     //Algorithm isn't implemented

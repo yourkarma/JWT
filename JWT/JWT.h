@@ -169,6 +169,11 @@ typedef NS_ENUM(NSInteger, JWTError) {
 @property (copy, nonatomic, readonly) NSString *jwtSecret;
 
 /**
+ The verification key to use when encoding/decoding a JWT in data form
+ */
+@property (copy, nonatomic, readonly) NSData *jwtSecretData;
+
+/**
  Contains the error that occured during an operation, or nil if no error occured
  */
 @property (copy, nonatomic, readonly) NSError *jwtError;
@@ -219,6 +224,11 @@ typedef NS_ENUM(NSInteger, JWTError) {
  Sets jwtSecret and returns the JWTBuilder to allow for method chaining
  */
 @property (copy, nonatomic, readonly) JWTBuilder *(^secret)(NSString *secret);
+
+/**
+ Sets jwtSecretData and returns the JWTBuilder to allow for method chaining
+ */
+@property (copy, nonatomic, readonly) JWTBuilder *(^secretData)(NSData *secretData);
 
 /**
  Sets jwtAlgorithm and returns the JWTBuilder to allow for method chaining

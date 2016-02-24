@@ -29,6 +29,14 @@ it(@"HMAC encodes the payload using SHA256", ^{
     [[[encodedPayload base64String] should] equal:@"uC/LeRrOxXhZuYm0MKgmSIzi5Hn9+SMmvQoug3WkK6Q="];
 });
 
+it(@"HMAC encodes the payload data using SHA256", ^{
+    NSData *payloadData = [NSData dataWithBase64String:[@"payload" base64String]];
+    NSData *secretData = [NSData dataWithBase64String:[@"secret" base64String]];
+    
+    NSData *encodedPayload = [algorithm encodePayloadData:payloadData withSecret:secretData];
+    [[[encodedPayload base64String] should] equal:@"uC/LeRrOxXhZuYm0MKgmSIzi5Hn9+SMmvQoug3WkK6Q="];
+});
+
 it(@"should verify JWT with valid signature and secret", ^{
     NSString *secret = @"secret";
     NSString *signingInput = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9";

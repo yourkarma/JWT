@@ -29,6 +29,13 @@
     return [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
 }
 
+- (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData
+{
+    unsigned char cHMAC[CC_SHA512_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA512, theSecretData.bytes, [theSecretData length], theStringData.bytes, [theStringData length], cHMAC);
+    return [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+}
+
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey
 {
     NSString *expectedSignature = [[self encodePayload:input withSecret:verificationKey] base64UrlEncodedString];
