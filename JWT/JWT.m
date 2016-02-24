@@ -12,8 +12,6 @@
 #import "JWTAlgorithmHS512.h"
 #import "JWTAlgorithmFactory.h"
 #import "JWTClaimsSetSerializer.h"
-#import "NSString+JWT.h"
-#import "NSData+JWT.h"
 #import "JWTClaimsSetVerifier.h"
 
 static NSString *JWTErrorDomain = @"com.karma.jwt";
@@ -61,6 +59,14 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         }
         case JWTUnspecifiedAlgorithmError: {
             resultString = @"Unspecified algorithm! You must explicitly choose an algorithm to decode with.";
+            break;
+        }
+        case JWTDecodingHeaderError: {
+            resultString = @"Error decoding the JWT Header segment.";
+            break;
+        }
+        case JWTDecodingPayloadError: {
+            resultString = @"Error decoding the JWT Payload segment.";
             break;
         }
         default: {
@@ -257,7 +263,16 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     NSString *signedPart = parts[2];
     
     // decode headerPart
-    NSDictionary *header = (NSDictionary *)headerPart.jsonObjectFromBase64String;
+    NSError *jsonError = nil;
+    NSData *headerData = [NSData dataWithBase64String:headerPart];
+    id headerJSON = [NSJSONSerialization JSONObjectWithData:headerData
+                                                    options:0
+                                                      error:&jsonError];
+    if (jsonError) {
+        *theError = [self errorWithCode:JWTDecodingHeaderError];
+        return nil;
+    }
+    NSDictionary *header = (NSDictionary *)headerJSON;
     if (!header) {
         *theError = [self errorWithCode:JWTNoHeaderError];
         return nil;
@@ -308,7 +323,16 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     }
     
     // and decode payload
-    NSDictionary *payload = (NSDictionary *)payloadPart.jsonObjectFromBase64String;
+    jsonError = nil;
+    NSData *payloadData = [NSData dataWithBase64String:payloadPart];
+    id payloadJSON = [NSJSONSerialization JSONObjectWithData:payloadData
+                                                    options:0
+                                                      error:&jsonError];
+    if (jsonError) {
+        *theError = [self errorWithCode:JWTDecodingPayloadError];
+        return nil;
+    }
+    NSDictionary *payload = (NSDictionary *)payloadJSON;
     
     if (!payload) {
         *theError = [self errorWithCode:JWTNoPayloadError];
@@ -640,7 +664,16 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     NSString *signedPart = parts[2];
     
     // decode headerPart
-    NSDictionary *header = (NSDictionary *)headerPart.jsonObjectFromBase64String;
+    NSError *jsonError = nil;
+    NSData *headerData = [NSData dataWithBase64String:headerPart];
+    id headerJSON = [NSJSONSerialization JSONObjectWithData:headerData
+                                                    options:0
+                                                      error:&jsonError];
+    if (jsonError) {
+        *theError = [JWT errorWithCode:JWTDecodingHeaderError];
+        return nil;
+    }
+    NSDictionary *header = (NSDictionary *)headerJSON;
     if (!header) {
         *theError = [JWT errorWithCode:JWTNoHeaderError];
         return nil;
@@ -691,7 +724,16 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     }
     
     // and decode payload
-    NSDictionary *payload = (NSDictionary *)payloadPart.jsonObjectFromBase64String;
+    jsonError = nil;
+    NSData *payloadData = [NSData dataWithBase64String:payloadPart];
+    id payloadJSON = [NSJSONSerialization JSONObjectWithData:payloadData
+                                                     options:0
+                                                       error:&jsonError];
+    if (jsonError) {
+        *theError = [JWT errorWithCode:JWTDecodingPayloadError];
+        return nil;
+    }
+    NSDictionary *payload = (NSDictionary *)payloadJSON;
     
     if (!payload) {
         *theError = [JWT errorWithCode:JWTNoPayloadError];

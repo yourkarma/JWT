@@ -11,8 +11,8 @@
 #import "JWT.h"
 #import "JWTAlgorithmFactory.h"
 #import "JWTClaimsSetSerializer.h"
-#import "NSData+JWT.h"
-#import "NSString+JWT.h"
+
+#import <Base64/MF_Base64Additions.h>
 
 SPEC_BEGIN(JWTSpec)
 

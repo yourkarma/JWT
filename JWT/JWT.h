@@ -21,7 +21,9 @@ typedef NS_ENUM(NSInteger, JWTError) {
     JWTEncodingPayloadError,
     JWTClaimsSetVerificationFailed,
     JWTInvalidSegmentSerializationError,
-    JWTUnspecifiedAlgorithmError
+    JWTUnspecifiedAlgorithmError,
+    JWTDecodingHeaderError,
+    JWTDecodingPayloadError,
 };
 
 @class JWTBuilder;

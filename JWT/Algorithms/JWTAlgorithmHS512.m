@@ -10,7 +10,8 @@
 #import <CommonCrypto/CommonHMAC.h>
 
 #import "JWTAlgorithmHS512.h"
-#import "NSData+JWT.h"
+
+#import <Base64/MF_Base64Additions.h>
 
 @implementation JWTAlgorithmHS512
 
