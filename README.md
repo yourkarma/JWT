@@ -22,9 +22,39 @@ Add the following to your [CocoaPods][] Podfile:
 
 # Usage
 
-You can encode arbitrary payloads like so:
+## JWTBuilder
 
-    [JWT encodePayload:@{@"foo": @"bar"} withSecret:@"secret"];
+To encode & decode JWTs, use fluent style with the `JWTBuilder` interface
+
+    + (JWTBuilder *)encodePayload:(NSDictionary *)payload;
+    + (JWTBuilder *)encodeClaimsSet:(JWTClaimsSet *)claimsSet;
+    + (JWTBuilder *)decodeMessage:(NSString *)message;
+
+As you can see, JWTBuilder has interface from both decoding and encoding.
+
+Note: some attributes are encode-only or decode-only.
+
+    #pragma mark - Encode only
+    *payload;
+    *headers;
+    *algorithm;
+
+    #pragma mark - Decode only
+    *message
+    *options // as forcedOption from jwt decode functions interface.
+    *whitelist  //optional array of algorithm names to whitelist for decoding
+
+You can inspect JWTBuilder by `jwt`-prefixed attributes.
+
+You can set JWTBuilder attributes by fluent style (block interface).
+
+You can encode arbitrary payloads like so:
+	
+    NSDictionary *payload = @{@"foo" : @"bar"};
+    NSString *secret = @"secret";
+    id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:@"HS256"];
+    
+    [JWTBuilder encodePayload:payload].secret(@"secret").algorithm(algorithm).encode;
 
 If you're using reserved claim names you can encode your claim set like so (all properties are optional):
 
@@ -37,7 +67,19 @@ If you're using reserved claim names you can encode your claim set like so (all 
     claimsSet.issuedAt = [NSDate date];
     claimsSet.identifier = @"thisisunique";
     claimsSet.type = @"test";
-    [JWT encodeClaimsSet:claimsSet withSecret:@"secret"];
+    
+    NSString *secret = @"secret";
+    id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:@"HS256"];
+    
+    [JWTBuilder encodeClaimsSet:claimsSet].secret(secret).algorithm(algorithm).encode;
+
+You can decode a JWT like so:
+
+	NSString *jwtToken = @"header.payload.signature";
+	NSString *secret = @"secret";
+	NSString *algorithmName = @"HS256"; //Must specify an algorithm to use
+	
+	NSDictionary *payload = [JWTBuilder decodeMessage:jwtToken].secret(secret).algorithmName(algorithmName).decode;
 
 If you want to check claims while decoding, you could use next sample of code (all properties are optional):
     
@@ -56,7 +98,7 @@ If you want to check claims while decoding, you could use next sample of code (a
     NSString *secret = @"secret";
     NSString *algorithmName = @"chosenAlgorithm"
 
-    JWTBuilder *builder = [JWT decodeMessage:jwt].secret(secret).algorithmName(algorithmName).claimsSet(trustedClaimsSet);
+    JWTBuilder *builder = [JWTBuilder decodeMessage:jwt].secret(secret).algorithmName(algorithmName).claimsSet(trustedClaimsSet);
     NSDictionary *payload = builder.decode;
     
     if (!builder.jwtError) {
@@ -65,33 +107,21 @@ If you want to check claims while decoding, you could use next sample of code (a
     else {
         // handle error
     }
+    
+If you want to enforce a whitelist of valid algorithms:
 
-## Fluent Style
+	NSArray *whitelist = @[@"HS256", @"HS512"];
+	NSString *jwtToken = @"header.payload.signature";
+	NSString *secret = @"secret";
+	NSString *algorithmName = @"HS256";
+	
+	//Returns nil
+	NSDictionary *payload = [JWTBuilder decodeMessage:jwtToken].secret(secret).algorithmName(algorithmName).whitelist(@[]).decode;
+	
+	//Returns the decoded payload
+	NSDictionary *payload = [JWTBuilder decodeMessage:jwtToken].secret(secret).algorithmName(algorithmName).whitelist(whitelist).decode;
 
-If you want to use fluent style, you could start with `JWTBuilder` interface and use it via JWT methods
-
-    + (JWTBuilder *)encodePayload:(NSDictionary *)payload;
-    + (JWTBuilder *)encodeClaimsSet:(JWTClaimsSet *)claimsSet;
-    + (JWTBuilder *)decodeMessage:(NSString *)message;
-
-As you can see, JWTBuilder has interface from both decoding and encoding.
-
-Note: some attributes are encode-only or decode-only.
-
-    #pragma mark - Encode only
-    *payload;
-    *headers;
-    *algorithm;
-
-    #pragma mark - Decode only
-    *message
-    *options // as forcedOption from jwt decode functions interface.
-
-You can inspect JWTBuilder by `jwt`-prefixed attributes.
-
-You can set JWTBuilder attributes by fluent style (block interface).
-
-### Fluent Example
+### Encode / Decode Example
 
     // suppose, that you create ClaimsSet
     JWTClaimsSet *claimsSet = [[JWTClaimsSet alloc] init];
@@ -104,8 +134,10 @@ You can set JWTBuilder attributes by fluent style (block interface).
     NSString *secret = @"secret";
     NSString *algorithmName = @"HS384";
     NSDictionary *headers = @{@"custom":@"value"};
+    id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:algorithmName];
+    
     JWTBuilder *encodeBuilder = [JWT encodeClaimsSet:claimsSet];
-    NSString *encodedResult = encodeBuilder.secret(secret).algorithmName(algorithmName).headers(headers).encode;
+    NSString *encodedResult = encodeBuilder.secret(secret).algorithm(algorithm).headers(headers).encode;
     
     if (encodeBuilder.jwtError) {
         // handle error
