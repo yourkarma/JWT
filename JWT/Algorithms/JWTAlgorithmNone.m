@@ -38,4 +38,17 @@
     return YES;
 }
 
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData
+{
+    if (verificationKeyData && verificationKeyData.length > 0) {
+        return NO;
+    }
+    
+    if (signature && signature.length > 0) {
+        return NO;
+    }
+    
+    return YES;
+}
+
 @end

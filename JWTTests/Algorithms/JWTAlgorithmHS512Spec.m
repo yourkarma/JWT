@@ -38,7 +38,6 @@ it(@"HMAC encodes the payload data using SHA512", ^{
 });
 
 it(@"should verify JWT with valid signature and secret", ^{
-    JWTAlgorithmHS512 *algorithm = [[JWTAlgorithmHS512 alloc] init];
     NSString *secret = @"secret";
     NSString *signingInput = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9";
     NSString *signature = @"SerC5MWQIs3fRH6ZD7gKKbq51TsyydXTvl23WpD9sA085SzQ7pK6M0TnYjFITNUkwuniGG5Is2OKJCEIHPn1Kg";
@@ -60,6 +59,30 @@ it(@"should fail to verify JWT with invalid signature", ^{
     NSString *signature = nil;
     
     [[theValue([algorithm verifySignedInput:signingInput withSignature:signature verificationKey:secret]) should] beFalse];
+});
+
+it(@"should verify JWT with valid signature and secret data", ^{
+    NSData *secretData = [NSData dataWithBase64String:[@"secret" base64String]];
+    NSString *signingInput = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9";
+    NSString *signature = @"SerC5MWQIs3fRH6ZD7gKKbq51TsyydXTvl23WpD9sA085SzQ7pK6M0TnYjFITNUkwuniGG5Is2OKJCEIHPn1Kg";
+    
+    [[theValue([algorithm verifySignedInput:signingInput withSignature:signature verificationKeyData:secretData]) should] beTrue];
+});
+
+it(@"should fail to verify JWT with invalid secret data", ^{
+    NSData *secretData = [NSData dataWithBase64String:[@"notTheSecret" base64String]];
+    NSString *signingInput = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9";
+    NSString *signature = @"SerC5MWQIs3fRH6ZD7gKKbq51TsyydXTvl23WpD9sA085SzQ7pK6M0TnYjFITNUkwuniGG5Is2OKJCEIHPn1Kg";
+    
+    [[theValue([algorithm verifySignedInput:signingInput withSignature:signature verificationKeyData:secretData]) should] beFalse];
+});
+
+it(@"should fail to verify JWT with invalid signature data", ^{
+    NSData *secretData = [NSData dataWithBase64String:[@"secret" base64String]];
+    NSString *signingInput = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9";
+    NSString *signature = nil;
+    
+    [[theValue([algorithm verifySignedInput:signingInput withSignature:signature verificationKeyData:secretData]) should] beFalse];
 });
 
 SPEC_END

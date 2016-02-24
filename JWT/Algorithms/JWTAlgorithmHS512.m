@@ -44,4 +44,13 @@
     return [expectedSignature isEqualToString:signature];
 }
 
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData {
+    const char *cString = [input cStringUsingEncoding:NSUTF8StringEncoding];
+    NSData *inputData = [NSData dataWithBytes:cString length:strlen(cString)];
+    
+    NSString *expectedSignature = [[self encodePayloadData:inputData withSecret:verificationKeyData] base64UrlEncodedString];
+    
+    return [expectedSignature isEqualToString:signature];
+}
+
 @end

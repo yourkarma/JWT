@@ -60,6 +60,33 @@ it(@"should verify JWT with no signature and no secret provided", ^{
     [[theValue([algorithm verifySignedInput:signingInput withSignature:signature verificationKey:secret]) should] beTrue];
 });
 
+it(@"should not verify JWT with a secret data provided", ^{
+    NSString *secret = @"secret";
+    NSData *secretData = [NSData dataWithBase64String:[secret base64String]];
+    NSString *signingInput = @"eyJhbGciOiJub25lIn0.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ";
+    NSString *signature = nil;
+    
+    [[theValue([algorithm verifySignedInput:signingInput withSignature:signature verificationKeyData:secretData]) should] beFalse];
+});
+
+it(@"should not verify JWT with a signature data provided", ^{
+    NSString *secret = nil;
+    NSData *secretData = [NSData dataWithBase64String:[secret base64String]];
+    NSString *signingInput = @"eyJhbGciOiJub25lIn0.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ";
+    NSString *signature = @"signed";
+    
+    [[theValue([algorithm verifySignedInput:signingInput withSignature:signature verificationKeyData:secretData]) should] beFalse];
+});
+
+it(@"should verify JWT with no signature and no secret data provided", ^{
+    NSString *secret = nil;
+    NSData *secretData = [NSData dataWithBase64String:[secret base64String]];
+    NSString *signingInput = @"eyJhbGciOiJub25lIn0.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ";
+    NSString *signature = nil;
+    
+    [[theValue([algorithm verifySignedInput:signingInput withSignature:signature verificationKeyData:secretData]) should] beTrue];
+});
+
 
 
 SPEC_END

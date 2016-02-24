@@ -628,7 +628,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 - (NSDictionary *)decodeHelper
 {
     NSError *error = nil;
-    NSDictionary *dictionary = [self decodeMessage:self.jwtMessage withSecret:self.jwtSecret withError:&error withForcedAlgorithmByName:self.jwtAlgorithmName skipVerification:[self.jwtOptions boolValue] whitelist:self.algorithmWhitelist];
+    NSDictionary *dictionary = [self decodeMessage:self.jwtMessage withSecret:self.jwtSecret withSecretData:self.jwtSecretData withError:&error withForcedAlgorithmByName:self.jwtAlgorithmName skipVerification:[self.jwtOptions boolValue] whitelist:self.algorithmWhitelist];
     
     if (error) {
         self.jwtError = error;
@@ -649,7 +649,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     return dictionary;
 }
 
-- (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName skipVerification:(BOOL)skipVerification whitelist:(NSSet *)theWhitelist
+- (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withSecretData:(NSData *)secretData withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName skipVerification:(BOOL)skipVerification whitelist:(NSSet *)theWhitelist
 {
     NSArray *parts = [theMessage componentsSeparatedByString:@"."];
     
@@ -715,7 +715,14 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         
         // Verify the signed part
         NSString *signingInput = [@[headerPart, payloadPart] componentsJoinedByString:@"."];
-        BOOL signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKey:theSecret];
+        BOOL signatureValid = NO;
+        
+        
+        if (secretData && [self.jwtAlgorithm respondsToSelector:@selector(verifySignedInput:withSignature:verificationKeyData:)]) {
+            signatureValid = [self.jwtAlgorithm verifySignedInput:signingInput withSignature:signedPart verificationKeyData:secretData];
+        } else {
+            signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKey:theSecret];
+        }
         
         if (!signatureValid) {
             *theError = [JWT errorWithCode:JWTInvalidSignatureError];

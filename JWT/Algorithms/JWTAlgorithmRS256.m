@@ -31,4 +31,9 @@
     return NO;
 }
 
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData
+{
+    return NO;
+}
+
 @end

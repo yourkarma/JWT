@@ -41,4 +41,13 @@
  */
 - (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData;
 
+/**
+ Verifies the provided signature using the signed input and verification key (as data)
+ @param input The header and payload encoded string
+ @param signature The JWT provided signature
+ @param verificationKeyData The key data to use for verifying the signature
+ @return YES if the provided signature is valid, NO otherwise
+ */
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData;
+
 @end

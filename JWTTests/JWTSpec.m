@@ -660,6 +660,62 @@ describe(@"Header tests", ^{
     });
 });
 
+describe(@"secretData tests", ^{
+    it(@"should decode with data", ^{
+        NSString *algorithmName = @"HS256";
+        NSString *secret = @"secret";
+        NSData *secretData = [NSData dataWithBase64String:[secret base64String]];
+        NSString *message = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
+        
+        
+        NSDictionary *expectedHeader = @{
+                                         @"alg": @"HS256",
+                                         @"typ": @"JWT"
+                                         };
+        NSDictionary *expectedPayload = @{
+                                          @"sub": @"1234567890",
+                                          @"name": @"John Doe",
+                                          @"admin": @(YES)
+                                          };
+        
+        JWTBuilder *builder = [JWTBuilder decodeMessage:message].algorithmName(algorithmName).secretData(secretData);
+        
+        NSDictionary *decoded = builder.decode;
+        
+        [[builder.jwtError should] beNil];
+        [[decoded shouldNot] beNil];
+        NSDictionary *header = [decoded objectForKey:@"header"];
+        NSDictionary *payload = [decoded objectForKey:@"payload"];
+        
+        [[theValue([header isEqualToDictionary:expectedHeader]) should] beTrue];
+        [[theValue([payload isEqualToDictionary:expectedPayload]) should] beTrue];
+    });
+    it(@"should encode arbitary payloads", ^ {
+        NSString *algorithmName = @"Test";
+        NSString *secret = @"secret";
+        NSData *secretData = [NSData dataWithBase64String:[secret base64String]];
+        NSDictionary *payload = @{@"key": @"value"};
+        
+        NSString *headerSegment = [[NSJSONSerialization dataWithJSONObject:@{@"typ":@"JWT", @"alg":algorithmName} options:0 error:nil] base64UrlEncodedString];
+        
+        NSString *payloadSegment = [[NSJSONSerialization dataWithJSONObject:payload options:0 error:nil] base64UrlEncodedString];
+        
+        NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
+        
+        NSString *signedOutput = @"signed";
+        
+        NSString *jwt = [@[headerSegment, payloadSegment, [signedOutput base64UrlEncodedString]] componentsJoinedByString:@"."];
+        
+        id algorithmMock = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
+        [algorithmMock stub:@selector(name) andReturn:algorithmName];
+        [algorithmMock stub:@selector(encodePayload:withSecret:) andReturn:signedOutput];
+        //        [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withArguments:signingInput, secret];
+        [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withCount:2 arguments:signingInput, secret];
+        
+        [[[JWTBuilder encodePayload:payload].secretData(secretData).algorithm(algorithmMock).encode should] equal:jwt];
+    });
+});
+
 SPEC_END
 
 
