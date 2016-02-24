@@ -169,6 +169,25 @@ If you want to enforce a whitelist of valid algorithms:
         NSLog(@"decoded result: %@", decodedResult);
     }
 
+#### NSData
+You can also encode/decode using a secret that is represented as an NSData object
+
+	//Encode
+	NSData *secretData = <your data>
+	NSString *algorithmName = @"HS384";
+    NSDictionary *headers = @{@"custom":@"value"};
+    id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:algorithmName];
+    
+    JWTBuilder *encodeBuilder = [JWT encodeClaimsSet:claimsSet];
+    NSString *encodedResult = encodeBuilder.secretData(secretData).algorithm(algorithm).headers(headers).encode;
+    
+    //Decode
+    NSString *jwtToken = @"header.payload.signature";
+	NSData *secretData = <your data>
+	NSString *algorithmName = @"HS256"; //Must specify an algorithm to use
+	
+	NSDictionary *payload = [JWTBuilder decodeMessage:jwtToken].secretData(secretData).algorithmName(algorithmName).decode;
+
 # Algorithms
 
 The following algorithms are supported:
