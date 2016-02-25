@@ -12,8 +12,6 @@
 #import "JWTAlgorithmHS512.h"
 #import "JWTAlgorithmFactory.h"
 #import "JWTClaimsSetSerializer.h"
-#import "NSString+JWT.h"
-#import "NSData+JWT.h"
 #import "JWTClaimsSetVerifier.h"
 
 static NSString *JWTErrorDomain = @"com.karma.jwt";
@@ -61,6 +59,14 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         }
         case JWTUnspecifiedAlgorithmError: {
             resultString = @"Unspecified algorithm! You must explicitly choose an algorithm to decode with.";
+            break;
+        }
+        case JWTDecodingHeaderError: {
+            resultString = @"Error decoding the JWT Header segment.";
+            break;
+        }
+        case JWTDecodingPayloadError: {
+            resultString = @"Error decoding the JWT Payload segment.";
             break;
         }
         default: {
@@ -257,7 +263,16 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     NSString *signedPart = parts[2];
     
     // decode headerPart
-    NSDictionary *header = (NSDictionary *)headerPart.jsonObjectFromBase64String;
+    NSError *jsonError = nil;
+    NSData *headerData = [NSData dataWithBase64String:headerPart];
+    id headerJSON = [NSJSONSerialization JSONObjectWithData:headerData
+                                                    options:0
+                                                      error:&jsonError];
+    if (jsonError) {
+        *theError = [self errorWithCode:JWTDecodingHeaderError];
+        return nil;
+    }
+    NSDictionary *header = (NSDictionary *)headerJSON;
     if (!header) {
         *theError = [self errorWithCode:JWTNoHeaderError];
         return nil;
@@ -308,7 +323,16 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     }
     
     // and decode payload
-    NSDictionary *payload = (NSDictionary *)payloadPart.jsonObjectFromBase64String;
+    jsonError = nil;
+    NSData *payloadData = [NSData dataWithBase64String:payloadPart];
+    id payloadJSON = [NSJSONSerialization JSONObjectWithData:payloadData
+                                                    options:0
+                                                      error:&jsonError];
+    if (jsonError) {
+        *theError = [self errorWithCode:JWTDecodingPayloadError];
+        return nil;
+    }
+    NSDictionary *payload = (NSDictionary *)payloadJSON;
     
     if (!payload) {
         *theError = [self errorWithCode:JWTNoPayloadError];
@@ -362,6 +386,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 @property (copy, nonatomic, readwrite) NSDictionary *jwtHeaders;
 @property (copy, nonatomic, readwrite) JWTClaimsSet *jwtClaimsSet;
 @property (copy, nonatomic, readwrite) NSString *jwtSecret;
+@property (copy, nonatomic, readwrite) NSData *jwtSecretData;
 @property (copy, nonatomic, readwrite) NSError *jwtError;
 @property (strong, nonatomic, readwrite) id<JWTAlgorithm> jwtAlgorithm;
 @property (copy, nonatomic, readwrite) NSString *jwtAlgorithmName;
@@ -373,6 +398,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 @property (copy, nonatomic, readwrite) JWTBuilder *(^headers)(NSDictionary *headers);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^secret)(NSString *secret);
+@property (copy, nonatomic, readwrite) JWTBuilder *(^secretData)(NSData *secretData);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^algorithmName)(NSString *algorithmName);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^options)(NSNumber *options);
@@ -414,6 +440,11 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 
 - (instancetype)secret:(NSString *)secret {
     self.jwtSecret = secret;
+    return self;
+}
+
+- (instancetype)secretData:(NSData *)secretData {
+    self.jwtSecretData = secretData;
     return self;
 }
 
@@ -476,6 +507,10 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 
         self.secret = ^(NSString *secret) {
             return [weakSelf secret:secret];
+        };
+        
+        self.secretData = ^(NSData *secretData) {
+            return [weakSelf secretData:secretData];
         };
 
         self.algorithm = ^(id<JWTAlgorithm> algorithm) {
@@ -550,7 +585,14 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     }
     
     NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
-    NSString *signedOutput = [[self.jwtAlgorithm encodePayload:signingInput withSecret:self.jwtSecret] base64UrlEncodedString];
+    
+    NSString *signedOutput;
+    
+    if (self.jwtSecretData && [self.jwtAlgorithm respondsToSelector:@selector(encodePayloadData:withSecret:)]) {
+        signedOutput = [[self.jwtAlgorithm encodePayloadData:[signingInput dataUsingEncoding:NSUTF8StringEncoding] withSecret:self.jwtSecretData] base64UrlEncodedString];
+    } else {
+        signedOutput = [[self.jwtAlgorithm encodePayload:signingInput withSecret:self.jwtSecret] base64UrlEncodedString];
+    }
     
     return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
 }
@@ -586,7 +628,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 - (NSDictionary *)decodeHelper
 {
     NSError *error = nil;
-    NSDictionary *dictionary = [self decodeMessage:self.jwtMessage withSecret:self.jwtSecret withError:&error withForcedAlgorithmByName:self.jwtAlgorithmName skipVerification:[self.jwtOptions boolValue] whitelist:self.algorithmWhitelist];
+    NSDictionary *dictionary = [self decodeMessage:self.jwtMessage withSecret:self.jwtSecret withSecretData:self.jwtSecretData withError:&error withForcedAlgorithmByName:self.jwtAlgorithmName skipVerification:[self.jwtOptions boolValue] whitelist:self.algorithmWhitelist];
     
     if (error) {
         self.jwtError = error;
@@ -607,7 +649,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     return dictionary;
 }
 
-- (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName skipVerification:(BOOL)skipVerification whitelist:(NSSet *)theWhitelist
+- (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withSecretData:(NSData *)secretData withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName skipVerification:(BOOL)skipVerification whitelist:(NSSet *)theWhitelist
 {
     NSArray *parts = [theMessage componentsSeparatedByString:@"."];
     
@@ -622,7 +664,16 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     NSString *signedPart = parts[2];
     
     // decode headerPart
-    NSDictionary *header = (NSDictionary *)headerPart.jsonObjectFromBase64String;
+    NSError *jsonError = nil;
+    NSData *headerData = [NSData dataWithBase64String:headerPart];
+    id headerJSON = [NSJSONSerialization JSONObjectWithData:headerData
+                                                    options:0
+                                                      error:&jsonError];
+    if (jsonError) {
+        *theError = [JWT errorWithCode:JWTDecodingHeaderError];
+        return nil;
+    }
+    NSDictionary *header = (NSDictionary *)headerJSON;
     if (!header) {
         *theError = [JWT errorWithCode:JWTNoHeaderError];
         return nil;
@@ -664,7 +715,14 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         
         // Verify the signed part
         NSString *signingInput = [@[headerPart, payloadPart] componentsJoinedByString:@"."];
-        BOOL signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKey:theSecret];
+        BOOL signatureValid = NO;
+        
+        
+        if (secretData && [self.jwtAlgorithm respondsToSelector:@selector(verifySignedInput:withSignature:verificationKeyData:)]) {
+            signatureValid = [self.jwtAlgorithm verifySignedInput:signingInput withSignature:signedPart verificationKeyData:secretData];
+        } else {
+            signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKey:theSecret];
+        }
         
         if (!signatureValid) {
             *theError = [JWT errorWithCode:JWTInvalidSignatureError];
@@ -673,7 +731,16 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     }
     
     // and decode payload
-    NSDictionary *payload = (NSDictionary *)payloadPart.jsonObjectFromBase64String;
+    jsonError = nil;
+    NSData *payloadData = [NSData dataWithBase64String:payloadPart];
+    id payloadJSON = [NSJSONSerialization JSONObjectWithData:payloadData
+                                                     options:0
+                                                       error:&jsonError];
+    if (jsonError) {
+        *theError = [JWT errorWithCode:JWTDecodingPayloadError];
+        return nil;
+    }
+    NSDictionary *payload = (NSDictionary *)payloadJSON;
     
     if (!payload) {
         *theError = [JWT errorWithCode:JWTNoPayloadError];

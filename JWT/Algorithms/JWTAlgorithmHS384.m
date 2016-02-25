@@ -10,7 +10,8 @@
 #import <CommonCrypto/CommonHMAC.h>
 
 #import "JWTAlgorithmHS384.h"
-#import "NSData+JWT.h"
+
+#import <Base64/MF_Base64Additions.h>
 
 @implementation JWTAlgorithmHS384
 
@@ -29,9 +30,25 @@
     return [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
 }
 
+- (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData
+{
+    unsigned char cHMAC[CC_SHA384_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA384, theSecretData.bytes, [theSecretData length], theStringData.bytes, [theStringData length], cHMAC);
+    return [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+}
+
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey
 {
     NSString *expectedSignature = [[self encodePayload:input withSecret:verificationKey] base64UrlEncodedString];
+    
+    return [expectedSignature isEqualToString:signature];
+}
+
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData {
+    const char *cString = [input cStringUsingEncoding:NSUTF8StringEncoding];
+    NSData *inputData = [NSData dataWithBytes:cString length:strlen(cString)];
+    
+    NSString *expectedSignature = [[self encodePayloadData:inputData withSecret:verificationKeyData] base64UrlEncodedString];
     
     return [expectedSignature isEqualToString:signature];
 }
