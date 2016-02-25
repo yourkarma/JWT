@@ -702,15 +702,17 @@ describe(@"secretData tests", ^{
         
         NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
         
+        NSData *signingInputData = [NSData dataWithBase64UrlEncodedString:[signingInput base64UrlEncodedString]];
+        
         NSString *signedOutput = @"signed";
         
         NSString *jwt = [@[headerSegment, payloadSegment, [signedOutput base64UrlEncodedString]] componentsJoinedByString:@"."];
         
         id algorithmMock = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
         [algorithmMock stub:@selector(name) andReturn:algorithmName];
-        [algorithmMock stub:@selector(encodePayload:withSecret:) andReturn:signedOutput];
-        //        [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withArguments:signingInput, secret];
-        [[algorithmMock should] receive:@selector(encodePayload:withSecret:) andReturn:signedOutput withCount:2 arguments:signingInput, secret];
+        [algorithmMock stub:@selector(encodePayloadData:withSecret:) andReturn:signedOutput];
+
+        [[algorithmMock should] receive:@selector(encodePayloadData:withSecret:) andReturn:signedOutput withCount:1 arguments:signingInputData, secretData];
         
         [[[JWTBuilder encodePayload:payload].secretData(secretData).algorithm(algorithmMock).encode should] equal:jwt];
     });
