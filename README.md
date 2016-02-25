@@ -12,6 +12,21 @@ A [JSON Web Token][] implementation in Objective-C.
 
 [JSON Web Token]: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html
 
+# What's new in Version 2.0
+Old plain style deprecated.
+Use modern fluent style instead.
+
+```
+    NSDictionary *payload = @{@"foo" : @"bar"};
+    NSString *secret = @"secret";
+    id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:@"HS256"];
+    // Deprecated
+    [JWT encodePayload:payload withSecret:secret algorithm:algorithm];
+
+    // Modern
+    [JWTBuilder encodePayload:payload].secret(@"secret").algorithm(algorithm).encode;
+```
+
 # Installation
 
 Add the following to your [CocoaPods][] Podfile:
