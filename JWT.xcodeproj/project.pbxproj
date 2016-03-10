@@ -33,6 +33,7 @@
 		A1951DD51758990800AF73D9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A1951DD31758990800AF73D9 /* InfoPlist.strings */; };
 		A1951DE217589BC000AF73D9 /* JWTSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A1951DE117589BC000AF73D9 /* JWTSpec.m */; };
 		A1951DE517589BCF00AF73D9 /* JWT.m in Sources */ = {isa = PBXBuildFile; fileRef = A1951DE417589BCF00AF73D9 /* JWT.m */; };
+		F7E27DDE1C922A0D00AA980D /* JWTAlgorithmRS256Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E27DDD1C922A0D00AA980D /* JWTAlgorithmRS256Tests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +103,7 @@
 		A1951DE317589BCF00AF73D9 /* JWT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWT.h; sourceTree = "<group>"; };
 		A1951DE417589BCF00AF73D9 /* JWT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWT.m; sourceTree = "<group>"; };
 		D853DD405CE1F88C2A0743B4 /* Pods-JWTTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JWTTests/Pods-JWTTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F7E27DDD1C922A0D00AA980D /* JWTAlgorithmRS256Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmRS256Tests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +173,7 @@
 				042AC6B81C66226100BEA78D /* JWTAlgorithmHS512Spec.m */,
 				042AC6B91C66226100BEA78D /* JWTAlgorithmNoneSpec.m */,
 				042AC6BA1C66226100BEA78D /* JWTAlgorithmRS256Spec.m */,
+				F7E27DDD1C922A0D00AA980D /* JWTAlgorithmRS256Tests.m */,
 			);
 			path = Algorithms;
 			sourceTree = "<group>";
@@ -464,6 +467,7 @@
 				042AC6BF1C66226100BEA78D /* JWTAlgorithmHS512Spec.m in Sources */,
 				042AC6C51C66230600BEA78D /* JWTAlgorithmHS384Spec.m in Sources */,
 				042AC6C31C66226100BEA78D /* JWTClaimsSetSpec.m in Sources */,
+				F7E27DDE1C922A0D00AA980D /* JWTAlgorithmRS256Tests.m in Sources */,
 				042AC6C11C66226100BEA78D /* JWTAlgorithmRS256Spec.m in Sources */,
 				A1951DE217589BC000AF73D9 /* JWTSpec.m in Sources */,
 				042AC6BE1C66226100BEA78D /* JWTAlgorithmHS256Spec.m in Sources */,
