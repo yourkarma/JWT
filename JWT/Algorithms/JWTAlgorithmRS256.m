@@ -9,7 +9,6 @@
 #import "JWTAlgorithmRS256.h"
 #import "MF_Base64Additions.h"
 #import <CommonCrypto/CommonCrypto.h>
-#import <CommonCrypto/CommonHMAC.h>
 
 @implementation JWTAlgorithmRS256
 
@@ -21,46 +20,26 @@
   return nil;
 }
 
-- (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData
-{
+- (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData {
     return nil;
 }
 
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey
-{
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey {
     NSData *certificateData = [NSData dataWithBase64String:verificationKey];
     return [self verifySignedInput:input
                      withSignature:signature
                verificationKeyData:certificateData];
 }
 
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData
-{
-    NSData *signatureVerificationInputData = [input dataUsingEncoding:NSUTF8StringEncoding];
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData {
+    NSData *signedData = [input dataUsingEncoding:NSUTF8StringEncoding];
     NSData *signatureData = [NSData dataWithBase64UrlEncodedString:signature];
     SecKeyRef publicKey = [self publicKeyFromCertificate:verificationKeyData];
-    BOOL signatureOk = PKCSVerifyBytesSHA256withRSA(signatureVerificationInputData, signatureData, publicKey);
+    BOOL signatureOk = PKCSVerifyBytesSHA256withRSA(signedData, signatureData, publicKey);
     return signatureOk;
 }
 
 #pragma mark - Private
-
-BOOL PKCSVerifyBytesSHA256withRSA(NSData* plainData, NSData* signature, SecKeyRef publicKey) {
-    uint8_t digest[CC_SHA256_DIGEST_LENGTH];
-    if (!CC_SHA256([plainData bytes], (CC_LONG)[plainData length], digest))
-        return NO;
-
-    uint8_t *signatureBytes = [signature bytes];
-    size_t signatureLength = [signature length];
-    OSStatus status = SecKeyRawVerify(publicKey,
-            kSecPaddingPKCS1SHA256,
-            digest,
-            CC_SHA256_DIGEST_LENGTH,
-            signatureBytes,
-            signatureLength);
-//    NSLog(@"status = %li", status);
-    return status == errSecSuccess;
-}
 
 - (SecKeyRef)publicKeyFromCertificate:(NSData *)certificateData {
     SecCertificateRef certificate = SecCertificateCreateWithData(NULL, (__bridge CFDataRef)certificateData);
@@ -71,6 +50,55 @@ BOOL PKCSVerifyBytesSHA256withRSA(NSData* plainData, NSData* signature, SecKeyRe
     SecTrustEvaluate(trust, &resultType);
     SecKeyRef publicKey = SecTrustCopyPublicKey(trust);
     return publicKey;
+}
+
+BOOL PKCSVerifyBytesSHA256withRSA(NSData* plainData, NSData* signature, SecKeyRef publicKey) {
+    size_t signedHashBytesSize = SecKeyGetBlockSize(publicKey);
+    const void* signedHashBytes = [signature bytes];
+
+    size_t hashBytesSize = CC_SHA256_DIGEST_LENGTH;
+    uint8_t* hashBytes = malloc(hashBytesSize);
+    if (!CC_SHA256([plainData bytes], (CC_LONG)[plainData length], hashBytes)) {
+        return nil;
+    }
+
+    OSStatus status = SecKeyRawVerify(publicKey,
+            kSecPaddingPKCS1SHA256,
+            hashBytes,
+            hashBytesSize,
+            signedHashBytes,
+            signedHashBytesSize);
+
+    return status == errSecSuccess;
+}
+
+NSData* PKCSSignBytesSHA256withRSA(NSData* plainData, SecKeyRef privateKey) {
+    size_t signedHashBytesSize = SecKeyGetBlockSize(privateKey);
+    uint8_t* signedHashBytes = malloc(signedHashBytesSize);
+    memset(signedHashBytes, 0x0, signedHashBytesSize);
+
+    size_t hashBytesSize = CC_SHA256_DIGEST_LENGTH;
+    uint8_t* hashBytes = malloc(hashBytesSize);
+    if (!CC_SHA256([plainData bytes], (CC_LONG)[plainData length], hashBytes)) {
+        return nil;
+    }
+
+    SecKeyRawSign(privateKey,
+            kSecPaddingPKCS1SHA256,
+            hashBytes,
+            hashBytesSize,
+            signedHashBytes,
+            &signedHashBytesSize);
+
+    NSData* signedHash = [NSData dataWithBytes:signedHashBytes
+                                        length:(NSUInteger)signedHashBytesSize];
+
+    if (hashBytes)
+        free(hashBytes);
+    if (signedHashBytes)
+        free(signedHashBytes);
+
+    return signedHash;
 }
 
 @end
