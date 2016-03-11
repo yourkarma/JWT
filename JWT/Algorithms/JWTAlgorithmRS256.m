@@ -17,7 +17,7 @@
 }
 
 - (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
-    return [self encodePayloadData:[NSData dataWithBase64UrlEncodedString:theString]
+    return [self encodePayloadData:[theString dataUsingEncoding:NSUTF8StringEncoding]
                         withSecret:[NSData dataWithBase64UrlEncodedString:theSecret]];
 }
 

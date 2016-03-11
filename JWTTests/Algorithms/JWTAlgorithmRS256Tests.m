@@ -22,13 +22,13 @@
 @implementation JWTAlgorithmRS256Tests
 
 - (void)testEncodeCertificateData {
-    NSString *certificateString = [self.privateKeyCertificateData base64UrlEncodedString];
-    NSString *token = [JWTBuilder encodePayload:self.headerAndPayloadDictionary].secret(certificateString).algorithmName(self.algorithmName).encode;
+    NSString *token = [JWTBuilder encodePayload:self.headerAndPayloadDictionary].secretData(self.privateKeyCertificateData).algorithmName(self.algorithmName).encode;
     [self assertToken:token];
 }
 
 - (void)testEncodeCertificateString {
-    NSString *token = [JWTBuilder encodePayload:self.headerAndPayloadDictionary].secretData(self.privateKeyCertificateData).algorithmName(self.algorithmName).encode;
+    NSString *certificateString = [self.privateKeyCertificateData base64UrlEncodedString];
+    NSString *token = [JWTBuilder encodePayload:self.headerAndPayloadDictionary].secret(certificateString).algorithmName(self.algorithmName).encode;
     [self assertToken:token];
 }
 
