@@ -23,6 +23,7 @@
 
 - (void)testEncodeCertificateData {
     NSString *token = [JWTBuilder encodePayload:self.headerAndPayloadDictionary].secretData(self.privateKeyCertificateData).algorithmName(self.algorithmName).encode;
+//    NSLog(@"token = %@", token);
     [self assertToken:token];
 }
 
