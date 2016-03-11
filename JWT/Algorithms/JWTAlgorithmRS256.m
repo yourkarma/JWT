@@ -17,11 +17,17 @@
 }
 
 - (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
-  return nil;
+    return [self encodePayloadData:[NSData dataWithBase64UrlEncodedString:theString]
+                        withSecret:[NSData dataWithBase64UrlEncodedString:theSecret]];
 }
 
 - (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData {
-    return nil;
+    SecIdentityRef identity;
+    SecTrustRef trust;
+    extractIdentityAndTrust((__bridge CFDataRef)theSecretData, &identity, &trust, (__bridge CFStringRef) @"password");
+    SecKeyRef privateKey;
+    SecIdentityCopyPrivateKey(identity, &privateKey);
+    return PKCSSignBytesSHA256withRSA(theStringData, privateKey);
 }
 
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey {
@@ -99,6 +105,54 @@ NSData* PKCSSignBytesSHA256withRSA(NSData* plainData, SecKeyRef privateKey) {
         free(signedHashBytes);
 
     return signedHash;
+}
+
+OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
+        SecIdentityRef *outIdentity,
+        SecTrustRef *outTrust,
+        CFStringRef keyPassword) {
+    OSStatus securityError = errSecSuccess;
+
+
+    const void *keys[] =   { kSecImportExportPassphrase };
+    const void *values[] = { keyPassword };
+    CFDictionaryRef optionsDictionary = NULL;
+
+    /* Create a dictionary containing the passphrase if one
+       was specified.  Otherwise, create an empty dictionary. */
+    optionsDictionary = CFDictionaryCreate(
+            NULL, keys,
+            values, (keyPassword ? 1 : 0),
+            NULL, NULL);  // 1
+
+    CFArrayRef items = NULL;
+    securityError = SecPKCS12Import(inPKCS12Data,
+            optionsDictionary,
+            &items);                    // 2
+
+
+    //
+    if (securityError == 0) {                                   // 3
+        CFDictionaryRef myIdentityAndTrust = CFArrayGetValueAtIndex (items, 0);
+        const void *tempIdentity = NULL;
+        tempIdentity = CFDictionaryGetValue (myIdentityAndTrust,
+                kSecImportItemIdentity);
+        CFRetain(tempIdentity);
+        *outIdentity = (SecIdentityRef)tempIdentity;
+        const void *tempTrust = NULL;
+        tempTrust = CFDictionaryGetValue (myIdentityAndTrust, kSecImportItemTrust);
+
+        CFRetain(tempTrust);
+        *outTrust = (SecTrustRef)tempTrust;
+    }
+
+    if (optionsDictionary)                                      // 4
+        CFRelease(optionsDictionary);
+
+    if (items)
+        CFRelease(items);
+
+    return securityError;
 }
 
 @end
