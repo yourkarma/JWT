@@ -13,6 +13,7 @@
 #import "JWTAlgorithmFactory.h"
 #import "JWTClaimsSetSerializer.h"
 #import "JWTClaimsSetVerifier.h"
+#import "JWTRSAlgorithm.h"
 
 static NSString *JWTErrorDomain = @"com.karma.jwt";
 
@@ -387,6 +388,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 @property (copy, nonatomic, readwrite) JWTClaimsSet *jwtClaimsSet;
 @property (copy, nonatomic, readwrite) NSString *jwtSecret;
 @property (copy, nonatomic, readwrite) NSData *jwtSecretData;
+@property (copy, nonatomic, readwrite) NSString *jwtPrivateKeyCertificatePassphrase;
 @property (copy, nonatomic, readwrite) NSError *jwtError;
 @property (strong, nonatomic, readwrite) id<JWTAlgorithm> jwtAlgorithm;
 @property (copy, nonatomic, readwrite) NSString *jwtAlgorithmName;
@@ -399,6 +401,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 @property (copy, nonatomic, readwrite) JWTBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^secret)(NSString *secret);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^secretData)(NSData *secretData);
+@property (copy, nonatomic, readwrite) JWTBuilder *(^privateKeyCertificatePassphrase)(NSString *privateKeyCertificatePassphrase);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^algorithmName)(NSString *algorithmName);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^options)(NSNumber *options);
@@ -410,7 +413,10 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 
 #pragma mark - Getters
 - (id<JWTAlgorithm>)jwtAlgorithm {
-    return _jwtAlgorithm ? _jwtAlgorithm : [JWTAlgorithmFactory algorithmByName:_jwtAlgorithmName];
+    if (!_jwtAlgorithm) {
+        _jwtAlgorithm = [JWTAlgorithmFactory algorithmByName:_jwtAlgorithmName];
+    }
+    return _jwtAlgorithm;
 }
 
 - (NSDictionary *)jwtPayload {
@@ -445,6 +451,11 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 
 - (instancetype)secretData:(NSData *)secretData {
     self.jwtSecretData = secretData;
+    return self;
+}
+
+- (instancetype)privateKeyCertificatePassphrase:(NSString *)privateKeyCertificatePassphrase {
+    self.jwtPrivateKeyCertificatePassphrase = privateKeyCertificatePassphrase;
     return self;
 }
 
@@ -511,6 +522,10 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         
         self.secretData = ^(NSData *secretData) {
             return [weakSelf secretData:secretData];
+        };
+
+        self.privateKeyCertificatePassphrase = ^(NSString *privateKeyCertificatePassphrase) {
+            return [weakSelf privateKeyCertificatePassphrase:privateKeyCertificatePassphrase];
         };
 
         self.algorithm = ^(id<JWTAlgorithm> algorithm) {
@@ -587,14 +602,22 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
     
     NSString *signedOutput;
-    
+
+    if ([self.jwtAlgorithm conformsToProtocol:@protocol(JWTRSAlgorithm)]) {
+        id<JWTRSAlgorithm> jwtRsAlgorithm = (id <JWTRSAlgorithm>) self.jwtAlgorithm;
+        jwtRsAlgorithm.privateKeyCertificatePassphrase = self.jwtPrivateKeyCertificatePassphrase;
+    }
     if (self.jwtSecretData && [self.jwtAlgorithm respondsToSelector:@selector(encodePayloadData:withSecret:)]) {
         signedOutput = [[self.jwtAlgorithm encodePayloadData:[signingInput dataUsingEncoding:NSUTF8StringEncoding] withSecret:self.jwtSecretData] base64UrlEncodedString];
     } else {
         signedOutput = [[self.jwtAlgorithm encodePayload:signingInput withSecret:self.jwtSecret] base64UrlEncodedString];
     }
-    
-    return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
+
+    if (signedOutput) { // Make sure signing worked (e.g. we may have issues extracting the key from the PKCS12 bundle if passphrase is incorrect)
+        return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
+    } else {
+        return nil;
+    }
 }
 
 - (NSString *)encodeSegment:(id)theSegment withError:(NSError **)error

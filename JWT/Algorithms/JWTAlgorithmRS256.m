@@ -10,7 +10,11 @@
 #import "MF_Base64Additions.h"
 #import <CommonCrypto/CommonCrypto.h>
 
-@implementation JWTAlgorithmRS256
+@implementation JWTAlgorithmRS256 {
+    NSString *_privateKeyCertificatePassphrase;
+}
+
+#pragma mark - JWTAlgorithm
 
 - (NSString *)name {
   return @"RS256";
@@ -22,12 +26,16 @@
 }
 
 - (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData {
-    SecIdentityRef identity;
-    SecTrustRef trust;
-    extractIdentityAndTrust((__bridge CFDataRef)theSecretData, &identity, &trust, (__bridge CFStringRef) @"password");
-    SecKeyRef privateKey;
-    SecIdentityCopyPrivateKey(identity, &privateKey);
-    return PKCSSignBytesSHA256withRSA(theStringData, privateKey);
+    SecIdentityRef identity = nil;
+    SecTrustRef trust = nil;
+    extractIdentityAndTrust((__bridge CFDataRef)theSecretData, &identity, &trust, (__bridge CFStringRef) self.privateKeyCertificatePassphrase);
+    if (identity && trust) {
+        SecKeyRef privateKey;
+        SecIdentityCopyPrivateKey(identity, &privateKey);
+        return PKCSSignBytesSHA256withRSA(theStringData, privateKey);
+    } else {
+        return nil;
+    }
 }
 
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey {
@@ -43,6 +51,16 @@
     SecKeyRef publicKey = [self publicKeyFromCertificate:verificationKeyData];
     BOOL signatureOk = PKCSVerifyBytesSHA256withRSA(signedData, signatureData, publicKey);
     return signatureOk;
+}
+
+#pragma mark - JWTRSAlgorithm
+
+- (NSString *)privateKeyCertificatePassphrase {
+    return _privateKeyCertificatePassphrase;
+}
+
+- (void)setPrivateKeyCertificatePassphrase:(NSString *)privateKeyCertificatePassphrase {
+    _privateKeyCertificatePassphrase = privateKeyCertificatePassphrase;
 }
 
 #pragma mark - Private

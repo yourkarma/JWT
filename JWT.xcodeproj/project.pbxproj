@@ -93,6 +93,7 @@
 		107385814A2EAEDBE3798C02 /* Test certificate and public key 2.pem */ = {isa = PBXFileReference; lastKnownFileType = file.pem; path = "Test certificate and public key 2.pem"; sourceTree = "<group>"; };
 		107388EC556923E02B298D9A /* Test certificate and private key 2.p12 */ = {isa = PBXFileReference; lastKnownFileType = file.p12; path = "Test certificate and private key 2.p12"; sourceTree = "<group>"; };
 		107389116F36F96BF88EB54B /* Test certificate and public key 1.pem */ = {isa = PBXFileReference; lastKnownFileType = file.pem; path = "Test certificate and public key 1.pem"; sourceTree = "<group>"; };
+		10738AC90AFC268600D9C695 /* JWTRSAlgorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTRSAlgorithm.h; sourceTree = "<group>"; };
 		1FD31A232E7A4E6E99D15C23 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		70AED78093B0A8112D5C4A69 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		817B4A02C2E1623BC636A4C2 /* Pods-JWTTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWTTests/Pods-JWTTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -152,6 +153,7 @@
 				042AC69F1C66225400BEA78D /* JWTAlgorithmNone.m */,
 				042AC6A01C66225400BEA78D /* JWTAlgorithmRS256.h */,
 				042AC6A11C66225400BEA78D /* JWTAlgorithmRS256.m */,
+				10738AC90AFC268600D9C695 /* JWTRSAlgorithm.h */,
 			);
 			path = Algorithms;
 			sourceTree = "<group>";
