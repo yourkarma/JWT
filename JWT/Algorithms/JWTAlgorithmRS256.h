@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JWTAlgorithm.h"
+#import "JWTRSAlgorithm.h"
 
-@interface JWTAlgorithmRS256 : NSObject <JWTAlgorithm>
+@interface JWTAlgorithmRS256 : NSObject <JWTRSAlgorithm>
 
 @end

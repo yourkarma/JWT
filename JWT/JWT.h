@@ -176,6 +176,11 @@ typedef NS_ENUM(NSInteger, JWTError) {
 @property (copy, nonatomic, readonly) NSData *jwtSecretData;
 
 /**
+ The passphrase for the PKCS12 blob, which represents the certificate containing the private key for the RS algorithms.
+ */
+@property (copy, nonatomic, readonly) NSString *jwtPrivateKeyCertificatePassphrase;
+
+/**
  Contains the error that occured during an operation, or nil if no error occured
  */
 @property (copy, nonatomic, readonly) NSError *jwtError;
@@ -231,6 +236,11 @@ typedef NS_ENUM(NSInteger, JWTError) {
  Sets jwtSecretData and returns the JWTBuilder to allow for method chaining
  */
 @property (copy, nonatomic, readonly) JWTBuilder *(^secretData)(NSData *secretData);
+
+/**
+ Sets jwtPrivateKeyCertificatePassphrase and returns the JWTBuilder to allow for method chaining
+ */
+@property (copy, nonatomic, readonly) JWTBuilder *(^privateKeyCertificatePassphrase)(NSString *privateKeyCertificatePassphrase);
 
 /**
  Sets jwtAlgorithm and returns the JWTBuilder to allow for method chaining
