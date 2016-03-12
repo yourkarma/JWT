@@ -83,7 +83,7 @@ BOOL PKCSVerifyBytesSHA256withRSA(NSData* plainData, NSData* signature, SecKeyRe
     size_t hashBytesSize = CC_SHA256_DIGEST_LENGTH;
     uint8_t* hashBytes = malloc(hashBytesSize);
     if (!CC_SHA256([plainData bytes], (CC_LONG)[plainData length], hashBytes)) {
-        return nil;
+        return false;
     }
 
     OSStatus status = SecKeyRawVerify(publicKey,
