@@ -114,7 +114,9 @@
 }
 
 - (void)assertToken:(NSString *)token {
-    XCTAssertEqualObjects(token, @"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJoZWFkZXIiOnsiYWxnIjoiUlMyNTYiLCJ0eXAiOiJKV1QifSwicGF5bG9hZCI6eyJoZWxsbyI6IndvcmxkIn19.5_up87yyEBBWWifXQyuUdYHFpxoZB7tiEdUS1sVceI1AcR3WseGoCqHEY2i2KEhm3LWd_TQDksUwGayss4Z-WwneFJy1QQIyLZHkukJRy_FNTVJhPm-l7dKdmMCzVaVarx9MPXDPx94S0PJ29UuNwFu75ZB9rYb3rQNkt2V9oBlON3rGGlUO_gKT1DjzCgTbndW82SJh8np4TMKQti6tKxza-0iSGu1KUMYqX9Uxl0babj67IdnU93M9Hb3vcD0kiLb7S9j0WZk9BA26ERgJudat_ojxUNiuQ9tk0PwKeADMCu_M4RFCB7xvIDCwDppg0r43i_5kCDju-JVYXEpGtA");
+    XCTAssertNotNil(token);
+    NSDictionary *decodedDictionary = [JWTBuilder decodeMessage:self.validTokenToDecode].secret(self.validPublicKeyCertificateString).algorithmName(self.algorithmName).decode;
+    [self assertDecodedDictionary:decodedDictionary];
     NSLog(@"token = %@", token);
 }
 
