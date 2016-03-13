@@ -10,7 +10,12 @@
 #import "JWTAlgorithmHS256.h"
 #import "JWTAlgorithmHS384.h"
 #import "JWTAlgorithmHS512.h"
+#import <TargetConditionals.h>
+
+#if !TARGET_OS_MAC
 #import "JWTAlgorithmRS256.h"
+#endif
+
 #import "JWTAlgorithmNone.h"
 
 @implementation JWTAlgorithmFactory
@@ -21,8 +26,11 @@
             [JWTAlgorithmHS256 new],
             [JWTAlgorithmHS384 new],
             [JWTAlgorithmHS512 new],
+#if !TARGET_OS_MAC
             [JWTAlgorithmRS256 new]
+#endif
             ];
+
 }
 
 + (id<JWTAlgorithm>)algorithmByName:(NSString *)name {

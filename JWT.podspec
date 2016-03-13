@@ -10,6 +10,6 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.8'
   s.source_files = 'JWT/**/*.{h,m}'
   s.requires_arc = true
-
+  s.framework    = 'Security'
   s.dependency 'Base64', '~> 1.1.2'
 end
