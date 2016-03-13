@@ -11,12 +11,12 @@ def tests
 end
 
 def ios_targets
-  target 'JWT' do
+  target 'JWT', exclusive: true do
     platform :ios, '9.2'
     all
   end
 
-  target 'JWTTests' do
+  target 'JWTTests', exclusive: true do
     platform :ios, '9.2'
     all
     tests
@@ -24,12 +24,12 @@ def ios_targets
 end
 
 def osx_targets
-  target 'JWT_OSX' do
+  target 'JWT_OSX', exclusive: true do
     platform :osx, '10.8'
     all
   end
 
-  target 'JWTTests_OSX' do
+  target 'JWTTests_OSX', exclusive: true do
     platform :osx, '10.8'
     all
     tests

@@ -192,8 +192,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				042FF0C11C95B9DB00C3C855 /* libJWT_OSX.a in Frameworks */,
 				042FF0B11C95B9A700C3C855 /* Foundation.framework in Frameworks */,
+				042FF0C11C95B9DB00C3C855 /* libJWT_OSX.a in Frameworks */,
 				E8A1953D4EAE26D52DF1A381 /* libPods-JWTTests_OSX.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -211,8 +211,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1951DCB1758990700AF73D9 /* UIKit.framework in Frameworks */,
 				A1951DCC1758990800AF73D9 /* Foundation.framework in Frameworks */,
+				A1951DCB1758990700AF73D9 /* UIKit.framework in Frameworks */,
 				A1951DCF1758990800AF73D9 /* libJWT.a in Frameworks */,
 				51853EAF9C314D24B5F7681D /* libPods-JWTTests.a in Frameworks */,
 			);
