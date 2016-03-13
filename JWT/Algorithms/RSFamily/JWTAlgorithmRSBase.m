@@ -44,7 +44,7 @@
 - (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData {
     SecIdentityRef identity = nil;
     SecTrustRef trust = nil;
-    extractIdentityAndTrust((__bridge CFDataRef)theSecretData, &identity, &trust, (__bridge CFStringRef) self.privateKeyCertificatePassphrase);
+    __extractIdentityAndTrust((__bridge CFDataRef)theSecretData, &identity, &trust, (__bridge CFStringRef) self.privateKeyCertificatePassphrase);
     if (identity && trust) {
         SecKeyRef privateKey;
         SecIdentityCopyPrivateKey(identity, &privateKey);
@@ -132,7 +132,7 @@
     return signedHash;
 }
 
-OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
+OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
         SecIdentityRef *outIdentity,
         SecTrustRef *outTrust,
         CFStringRef keyPassword) {
