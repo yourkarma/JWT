@@ -11,46 +11,19 @@
 
 #import "JWTAlgorithmHS512.h"
 
-#import <Base64/MF_Base64Additions.h>
-
 @implementation JWTAlgorithmHS512
+
+- (size_t)ccSHANumberDigestLength {
+    return CC_SHA512_DIGEST_LENGTH;
+}
+
+- (uint32_t)ccHmacAlgSHANumber {
+    return kCCHmacAlgSHA512;
+}
 
 - (NSString *)name;
 {
     return @"HS512";
-}
-
-- (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret;
-{
-    const char *cString = [theString cStringUsingEncoding:NSUTF8StringEncoding];
-    const char *cSecret = [theSecret cStringUsingEncoding:NSUTF8StringEncoding];
-    
-    unsigned char cHMAC[CC_SHA512_DIGEST_LENGTH];
-    CCHmac(kCCHmacAlgSHA512, cSecret, strlen(cSecret), cString, strlen(cString), cHMAC);
-    return [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
-}
-
-- (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData
-{
-    unsigned char cHMAC[CC_SHA512_DIGEST_LENGTH];
-    CCHmac(kCCHmacAlgSHA512, theSecretData.bytes, [theSecretData length], theStringData.bytes, [theStringData length], cHMAC);
-    return [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
-}
-
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey
-{
-    NSString *expectedSignature = [[self encodePayload:input withSecret:verificationKey] base64UrlEncodedString];
-    
-    return [expectedSignature isEqualToString:signature];
-}
-
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData {
-    const char *cString = [input cStringUsingEncoding:NSUTF8StringEncoding];
-    NSData *inputData = [NSData dataWithBytes:cString length:strlen(cString)];
-    
-    NSString *expectedSignature = [[self encodePayloadData:inputData withSecret:verificationKeyData] base64UrlEncodedString];
-    
-    return [expectedSignature isEqualToString:signature];
 }
 
 @end
