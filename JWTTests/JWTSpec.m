@@ -510,8 +510,9 @@ describe(@"decoding", ^{
             BOOL noError = builder.jwtError == nil;
             
             [[@(noError) should] equal:@(YES)];
-            [[info[@"payload"] should] equal:payload];
-            [[info[@"header"] should] equal:allHeaders];
+            
+            [[@([info[@"payload"] isEqualToDictionary:payload]) should] equal:@(YES)];
+            [[@([info[@"header"] isEqualToDictionary:allHeaders]) should] equal:@(YES)];
         });
     });
     context(@"builder", ^{
