@@ -9,3 +9,5 @@ script:
     - xctool -sdk iphonesimulator clean test -destination "name=iPhone 5" -find-target "JWTTests"
     # 64-bit tests
     - xctool -sdk iphonesimulator clean test -destination "name=iPhone 5s" -find-target "JWTTests"
+    # os x
+    - xctool -sdk macosx clean test -find-target "JWTTests_OSX"
