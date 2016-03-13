@@ -34,7 +34,7 @@
 }
 
 - (NSString *)name {
-  return @"RS256";
+  return @"RSBase";
 }
 
 - (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
