@@ -10,5 +10,4 @@
 #import "JWTRSAlgorithm.h"
 
 @interface JWTAlgorithmRS256 : NSObject <JWTRSAlgorithm>
-
 @end

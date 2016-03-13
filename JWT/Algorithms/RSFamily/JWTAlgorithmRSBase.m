@@ -1,38 +1,36 @@
 //
-//  JWTAlgorithmRS256.m
+//  JWTAlgorithmRSBase.m
 //  JWT
 //
-//  Created by Lobanov Dmitry on 17.11.15.
-//  Copyright © 2015 Karma. All rights reserved.
+//  Created by Lobanov Dmitry on 13.03.16.
+//  Copyright © 2016 Karma. All rights reserved.
 //
 
-#import "JWTAlgorithmRS256.h"
+#import "JWTAlgorithmRSBase.h"
 #import "MF_Base64Additions.h"
 #import <CommonCrypto/CommonCrypto.h>
 
-@interface JWTAlgorithmRS256()
-
-@property (assign, nonatomic, readonly) NSNumber *CC_SHA_DIGEST_LENGTH;
-@property (assign, nonatomic, readonly) NSNumber *kSecPaddingPKCS1SHANumber;
+@interface JWTAlgorithmRSBase()
 
 @end
 
-@implementation JWTAlgorithmRS256
+
+@implementation JWTAlgorithmRSBase
 
 @synthesize privateKeyCertificatePassphrase;
 
+- (size_t)ccSHANumberDigestLength {
+    return 0;
+}
+
+- (uint32_t)secPaddingPKCS1SHANumber {
+    return 0;
+}
+
 #pragma mark - JWTAlgorithm
 
-- (NSNumber *)CC_SHA_DIGEST_LENGTH {
-    return @(CC_SHA256_DIGEST_LENGTH);
-}
-
-- (NSNumber *)kSecPaddingPKCS1SHANumber {
-    return @(kSecPaddingPKCS1SHA256);
-}
-
 - (unsigned char *)CC_SHANumberWithData:(const void *)data withLength:(CC_LONG)len withHashBytes:(unsigned char *)hashBytes {
-    return CC_SHA256(data, len, hashBytes);
+    return nil;
 }
 
 - (NSString *)name {
@@ -50,7 +48,7 @@
     if (identity && trust) {
         SecKeyRef privateKey;
         SecIdentityCopyPrivateKey(identity, &privateKey);
-        return PKCSSignBytesSHA256withRSA(theStringData, privateKey);
+        return [self PKCSSignBytesSHANumberwithRSA:theStringData withPrivateKey:privateKey];
     } else {
         return nil;
     }
@@ -67,7 +65,7 @@
     NSData *signedData = [input dataUsingEncoding:NSUTF8StringEncoding];
     NSData *signatureData = [NSData dataWithBase64UrlEncodedString:signature];
     SecKeyRef publicKey = [self publicKeyFromCertificate:verificationKeyData];
-    BOOL signatureOk = PKCSVerifyBytesSHA256withRSA(signedData, signatureData, publicKey);
+    BOOL signatureOk = [self PKCSVerifyBytesSHANumberWithRSA:signedData witSignature:signatureData withPublicKey:publicKey];
     return signatureOk;
 }
 
@@ -84,15 +82,15 @@
     return publicKey;
 }
 
-- (BOOL)PKCSVerifyBytesSHANumberWithRSA(NSData* plainData, NSData* signature, SecKeyRef publicKey) {
+- (BOOL)PKCSVerifyBytesSHANumberWithRSA:(NSData *)plainData witSignature:(NSData *)signature withPublicKey:(SecKeyRef) publicKey {
     size_t signedHashBytesSize = SecKeyGetBlockSize(publicKey);
     const void* signedHashBytes = [signature bytes];
 
-    size_t hashBytesSize = self.CC_SHA_DIGEST_LENGTH.integerValue;
+    size_t hashBytesSize = self.ccSHANumberDigestLength;
     uint8_t* hashBytes = malloc(hashBytesSize);
 
     OSStatus status = SecKeyRawVerify(publicKey,
-        self.kSecPaddingPKCS1SHANumber.integerValue,
+        self.secPaddingPKCS1SHANumber,
         hashBytes,
         hashBytesSize,
         signedHashBytes,
@@ -101,70 +99,23 @@
     return status == errSecSuccess;
 }
 
-- (NSData *)PKCSSignBytesSHANumberwithRSA(NSData* plainData, SecKeyRef privateKey) {
+- (NSData *)PKCSSignBytesSHANumberwithRSA:(NSData *)plainData withPrivateKey:(SecKeyRef)privateKey {
     size_t signedHashBytesSize = SecKeyGetBlockSize(privateKey);
     uint8_t* signedHashBytes = malloc(signedHashBytesSize);
     memset(signedHashBytes, 0x0, signedHashBytesSize);
 
-    size_t hashBytesSize = self.CC_SHA_DIGEST_LENGTH.integerValue;
+    size_t hashBytesSize = self.ccSHANumberDigestLength;
     uint8_t* hashBytes = malloc(hashBytesSize);
 
     // ([plainData bytes], (CC_LONG)[plainData length], hashBytes)
-    if (![self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes]) {
+    unsigned char *str = [self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes];
+    
+    if (!str) {
         return nil;
     }
 
     SecKeyRawSign(privateKey,
-            self.kSecPaddingPKCS1SHANumber.integerValue,
-            hashBytes,
-            hashBytesSize,
-            signedHashBytes,
-            &signedHashBytesSize);
-
-    NSData* signedHash = [NSData dataWithBytes:signedHashBytes
-                                        length:(NSUInteger)signedHashBytesSize];
-
-    if (hashBytes)
-        free(hashBytes);
-    if (signedHashBytes)
-        free(signedHashBytes);
-
-    return signedHash;
-}
-
-// BOOL PKCSVerifyBytesSHA256withRSA(NSData* plainData, NSData* signature, SecKeyRef publicKey) {
-//     size_t signedHashBytesSize = SecKeyGetBlockSize(publicKey);
-//     const void* signedHashBytes = [signature bytes];
-
-//     size_t hashBytesSize = CC_SHA256_DIGEST_LENGTH;
-//     uint8_t* hashBytes = malloc(hashBytesSize);
-//     if (!CC_SHA256([plainData bytes], (CC_LONG)[plainData length], hashBytes)) {
-//         return false;
-//     }
-
-//     OSStatus status = SecKeyRawVerify(publicKey,
-//             kSecPaddingPKCS1SHA256,
-//             hashBytes,
-//             hashBytesSize,
-//             signedHashBytes,
-//             signedHashBytesSize);
-
-//     return status == errSecSuccess;
-// }
-
-NSData* PKCSSignBytesSHA256withRSA(NSData* plainData, SecKeyRef privateKey) {
-    size_t signedHashBytesSize = SecKeyGetBlockSize(privateKey);
-    uint8_t* signedHashBytes = malloc(signedHashBytesSize);
-    memset(signedHashBytes, 0x0, signedHashBytesSize);
-
-    size_t hashBytesSize = CC_SHA256_DIGEST_LENGTH;
-    uint8_t* hashBytes = malloc(hashBytesSize);
-    if (!CC_SHA256([plainData bytes], (CC_LONG)[plainData length], hashBytes)) {
-        return nil;
-    }
-
-    SecKeyRawSign(privateKey,
-            kSecPaddingPKCS1SHA256,
+            self.secPaddingPKCS1SHANumber,
             hashBytes,
             hashBytesSize,
             signedHashBytes,
@@ -227,6 +178,69 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
         CFRelease(items);
 
     return securityError;
+}
+
+@end
+
+@interface JWTAlgorithmRSBaseTest : JWTAlgorithmRSBase
+@property (assign, nonatomic, readwrite) size_t ccSHANumberDigestLength;
+@property (assign, nonatomic, readwrite) uint32_t secPaddingPKCS1SHANumber;
+@property (assign, nonatomic, readwrite) unsigned char * (^ccShaNumberWithData)(const void *data, CC_LONG len, unsigned char *hashBytes);
+@end
+
+@implementation JWTAlgorithmRSBaseTest
+
+@synthesize ccSHANumberDigestLength = _ccSHANumberDigestLength;
+@synthesize secPaddingPKCS1SHANumber = _secPaddingPKCS1SHANumber;
+
+- (size_t)ccSHANumberDigestLength {
+    return _ccSHANumberDigestLength;
+}
+
+- (uint32_t)secPaddingPKCS1SHANumber {
+    return _secPaddingPKCS1SHANumber;
+}
+
+- (unsigned char *)CC_SHANumberWithData:(const void *)data withLength:(uint32_t)len withHashBytes:(unsigned char *)hashBytes {
+    unsigned char *result = [super CC_SHANumberWithData:data withLength:len withHashBytes:hashBytes];
+    if (!result && self.ccShaNumberWithData) {
+        result = self.ccShaNumberWithData(data, len, hashBytes);
+    }
+    return result;
+}
+
+@end
+
+@implementation JWTAlgorithmRSBase (Create)
+
++ (instancetype)algorithm256 {
+    JWTAlgorithmRSBaseTest *base = [JWTAlgorithmRSBaseTest new];
+    base.ccSHANumberDigestLength = CC_SHA256_DIGEST_LENGTH;
+    base.secPaddingPKCS1SHANumber = kSecPaddingPKCS1SHA256;
+    base.ccShaNumberWithData = ^unsigned char *(const void *data, CC_LONG len, unsigned char *hashBytes){
+        return CC_SHA256(data, len, hashBytes);
+    };
+    return base;
+}
+
++ (instancetype)algorithm384 {
+    JWTAlgorithmRSBaseTest *base = [JWTAlgorithmRSBaseTest new];
+    base.ccSHANumberDigestLength = CC_SHA384_DIGEST_LENGTH;
+    base.secPaddingPKCS1SHANumber = kSecPaddingPKCS1SHA384;
+    base.ccShaNumberWithData = ^unsigned char *(const void *data, CC_LONG len, unsigned char *hashBytes){
+        return CC_SHA384(data, len, hashBytes);
+    };
+    return base;
+}
+
++ (instancetype)algorithm512 {
+    JWTAlgorithmRSBaseTest *base = [JWTAlgorithmRSBaseTest new];
+    base.ccSHANumberDigestLength = CC_SHA512_DIGEST_LENGTH;
+    base.secPaddingPKCS1SHANumber = kSecPaddingPKCS1SHA512;
+    base.ccShaNumberWithData = ^unsigned char *(const void *data, CC_LONG len, unsigned char *hashBytes){
+        return CC_SHA512(data, len, hashBytes);
+    };
+    return base;
 }
 
 @end

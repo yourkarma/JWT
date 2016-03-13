@@ -76,22 +76,43 @@
     return [expectedSignature isEqualToString:signature];
 }
 
+@end
+
+
+@interface JWTAlgorithmHSBaseTest : JWTAlgorithmHSBase
+
+@end
+
+@implementation JWTAlgorithmHSBaseTest
+
+- (size_t)ccSHANumberDigestLength {
+    return _ccSHANumberDigestLength;
+}
+
+- (uint32_t)ccHmacAlgSHANumber {
+    return _ccHmacAlgSHANumber;
+}
+
+@end
+
+@implementation JWTAlgorithmHSBase (Create)
+
 + (instancetype)algorithm256 {
-    JWTAlgorithmHSBase *base = [JWTAlgorithmHSBase new];
+    JWTAlgorithmHSBase *base = [JWTAlgorithmHSBaseTest new];
     base.ccSHANumberDigestLength = CC_SHA256_DIGEST_LENGTH;
     base.ccHmacAlgSHANumber = kCCHmacAlgSHA256;
     return base;
 }
 
 + (instancetype)algorithm384 {
-    JWTAlgorithmHSBase *base = [JWTAlgorithmHSBase new];
+    JWTAlgorithmHSBase *base = [JWTAlgorithmHSBaseTest new];
     base.ccSHANumberDigestLength = CC_SHA384_DIGEST_LENGTH;
     base.ccHmacAlgSHANumber = kCCHmacAlgSHA384;
     return base;
 }
 
 + (instancetype)algorithm512 {
-    JWTAlgorithmHSBase *base = [JWTAlgorithmHSBase new];
+    JWTAlgorithmHSBase *base = [JWTAlgorithmHSBaseTest new];
     base.ccSHANumberDigestLength = CC_SHA512_DIGEST_LENGTH;
     base.ccHmacAlgSHANumber = kCCHmacAlgSHA512;
     return base;

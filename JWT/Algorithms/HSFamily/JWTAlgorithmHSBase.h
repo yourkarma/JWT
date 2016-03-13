@@ -14,6 +14,11 @@
 @property (assign, nonatomic, readonly) size_t ccSHANumberDigestLength;
 @property (assign, nonatomic, readonly) uint32_t ccHmacAlgSHANumber;
 
+
+@end
+
+@interface JWTAlgorithmHSBase (Create)
+
 + (instancetype)algorithm256;
 + (instancetype)algorithm384;
 + (instancetype)algorithm512;
