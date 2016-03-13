@@ -40,21 +40,19 @@
     unsigned char* cHMAC = malloc(fullSize);
     CCHmacAlgorithm ccAlg = self.ccHmacAlgSHANumber;
 
-//    unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
     CCHmac(ccAlg, cSecret, strlen(cSecret), cString, strlen(cString), cHMAC);
-    return [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+    return [[NSData alloc] initWithBytes:cHMAC length:fullSize];
 }
 
 - (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData
 {
-//    unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
     size_t amount = self.ccSHANumberDigestLength;
     size_t fullSize = amount * sizeof(unsigned char);
     unsigned char* cHMAC = malloc(fullSize);
     CCHmacAlgorithm ccAlg = self.ccHmacAlgSHANumber;
     
     CCHmac(ccAlg, theSecretData.bytes, [theSecretData length], theStringData.bytes, [theStringData length], cHMAC);
-    return [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+    return [[NSData alloc] initWithBytes:cHMAC length:fullSize];
 }
 
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey
