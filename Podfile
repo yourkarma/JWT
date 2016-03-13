@@ -1,6 +1,8 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-pod 'Base64', '~> 1.1.2'
+target 'JWT' do
+  pod 'Base64', '~> 1.1.2'
+end
 
 target 'JWTTests', exclusive: true do
   pod 'Base64', '~> 1.1.2'
