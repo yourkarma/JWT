@@ -13,6 +13,6 @@ script:
     # - xctool -sdk iphonesimulator clean test -destination "name=iPhone 5s" -find-target "JWTTests"
     # # os x
     # - xctool -sdk macosx clean test -find-target "JWTTests_OSX"
-    - set -o pipefail && xcodebuild test -workspace JWT.xcworkspace -scheme JWTTests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 5,OS=9.2' ONLY_ACTIVE_ARCH=NO | xcpretty -c -f `xcpretty-travis-formatter`
-    - set -o pipefail && xcodebuild test -workspace JWT.xcworkspace -scheme JWTTests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 5s,OS=9.2' ONLY_ACTIVE_ARCH=NO | xcpretty -c -f `xcpretty-travis-formatter`
-    - set -o pipefail && xcodebuild test -workspace JWT.xcworkspace -scheme JWTTests_OSX -sdk macosx ONLY_ACTIVE_ARCH=NO | xcpretty -c -f `xcpretty-travis-formatter`
+    - set -o pipefail && xcodebuild clean test -verbose -workspace JWT.xcworkspace -scheme JWTTests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 5,OS=8.1' ONLY_ACTIVE_ARCH=NO | xcpretty -c -f `xcpretty-travis-formatter`
+    - set -o pipefail && xcodebuild clean test -verbose -workspace JWT.xcworkspace -scheme JWTTests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 5s,OS=8.1' ONLY_ACTIVE_ARCH=NO | xcpretty -c -f `xcpretty-travis-formatter`
+    - set -o pipefail && xcodebuild clean test -verbose -workspace JWT.xcworkspace -scheme JWTTests_OSX -sdk macosx ONLY_ACTIVE_ARCH=NO | xcpretty -c -f `xcpretty-travis-formatter`
