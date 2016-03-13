@@ -8,7 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "JWT.h"
-#import "MF_Base64Additions.h"
+#import <Base64/MF_Base64Additions.h>
 
 @interface JWTAlgorithmRS256Tests : XCTestCase
 
