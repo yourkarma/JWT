@@ -37,11 +37,6 @@
                BlueprintName = "JWTTests"
                ReferencedContainer = "container:JWT.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "JWTAlgorithmRS256Spec">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
       <AdditionalOptions>
