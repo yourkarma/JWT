@@ -10,19 +10,37 @@
 #import "MF_Base64Additions.h"
 #import <CommonCrypto/CommonCrypto.h>
 
-@implementation JWTAlgorithmRS256 {
-    NSString *_privateKeyCertificatePassphrase;
-}
+@interface JWTAlgorithmRS256()
+
+@property (assign, nonatomic, readonly) NSNumber *CC_SHA_DIGEST_LENGTH;
+@property (assign, nonatomic, readonly) NSNumber *kSecPaddingPKCS1SHANumber;
+
+@end
+
+@implementation JWTAlgorithmRS256
+
+@synthesize privateKeyCertificatePassphrase;
 
 #pragma mark - JWTAlgorithm
+
+- (NSNumber *)CC_SHA_DIGEST_LENGTH {
+    return @(CC_SHA256_DIGEST_LENGTH);
+}
+
+- (NSNumber *)kSecPaddingPKCS1SHANumber {
+    return @(kSecPaddingPKCS1SHA256);
+}
+
+- (BOOL)CC_SHANumberWithData:(const void *)data withLength:(CC_LONG)len withHashBytes:(unsigned char *)hashBytes {
+    return CC_SHA256(data, len, hashBytes);
+}
 
 - (NSString *)name {
   return @"RS256";
 }
 
 - (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
-    return [self encodePayloadData:[theString dataUsingEncoding:NSUTF8StringEncoding]
-                        withSecret:[NSData dataWithBase64UrlEncodedString:theSecret]];
+    return [self encodePayloadData:[theString dataUsingEncoding:NSUTF8StringEncoding] withSecret:[NSData dataWithBase64UrlEncodedString:theSecret]];
 }
 
 - (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData {
@@ -53,16 +71,6 @@
     return signatureOk;
 }
 
-#pragma mark - JWTRSAlgorithm
-
-- (NSString *)privateKeyCertificatePassphrase {
-    return _privateKeyCertificatePassphrase;
-}
-
-- (void)setPrivateKeyCertificatePassphrase:(NSString *)privateKeyCertificatePassphrase {
-    _privateKeyCertificatePassphrase = privateKeyCertificatePassphrase;
-}
-
 #pragma mark - Private
 
 - (SecKeyRef)publicKeyFromCertificate:(NSData *)certificateData {
@@ -76,25 +84,73 @@
     return publicKey;
 }
 
-BOOL PKCSVerifyBytesSHA256withRSA(NSData* plainData, NSData* signature, SecKeyRef publicKey) {
+- (BOOL)PKCSVerifyBytesSHANumberWithRSA(NSData* plainData, NSData* signature, SecKeyRef publicKey) {
     size_t signedHashBytesSize = SecKeyGetBlockSize(publicKey);
     const void* signedHashBytes = [signature bytes];
 
-    size_t hashBytesSize = CC_SHA256_DIGEST_LENGTH;
+    size_t hashBytesSize = self.CC_SHA_DIGEST_LENGTH.integerValue;
     uint8_t* hashBytes = malloc(hashBytesSize);
-    if (!CC_SHA256([plainData bytes], (CC_LONG)[plainData length], hashBytes)) {
-        return false;
-    }
 
     OSStatus status = SecKeyRawVerify(publicKey,
-            kSecPaddingPKCS1SHA256,
-            hashBytes,
-            hashBytesSize,
-            signedHashBytes,
-            signedHashBytesSize);
+        self.kSecPaddingPKCS1SHANumber.integerValue,
+        hashBytes,
+        hashBytesSize,
+        signedHashBytes,
+        signedHashBytesSize);
 
     return status == errSecSuccess;
 }
+
+- (NSData *)PKCSSignBytesSHANumberwithRSA(NSData* plainData, SecKeyRef privateKey) {
+    size_t signedHashBytesSize = SecKeyGetBlockSize(privateKey);
+    uint8_t* signedHashBytes = malloc(signedHashBytesSize);
+    memset(signedHashBytes, 0x0, signedHashBytesSize);
+
+    size_t hashBytesSize = self.CC_SHA_DIGEST_LENGTH.integerValue;
+    uint8_t* hashBytes = malloc(hashBytesSize);
+
+    // ([plainData bytes], (CC_LONG)[plainData length], hashBytes)
+    if (![self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes]) {
+        return nil;
+    }
+
+    SecKeyRawSign(privateKey,
+            self.kSecPaddingPKCS1SHANumber.integerValue,
+            hashBytes,
+            hashBytesSize,
+            signedHashBytes,
+            &signedHashBytesSize);
+
+    NSData* signedHash = [NSData dataWithBytes:signedHashBytes
+                                        length:(NSUInteger)signedHashBytesSize];
+
+    if (hashBytes)
+        free(hashBytes);
+    if (signedHashBytes)
+        free(signedHashBytes);
+
+    return signedHash;
+}
+
+// BOOL PKCSVerifyBytesSHA256withRSA(NSData* plainData, NSData* signature, SecKeyRef publicKey) {
+//     size_t signedHashBytesSize = SecKeyGetBlockSize(publicKey);
+//     const void* signedHashBytes = [signature bytes];
+
+//     size_t hashBytesSize = CC_SHA256_DIGEST_LENGTH;
+//     uint8_t* hashBytes = malloc(hashBytesSize);
+//     if (!CC_SHA256([plainData bytes], (CC_LONG)[plainData length], hashBytes)) {
+//         return false;
+//     }
+
+//     OSStatus status = SecKeyRawVerify(publicKey,
+//             kSecPaddingPKCS1SHA256,
+//             hashBytes,
+//             hashBytesSize,
+//             signedHashBytes,
+//             signedHashBytesSize);
+
+//     return status == errSecSuccess;
+// }
 
 NSData* PKCSSignBytesSHA256withRSA(NSData* plainData, SecKeyRef privateKey) {
     size_t signedHashBytesSize = SecKeyGetBlockSize(privateKey);
