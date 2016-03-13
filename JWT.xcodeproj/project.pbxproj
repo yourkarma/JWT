@@ -349,7 +349,6 @@
 				A1951DC21758990700AF73D9 /* Sources */,
 				A1951DC31758990700AF73D9 /* Frameworks */,
 				A1951DC41758990700AF73D9 /* Resources */,
-				A1951DC51758990700AF73D9 /* ShellScript */,
 				4062A8DEF44D40019C31528C /* Copy Pods Resources */,
 				CAC069638F04223F9A07D71E /* Embed Pods Frameworks */,
 			);
@@ -420,19 +419,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JWTTests/Pods-JWTTests-resources.sh\"\n";
-		};
-		A1951DC51758990700AF73D9 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
 		B97761A3A0D74049BF7AB6CD /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
