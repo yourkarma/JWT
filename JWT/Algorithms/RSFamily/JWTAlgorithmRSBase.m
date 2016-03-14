@@ -88,7 +88,10 @@
 
     size_t hashBytesSize = self.ccSHANumberDigestLength;
     uint8_t* hashBytes = malloc(hashBytesSize);
-
+    if (![self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes]) {
+        return false;
+    }
+    
     OSStatus status = SecKeyRawVerify(publicKey,
         self.secPaddingPKCS1SHANumber,
         hashBytes,
