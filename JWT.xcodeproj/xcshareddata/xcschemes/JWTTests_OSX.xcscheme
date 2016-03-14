@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A1951DB51758990700AF73D9"
-               BuildableName = "libJWT.a"
-               BlueprintName = "JWT"
+               BlueprintIdentifier = "042FF0881C95B97400C3C855"
+               BuildableName = "libJWT_OSX.a"
+               BlueprintName = "JWT_OSX"
                ReferencedContainer = "container:JWT.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,13 +32,22 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A1951DC61758990700AF73D9"
-               BuildableName = "JWTTests.xctest"
-               BlueprintName = "JWTTests"
+               BlueprintIdentifier = "042FF0A21C95B9A700C3C855"
+               BuildableName = "JWTTests_OSX.xctest"
+               BlueprintName = "JWTTests_OSX"
                ReferencedContainer = "container:JWT.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "042FF0881C95B97400C3C855"
+            BuildableName = "libJWT_OSX.a"
+            BlueprintName = "JWT_OSX"
+            ReferencedContainer = "container:JWT.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -55,9 +64,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A1951DB51758990700AF73D9"
-            BuildableName = "libJWT.a"
-            BlueprintName = "JWT"
+            BlueprintIdentifier = "042FF0881C95B97400C3C855"
+            BuildableName = "libJWT_OSX.a"
+            BlueprintName = "JWT_OSX"
             ReferencedContainer = "container:JWT.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -70,6 +79,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "042FF0881C95B97400C3C855"
+            BuildableName = "libJWT_OSX.a"
+            BlueprintName = "JWT_OSX"
+            ReferencedContainer = "container:JWT.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

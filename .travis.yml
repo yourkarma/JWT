@@ -1,11 +1,19 @@
+osx_image: xcode7.2
+sudo: false
 language: objective-c
 
 before_install:
     - brew update
-    - if brew outdated | grep -qx xctool; then brew upgrade xctool; fi
-
+    # - if brew outdated | grep -qx xctool; then brew upgrade xctool; fi
+    - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
+    - gem install xcpretty-travis-formatter --no-rdoc --no-ri --no-document --quiet
 script:
-    # 32-bit tests
-    - xctool -sdk iphonesimulator clean test -destination "name=iPhone 5" -find-target "JWTTests"
-    # 64-bit tests
-    - xctool -sdk iphonesimulator clean test -destination "name=iPhone 5s" -find-target "JWTTests"
+    # # 32-bit tests
+    # - xctool -sdk iphonesimulator clean test -destination "name=iPhone 5" -find-target "JWTTests"
+    # # 64-bit tests
+    # - xctool -sdk iphonesimulator clean test -destination "name=iPhone 5s" -find-target "JWTTests"
+    # # os x
+    # - xctool -sdk macosx clean test -find-target "JWTTests_OSX"
+    - set -o pipefail && xcodebuild clean test -verbose -workspace JWT.xcworkspace -scheme JWTTests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 5,OS=9.2' ONLY_ACTIVE_ARCH=NO | xcpretty -c -f `xcpretty-travis-formatter`
+    - set -o pipefail && xcodebuild clean test -verbose -workspace JWT.xcworkspace -scheme JWTTests -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 5s,OS=9.2' ONLY_ACTIVE_ARCH=NO | xcpretty -c -f `xcpretty-travis-formatter`
+    - set -o pipefail && xcodebuild clean test -verbose -workspace JWT.xcworkspace -scheme JWTTests_OSX -sdk macosx ONLY_ACTIVE_ARCH=NO | xcpretty -c -f `xcpretty-travis-formatter`
