@@ -24,7 +24,8 @@
 @implementation JWTAlgorithmRS256Tests
 
 - (void)testEncodeCertificateDataWithValidPrivateKeyCertificatePassphrase {
-    NSString *token = [JWTBuilder encodePayload:self.headerAndPayloadDictionary].secretData(self.privateKeyCertificateData).privateKeyCertificatePassphrase(@"password").algorithmName(self.algorithmName).encode;
+    JWTBuilder *builder = [JWTBuilder encodePayload:self.headerAndPayloadDictionary].secretData(self.privateKeyCertificateData).privateKeyCertificatePassphrase(@"password").algorithmName(self.algorithmName);
+    NSString *token = builder.encode;
     [self assertToken:token];
 }
 
