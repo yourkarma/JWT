@@ -9,6 +9,7 @@
 #import "JWTAlgorithmRS256.h"
 #import "MF_Base64Additions.h"
 #import <CommonCrypto/CommonCrypto.h>
+#import "Security+MissingSymbols.h"
 
 @implementation JWTAlgorithmRS256 {
     NSString *_privateKeyCertificatePassphrase;
