@@ -50,6 +50,10 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
             resultString = @"It seems that payload encoding failed";
             break;
         }
+        case JWTEncodingSigningError: {
+            resultString = @"It seems that signing output corrupted. Make sure signing worked (e.g. we may have issues extracting the key from the PKCS12 bundle if passphrase is incorrect).";
+            break;
+        }
         case JWTClaimsSetVerificationFailed: {
             resultString = @"It seems that claims verification failed";
             break;
@@ -616,6 +620,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     if (signedOutput) { // Make sure signing worked (e.g. we may have issues extracting the key from the PKCS12 bundle if passphrase is incorrect)
         return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
     } else {
+        self.jwtError = [JWT errorWithCode:JWTEncodingSigningError];
         return nil;
     }
 }
