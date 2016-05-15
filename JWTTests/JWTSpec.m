@@ -542,6 +542,61 @@ describe(@"decoding", ^{
             [[info[@"header"] should] equal:allHeaders];
         });
     });
+    context(@"long tokens", ^{
+        it(@"it should encode tons of data in payload corretly", ^{
+            [[@(1) shouldNot] beNil];
+            NSDictionary *dictionary = @{
+                                         @"new": @"item"
+                                         };
+            
+            // oh :/
+            NSInteger expectedCount = 100;
+            NSMutableArray *array = [@[] mutableCopy];
+            for (NSInteger i = 0; i < expectedCount; ++i) {
+                array[array.count] = [dictionary copy];
+            }
+            
+            NSDictionary *payload = @{ @"data" : array };
+            
+            NSString *secret = @"secret";
+            JWTBuilder *builder = [JWTBuilder encodePayload:payload].secret(secret).algorithmName(@"HS256");
+            NSString *encode = builder.encode;
+            NSLog(@"LONG: %@ and ERROR: %@", encode, builder.jwtError);
+            [[encode shouldNot] beNil];
+            [[builder.jwtError should] beNil];
+        });
+        it(@"it should decode tons of data correctly", ^{
+            NSDictionary *dictionary = @{
+                                         @"new": @"item"
+                                         };
+            
+            // oh :/
+            NSInteger expectedCount = 1000;
+            NSMutableArray *array = [@[] mutableCopy];
+            for (NSInteger i = 0; i < expectedCount; ++i) {
+                array[array.count] = [dictionary copy];
+            }
+            
+            NSDictionary *payload = @{ @"data" : array };
+            
+            NSString *secret = @"secret";
+            JWTBuilder *encodeBuilder = [JWTBuilder encodePayload:payload].secret(secret).algorithmName(@"HS256");
+            NSString *encode = encodeBuilder.encode;
+            NSLog(@"LONG: %@ and ERROR: %@", encode, encodeBuilder.jwtError);
+            [[encode shouldNot] beNil];
+            [[encodeBuilder.jwtError should] beNil];
+            
+            JWTBuilder *decodeBuilder = [JWTBuilder decodeMessage:encode].algorithmName(@"HS256").secret(secret);
+            NSDictionary *decoded = decodeBuilder.decode;
+            NSDictionary *decodedPayload = decoded[@"payload"];
+            
+            [[decodedPayload shouldNot] beNil];
+            [[decodedPayload[@"data"] should] beKindOfClass:[NSArray class]];
+            [[@([decodedPayload[@"data"] count]) should] equal:@(expectedCount)];
+            
+            [[decodeBuilder.jwtError should] beNil];
+        });
+    });
 });
 
 describe(@"Whitelist tests", ^{
