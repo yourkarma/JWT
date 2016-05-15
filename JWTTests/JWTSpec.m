@@ -94,7 +94,7 @@ describe(@"encoding", ^{
         });
     });
     context(@"errors", ^{
-    it(@"encode should generate errors", ^{
+        it(@"encode should generate errors", ^{
             NSString *secret = @"secret";
             NSDictionary *headers = @{};
             NSString *algorithmName = @"none";
@@ -112,17 +112,38 @@ describe(@"encoding", ^{
             NSLog(@"info is: %@\n error is: %@", encoded, error);
             
             [[@(error.code) should] equal:@(JWTEncodingPayloadError)];
-            //fluent            
+            //fluent
             JWTBuilder *builder = [JWT encodePayload:nil].secret(secret).headers(headers).algorithm(algorithm);
             encoded = builder.encode;
-
+            
             error = builder.jwtError;
-
+            
             NSLog(@"info is: %@\n error is: %@", encoded, error);
-
+            
             [[@(error.code) should] equal:@(JWTEncodingPayloadError)];
         });
+        it(@"encode should generate mysterious signing error", ^{
+            NSString *secret = @"secret";
+            NSDictionary *headers = @{};
+            NSDictionary *payload = @{@"payload":@"payload"};
+            NSString *algorithmName = @"none";
+            NSString *signedOutput = nil;
+            //NSString *signingInput = @"uh";
+            id algorithm = [KWMock mockForProtocol:@protocol(JWTAlgorithm)];
+            [algorithm stub:@selector(name) andReturn:algorithmName];
+            [algorithm stub:@selector(encodePayload:withSecret:) andReturn:signedOutput];
+            
+            NSError *error = nil;
+            JWTBuilder *builder = [JWT encodePayload:payload].secret(secret).headers(headers).algorithm(algorithm);
+            NSString *encoded = builder.encode;
+            
+            error = builder.jwtError;
+            NSLog(@"ERROR!");
+            NSLog(@"info is: %@\n error is: %@", encoded, error);
+            
+            [[@(error.code) should] equal:@(JWTEncodingSigningError)];
         });
+    });
     context(@"headers", ^{
         it(@"encodes JWTs with headers", ^{
         
