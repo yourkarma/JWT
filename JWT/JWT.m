@@ -746,8 +746,8 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         BOOL signatureValid = NO;
         
         
-        if (secretData && [self.jwtAlgorithm respondsToSelector:@selector(verifySignedInput:withSignature:verificationKeyData:)]) {
-            signatureValid = [self.jwtAlgorithm verifySignedInput:signingInput withSignature:signedPart verificationKeyData:secretData];
+        if (secretData && [algorithm respondsToSelector:@selector(verifySignedInput:withSignature:verificationKeyData:)]) {
+            signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKeyData:secretData];
         } else {
             signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKey:theSecret];
         }
