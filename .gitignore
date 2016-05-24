@@ -16,3 +16,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+
+# Pods
+Example/**/Pods/Pods.xcodeproj/xcuserdata/
+Example/**/Pods/
