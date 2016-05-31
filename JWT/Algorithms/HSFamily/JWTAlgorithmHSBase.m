@@ -41,7 +41,10 @@
     CCHmacAlgorithm ccAlg = self.ccHmacAlgSHANumber;
 
     CCHmac(ccAlg, cSecret, strlen(cSecret), cString, strlen(cString), cHMAC);
-    return [[NSData alloc] initWithBytes:cHMAC length:fullSize];
+    
+    NSData *returnData = [[NSData alloc] initWithBytes:cHMAC length:fullSize];
+    free(cHMAC);
+    return returnData;
 }
 
 - (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData
@@ -52,7 +55,10 @@
     CCHmacAlgorithm ccAlg = self.ccHmacAlgSHANumber;
     
     CCHmac(ccAlg, theSecretData.bytes, [theSecretData length], theStringData.bytes, [theStringData length], cHMAC);
-    return [[NSData alloc] initWithBytes:cHMAC length:fullSize];
+    
+    NSData *returnData = [[NSData alloc] initWithBytes:cHMAC length:fullSize];
+    free(cHMAC);
+    return returnData;
 }
 
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey
