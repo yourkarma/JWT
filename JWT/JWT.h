@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, JWTError) {
     JWTClaimsSetVerificationFailed,
     JWTInvalidSegmentSerializationError,
     JWTUnspecifiedAlgorithmError,
+    JWTBlacklistedAlgorithmError,
     JWTDecodingHeaderError,
     JWTDecodingPayloadError,
 };
