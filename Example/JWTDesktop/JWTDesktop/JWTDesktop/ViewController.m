@@ -22,11 +22,13 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
     TokenTextTypeSignature
 };
 
-@interface ViewController() <NSTextViewDelegate>
+@interface ViewController() <NSTextViewDelegate, NSTableViewDelegate, NSTableViewDataSource>
 @property (weak) IBOutlet NSTextField *algorithmLabel;
 @property (weak) IBOutlet NSPopUpButton *algorithmPopUpButton;
 @property (unsafe_unretained) IBOutlet NSTextView *encodedTextView;
 @property (unsafe_unretained) IBOutlet NSTextView *decodedTextView;
+//@property (unsafe_unretained) IBOutlet NSTableView *decodedTableView;
+@property (weak) IBOutlet NSTableView *decodedTableView;
 
 @property (weak) IBOutlet NSTextField *signatureStatusLabel;
 
@@ -116,6 +118,8 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
     // pop up button.
     [self.algorithmPopUpButton removeAllItems];
     [self.algorithmPopUpButton addItemsWithTitles:[self availableAlgorithmsNames]];
+    [self.algorithmPopUpButton setAction:@selector(popUpButtonValueChanged:)];
+    [self.algorithmPopUpButton setTarget:self];
 }
 
 - (void)setupBottom {
@@ -127,7 +131,9 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
 
 - (void)setupEncodingDecodingViews {
     self.encodedTextView.delegate = self;
-    self.decodedTextView.delegate = self;
+//    self.decodedTextView.delegate = self;
+    self.decodedTableView.delegate = self;
+    self.decodedTableView.dataSource = self;
 }
 
 - (void)setupDecorations {
@@ -169,6 +175,12 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
     return result;
 }
 
+
+#pragma mark - PopUp Button
+- (void)popUpButtonValueChanged:(id)sender {
+    // recalculate jwt //
+    NSLog(@"now value is: %@", [self chosenAlgorithmName]);
+}
 #pragma mark - Signature Customization
 - (void)setSignatureValidation:(SignatureValidationType)signatureValidation {
     self.signatureStatusLabel.backgroundColor = [self signatureColorForValidation:signatureValidation];
@@ -267,9 +279,9 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
         NSTextStorage * textStore = [textView textStorage];
         [textStore replaceCharactersInRange:affectedCharRange withString:replacementString];
         [textStore replaceCharactersInRange:NSMakeRange(0, textStore.string.length) withAttributedString:[self encodedTextViewAttributedTextStringForEncodingText:textView.string]];
-    // react on changes.
-    // recompute jwt of this token.
-    // draw jwt
+        // react on changes.
+        // recompute jwt of this token.
+        // draw jwt
         NSRange range = NSMakeRange(0, self.decodedTextView.string.length);
         NSString *string = [self stringFromDecodedJWTToken:[self JWTFromToken:textStore.string verifySignature:NO]];
         [self signatureReactOnVerifiedToken:[self JWTFromToken:textStore.string verifySignature:YES]!=nil];
@@ -277,6 +289,17 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
         return NO;
     }
     return NO;
+}
+
+#pragma mark - DecodedTableView / <NSTableViewDataSource>
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+    return 2;
+}
+
+#pragma mark - DecodedTableView / <NSTableViewDelegate>
+- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+    return nil;
 }
 
 @end

@@ -642,7 +642,7 @@ describe(@"Whitelist tests", ^{
         NSDictionary *decoded = builder.decode;
         
         [[builder.jwtError shouldNot] beNil];
-        [[theValue(builder.jwtError.code) should] equal:theValue(JWTUnsupportedAlgorithmError)];
+        [[theValue(builder.jwtError.code) should] equal:theValue(JWTBlacklistedAlgorithmError)];
         [[decoded should] beNil];
         
 
@@ -697,7 +697,7 @@ describe(@"Whitelist tests", ^{
         NSDictionary *decoded = builder.decode;
         
         [[builder.jwtError shouldNot] beNil];
-        [[theValue(builder.jwtError.code) should] equal:theValue(JWTUnsupportedAlgorithmError)];
+        [[theValue(builder.jwtError.code) should] equal:theValue(JWTBlacklistedAlgorithmError)];
         [[decoded should] beNil];
         
     });
@@ -714,6 +714,19 @@ describe(@"Whitelist tests", ^{
         [[builder.jwtError shouldNot] beNil];
         [[theValue(builder.jwtError.code) should] equal:theValue(JWTInvalidSignatureError)];
         [[decoded should] beNil];
+    });
+    it(@"Whitelist algorithms should be applied to jwt if no algorithm name passed", ^{
+        NSString *algorithmName = @"HS256";
+        NSString *secret = @"secret";
+        //Incorrect signature
+        NSString *message = @"eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.";
+        
+        JWTBuilder *builder = [JWT decodeMessage:message].secret(secret).whitelist(@[algorithmName, @"none"]);
+        
+        NSDictionary *decoded = builder.decode;
+        
+        [[builder.jwtError should] beNil];
+        [[decoded shouldNot] beNil];
     });
 });
 

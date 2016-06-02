@@ -12,6 +12,29 @@ A [JSON Web Token][] implementation in Objective-C.
 
 [JSON Web Token]: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html
 
+# What's new in master and bleeding edge.
+These features are experiments! No warranties!  
+## Whitelists possible algorithms.
+When you need to decode jwt by several algorithms you could specify their names in whitelist.  
+Later this feature possible will migrate to options.  
+For example, someone returns result or error.
+### Limitations
+Restricted to pair (algorithm or none) due to limitations of unique `secret`.
+```
+    NSString *jwtResultOrError = /*...*/;
+    NSString *secret = @"secret";
+    JWTBuilder *builder = [JWT decodeMessage:jwtResultOrError].secret(@"secret").whitelist(@[@"HS256", @"none"]);
+    NSDictionary *decoded = builder.decode;
+    if (builder.jwtError) {
+        // oh!
+    }
+    else {
+        NSDictionary *payload = decoded[@"payload"];
+        NSDictionary *header = decoded[@"header"];
+        NSArray *tries = decoded[@"tries"]; // will be evolded into something appropriate later.
+    }
+```
+
 # What's new in Version 2.0
 Old plain style deprecated.
 Use modern fluent style instead.
