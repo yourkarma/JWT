@@ -19,7 +19,7 @@ When you need to decode jwt by several algorithms you could specify their names 
 Later this feature possible will migrate to options.  
 For example, someone returns result or error.
 ### Limitations
-Bounded to paired algorithms (`@"something"` and `@"none"`) due to limitations of `secret` passing.
+Restricted to pair (algorithm or none) due to limitations of unique `secret`.
 ```
     NSString *jwtResultOrError = /*...*/;
     NSString *secret = @"secret";
