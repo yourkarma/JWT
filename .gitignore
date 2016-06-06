@@ -20,3 +20,5 @@ DerivedData
 # Pods
 Example/**/Pods/Pods.xcodeproj/xcuserdata/
 Example/**/Pods/
+Inspection/**/Pods/Pods.xcodeproj/xcuserdata/
+Inspection/**/Pods/
