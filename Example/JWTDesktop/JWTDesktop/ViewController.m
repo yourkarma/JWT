@@ -76,7 +76,7 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
     if (!_signatureDecorations) {
         _signatureDecorations = @{
             @(SignatureValidationTypeUnknown) : @{@"stringValue" : @"Signature Unknown", @"textColor" : [NSColor darkGrayColor]},
-            @(SignatureValidationTypeValid) : @{@"stringValue" : @"Signature Valid", @"textColor" : [NSColor cyanColor]},
+            @(SignatureValidationTypeValid) : @{@"stringValue" : @"Signature Valid", @"textColor" : [NSColor colorWithRed:0 green:185/255.0f blue:241/255.0f alpha:1.0f]},
             @(SignatureValidationTypeInvalid) : @{@"stringValue" : @"Signature Invalid", @"textColor" : [NSColor redColor]}
         };
     }
@@ -99,7 +99,7 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
                         @(TokenTextTypeDefault) : [NSColor blackColor],
                         @(TokenTextTypeHeader) : [NSColor redColor],
                         @(TokenTextTypePayload) : [NSColor magentaColor],
-                        @(TokenTextTypeSignature) : [NSColor cyanColor]
+                        @(TokenTextTypeSignature) : [NSColor colorWithRed:0 green:185/255.0f blue:241/255.0f alpha:1.0f]
         };
     }
     return _textColors;
@@ -134,6 +134,14 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
 //    self.decodedTextView.delegate = self;
     self.decodedTableView.delegate = self;
     self.decodedTableView.dataSource = self;
+    
+    //thanks!
+    //http://stackoverflow.com/questions/7545490/how-can-i-have-the-only-column-of-my-nstableview-take-all-the-width-of-the-table
+    NSTableView *tableView = self.decodedTableView;
+    [tableView  setColumnAutoresizingStyle:NSTableViewUniformColumnAutoresizingStyle];
+    [tableView.tableColumns.firstObject setResizingMask:NSTableColumnAutoresizingMask];
+    //AND
+    [tableView sizeLastColumnToFit];
 }
 
 - (void)setupDecorations {
@@ -294,12 +302,33 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
 #pragma mark - DecodedTableView / <NSTableViewDataSource>
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-    return 2;
+    return 4;
 }
 
 #pragma mark - DecodedTableView / <NSTableViewDelegate>
+- (BOOL)tableView:(NSTableView *)tableView isGroupRow:(NSInteger)row {
+    return row % 2 == 0;
+}
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
-    return nil;
+    // choose by row is section or not
+    if (row % 2) {
+        // section
+        NSView *cell = [tableView makeViewWithIdentifier:@"Cell" owner:self];
+        ((NSTableCellView *)cell).textField.stringValue = @"AH";
+        return cell;
+    }
+    else {
+        NSView *cell = [tableView makeViewWithIdentifier:@"Cell" owner:self];
+        ((NSTableCellView *)cell).textField.stringValue = @"OH";
+        //    return nil;
+        return cell;
+    }
+}
+
+- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
+    // calculate height of row.
+//    NSView * view = [tableView viewAtColumn:0 row:row makeIfNecessary:NO];
+    return 40;
 }
 
 @end

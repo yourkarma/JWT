@@ -4,16 +4,16 @@ PODS:
     - Base64 (~> 1.1.2)
 
 DEPENDENCIES:
-  - JWT (from `../../../`)
+  - JWT (from `../../`)
 
 EXTERNAL SOURCES:
   JWT:
-    :path: "../../../"
+    :path: "../../"
 
 SPEC CHECKSUMS:
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   JWT: af1172153afe5f2536f57816f3e12cb4a6ac7769
 
-PODFILE CHECKSUM: 85b657720c4634f9dfeb007f8f9e12b9c823d68a
+PODFILE CHECKSUM: 7909a735d630f39332ee34afbba87afc3517027d
 
 COCOAPODS: 1.0.0
