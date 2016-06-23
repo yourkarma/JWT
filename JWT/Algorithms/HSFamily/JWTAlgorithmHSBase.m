@@ -83,12 +83,14 @@
 @interface JWTAlgorithmHSBaseTest : JWTAlgorithmHSBase
 @property (assign, nonatomic, readwrite) size_t ccSHANumberDigestLength;
 @property (assign, nonatomic, readwrite) uint32_t ccHmacAlgSHANumber;
+@property (copy, nonatomic, readwrite) NSString *name;
 @end
 
 @implementation JWTAlgorithmHSBaseTest
 
 @synthesize ccSHANumberDigestLength = _ccSHANumberDigestLength;
 @synthesize ccHmacAlgSHANumber = _ccHmacAlgSHANumber;
+@synthesize name = _name;
 
 - (size_t)ccSHANumberDigestLength {
     return _ccSHANumberDigestLength;
@@ -106,6 +108,7 @@
     JWTAlgorithmHSBaseTest *base = [JWTAlgorithmHSBaseTest new];
     base.ccSHANumberDigestLength = CC_SHA256_DIGEST_LENGTH;
     base.ccHmacAlgSHANumber = kCCHmacAlgSHA256;
+    base.name = @"HS256";
     return base;
 }
 
@@ -113,6 +116,7 @@
     JWTAlgorithmHSBaseTest *base = [JWTAlgorithmHSBaseTest new];
     base.ccSHANumberDigestLength = CC_SHA384_DIGEST_LENGTH;
     base.ccHmacAlgSHANumber = kCCHmacAlgSHA384;
+    base.name = @"HS384";
     return base;
 }
 
@@ -120,6 +124,7 @@
     JWTAlgorithmHSBaseTest *base = [JWTAlgorithmHSBaseTest new];
     base.ccSHANumberDigestLength = CC_SHA512_DIGEST_LENGTH;
     base.ccHmacAlgSHANumber = kCCHmacAlgSHA512;
+    base.name = @"HS512";
     return base;
 }
 

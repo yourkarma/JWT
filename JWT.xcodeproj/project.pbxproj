@@ -95,6 +95,7 @@
 		042AC6BC1C66226100BEA78D /* JWTClaimsSerializerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSerializerSpec.m; sourceTree = "<group>"; };
 		042AC6BD1C66226100BEA78D /* JWTClaimsSetSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSetSpec.m; sourceTree = "<group>"; };
 		042AC6C41C66230600BEA78D /* JWTAlgorithmHS384Spec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmHS384Spec.m; sourceTree = "<group>"; };
+		045F71961D1C2C2E001A3674 /* libKiwi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libKiwi.a; path = "../../../../../../../Library/Developer/Xcode/DerivedData/JWT-ewjmmyjuslhryrbhluijfxoultsh/Build/Products/Debug-iphonesimulator/Kiwi/libKiwi.a"; sourceTree = "<group>"; };
 		04F835B11C6F43B700A792A5 /* JWTClaim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTClaim.h; sourceTree = "<group>"; };
 		04F835B21C6F43B700A792A5 /* JWTClaim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaim.m; sourceTree = "<group>"; };
 		04F835B41C6F560E00A792A5 /* JWTClaimsSetVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTClaimsSetVerifier.h; sourceTree = "<group>"; };
@@ -260,6 +261,7 @@
 		A1951DB81758990700AF73D9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				045F71961D1C2C2E001A3674 /* libKiwi.a */,
 				A1951DB91758990700AF73D9 /* Foundation.framework */,
 				A1951DCA1758990700AF73D9 /* UIKit.framework */,
 				2FDE96A62E6BF470CD9AFFBC /* libPods-JWT.a */,
