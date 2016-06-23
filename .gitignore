@@ -18,6 +18,8 @@ DerivedData
 *.xcuserstate
 
 # Pods
+Pods/Pods.xcodeproj/xcuserdata/
+Pods/
 Example/**/Pods/Pods.xcodeproj/xcuserdata/
 Example/**/Pods/
 Inspection/**/Pods/Pods.xcodeproj/xcuserdata/

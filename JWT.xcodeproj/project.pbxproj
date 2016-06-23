@@ -26,12 +26,12 @@
 		042AC6C51C66230600BEA78D /* JWTAlgorithmHS384Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 042AC6C41C66230600BEA78D /* JWTAlgorithmHS384Spec.m */; };
 		04F835B31C6F43B700A792A5 /* JWTClaim.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F835B21C6F43B700A792A5 /* JWTClaim.m */; };
 		04F835B61C6F560E00A792A5 /* JWTClaimsSetVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F835B51C6F560E00A792A5 /* JWTClaimsSetVerifier.m */; };
+		088F44331EF2E1BA6E331426 /* libPods-JWT.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FDE96A62E6BF470CD9AFFBC /* libPods-JWT.a */; };
 		10738605E7F29EE92A190917 /* Test certificate and private key 2.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 107388EC556923E02B298D9A /* Test certificate and private key 2.p12 */; };
 		107387B970DD0C7478B1DE51 /* Test certificate and public key 1.pem in Resources */ = {isa = PBXBuildFile; fileRef = 107389116F36F96BF88EB54B /* Test certificate and public key 1.pem */; };
 		1073883F1A2E5C72E0092164 /* Test certificate and public key 2.pem in Resources */ = {isa = PBXBuildFile; fileRef = 107385814A2EAEDBE3798C02 /* Test certificate and public key 2.pem */; };
 		10738EEC230B8A4C21A3A2A7 /* Test certificate and private key 1.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 107381B8A2B53736F6F5CE83 /* Test certificate and private key 1.p12 */; };
-		51853EAF9C314D24B5F7681D /* libPods-JWTTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 912330953D2D4E06BC44E9BA /* libPods-JWTTests.a */; };
-		69FF89B6E0DC473E91BAABCD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FD31A232E7A4E6E99D15C23 /* libPods.a */; };
+		6CC482A9D9E13F5D5762F644 /* libPods-JWTTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A49DC3B76CA5E93341E34F18 /* libPods-JWTTests.a */; };
 		A1951DBA1758990700AF73D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1951DB91758990700AF73D9 /* Foundation.framework */; };
 		A1951DCB1758990700AF73D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1951DCA1758990700AF73D9 /* UIKit.framework */; };
 		A1951DCC1758990800AF73D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1951DB91758990700AF73D9 /* Foundation.framework */; };
@@ -99,15 +99,15 @@
 		04F835B21C6F43B700A792A5 /* JWTClaim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaim.m; sourceTree = "<group>"; };
 		04F835B41C6F560E00A792A5 /* JWTClaimsSetVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTClaimsSetVerifier.h; sourceTree = "<group>"; };
 		04F835B51C6F560E00A792A5 /* JWTClaimsSetVerifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSetVerifier.m; sourceTree = "<group>"; };
+		07618557FBCB47222BB1A690 /* Pods-JWT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWT/Pods-JWT.release.xcconfig"; sourceTree = "<group>"; };
 		107381B8A2B53736F6F5CE83 /* Test certificate and private key 1.p12 */ = {isa = PBXFileReference; lastKnownFileType = file.p12; path = "Test certificate and private key 1.p12"; sourceTree = "<group>"; };
 		107385814A2EAEDBE3798C02 /* Test certificate and public key 2.pem */ = {isa = PBXFileReference; lastKnownFileType = file.pem; path = "Test certificate and public key 2.pem"; sourceTree = "<group>"; };
 		107388EC556923E02B298D9A /* Test certificate and private key 2.p12 */ = {isa = PBXFileReference; lastKnownFileType = file.p12; path = "Test certificate and private key 2.p12"; sourceTree = "<group>"; };
 		107389116F36F96BF88EB54B /* Test certificate and public key 1.pem */ = {isa = PBXFileReference; lastKnownFileType = file.pem; path = "Test certificate and public key 1.pem"; sourceTree = "<group>"; };
-		1FD31A232E7A4E6E99D15C23 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		70AED78093B0A8112D5C4A69 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		817B4A02C2E1623BC636A4C2 /* Pods-JWTTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWTTests/Pods-JWTTests.release.xcconfig"; sourceTree = "<group>"; };
-		84F4A5888AE1E9EBD54D7DB7 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		912330953D2D4E06BC44E9BA /* libPods-JWTTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JWTTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		19E8577E599F524FF58661CE /* Pods-JWTTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JWTTests/Pods-JWTTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2FDE96A62E6BF470CD9AFFBC /* libPods-JWT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JWT.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A78608BA9E48849A918BDE8 /* Pods-JWTTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWTTests/Pods-JWTTests.release.xcconfig"; sourceTree = "<group>"; };
+		906604040ADF1FB866AFFC1D /* Pods-JWT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JWT/Pods-JWT.debug.xcconfig"; sourceTree = "<group>"; };
 		A1951DB61758990700AF73D9 /* libJWT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJWT.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1951DB91758990700AF73D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A1951DBD1758990700AF73D9 /* JWT-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JWT-Prefix.pch"; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 		A1951DE117589BC000AF73D9 /* JWTSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTSpec.m; sourceTree = "<group>"; };
 		A1951DE317589BCF00AF73D9 /* JWT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWT.h; sourceTree = "<group>"; };
 		A1951DE417589BCF00AF73D9 /* JWT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWT.m; sourceTree = "<group>"; };
-		D853DD405CE1F88C2A0743B4 /* Pods-JWTTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JWTTests/Pods-JWTTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A49DC3B76CA5E93341E34F18 /* libPods-JWTTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JWTTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7E27DDD1C922A0D00AA980D /* JWTAlgorithmRS256Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmRS256Tests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,7 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1951DBA1758990700AF73D9 /* Foundation.framework in Frameworks */,
-				69FF89B6E0DC473E91BAABCD /* libPods.a in Frameworks */,
+				088F44331EF2E1BA6E331426 /* libPods-JWT.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,7 +139,7 @@
 				A1951DCB1758990700AF73D9 /* UIKit.framework in Frameworks */,
 				A1951DCC1758990800AF73D9 /* Foundation.framework in Frameworks */,
 				A1951DCF1758990800AF73D9 /* libJWT.a in Frameworks */,
-				51853EAF9C314D24B5F7681D /* libPods-JWTTests.a in Frameworks */,
+				6CC482A9D9E13F5D5762F644 /* libPods-JWTTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,17 +237,6 @@
 			path = ClaimSet;
 			sourceTree = "<group>";
 		};
-		A02E0606ECC35D3FAFE9CBCB /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				70AED78093B0A8112D5C4A69 /* Pods.debug.xcconfig */,
-				84F4A5888AE1E9EBD54D7DB7 /* Pods.release.xcconfig */,
-				D853DD405CE1F88C2A0743B4 /* Pods-JWTTests.debug.xcconfig */,
-				817B4A02C2E1623BC636A4C2 /* Pods-JWTTests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		A1951DAD1758990700AF73D9 = {
 			isa = PBXGroup;
 			children = (
@@ -255,7 +244,7 @@
 				A1951DD01758990800AF73D9 /* JWTTests */,
 				A1951DB81758990700AF73D9 /* Frameworks */,
 				A1951DB71758990700AF73D9 /* Products */,
-				A02E0606ECC35D3FAFE9CBCB /* Pods */,
+				A8B20B9C27505AC1B116D57F /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -273,8 +262,8 @@
 			children = (
 				A1951DB91758990700AF73D9 /* Foundation.framework */,
 				A1951DCA1758990700AF73D9 /* UIKit.framework */,
-				912330953D2D4E06BC44E9BA /* libPods-JWTTests.a */,
-				1FD31A232E7A4E6E99D15C23 /* libPods.a */,
+				2FDE96A62E6BF470CD9AFFBC /* libPods-JWT.a */,
+				A49DC3B76CA5E93341E34F18 /* libPods-JWTTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -319,6 +308,17 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		A8B20B9C27505AC1B116D57F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				906604040ADF1FB866AFFC1D /* Pods-JWT.debug.xcconfig */,
+				07618557FBCB47222BB1A690 /* Pods-JWT.release.xcconfig */,
+				19E8577E599F524FF58661CE /* Pods-JWTTests.debug.xcconfig */,
+				7A78608BA9E48849A918BDE8 /* Pods-JWTTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -326,11 +326,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1951DDB1758990800AF73D9 /* Build configuration list for PBXNativeTarget "JWT" */;
 			buildPhases = (
-				C49B6F0D11EF4ACBB7A62A7F /* Check Pods Manifest.lock */,
+				DD1A4C07CA96F4E52A02D360 /* 📦 Check Pods Manifest.lock */,
 				A1951DB21758990700AF73D9 /* Sources */,
 				A1951DB31758990700AF73D9 /* Frameworks */,
 				A1951DB41758990700AF73D9 /* CopyFiles */,
-				B97761A3A0D74049BF7AB6CD /* Copy Pods Resources */,
+				0B10A5EB849B494E782A65EF /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -345,13 +345,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1951DDE1758990800AF73D9 /* Build configuration list for PBXNativeTarget "JWTTests" */;
 			buildPhases = (
-				FD051647DA44451BA478FCB9 /* Check Pods Manifest.lock */,
+				2D4BD55F7D38FC35495B6A27 /* 📦 Check Pods Manifest.lock */,
 				A1951DC21758990700AF73D9 /* Sources */,
 				A1951DC31758990700AF73D9 /* Frameworks */,
 				A1951DC41758990700AF73D9 /* Resources */,
 				A1951DC51758990700AF73D9 /* ShellScript */,
-				4062A8DEF44D40019C31528C /* Copy Pods Resources */,
-				CAC069638F04223F9A07D71E /* Embed Pods Frameworks */,
+				9B295DC6AE21EC6D9DCC1D8F /* 📦 Embed Pods Frameworks */,
+				9356286049B8EAA5D9CE69FF /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -407,19 +407,65 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4062A8DEF44D40019C31528C /* Copy Pods Resources */ = {
+		0B10A5EB849B494E782A65EF /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JWT/Pods-JWT-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2D4BD55F7D38FC35495B6A27 /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		9356286049B8EAA5D9CE69FF /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JWTTests/Pods-JWTTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9B295DC6AE21EC6D9DCC1D8F /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JWTTests/Pods-JWTTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		A1951DC51758990700AF73D9 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -434,62 +480,20 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
-		B97761A3A0D74049BF7AB6CD /* Copy Pods Resources */ = {
+		DD1A4C07CA96F4E52A02D360 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-		};
-		C49B6F0D11EF4ACBB7A62A7F /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-		};
-		CAC069638F04223F9A07D71E /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JWTTests/Pods-JWTTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		FD051647DA44451BA478FCB9 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -608,7 +612,7 @@
 		};
 		A1951DDC1758990800AF73D9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 70AED78093B0A8112D5C4A69 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 906604040ADF1FB866AFFC1D /* Pods-JWT.debug.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/JWT.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -620,7 +624,7 @@
 		};
 		A1951DDD1758990800AF73D9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 84F4A5888AE1E9EBD54D7DB7 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 07618557FBCB47222BB1A690 /* Pods-JWT.release.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/JWT.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -632,7 +636,7 @@
 		};
 		A1951DDF1758990800AF73D9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D853DD405CE1F88C2A0743B4 /* Pods-JWTTests.debug.xcconfig */;
+			baseConfigurationReference = 19E8577E599F524FF58661CE /* Pods-JWTTests.debug.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JWT/JWT-Prefix.pch";
@@ -644,7 +648,7 @@
 		};
 		A1951DE01758990800AF73D9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 817B4A02C2E1623BC636A4C2 /* Pods-JWTTests.release.xcconfig */;
+			baseConfigurationReference = 7A78608BA9E48849A918BDE8 /* Pods-JWTTests.release.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JWT/JWT-Prefix.pch";
