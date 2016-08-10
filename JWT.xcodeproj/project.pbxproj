@@ -95,6 +95,7 @@
 		042AC6BC1C66226100BEA78D /* JWTClaimsSerializerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSerializerSpec.m; sourceTree = "<group>"; };
 		042AC6BD1C66226100BEA78D /* JWTClaimsSetSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSetSpec.m; sourceTree = "<group>"; };
 		042AC6C41C66230600BEA78D /* JWTAlgorithmHS384Spec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmHS384Spec.m; sourceTree = "<group>"; };
+		04F2F9C21D5BC853008B6731 /* Security+MissingSymbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Security+MissingSymbols.h"; sourceTree = "<group>"; };
 		04F835B11C6F43B700A792A5 /* JWTClaim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTClaim.h; sourceTree = "<group>"; };
 		04F835B21C6F43B700A792A5 /* JWTClaim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaim.m; sourceTree = "<group>"; };
 		04F835B41C6F560E00A792A5 /* JWTClaimsSetVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTClaimsSetVerifier.h; sourceTree = "<group>"; };
@@ -237,6 +238,14 @@
 			path = ClaimSet;
 			sourceTree = "<group>";
 		};
+		04F2F9C11D5BC853008B6731 /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				04F2F9C21D5BC853008B6731 /* Security+MissingSymbols.h */,
+			);
+			path = Security;
+			sourceTree = "<group>";
+		};
 		A02E0606ECC35D3FAFE9CBCB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -282,6 +291,7 @@
 		A1951DBB1758990700AF73D9 /* JWT */ = {
 			isa = PBXGroup;
 			children = (
+				04F2F9C11D5BC853008B6731 /* Security */,
 				042AC6941C66225400BEA78D /* Algorithms */,
 				042AC6A21C66225400BEA78D /* ClaimSet */,
 				A1951DBC1758990700AF73D9 /* Supporting Files */,

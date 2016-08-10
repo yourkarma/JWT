@@ -9,6 +9,7 @@
 #import "JWTAlgorithmRSBase.h"
 #import "MF_Base64Additions.h"
 #import <CommonCrypto/CommonCrypto.h>
+#import "Security+MissingSymbols.h"
 
 @interface JWTAlgorithmRSBase()
 
