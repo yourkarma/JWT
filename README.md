@@ -12,6 +12,29 @@ A [JSON Web Token][] implementation in Objective-C.
 
 [JSON Web Token]: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html
 
+# What's new in master and bleeding edge.
+These features are experiments! No warranties!  
+## Whitelists possible algorithms.
+When you need to decode jwt by several algorithms you could specify their names in whitelist.  
+Later this feature possible will migrate to options.  
+For example, someone returns result or error.
+### Limitations
+Restricted to pair (algorithm or none) due to limitations of unique `secret`.
+```
+    NSString *jwtResultOrError = /*...*/;
+    NSString *secret = @"secret";
+    JWTBuilder *builder = [JWT decodeMessage:jwtResultOrError].secret(@"secret").whitelist(@[@"HS256", @"none"]);
+    NSDictionary *decoded = builder.decode;
+    if (builder.jwtError) {
+        // oh!
+    }
+    else {
+        NSDictionary *payload = decoded[@"payload"];
+        NSDictionary *header = decoded[@"header"];
+        NSArray *tries = decoded[@"tries"]; // will be evolded into something appropriate later.
+    }
+```
+
 # What's new in Version 2.0
 Old plain style deprecated.
 Use modern fluent style instead.
@@ -207,10 +230,48 @@ You can also encode/decode using a secret that is represented as an NSData objec
 
 The following algorithms are supported:
 
+* RS256
 * HS512 - HMAC using SHA-512. 
 * HS256 / HS384 / HS512
 * None
+
+## RS256 usage.
+For example, you have your file with privateKey: `file.p12`.
+And you have a secret passphrase for that file: `secret`.
+
+    // Encode
+    NSDictionary *payload = @{@"payload" : @"hidden_information"};
+    NSString *algorithmName = @"RS256";
     
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"secret_key" ofType:@"p12"];
+    NSData *privateKeySecretData = [NSData dataWithContentsOfFile:filePath];
+    
+    NSString *passphraseForPrivateKey = @"secret";
+    
+    JWTBuilder *builder = [JWTBuilder encodePayload:payload].secretData(privateKeySecretData).privateKeyCertificatePassphrase(passphraseForPrivateKey).algorithmName(algorithmName);
+    NSString *token = builder.encode;
+    
+    // check error
+    if (builder.jwtError) {
+        // error occurred.
+    }
+    
+    // Decode
+    // Suppose, that you get token from previous example. You need a valid public key for a private key in previous example.
+    // Private key stored in @"secret_key.p12". So, you need public key for that private key.
+    NSString *publicKey = @"..."; // load public key. Or use it as raw string.
+    
+    algorithmName = @"RS256";
+    
+    JWTBuilder *decodeBuilder = [JWTBuilder decodeMessage:token].secret(publicKey).algorithmName(algorithmName);
+    NSDictionary *envelopedPayload = decodeBuilder.decode;
+    
+    // check error
+    if (decodeBuilder.jwtError) {
+        // error occurred.
+    }
+
+
 Additional algorithms can be added by implementing the `JWTAlgorithm` protocol.
 
 # Contributing

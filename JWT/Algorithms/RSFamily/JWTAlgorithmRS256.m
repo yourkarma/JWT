@@ -51,6 +51,7 @@
     NSData *signatureData = [NSData dataWithBase64UrlEncodedString:signature];
     SecKeyRef publicKey = [self publicKeyFromCertificate:verificationKeyData];
     BOOL signatureOk = PKCSVerifyBytesSHA256withRSA(signedData, signatureData, publicKey);
+    (CFRelease(publicKey));
     return signatureOk;
 }
 
@@ -74,6 +75,9 @@
     SecTrustResultType resultType;
     SecTrustEvaluate(trust, &resultType);
     SecKeyRef publicKey = SecTrustCopyPublicKey(trust);
+    (CFRelease(trust));
+    (CFRelease(secPolicy));
+    (CFRelease(certificate));
     return publicKey;
 }
 
@@ -93,6 +97,9 @@ BOOL PKCSVerifyBytesSHA256withRSA(NSData* plainData, NSData* signature, SecKeyRe
             hashBytesSize,
             signedHashBytes,
             signedHashBytesSize);
+    
+    if (hashBytes)
+        free(hashBytes);
 
     return status == errSecSuccess;
 }
