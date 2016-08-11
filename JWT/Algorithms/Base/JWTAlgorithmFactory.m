@@ -12,9 +12,9 @@
 #import "JWTAlgorithmHS512.h"
 #import <TargetConditionals.h>
 
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+//#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 #import "JWTAlgorithmRS256.h"
-#endif
+//#endif
 
 #import "JWTAlgorithmNone.h"
 
@@ -26,9 +26,9 @@
             [JWTAlgorithmHS256 new],
             [JWTAlgorithmHS384 new],
             [JWTAlgorithmHS512 new],
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+//#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
             [JWTAlgorithmRS256 new]
-#endif
+//#endif
             ];
 
 }
