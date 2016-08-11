@@ -26,7 +26,26 @@ extern OSStatus SecKeyRawSign(
 	size_t              *sigLen)
     __OSX_AVAILABLE_STARTING(__MAC_10_7, __IPHONE_2_0);
 
+
 enum {
+    /* For SecKeyRawSign/SecKeyRawVerify only, data to be signed is a SHA224
+     hash; standard ASN.1 padding will be done, as well as PKCS1 padding
+     of the underlying RSA operation. */
+    kSecPaddingPKCS1SHA224 = 0x8003,
+    
+    /* For SecKeyRawSign/SecKeyRawVerify only, data to be signed is a SHA256
+     hash; standard ASN.1 padding will be done, as well as PKCS1 padding
+     of the underlying RSA operation. */
     kSecPaddingPKCS1SHA256 = 0x8004,
+    
+    /* For SecKeyRawSign/SecKeyRawVerify only, data to be signed is a SHA384
+     hash; standard ASN.1 padding will be done, as well as PKCS1 padding
+     of the underlying RSA operation. */
+    kSecPaddingPKCS1SHA384 = 0x8005,
+    
+    /* For SecKeyRawSign/SecKeyRawVerify only, data to be signed is a SHA512
+     hash; standard ASN.1 padding will be done, as well as PKCS1 padding
+     of the underlying RSA operation. */
+    kSecPaddingPKCS1SHA512 = 0x8006
 };
 #endif
