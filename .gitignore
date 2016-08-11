@@ -17,6 +17,14 @@ DerivedData
 *.ipa
 *.xcuserstate
 
+# rvm
+.ruby-version
+.ruby-gemset
+Example/**/.ruby-version
+Example/**/.ruby-gemset
+Inspection/**/.ruby-version
+Inspection/**/.ruby-gemset
+
 # Pods
 Pods/Pods.xcodeproj/xcuserdata/
 Pods/
