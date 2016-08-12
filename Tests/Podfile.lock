@@ -5,18 +5,18 @@ PODS:
   - Kiwi (2.4.0)
 
 DEPENDENCIES:
-  - JWT (from `../../`)
+  - JWT (from `../`)
   - Kiwi
 
 EXTERNAL SOURCES:
   JWT:
-    :path: "../../"
+    :path: "../"
 
 SPEC CHECKSUMS:
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   JWT: 65a6027bb6c7cd91730b7add2e1654458e314b80
   Kiwi: f49c9d54b28917df5928fe44968a39ed198cb8a8
 
-PODFILE CHECKSUM: b62cdb80ff306ae3cda66900fc7bab6548e4dc00
+PODFILE CHECKSUM: ff7603a55b6a1be7ba8ea4473ecf3ce38d656d06
 
 COCOAPODS: 1.0.0
