@@ -1,0 +1,24 @@
+source 'https://github.com/CocoaPods/Specs'
+
+def framework_name
+	'JWT' 
+end
+
+xcodeproj framework_name + ' ' + 'Tests'
+#workspace '../Framework/JWT'
+inhibit_all_warnings!
+
+def import_pods
+  pod 'Kiwi'
+  pod framework_name, :path => '../'
+end
+
+target :'iOS_Tests' do
+  platform :ios, '6.1'
+  import_pods
+end
+
+target :'macOS_Tests' do
+  platform :osx, '10.8'
+  import_pods
+end
