@@ -7,14 +7,13 @@
 //
 
 #import "JWTAlgorithmFactory.h"
-#import "JWTAlgorithmHS256.h"
-#import "JWTAlgorithmHS384.h"
-#import "JWTAlgorithmHS512.h"
+//#import "JWTAlgorithmHS256.h"
+//#import "JWTAlgorithmHS384.h"
+//#import "JWTAlgorithmHS512.h"
+#import "JWTAlgorithmHSBase.h"
 #import <TargetConditionals.h>
+#import "JWTAlgorithmRSBase.h"
 
-//#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-#import "JWTAlgorithmRS256.h"
-//#endif
 
 #import "JWTAlgorithmNone.h"
 
@@ -23,12 +22,12 @@
 + (NSArray *)algorithms {
     return @[
             [JWTAlgorithmNone new],
-            [JWTAlgorithmHS256 new],
-            [JWTAlgorithmHS384 new],
-            [JWTAlgorithmHS512 new],
-//#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-            [JWTAlgorithmRS256 new]
-//#endif
+            [JWTAlgorithmHSBase algorithm256],
+            [JWTAlgorithmHSBase algorithm384],
+            [JWTAlgorithmHSBase algorithm512],
+            [JWTAlgorithmRSBase algorithm256],
+            [JWTAlgorithmRSBase algorithm384],
+            [JWTAlgorithmRSBase algorithm512]
             ];
 
 }

@@ -175,9 +175,9 @@ SPEC_BEGIN(JWTAlgorithmRS256Spec)
 
     context(@"Name", ^{
         // Use algorithm by name. JWTBuilder.algorithmName(RS256)
-//        itBehavesLike(algorithmBehavior, @{});
+        itBehavesLike(algorithmBehavior, @{});
     });
-    context(@"Clean", ^{
+    context(@"Clean", ^{        
 //        itBehavesLike(algorithmBehavior, @{dataAlgorithmKey: [JWTAlgorithmRS256 new]});
     });
     context(@"RSBased", ^{
