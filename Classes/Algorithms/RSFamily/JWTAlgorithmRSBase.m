@@ -197,9 +197,9 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
 
 @implementation JWTAlgorithmRSBaseMac
 - (NSData *)executeTransform:(SecTransformRef)transform withInput:(NSData *)input withDigestType:(CFStringRef)type withDigestLength:(NSNumber *)length withFalseResult:(CFTypeRef)falseResultRef {
-    CFErrorRef errorRef;
+    CFErrorRef errorRef = NULL;
     
-    CFTypeRef resultRef;
+    CFTypeRef resultRef = NULL;
     NSData *resultData = nil;
     
     
@@ -237,31 +237,30 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
     }
     
     // release
-    if (transform) {
+    if (transform != NULL) {
         CFRelease(transform);
     }
     
-    if (errorRef) {
+    if (errorRef != NULL) {
         CFRelease(errorRef);
     }
     
-    if (resultRef) {
+    if (resultRef != NULL) {
         CFRelease(resultRef);
     }
     
     return resultData;
 }
 - (BOOL)PKCSVerifyBytesSHANumberWithRSA:(NSData *)plainData witSignature:(NSData *)signature withPublicKey:(SecKeyRef) publicKey {
+    
     size_t signedHashBytesSize = SecKeyGetBlockSize(publicKey);
-    const void* signedHashBytes = [signature bytes];
+    //const void* signedHashBytes = [signature bytes];
     
     size_t hashBytesSize = self.ccSHANumberDigestLength;
     uint8_t* hashBytes = malloc(hashBytesSize);
     if (![self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes]) {
         return false;
     }
-    
-    NSData *hashData = [[NSData alloc] initWithBytes:hashBytes length:hashBytesSize];
     
     // verify for iOS
 //    OSStatus status = SecKeyRawVerify(publicKey,
@@ -280,8 +279,8 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
 
 - (NSData *)PKCSSignBytesSHANumberwithRSA:(NSData *)plainData withPrivateKey:(SecKeyRef)privateKey {
     size_t signedHashBytesSize = SecKeyGetBlockSize(privateKey);
-    uint8_t* signedHashBytes = malloc(signedHashBytesSize);
-    memset(signedHashBytes, 0x0, signedHashBytesSize);
+    //uint8_t* signedHashBytes = malloc(signedHashBytesSize);
+    //memset(signedHashBytes, 0x0, signedHashBytesSize);
     
     size_t hashBytesSize = self.ccSHANumberDigestLength;
     uint8_t* hashBytes = malloc(hashBytesSize);
@@ -298,10 +297,7 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
         return nil;
     }
     
-    NSData *hashData = [[NSData alloc] initWithBytes:hashBytes length:hashBytesSize];
-
     CFErrorRef errorRef;
-    CFDataRef resultDataRef;
     
     SecTransformRef transform = SecSignTransformCreate(privateKey, &errorRef);
     
