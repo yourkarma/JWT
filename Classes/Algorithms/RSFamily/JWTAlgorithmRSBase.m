@@ -190,16 +190,154 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
 
 @end
 
+#if TARGET_OS_MAC && !TARGET_OS_IPHONE
+
+@interface JWTAlgorithmRSBaseMac : JWTAlgorithmRSBase
+@end
+
+@implementation JWTAlgorithmRSBaseMac
+- (NSData *)executeTransform:(SecTransformRef)transform withInput:(NSData *)input withDigestType:(CFStringRef)type withDigestLength:(NSNumber *)length withFalseResult:(CFTypeRef)falseResultRef {
+    CFErrorRef errorRef = NULL;
+    
+    CFTypeRef resultRef = NULL;
+    NSData *resultData = nil;
+    
+    
+    BOOL success = transform != NULL;
+    
+    if (success) {
+        // setup digest type
+        success = SecTransformSetAttribute(transform, kSecDigestTypeAttribute, kSecDigestSHA2, &errorRef);
+    }
+    
+    if (success) {
+        // digest length
+        success = SecTransformSetAttribute(transform, kSecDigestLengthAttribute, (__bridge CFNumberRef)length, &errorRef);
+    }
+    
+    if (success) {
+        // set input
+        success = SecTransformSetAttribute(transform, kSecTransformInputAttributeName, (__bridge CFDataRef)input, &errorRef);
+    }
+    
+    if (success) {
+        // execute
+        resultRef = SecTransformExecute(transform, &errorRef);
+        success = (resultRef != falseResultRef);
+    }
+    
+    // error
+    if (errorRef) {
+        NSLog(@"%@ error: %@", self.debugDescription, (__bridge NSError *)errorRef);
+    }
+    else {
+        if (success) {
+            resultData = (__bridge NSData *)resultRef;
+        }
+    }
+    
+    // release
+    if (transform != NULL) {
+        CFRelease(transform);
+    }
+    
+    if (errorRef != NULL) {
+        CFRelease(errorRef);
+    }
+    
+    if (resultRef != NULL) {
+        CFRelease(resultRef);
+    }
+    
+    return resultData;
+}
+- (BOOL)PKCSVerifyBytesSHANumberWithRSA:(NSData *)plainData witSignature:(NSData *)signature withPublicKey:(SecKeyRef) publicKey {
+    
+    size_t signedHashBytesSize = SecKeyGetBlockSize(publicKey);
+    //const void* signedHashBytes = [signature bytes];
+    
+    size_t hashBytesSize = self.ccSHANumberDigestLength;
+    uint8_t* hashBytes = malloc(hashBytesSize);
+    if (![self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes]) {
+        return false;
+    }
+    
+    // verify for iOS
+//    OSStatus status = SecKeyRawVerify(publicKey,
+//                                      self.secPaddingPKCS1SHANumber,
+//                                      hashBytes,
+//                                      hashBytesSize,
+//                                      signedHashBytes,
+//                                      signedHashBytesSize);
+//    return status == errSecSuccess;
+    CFErrorRef errorRef;
+    SecTransformRef transform = SecVerifyTransformCreate(publicKey, (__bridge CFDataRef)signature, &errorRef);
+    
+    // verification. false result is kCFBooleanFalse
+    return [self executeTransform:transform withInput:plainData withDigestType:kSecDigestSHA2 withDigestLength:@(signedHashBytesSize) withFalseResult:kCFBooleanFalse] != nil;
+}
+
+- (NSData *)PKCSSignBytesSHANumberwithRSA:(NSData *)plainData withPrivateKey:(SecKeyRef)privateKey {
+    size_t signedHashBytesSize = SecKeyGetBlockSize(privateKey);
+    //uint8_t* signedHashBytes = malloc(signedHashBytesSize);
+    //memset(signedHashBytes, 0x0, signedHashBytesSize);
+    
+    size_t hashBytesSize = self.ccSHANumberDigestLength;
+    uint8_t* hashBytes = malloc(hashBytesSize);
+    
+    /**
+     for sha256
+     CC_SHANumberWithData() is CC_SHA256()
+     self.secPaddingPKCS1SHANumber = kSecPaddingPKCS1SHA256
+     self.ccSHANumberDigestLength  = CC_SHA256_DIGEST_LENGTH
+     */
+    unsigned char *str = [self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes];
+    
+    if (!str) {
+        return nil;
+    }
+    
+    CFErrorRef errorRef;
+    
+    SecTransformRef transform = SecSignTransformCreate(privateKey, &errorRef);
+    
+    /** iOS
+    SecKeyRawSign(privateKey,
+                  self.secPaddingPKCS1SHANumber,
+                  hashBytes,
+                  hashBytesSize,
+                  signedHashBytes,
+                  &signedHashBytesSize);
+    
+    NSData* signedHash = [NSData dataWithBytes:signedHashBytes
+                                        length:(NSUInteger)signedHashBytesSize];
+    
+     */
+    
+    NSData *resultData = nil;
+    // signing: false result is NULL.
+    // it will release error.
+    resultData = [self executeTransform:transform withInput:plainData withDigestType:kSecDigestSHA2 withDigestLength:@(signedHashBytesSize) withFalseResult:NULL];
+    return resultData;
+}
+@end
+
+@interface JWTAlgorithmRSBaseTest : JWTAlgorithmRSBaseMac
+#else
 @interface JWTAlgorithmRSBaseTest : JWTAlgorithmRSBase
+#endif
+
 @property (assign, nonatomic, readwrite) size_t ccSHANumberDigestLength;
 @property (assign, nonatomic, readwrite) uint32_t secPaddingPKCS1SHANumber;
 @property (assign, nonatomic, readwrite) unsigned char * (^ccShaNumberWithData)(const void *data, CC_LONG len, unsigned char *hashBytes);
+@property (copy, nonatomic, readwrite) NSString *name;
 @end
 
 @implementation JWTAlgorithmRSBaseTest
 
 @synthesize ccSHANumberDigestLength = _ccSHANumberDigestLength;
 @synthesize secPaddingPKCS1SHANumber = _secPaddingPKCS1SHANumber;
+@synthesize name = _name;
 
 - (size_t)ccSHANumberDigestLength {
     return _ccSHANumberDigestLength;
@@ -219,6 +357,7 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
 
 @end
 
+
 @implementation JWTAlgorithmRSBase (Create)
 
 + (instancetype)algorithm256 {
@@ -228,6 +367,7 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
     base.ccShaNumberWithData = ^unsigned char *(const void *data, CC_LONG len, unsigned char *hashBytes){
         return CC_SHA256(data, len, hashBytes);
     };
+    base.name = @"RS256";
     return base;
 }
 
@@ -238,6 +378,7 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
     base.ccShaNumberWithData = ^unsigned char *(const void *data, CC_LONG len, unsigned char *hashBytes){
         return CC_SHA384(data, len, hashBytes);
     };
+    base.name = @"RS384";
     return base;
 }
 
@@ -248,6 +389,7 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
     base.ccShaNumberWithData = ^unsigned char *(const void *data, CC_LONG len, unsigned char *hashBytes){
         return CC_SHA512(data, len, hashBytes);
     };
+    base.name = @"RS512";
     return base;
 }
 

@@ -65,13 +65,32 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
         algorithm = data[dataAlgorithmKey];
         assertToken = ^(NSString *token) {
             [[theValue(token) shouldNot] beNil];
-            NSDictionary *decodedDictionary = [JWTBuilder decodeMessage:validTokenToDecode].secret(validPublicKeyCertificateString).algorithmName(algorithmName).algorithm(algorithm).decode;
+            JWTBuilder *builder = [JWTBuilder decodeMessage:validTokenToDecode].secret(validPublicKeyCertificateString).algorithmName(algorithmName).algorithm(algorithm);
+            
+            NSDictionary *decodedDictionary = builder.decode;
+            //NSDictionary *decodedDictionary = [JWTBuilder decodeMessage:validTokenToDecode].secret(validPublicKeyCertificateString).algorithmName(algorithmName).algorithm(algorithm).decode;
+            
+            NSError *error = builder.jwtError;
+            
+            if (error) {
+                NSLog(@"error = %@", error);
+            }
+            
             assertDecodedDictionary(decodedDictionary);
+            
             NSLog(@"token = %@", token);
         };
     });
 
     context(@"Encoding", ^{
+        pending(@"EncodedTokenAsCanonical", ^{
+            // specific test. depends on architecture?.
+            // will be removed it later.
+            NSString *correctToken = @"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJwYXlsb2FkIjp7ImhlbGxvIjoid29ybGQifSwiaGVhZGVyIjp7ImFsZyI6IlJTMjU2IiwidHlwIjoiSldUIn19.CkrRDy5Jxp3nFEKY5MqYZIrYIQathtMmnUfxs9oKXbclNQkda5cp_bYhamKrGOKSdxdoHHUdziyFIETWJHrLK2udvxGIYF_kJmhN6-Wkq4_y5K-dqB2DvxsaNjwiw3z9haO5c0k2JzwI794rOzQGeRac3hjscuEsxF-iVE_ZRbK91dfdG6wW7mBQFa8k8I882YoQXJJTdZPiXOAmEd2it65qvp-62WQcwWs9ImPBx7XzfuB1ZnCtp_vXA3qXsbYMkPB5OZSAVmkG1QPD0koqBz9v98hCnQQs0trCWl-CM_g4x0T-kxAdkoUDvIxtUGDWhYRPn2Pw3EDDa3zM7uvHng";
+            JWTBuilder *builder = [JWTBuilder encodePayload:headerAndPayloadDictionary].secretData(privateKeyCertificateData).privateKeyCertificatePassphrase(@"password").algorithmName(algorithmName).algorithm(algorithm);
+            NSString *token = builder.encode;
+            [[token should] equal:correctToken];
+        });
         it(@"DataWithValidPrivateKeyCertificatePassphrase", ^{
             JWTBuilder *builder = [JWTBuilder encodePayload:headerAndPayloadDictionary].secretData(privateKeyCertificateData).privateKeyCertificatePassphrase(@"password").algorithmName(algorithmName).algorithm(algorithm);
             NSString *token = builder.encode;
@@ -94,6 +113,28 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
             [[(token) should] beNil];
         });
     });
+//    
+//    pending(@"FailedTests", ^{
+//        it(@"StringFailsWithValidSignatureAndInvalidPublicKey", ^{
+//            NSDictionary *decodedDictionary = [JWTBuilder decodeMessage:validTokenToDecode].secret(invalidPublicKeyCertificateString).algorithmName(algorithmName).algorithm(algorithm).decode;
+//            [[(decodedDictionary) should] beNil];
+//        });
+//        it(@"DataFailsWithValidSignatureAndInvalidPublicKey", ^{
+//            NSData *certificateData = [NSData dataWithBase64UrlEncodedString:invalidPublicKeyCertificateString];
+//            NSDictionary *decodedDictionary = [JWTBuilder decodeMessage:validTokenToDecode].secretData(certificateData).algorithmName(algorithmName).algorithm(algorithm).decode;
+//            [[(decodedDictionary) should] beNil];
+//        });
+//        it(@"EncodedTokenAsCanonical", ^{
+//            NSString *correctToken = @"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJwYXlsb2FkIjp7ImhlbGxvIjoid29ybGQifSwiaGVhZGVyIjp7ImFsZyI6IlJTMjU2IiwidHlwIjoiSldUIn19.CkrRDy5Jxp3nFEKY5MqYZIrYIQathtMmnUfxs9oKXbclNQkda5cp_bYhamKrGOKSdxdoHHUdziyFIETWJHrLK2udvxGIYF_kJmhN6-Wkq4_y5K-dqB2DvxsaNjwiw3z9haO5c0k2JzwI794rOzQGeRac3hjscuEsxF-iVE_ZRbK91dfdG6wW7mBQFa8k8I882YoQXJJTdZPiXOAmEd2it65qvp-62WQcwWs9ImPBx7XzfuB1ZnCtp_vXA3qXsbYMkPB5OZSAVmkG1QPD0koqBz9v98hCnQQs0trCWl-CM_g4x0T-kxAdkoUDvIxtUGDWhYRPn2Pw3EDDa3zM7uvHng";
+//            JWTBuilder *builder = [JWTBuilder encodePayload:headerAndPayloadDictionary].secretData(privateKeyCertificateData).privateKeyCertificatePassphrase(@"password").algorithmName(algorithmName).algorithm(algorithm);
+//            NSString *token = builder.encode;
+//            [[correctToken should] equal:token];
+//        });
+//        it(@"StringSucceedsWithValidSignatureAndValidPublicKey", ^{
+//            NSDictionary *decodedDictionary = [JWTBuilder decodeMessage:validTokenToDecode].secret(validPublicKeyCertificateString).algorithmName(algorithmName).algorithm(algorithm).decode;
+//            assertDecodedDictionary(decodedDictionary);
+//        });
+//    });
     context(@"Decoding", ^{
         it(@"StringSucceedsWithValidSignatureAndValidPublicKey", ^{
             NSDictionary *decodedDictionary = [JWTBuilder decodeMessage:validTokenToDecode].secret(validPublicKeyCertificateString).algorithmName(algorithmName).algorithm(algorithm).decode;
@@ -139,8 +180,8 @@ SPEC_BEGIN(JWTAlgorithmRS256Spec)
         // Use algorithm by name. JWTBuilder.algorithmName(RS256)
         itBehavesLike(algorithmBehavior, @{});
     });
-    context(@"Clean", ^{
-        itBehavesLike(algorithmBehavior, @{dataAlgorithmKey: [JWTAlgorithmRS256 new]});
+    context(@"Clean", ^{        
+//        itBehavesLike(algorithmBehavior, @{dataAlgorithmKey: [JWTAlgorithmRS256 new]});
     });
     context(@"RSBased", ^{
         itBehavesLike(algorithmBehavior, @{dataAlgorithmKey: [JWTAlgorithmRSBase algorithm256]});

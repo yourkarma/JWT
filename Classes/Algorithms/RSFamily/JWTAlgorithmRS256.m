@@ -10,12 +10,27 @@
 #import "MF_Base64Additions.h"
 #import <CommonCrypto/CommonCrypto.h>
 #import "Security+MissingSymbols.h"
+#import "JWTAlgorithmRSBase.h"
 
-@implementation JWTAlgorithmRS256 {
+//@implementation JWTAlgorithmRS256
+//
+//+ (instancetype)new {
+//    return [JWTAlgorithmRSBase algorithm256];
+//}
+//
+//+ (instancetype)alloc {
+//    return nil;
+//}
+
+/*{
     NSString *_privateKeyCertificatePassphrase;
 }
 
 #pragma mark - JWTAlgorithm
+
++ (instancetype)new {
+    return [JWTAlgorithmRSBase algorithm256];
+}
 
 - (NSString *)name {
   return @"RS256";
@@ -144,8 +159,8 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
     const void *values[] = { keyPassword };
     CFDictionaryRef optionsDictionary = NULL;
 
-    /* Create a dictionary containing the passphrase if one
-       was specified.  Otherwise, create an empty dictionary. */
+    // Create a dictionary containing the passphrase if one
+    //   was specified.  Otherwise, create an empty dictionary.
     optionsDictionary = CFDictionaryCreate(
             NULL, keys,
             values, (keyPassword ? 1 : 0),
@@ -179,6 +194,6 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
         CFRelease(items);
 
     return securityError;
-}
+}*/
 
-@end
+//@end
