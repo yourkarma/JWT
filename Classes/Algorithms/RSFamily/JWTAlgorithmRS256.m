@@ -10,12 +10,17 @@
 #import "MF_Base64Additions.h"
 #import <CommonCrypto/CommonCrypto.h>
 #import "Security+MissingSymbols.h"
+#import "JWTAlgorithmRSBase.h"
 
 @implementation JWTAlgorithmRS256 {
     NSString *_privateKeyCertificatePassphrase;
 }
 
 #pragma mark - JWTAlgorithm
+
++ (instancetype)new {
+    return [JWTAlgorithmRSBase algorithm256];
+}
 
 - (NSString *)name {
   return @"RS256";
