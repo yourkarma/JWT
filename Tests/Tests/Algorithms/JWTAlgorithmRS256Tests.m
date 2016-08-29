@@ -9,7 +9,6 @@
 #import <Kiwi/Kiwi.h>
 #import <Base64/MF_Base64Additions.h>
 #import "JWT.h"
-#import "JWTAlgorithmRS256.h"
 #import "JWTAlgorithmRSBase.h"
 
 static NSString *algorithmBehavior = @"algorithmRS256Behaviour";

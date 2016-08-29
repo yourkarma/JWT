@@ -265,7 +265,6 @@
 				045145FA1D5E243D007B1D7A /* ClaimSet */,
 				045146041D5E243D007B1D7A /* JWT.h */,
 				045146051D5E243D007B1D7A /* JWT.m */,
-				045146061D5E243D007B1D7A /* Security */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -333,13 +332,6 @@
 				045146021D5E243D007B1D7A /* JWTClaimsSetVerifier.m */,
 			);
 			path = ClaimSet;
-			sourceTree = "<group>";
-		};
-		045146061D5E243D007B1D7A /* Security */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Security;
 			sourceTree = "<group>";
 		};
 		045146691D5E2A78007B1D7A /* JWT_iOS_Static */ = {
