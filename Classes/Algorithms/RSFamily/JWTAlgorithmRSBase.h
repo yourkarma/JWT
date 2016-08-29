@@ -22,5 +22,11 @@
 + (instancetype)algorithm256;
 + (instancetype)algorithm384;
 + (instancetype)algorithm512;
++ (instancetype)mutableAlgorithm __deprecated;
 
 @end
+
+/*
+ // when you can't live without mutability, uncomment.
+ @class JWTAlgorithmRSFamilyMemberMutable;
+*/

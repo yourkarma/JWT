@@ -9,17 +9,36 @@
 #import "JWTAlgorithmRSBase.h"
 #import "MF_Base64Additions.h"
 #import <CommonCrypto/CommonCrypto.h>
-#import "Security+MissingSymbols.h"
+
+/*
+*    * Possible inheritence *
+*
+*
+*             RSBase (Public + Create-category)
+*            /      \
+*           /        \
+*  RSBaseMac          RSBaseIOS
+*           \  ifdef /
+*            \      /
+*         RSFamilyMember
+*                |
+*         RSFamilyMemberMutable
+*
+*/
+/*
+    TODO: rename RSBaseTest into RSFamilyMemberMutable
+*/
 
 @interface JWTAlgorithmRSBase()
 
 @end
 
-
 @implementation JWTAlgorithmRSBase
 
 @synthesize privateKeyCertificatePassphrase;
 
+#pragma mark - Override
+// TODO: put assurance that algorithm was properly overriden?
 - (size_t)ccSHANumberDigestLength {
     return 0;
 }
@@ -28,16 +47,15 @@
     return 0;
 }
 
-#pragma mark - JWTAlgorithm
-
 - (unsigned char *)CC_SHANumberWithData:(const void *)data withLength:(CC_LONG)len withHashBytes:(unsigned char *)hashBytes {
     return nil;
 }
 
 - (NSString *)name {
-  return @"RSBase";
+    return @"RSBase";
 }
 
+#pragma mark - JWTAlgorithm
 - (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
     return [self encodePayloadData:[theString dataUsingEncoding:NSUTF8StringEncoding] withSecret:[NSData dataWithBase64UrlEncodedString:theSecret]];
 }
@@ -71,8 +89,16 @@
     return signatureOk;
 }
 
-#pragma mark - Private
+#pragma mark - Private ( Override-part depends on platform )
+- (BOOL)PKCSVerifyBytesSHANumberWithRSA:(NSData *)plainData witSignature:(NSData *)signature withPublicKey:(SecKeyRef) publicKey {
+    return NO;
+}
 
+- (NSData *)PKCSSignBytesSHANumberwithRSA:(NSData *)plainData withPrivateKey:(SecKeyRef)privateKey {
+    return nil;
+}
+
+#pragma mark - Private Helpers
 - (SecKeyRef)publicKeyFromCertificate:(NSData *)certificateData {
     SecCertificateRef certificate = SecCertificateCreateWithData(NULL, (__bridge CFDataRef)certificateData);
     SecPolicyRef secPolicy = SecPolicyCreateBasicX509();
@@ -85,59 +111,6 @@
     (CFRelease(secPolicy));
     (CFRelease(certificate));
     return publicKey;
-}
-
-- (BOOL)PKCSVerifyBytesSHANumberWithRSA:(NSData *)plainData witSignature:(NSData *)signature withPublicKey:(SecKeyRef) publicKey {
-    size_t signedHashBytesSize = SecKeyGetBlockSize(publicKey);
-    const void* signedHashBytes = [signature bytes];
-
-    size_t hashBytesSize = self.ccSHANumberDigestLength;
-    uint8_t* hashBytes = malloc(hashBytesSize);
-    if (![self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes]) {
-        return false;
-    }
-    
-    OSStatus status = SecKeyRawVerify(publicKey,
-        self.secPaddingPKCS1SHANumber,
-        hashBytes,
-        hashBytesSize,
-        signedHashBytes,
-        signedHashBytesSize);
-
-    return status == errSecSuccess;
-}
-
-- (NSData *)PKCSSignBytesSHANumberwithRSA:(NSData *)plainData withPrivateKey:(SecKeyRef)privateKey {
-    size_t signedHashBytesSize = SecKeyGetBlockSize(privateKey);
-    uint8_t* signedHashBytes = malloc(signedHashBytesSize);
-    memset(signedHashBytes, 0x0, signedHashBytesSize);
-
-    size_t hashBytesSize = self.ccSHANumberDigestLength;
-    uint8_t* hashBytes = malloc(hashBytesSize);
-
-    // ([plainData bytes], (CC_LONG)[plainData length], hashBytes)
-    unsigned char *str = [self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes];
-    
-    if (!str) {
-        return nil;
-    }
-
-    SecKeyRawSign(privateKey,
-            self.secPaddingPKCS1SHANumber,
-            hashBytes,
-            hashBytesSize,
-            signedHashBytes,
-            &signedHashBytesSize);
-
-    NSData* signedHash = [NSData dataWithBytes:signedHashBytes
-                                        length:(NSUInteger)signedHashBytesSize];
-
-    if (hashBytes)
-        free(hashBytes);
-    if (signedHashBytes)
-        free(signedHashBytes);
-
-    return signedHash;
 }
 
 OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
@@ -190,8 +163,65 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
 
 @end
 
-#if TARGET_OS_MAC && !TARGET_OS_IPHONE
+#if TARGET_OS_MAC && TARGET_OS_IPHONE
+@interface JWTAlgorithmRSBaseIOS : JWTAlgorithmRSBase @end
+@implementation JWTAlgorithmRSBaseIOS
+- (BOOL)PKCSVerifyBytesSHANumberWithRSA:(NSData *)plainData witSignature:(NSData *)signature withPublicKey:(SecKeyRef) publicKey {
+    size_t signedHashBytesSize = SecKeyGetBlockSize(publicKey);
+    const void* signedHashBytes = [signature bytes];
+    
+    size_t hashBytesSize = self.ccSHANumberDigestLength;
+    uint8_t* hashBytes = malloc(hashBytesSize);
+    if (![self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes]) {
+        return false;
+    }
+    
+    OSStatus status = SecKeyRawVerify(publicKey,
+                                      self.secPaddingPKCS1SHANumber,
+                                      hashBytes,
+                                      hashBytesSize,
+                                      signedHashBytes,
+                                      signedHashBytesSize);
+    
+    return status == errSecSuccess;
+}
 
+- (NSData *)PKCSSignBytesSHANumberwithRSA:(NSData *)plainData withPrivateKey:(SecKeyRef)privateKey {
+    size_t signedHashBytesSize = SecKeyGetBlockSize(privateKey);
+    uint8_t* signedHashBytes = malloc(signedHashBytesSize);
+    memset(signedHashBytes, 0x0, signedHashBytesSize);
+    
+    size_t hashBytesSize = self.ccSHANumberDigestLength;
+    uint8_t* hashBytes = malloc(hashBytesSize);
+    
+    // ([plainData bytes], (CC_LONG)[plainData length], hashBytes)
+    unsigned char *str = [self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes];
+    
+    if (!str) {
+        return nil;
+    }
+    
+    SecKeyRawSign(privateKey,
+                  self.secPaddingPKCS1SHANumber,
+                  hashBytes,
+                  hashBytesSize,
+                  signedHashBytes,
+                  &signedHashBytesSize);
+    
+    NSData* signedHash = [NSData dataWithBytes:signedHashBytes
+                                        length:(NSUInteger)signedHashBytesSize];
+    
+    if (hashBytes)
+        free(hashBytes);
+    if (signedHashBytes)
+        free(signedHashBytes);
+    
+    return signedHash;
+}
+@end
+#endif
+
+#if TARGET_OS_MAC && !TARGET_OS_IPHONE
 @interface JWTAlgorithmRSBaseMac : JWTAlgorithmRSBase
 @end
 
@@ -226,12 +256,14 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
         success = (resultRef != falseResultRef);
     }
     
+    BOOL positiveResult = success; // resultRef != falseResultRef
+    
     // error
-    if (errorRef) {
+    if (errorRef != NULL) {
         NSLog(@"%@ error: %@", self.debugDescription, (__bridge NSError *)errorRef);
     }
     else {
-        if (success) {
+        if (positiveResult) {
             resultData = (__bridge NSData *)resultRef;
         }
     }
@@ -270,11 +302,18 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
 //                                      signedHashBytes,
 //                                      signedHashBytesSize);
 //    return status == errSecSuccess;
-    CFErrorRef errorRef;
+    
+    CFErrorRef errorRef = NULL;
     SecTransformRef transform = SecVerifyTransformCreate(publicKey, (__bridge CFDataRef)signature, &errorRef);
     
     // verification. false result is kCFBooleanFalse
-    return [self executeTransform:transform withInput:plainData withDigestType:kSecDigestSHA2 withDigestLength:@(signedHashBytesSize) withFalseResult:kCFBooleanFalse] != nil;
+    BOOL result = [self executeTransform:transform withInput:plainData withDigestType:kSecDigestSHA2 withDigestLength:@(signedHashBytesSize) withFalseResult:kCFBooleanFalse] != nil;
+    
+    if (errorRef != NULL) {
+        CFRelease(errorRef);
+    }
+    
+    return result;
 }
 
 - (NSData *)PKCSSignBytesSHANumberwithRSA:(NSData *)plainData withPrivateKey:(SecKeyRef)privateKey {
@@ -297,7 +336,7 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
         return nil;
     }
     
-    CFErrorRef errorRef;
+    CFErrorRef errorRef = NULL;
     
     SecTransformRef transform = SecSignTransformCreate(privateKey, &errorRef);
     
@@ -318,22 +357,110 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
     // signing: false result is NULL.
     // it will release error.
     resultData = [self executeTransform:transform withInput:plainData withDigestType:kSecDigestSHA2 withDigestLength:@(signedHashBytesSize) withFalseResult:NULL];
+    
+    if (errorRef != NULL) {
+        CFRelease(errorRef);
+    }
+    
     return resultData;
 }
 @end
-
-@interface JWTAlgorithmRSBaseTest : JWTAlgorithmRSBaseMac
-#else
-@interface JWTAlgorithmRSBaseTest : JWTAlgorithmRSBase
 #endif
+
+
+// MacOS OR iOS is Base
+#if TARGET_OS_MAC && !TARGET_OS_IPHONE
+@interface JWTAlgorithmRSFamilyMember : JWTAlgorithmRSBaseMac @end
+#else
+@interface JWTAlgorithmRSFamilyMember : JWTAlgorithmRSBaseIOS @end
+#endif
+
+@interface JWTAlgorithmRS256 : JWTAlgorithmRSFamilyMember @end
+@interface JWTAlgorithmRS384 : JWTAlgorithmRSFamilyMember @end
+@interface JWTAlgorithmRS512 : JWTAlgorithmRSFamilyMember @end
+
+@implementation JWTAlgorithmRSFamilyMember
+- (uint32_t)secPaddingPKCS1SHANumber {
+    return 0;
+}
+@end
+
+@implementation JWTAlgorithmRS256
+
+- (size_t)ccSHANumberDigestLength {
+    return CC_SHA256_DIGEST_LENGTH;
+}
+
+#if TARGET_OS_MAC && TARGET_OS_IPHONE
+- (uint32_t)secPaddingPKCS1SHANumber {
+    return kSecPaddingPKCS1SHA256;
+}
+#endif
+
+- (unsigned char *)CC_SHANumberWithData:(const void *)data withLength:(CC_LONG)len withHashBytes:(unsigned char *)hashBytes {
+    return CC_SHA256(data, len, hashBytes);
+}
+
+- (NSString *)name {
+    return @"RS256";
+}
+
+@end
+
+@implementation JWTAlgorithmRS384
+
+- (size_t)ccSHANumberDigestLength {
+    return CC_SHA384_DIGEST_LENGTH;
+}
+
+#if TARGET_OS_MAC && TARGET_OS_IPHONE
+- (uint32_t)secPaddingPKCS1SHANumber {
+    return kSecPaddingPKCS1SHA384;
+}
+#endif
+
+- (unsigned char *)CC_SHANumberWithData:(const void *)data withLength:(CC_LONG)len withHashBytes:(unsigned char *)hashBytes {
+    return CC_SHA384(data, len, hashBytes);
+}
+
+- (NSString *)name {
+    return @"RS384";
+}
+
+@end
+
+@implementation JWTAlgorithmRS512
+
+- (size_t)ccSHANumberDigestLength {
+    return CC_SHA512_DIGEST_LENGTH;
+}
+
+#if TARGET_OS_MAC && TARGET_OS_IPHONE
+- (uint32_t)secPaddingPKCS1SHANumber {
+    return kSecPaddingPKCS1SHA512;
+}
+#endif
+
+- (unsigned char *)CC_SHANumberWithData:(const void *)data withLength:(CC_LONG)len withHashBytes:(unsigned char *)hashBytes {
+    return CC_SHA512(data, len, hashBytes);
+}
+
+- (NSString *)name {
+    return @"RS512";
+}
+
+@end
+
+
+@interface JWTAlgorithmRSFamilyMemberMutable : JWTAlgorithmRSFamilyMember
 
 @property (assign, nonatomic, readwrite) size_t ccSHANumberDigestLength;
 @property (assign, nonatomic, readwrite) uint32_t secPaddingPKCS1SHANumber;
-@property (assign, nonatomic, readwrite) unsigned char * (^ccShaNumberWithData)(const void *data, CC_LONG len, unsigned char *hashBytes);
+@property (copy, nonatomic, readwrite) unsigned char * (^ccShaNumberWithData)(const void *data, CC_LONG len, unsigned char *hashBytes);
 @property (copy, nonatomic, readwrite) NSString *name;
 @end
 
-@implementation JWTAlgorithmRSBaseTest
+@implementation JWTAlgorithmRSFamilyMemberMutable
 
 @synthesize ccSHANumberDigestLength = _ccSHANumberDigestLength;
 @synthesize secPaddingPKCS1SHANumber = _secPaddingPKCS1SHANumber;
@@ -361,35 +488,51 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
 @implementation JWTAlgorithmRSBase (Create)
 
 + (instancetype)algorithm256 {
-    JWTAlgorithmRSBaseTest *base = [JWTAlgorithmRSBaseTest new];
+//    JWTAlgorithmRSFamilyMemberMutable *base = [JWTAlgorithmRSFamilyMemberMutable new];
+//    base.ccSHANumberDigestLength = CC_SHA256_DIGEST_LENGTH;
+//    base.secPaddingPKCS1SHANumber = kSecPaddingPKCS1SHA256;
+//    base.ccShaNumberWithData = ^unsigned char *(const void *data, CC_LONG len, unsigned char *hashBytes){
+//        return CC_SHA256(data, len, hashBytes);
+//    };
+//    base.name = @"RS256";
+//    return base;
+    return [JWTAlgorithmRS256 new];
+}
+
++ (instancetype)algorithm384 {
+//    JWTAlgorithmRSFamilyMemberMutable *base = [JWTAlgorithmRSFamilyMemberMutable new];
+//    base.ccSHANumberDigestLength = CC_SHA384_DIGEST_LENGTH;
+//    base.secPaddingPKCS1SHANumber = kSecPaddingPKCS1SHA384;
+//    base.ccShaNumberWithData = ^unsigned char *(const void *data, CC_LONG len, unsigned char *hashBytes){
+//        return CC_SHA384(data, len, hashBytes);
+//    };
+//    base.name = @"RS384";
+//    return base;
+    return [JWTAlgorithmRS384 new];
+}
+
++ (instancetype)algorithm512 {
+//    JWTAlgorithmRSFamilyMemberMutable *base = [JWTAlgorithmRSFamilyMemberMutable new];
+//    base.ccSHANumberDigestLength = CC_SHA512_DIGEST_LENGTH;
+//    base.secPaddingPKCS1SHANumber = kSecPaddingPKCS1SHA512;
+//    base.ccShaNumberWithData = ^unsigned char *(const void *data, CC_LONG len, unsigned char *hashBytes){
+//        return CC_SHA512(data, len, hashBytes);
+//    };
+//    base.name = @"RS512";
+//    return base;
+    return [JWTAlgorithmRS512 new];
+}
+
++ (instancetype)mutableAlgorithm {
+    JWTAlgorithmRSFamilyMemberMutable *base = [JWTAlgorithmRSFamilyMemberMutable new];
     base.ccSHANumberDigestLength = CC_SHA256_DIGEST_LENGTH;
-    base.secPaddingPKCS1SHANumber = kSecPaddingPKCS1SHA256;
+    
+    //set to something ok
+    //base.secPaddingPKCS1SHANumber = kSecPaddingPKCS1SHA256;
     base.ccShaNumberWithData = ^unsigned char *(const void *data, CC_LONG len, unsigned char *hashBytes){
         return CC_SHA256(data, len, hashBytes);
     };
     base.name = @"RS256";
-    return base;
-}
-
-+ (instancetype)algorithm384 {
-    JWTAlgorithmRSBaseTest *base = [JWTAlgorithmRSBaseTest new];
-    base.ccSHANumberDigestLength = CC_SHA384_DIGEST_LENGTH;
-    base.secPaddingPKCS1SHANumber = kSecPaddingPKCS1SHA384;
-    base.ccShaNumberWithData = ^unsigned char *(const void *data, CC_LONG len, unsigned char *hashBytes){
-        return CC_SHA384(data, len, hashBytes);
-    };
-    base.name = @"RS384";
-    return base;
-}
-
-+ (instancetype)algorithm512 {
-    JWTAlgorithmRSBaseTest *base = [JWTAlgorithmRSBaseTest new];
-    base.ccSHANumberDigestLength = CC_SHA512_DIGEST_LENGTH;
-    base.secPaddingPKCS1SHANumber = kSecPaddingPKCS1SHA512;
-    base.ccShaNumberWithData = ^unsigned char *(const void *data, CC_LONG len, unsigned char *hashBytes){
-        return CC_SHA512(data, len, hashBytes);
-    };
-    base.name = @"RS512";
     return base;
 }
 
