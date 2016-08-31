@@ -11,8 +11,6 @@
 #import "JWTAlgorithmRSBase.h"
 #import "JWTAlgorithmNone.h"
 
-NSString *const JWTAlgorithmNameNone = @"none";
-
 // not implemented.
 NSString *const JWTAlgorithmNameES256 = @"ES256";
 NSString *const JWTAlgorithmNameES384 = @"ES384";
