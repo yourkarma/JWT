@@ -29,7 +29,7 @@ script:
     - pod install --project-directory=Framework
 
     - echo Check if the library described by the podspec can be built
-    - pod lib lint
+    - pod lib lint --allow-warnings
     
     # Build.
     - echo "Build iOS Static library"
