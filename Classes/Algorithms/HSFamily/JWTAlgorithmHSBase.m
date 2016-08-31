@@ -14,6 +14,10 @@
 #import "JWTAlgorithmHS384.h"
 #import "JWTAlgorithmHS512.h"
 
+NSString *const JWTAlgorithmNameHS256 = @"HS256";
+NSString *const JWTAlgorithmNameHS384 = @"HS384";
+NSString *const JWTAlgorithmNameHS512 = @"HS512";
+
 // TODO:
 // 1. hide algorithms as it was done in RSBase.
 // 2. remove remain headers.

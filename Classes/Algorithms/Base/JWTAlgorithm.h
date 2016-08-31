@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JWTDeprecations.h"
 
 @protocol JWTAlgorithm <NSObject>
 
@@ -20,7 +21,7 @@
  @param theSecret The secret to use for encryption
  @return An NSData object containing the encrypted payload, or nil if something went wrong.
  */
-- (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret;
+- (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret __deprecated_and_will_be_removed_in_release_version(JWTVersion_3_0_0);
 
 /**
  Verifies the provided signature using the signed input and verification key
@@ -29,7 +30,7 @@
  @param verificationKey The key to use for verifying the signature
  @return YES if the provided signature is valid, NO otherwise
  */
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey;
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey __deprecated_and_will_be_removed_in_release_version(JWTVersion_3_0_0);
 
 @optional
 
