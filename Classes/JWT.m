@@ -412,6 +412,8 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 @property (copy, nonatomic, readwrite) NSDictionary *jwtPayload;
 @property (copy, nonatomic, readwrite) NSDictionary *jwtHeaders;
 @property (copy, nonatomic, readwrite) JWTClaimsSet *jwtClaimsSet;
+@property (copy, nonatomic, readwrite) NSArray *jwtDataHolders;
+
 @property (copy, nonatomic, readwrite) NSString *jwtSecret;
 @property (copy, nonatomic, readwrite) NSData *jwtSecretData;
 @property (copy, nonatomic, readwrite) NSString *jwtPrivateKeyCertificatePassphrase;
@@ -432,7 +434,8 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 @property (copy, nonatomic, readwrite) JWTBuilder *(^algorithmName)(NSString *algorithmName);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^options)(NSNumber *options);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^whitelist)(NSArray *whitelist);
-
+@property (copy, nonatomic, readwrite) JWTBuilder * (^addDataHolder)(JWTAlgorithmBaseDataHolder *dataHolder);
+@property (copy, nonatomic, readwrite) JWTBuilder * (^constructDataHolder)(id<JWTAlgorithmDataHolder> (^block)());
 @end
 
 @implementation JWTBuilder
@@ -509,6 +512,13 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     return self;
 }
 
+- (instancetype)addDataHolder:(JWTAlgorithmBaseDataHolder *)dataHolder {
+    if (dataHolder) {
+        
+    }
+    return self;
+}
+
 #pragma mark - Initialization
 + (JWTBuilder *)encodePayload:(NSDictionary *)payload {
     return [[JWTBuilder alloc] init].payload(payload);
@@ -568,6 +578,17 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         
         self.whitelist = ^(NSArray *whitelist) {
             return [weakSelf whitelist:whitelist];
+        };
+        
+        self.addDataHolder = ^(JWTAlgorithmBaseDataHolder *holder) {
+            return [weakSelf addDataHolder:holder];
+        };
+        
+        self.constructDataHolder = ^(id<JWTAlgorithmDataHolder> (^block)()) {
+            if (block) {
+                return [weakSelf addDataHolder:block()];
+            }
+            return weakSelf;
         };
     }
 

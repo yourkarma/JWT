@@ -8,19 +8,34 @@
 
 #import <Foundation/Foundation.h>
 #import "JWTAlgorithm.h"
+#import "JWTDeprecations.h"
 
 // TODO: available in 3.0
 // All methods with secret as NSString in algorithms will be deprecated or removed.
 
 @protocol JWTAlgorithmDataHolder <NSObject>
-@property (copy, nonatomic, readonly) NSData *currentSecretData;
+/**
+ The verification key to use when encoding/decoding a JWT in data form
+ */
+@property (copy, nonatomic, readonly) NSData *currentSecretData __deprecated_msg("msg");
+
+/**
+ The <JWTAlgorithm> to use for encoding a JWT
+ */
 @property (strong, nonatomic, readonly) id <JWTAlgorithm> currentAlgorithm;
 @end
 
 @interface JWTAlgorithmBaseDataHolder : NSObject <JWTAlgorithmDataHolder>
 
 #pragma mark - Getters
+/**
+ The verification key to use when encoding/decoding a JWT
+ */
 @property (copy, nonatomic, readonly) NSString *currentSecret;
+
+/**
+ The algorithm name to use for decoding the JWT. Required unless force decode is true
+ */
 @property (copy, nonatomic, readonly) NSString *currentAlgorithmName;
 
 #pragma mark - Setters
@@ -51,6 +66,9 @@
 
 @interface JWTAlgorithmRSFamilyDataHolder : JWTAlgorithmBaseDataHolder
 #pragma mark - Getters
+/**
+ The passphrase for the PKCS12 blob, which represents the certificate containing the private key for the RS algorithms.
+ */
 @property (copy, nonatomic, readonly) NSString *currentPrivateKeyCertificatePassphrase;
 
 #pragma mark - Setters
