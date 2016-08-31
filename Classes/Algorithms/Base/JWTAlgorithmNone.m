@@ -7,11 +7,12 @@
 //
 
 #import "JWTAlgorithmNone.h"
+NSString *const JWTAlgorithmNameNone = @"none";
 
 @implementation JWTAlgorithmNone
 
 - (NSString *)name {
-    return @"none";
+    return JWTAlgorithmNameNone;
 }
 
 - (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {

@@ -29,6 +29,10 @@
     TODO: rename RSBaseTest into RSFamilyMemberMutable
 */
 
+NSString *const JWTAlgorithmNameRS256 = @"RS256";
+NSString *const JWTAlgorithmNameRS384 = @"RS384";
+NSString *const JWTAlgorithmNameRS512 = @"RS512";
+
 @interface JWTAlgorithmRSBase()
 
 @end
@@ -402,7 +406,7 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
 }
 
 - (NSString *)name {
-    return @"RS256";
+    return JWTAlgorithmNameRS256;
 }
 
 @end
@@ -424,7 +428,7 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
 }
 
 - (NSString *)name {
-    return @"RS384";
+    return JWTAlgorithmNameRS384;
 }
 
 @end
@@ -446,7 +450,7 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
 }
 
 - (NSString *)name {
-    return @"RS512";
+    return JWTAlgorithmNameRS512;
 }
 
 @end

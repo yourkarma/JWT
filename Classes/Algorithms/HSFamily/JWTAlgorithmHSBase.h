@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "JWTAlgorithm.h"
+extern NSString *const JWTAlgorithmNameHS256;
+extern NSString *const JWTAlgorithmNameHS384;
+extern NSString *const JWTAlgorithmNameHS512;
 
 @interface JWTAlgorithmHSBase : NSObject <JWTAlgorithm>
 
