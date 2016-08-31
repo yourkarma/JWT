@@ -62,6 +62,7 @@
 		0451471C1D5E2C2B007B1D7A /* JWTClaimsSetSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 045145FF1D5E243D007B1D7A /* JWTClaimsSetSerializer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0451471E1D5E2C2B007B1D7A /* JWTClaimsSetVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 045146011D5E243D007B1D7A /* JWTClaimsSetVerifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		045147211D5E2C2B007B1D7A /* JWT.h in Headers */ = {isa = PBXBuildFile; fileRef = 045146041D5E243D007B1D7A /* JWT.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		04AE0E7B1D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AE0E7A1D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.m */; };
 		04C005221D70639E001CBDE7 /* JWTAlgorithm.h in Headers */ = {isa = PBXBuildFile; fileRef = 045145E41D5E243D007B1D7A /* JWTAlgorithm.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		04C005231D70639E001CBDE7 /* JWTAlgorithmFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 045145E51D5E243D007B1D7A /* JWTAlgorithmFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		04C005241D70639E001CBDE7 /* JWTAlgorithmNone.h in Headers */ = {isa = PBXBuildFile; fileRef = 045145E71D5E243D007B1D7A /* JWTAlgorithmNone.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -182,6 +183,8 @@
 		0451469F1D5E2AD2007B1D7A /* JWT_macOS_Swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JWT_macOS_Swift.h; sourceTree = "<group>"; };
 		045146A11D5E2AD2007B1D7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		045F71961D1C2C2E001A3674 /* libKiwi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libKiwi.a; path = "../../../../../../../Library/Developer/Xcode/DerivedData/JWT-ewjmmyjuslhryrbhluijfxoultsh/Build/Products/Debug-iphonesimulator/Kiwi/libKiwi.a"; sourceTree = "<group>"; };
+		04AE0E791D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithmDataHolder.h; sourceTree = "<group>"; };
+		04AE0E7A1D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmDataHolder.m; sourceTree = "<group>"; };
 		07618557FBCB47222BB1A690 /* Pods-JWT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWT/Pods-JWT.release.xcconfig"; sourceTree = "<group>"; };
 		0FCADB95F316CCA27481F95C /* libPods-JWT_iOS_Static.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JWT_iOS_Static.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1363BB24C195377ABBD5A8C2 /* Pods-JWT_iOS_Framework.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT_iOS_Framework.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JWT_iOS_Framework/Pods-JWT_iOS_Framework.debug.xcconfig"; sourceTree = "<group>"; };
@@ -264,6 +267,7 @@
 		045145E21D5E243D007B1D7A /* Algorithms */ = {
 			isa = PBXGroup;
 			children = (
+				04AE0E781D76DA4D001AE8F2 /* Holders */,
 				045145E31D5E243D007B1D7A /* Base */,
 				045145E91D5E243D007B1D7A /* HSFamily */,
 				045145F41D5E243D007B1D7A /* RSFamily */,
@@ -366,6 +370,15 @@
 				045146A11D5E2AD2007B1D7A /* Info.plist */,
 			);
 			path = JWT_macOS_Swift;
+			sourceTree = "<group>";
+		};
+		04AE0E781D76DA4D001AE8F2 /* Holders */ = {
+			isa = PBXGroup;
+			children = (
+				04AE0E791D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.h */,
+				04AE0E7A1D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.m */,
+			);
+			path = Holders;
 			sourceTree = "<group>";
 		};
 		A1951DAD1758990700AF73D9 = {
@@ -843,6 +856,7 @@
 				045146BC1D5E2B1B007B1D7A /* JWTClaimsSet.m in Sources */,
 				045146BE1D5E2B1B007B1D7A /* JWTClaimsSetSerializer.m in Sources */,
 				045146C01D5E2B1B007B1D7A /* JWTClaimsSetVerifier.m in Sources */,
+				04AE0E7B1D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.m in Sources */,
 				045146C31D5E2B1B007B1D7A /* JWT.m in Sources */,
 				0451466D1D5E2A78007B1D7A /* JWT_iOS_Static.m in Sources */,
 			);

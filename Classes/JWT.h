@@ -250,7 +250,7 @@ typedef NS_ENUM(NSInteger, JWTError) {
 @property (copy, nonatomic, readonly) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm);
 
 /**
- Sets jwtAlgorithmName and returns the JWTBuilder to allow for method chaining
+ Sets jwtAlgorithmName and returns the JWTBuilder to allow for method chaining. See list of names in appropriate headers.
  */
 @property (copy, nonatomic, readonly) JWTBuilder *(^algorithmName)(NSString *algorithmName);
 
