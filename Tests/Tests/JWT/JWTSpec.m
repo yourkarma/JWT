@@ -488,7 +488,7 @@ describe(@"decoding", ^{
         });
     });
     context(@"claims set", ^{
-        it(@"decode claims set and verify it correctly", ^{
+        pending(@"decode claims set and verify it correctly", ^{
             NSString *algorithmName = @"HS256";
             NSString *secret = @"secret";
             JWTClaimsSet *claimsSet = [[JWTClaimsSet alloc] init];
