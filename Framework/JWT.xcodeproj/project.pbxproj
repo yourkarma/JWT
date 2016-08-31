@@ -63,6 +63,8 @@
 		0451471E1D5E2C2B007B1D7A /* JWTClaimsSetVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 045146011D5E243D007B1D7A /* JWTClaimsSetVerifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		045147211D5E2C2B007B1D7A /* JWT.h in Headers */ = {isa = PBXBuildFile; fileRef = 045146041D5E243D007B1D7A /* JWT.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		04AE0E7B1D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AE0E7A1D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.m */; };
+		04AE0E7E1D76E487001AE8F2 /* JWTDeprecations.h in Headers */ = {isa = PBXBuildFile; fileRef = 04AE0E7D1D76E3CD001AE8F2 /* JWTDeprecations.h */; };
+		04AE0E7F1D76E488001AE8F2 /* JWTDeprecations.h in Headers */ = {isa = PBXBuildFile; fileRef = 04AE0E7D1D76E3CD001AE8F2 /* JWTDeprecations.h */; };
 		04C005221D70639E001CBDE7 /* JWTAlgorithm.h in Headers */ = {isa = PBXBuildFile; fileRef = 045145E41D5E243D007B1D7A /* JWTAlgorithm.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		04C005231D70639E001CBDE7 /* JWTAlgorithmFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 045145E51D5E243D007B1D7A /* JWTAlgorithmFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		04C005241D70639E001CBDE7 /* JWTAlgorithmNone.h in Headers */ = {isa = PBXBuildFile; fileRef = 045145E71D5E243D007B1D7A /* JWTAlgorithmNone.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -185,6 +187,7 @@
 		045F71961D1C2C2E001A3674 /* libKiwi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libKiwi.a; path = "../../../../../../../Library/Developer/Xcode/DerivedData/JWT-ewjmmyjuslhryrbhluijfxoultsh/Build/Products/Debug-iphonesimulator/Kiwi/libKiwi.a"; sourceTree = "<group>"; };
 		04AE0E791D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithmDataHolder.h; sourceTree = "<group>"; };
 		04AE0E7A1D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmDataHolder.m; sourceTree = "<group>"; };
+		04AE0E7D1D76E3CD001AE8F2 /* JWTDeprecations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JWTDeprecations.h; sourceTree = "<group>"; };
 		07618557FBCB47222BB1A690 /* Pods-JWT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWT/Pods-JWT.release.xcconfig"; sourceTree = "<group>"; };
 		0FCADB95F316CCA27481F95C /* libPods-JWT_iOS_Static.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JWT_iOS_Static.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1363BB24C195377ABBD5A8C2 /* Pods-JWT_iOS_Framework.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT_iOS_Framework.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JWT_iOS_Framework/Pods-JWT_iOS_Framework.debug.xcconfig"; sourceTree = "<group>"; };
@@ -255,6 +258,7 @@
 		045145E11D5E243D007B1D7A /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				04AE0E7C1D76E3BC001AE8F2 /* Supplement */,
 				045145E21D5E243D007B1D7A /* Algorithms */,
 				045145FA1D5E243D007B1D7A /* ClaimSet */,
 				045146041D5E243D007B1D7A /* JWT.h */,
@@ -381,6 +385,14 @@
 			path = Holders;
 			sourceTree = "<group>";
 		};
+		04AE0E7C1D76E3BC001AE8F2 /* Supplement */ = {
+			isa = PBXGroup;
+			children = (
+				04AE0E7D1D76E3CD001AE8F2 /* JWTDeprecations.h */,
+			);
+			path = Supplement;
+			sourceTree = "<group>";
+		};
 		A1951DAD1758990700AF73D9 = {
 			isa = PBXGroup;
 			children = (
@@ -460,6 +472,7 @@
 				0451470F1D5E2C2B007B1D7A /* JWTAlgorithmHSBase.h in Headers */,
 				045147151D5E2C2B007B1D7A /* JWTAlgorithmRSBase.h in Headers */,
 				045147171D5E2C2B007B1D7A /* JWTRSAlgorithm.h in Headers */,
+				04AE0E7E1D76E487001AE8F2 /* JWTDeprecations.h in Headers */,
 				045147181D5E2C2B007B1D7A /* JWTClaim.h in Headers */,
 				0451471A1D5E2C2B007B1D7A /* JWTClaimsSet.h in Headers */,
 				0451471C1D5E2C2B007B1D7A /* JWTClaimsSetSerializer.h in Headers */,
@@ -492,6 +505,7 @@
 				04C0052D1D70639E001CBDE7 /* JWTClaim.h in Headers */,
 				04C0052E1D70639E001CBDE7 /* JWTClaimsSet.h in Headers */,
 				04C0052F1D70639E001CBDE7 /* JWTClaimsSetSerializer.h in Headers */,
+				04AE0E7F1D76E488001AE8F2 /* JWTDeprecations.h in Headers */,
 				04C005301D70639E001CBDE7 /* JWTClaimsSetVerifier.h in Headers */,
 				04C005311D70639E001CBDE7 /* JWT.h in Headers */,
 			);
