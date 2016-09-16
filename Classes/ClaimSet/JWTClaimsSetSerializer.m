@@ -21,9 +21,9 @@
     [self dictionary:dictionary setObjectIfNotNil:theClaimsSet.issuer forKey:@"iss"];
     [self dictionary:dictionary setObjectIfNotNil:theClaimsSet.subject forKey:@"sub"];
     [self dictionary:dictionary setObjectIfNotNil:theClaimsSet.audience forKey:@"aud"];
-    [self dictionary:dictionary setObjectIfNotNil:@([theClaimsSet.expirationDate timeIntervalSince1970]) forKey:@"exp"];
-    [self dictionary:dictionary setObjectIfNotNil:@([theClaimsSet.notBeforeDate timeIntervalSince1970]) forKey:@"nbf"];
-    [self dictionary:dictionary setObjectIfNotNil:@([theClaimsSet.issuedAt timeIntervalSince1970]) forKey:@"iat"];
+    [self dictionary:dictionary setDateIfNotNil:theClaimsSet.expirationDate forKey:@"exp"];
+    [self dictionary:dictionary setDateIfNotNil:theClaimsSet.notBeforeDate forKey:@"nbf"];
+    [self dictionary:dictionary setDateIfNotNil:theClaimsSet.issuedAt forKey:@"iat"];
     [self dictionary:dictionary setObjectIfNotNil:theClaimsSet.identifier forKey:@"jti"];
     [self dictionary:dictionary setObjectIfNotNil:theClaimsSet.type forKey:@"typ"];
     return [dictionary copy];
@@ -50,5 +50,15 @@
     
     [theDictionary setObject:theObject forKey:theKey];
 }
+
++ (void)dictionary:(NSMutableDictionary *)theDictionary setDateIfNotNil:(NSDate*)date forKey:(id<NSCopying>)theKey;
+{
+    if (!date)
+        return;
+    NSNumber* value = @((unsigned long)[date timeIntervalSince1970]);
+    
+    [theDictionary setObject:value forKey:theKey];
+}
+
 
 @end
