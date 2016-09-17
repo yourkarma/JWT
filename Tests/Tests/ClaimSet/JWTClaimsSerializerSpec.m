@@ -15,50 +15,62 @@ SPEC_BEGIN(JWTClaimsSerializerSpec)
 context(@"serialization", ^{
     __block JWTClaimsSet *claimsSet;
     __block NSDictionary *serialized;
+
+    __block NSInteger expirationDateTS = 1234567;
+    __block NSInteger notBeforeDateTS = 1234321;
+    __block NSInteger issuedAtTS = 1234333;
     
     beforeEach(^{
+        
         claimsSet = [[JWTClaimsSet alloc] init];
         claimsSet.issuer = @"Facebook";
         claimsSet.subject = @"Token";
         claimsSet.audience = @"http://yourkarma.com";
-        claimsSet.expirationDate = [NSDate distantFuture];
-        claimsSet.notBeforeDate = [NSDate distantPast];
-        claimsSet.issuedAt = [NSDate date];
+        claimsSet.expirationDate = [NSDate dateWithTimeIntervalSince1970:expirationDateTS];
+        claimsSet.notBeforeDate = [NSDate dateWithTimeIntervalSince1970:notBeforeDateTS];
+        claimsSet.issuedAt = [NSDate dateWithTimeIntervalSince1970:issuedAtTS];
         claimsSet.identifier = @"thisisunique";
         claimsSet.type = @"test";
         serialized = [JWTClaimsSetSerializer dictionaryWithClaimsSet:claimsSet];
+        
+    });
+
+    it(@"number of serialized values", ^{
+        [[serialized should] haveCountOf:8];
     });
     
     it(@"serializes the issuer property", ^{
         [[serialized should] haveValue:claimsSet.issuer forKey:@"iss"];
     });
-
+    
     it(@"serializes the subject property", ^{
         [[serialized should] haveValue:claimsSet.subject forKey:@"sub"];
     });
-
+    
     it(@"serializes the audience property", ^{
         [[serialized should] haveValue:claimsSet.audience forKey:@"aud"];
     });
-
+    
     it(@"serializes the expiration date property", ^{
-        [[serialized should] haveValue:theValue([claimsSet.expirationDate timeIntervalSince1970]) forKey:@"exp"];
+        [[serialized should] haveValue:@(expirationDateTS) forKey:@"exp"];
     });
-
+    
     it(@"serializes the not before date property", ^{
-        [[serialized should] haveValue:theValue([claimsSet.notBeforeDate timeIntervalSince1970])  forKey:@"nbf"];
+        [[serialized should] haveValue:@(notBeforeDateTS)  forKey:@"nbf"];
     });
-
+    
     it(@"serializes the issued at property", ^{
-        [[serialized should] haveValue:theValue([claimsSet.issuedAt timeIntervalSince1970]) forKey:@"iat"];
+        [[serialized should] haveValue:@(issuedAtTS) forKey:@"iat"];
     });
-
+    
     it(@"serializes the JWT ID property", ^{
         [[serialized should] haveValue:claimsSet.identifier forKey:@"jti"];
+
     });
 
     it(@"serializes the type property", ^{
         [[serialized should] haveValue:claimsSet.type forKey:@"typ"];
+        
     });
 });
 
@@ -73,7 +85,7 @@ context(@"deserialization", ^{
             @"aud": @"http://yourkarma.com",
             @"exp": @(64092211200),
             @"nbf": @(-62135769600),
-            @"iat": @(1370005175.80196),
+            @"iat": @(1370005175),
             @"jti": @"thisisunique",
             @"typ": @"test"
         };
