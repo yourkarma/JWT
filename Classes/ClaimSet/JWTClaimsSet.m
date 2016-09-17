@@ -10,30 +10,6 @@
 
 @implementation JWTClaimsSet
 
-- (NSDate *)expirationDate;
-{
-    if (!_expirationDate)
-        _expirationDate = [NSDate distantFuture];
-
-    return _expirationDate;
-}
-
-- (NSDate *)notBeforeDate;
-{
-    if (!_notBeforeDate)
-        _notBeforeDate = [NSDate distantPast];
-
-    return _notBeforeDate;
-}
-
-- (NSDate *)issuedAt;
-{
-    if (!_issuedAt)
-        _issuedAt = [NSDate date];
-
-    return _issuedAt;
-}
-
 - (id)copyWithZone:(NSZone *)zone {
     JWTClaimsSet *newClaimsSet = [[self.class alloc] init];
     
