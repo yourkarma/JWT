@@ -1,10 +1,12 @@
 PODS:
   - Base64 (1.1.2)
-  - JWT (2.1.0-beta.1):
+  - JWT (2.1.0):
     - Base64 (~> 1.1.2)
+  - Masonry (1.0.2)
 
 DEPENDENCIES:
   - JWT (from `../../`)
+  - Masonry
 
 EXTERNAL SOURCES:
   JWT:
@@ -12,8 +14,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
-  JWT: 65a6027bb6c7cd91730b7add2e1654458e314b80
+  JWT: eef4a19fcd74445af6ff812fc87743129c0626bd
+  Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
 
-PODFILE CHECKSUM: 7909a735d630f39332ee34afbba87afc3517027d
+PODFILE CHECKSUM: fda93fc3e144e01200c97f1ff75bab5354c3505f
 
 COCOAPODS: 1.0.0
