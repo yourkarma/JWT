@@ -15,6 +15,7 @@
 typedef NS_ENUM(NSInteger, JWTError) {
     JWTInvalidFormatError = -100,
     JWTUnsupportedAlgorithmError,
+    JWTAlgorithmNameMismatchError,
     JWTInvalidSignatureError,
     JWTNoPayloadError,
     JWTNoHeaderError,

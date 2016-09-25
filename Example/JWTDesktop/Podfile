@@ -11,6 +11,7 @@ end
 
 def handmade
   pod 'JWT', path: '../../'
+  pod 'Masonry'
 end
 
 target target_name do

@@ -9,17 +9,14 @@
 #import "ViewController.h"
 #import <JWT/JWT.h>
 #import <JWT/JWTAlgorithmFactory.h>
+#import <Masonry/Masonry.h>
+#import "JWTTokenTextTypeDescription.h"
+
+#import "JWTDecriptedViewController.h"
 typedef NS_ENUM(NSInteger, SignatureValidationType) {
     SignatureValidationTypeUnknown,
     SignatureValidationTypeValid,
     SignatureValidationTypeInvalid
-};
-
-typedef NS_ENUM(NSInteger, TokenTextType) {
-    TokenTextTypeDefault, // dot text color
-    TokenTextTypeHeader,
-    TokenTextTypePayload,
-    TokenTextTypeSignature
 };
 
 @interface ViewController() <NSTextViewDelegate, NSTableViewDelegate, NSTableViewDataSource>
@@ -27,19 +24,30 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
 @property (weak) IBOutlet NSPopUpButton *algorithmPopUpButton;
 @property (unsafe_unretained) IBOutlet NSTextView *encodedTextView;
 @property (unsafe_unretained) IBOutlet NSTextView *decodedTextView;
-//@property (unsafe_unretained) IBOutlet NSTableView *decodedTableView;
 @property (weak) IBOutlet NSTableView *decodedTableView;
-
+@property (weak) IBOutlet NSView * decriptedView;
+@property (strong, nonatomic, readwrite) JWTDecriptedViewController *decriptedViewController;
 @property (weak) IBOutlet NSTextField *signatureStatusLabel;
 
 // Data
 @property (nonatomic, readwrite) NSDictionary *signatureDecorations;
 @property (assign, nonatomic, readwrite) SignatureValidationType signatureValidation;
-@property (nonatomic, readwrite) NSDictionary *textColors;
+
+// Tests
+@property (nonatomic, readwrite) JWTBuilder *builder;
+@property (strong, nonatomic, readwrite) JWTTokenTextTypeDescription *tokenDescription;
 @end
 
 
 @implementation ViewController
+
+#pragma mark - Helpers
+- (JWTTokenTextTypeDescription *)tokenDescription {
+    if (!_tokenDescription) {
+        _tokenDescription = [JWTTokenTextTypeDescription new];
+    }
+    return _tokenDescription;
+}
 
 #pragma mark - Supply JWT Methods
 - (NSString *)chosenAlgorithmName {
@@ -50,16 +58,17 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
     return @"secret";
 }
 
-- (NSDictionary *)JWTFromToken:(NSString *)token verifySignature:(BOOL)signature {
+- (NSDictionary *)JWTFromToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification {
     NSLog(@"JWT ENCODED TOKEN: %@", token);
     NSString *algorithmName = [self chosenAlgorithmName];
     NSLog(@"JWT Algorithm NAME: %@", algorithmName);
     NSString *secret = [self chosenSecret];
     
-    JWTBuilder *builder = [JWTBuilder decodeMessage:token].secret(secret).algorithmName(algorithmName).options(@(signature));
+    JWTBuilder *builder = [JWTBuilder decodeMessage:token].secret(secret).algorithmName(algorithmName).options(@(skipVerification));
     NSDictionary *decoded = builder.decode;
     NSLog(@"JWT ERROR: %@", builder.jwtError);
     NSLog(@"JWT DICTIONARY: %@", decoded);
+    self.builder = builder;
     return decoded;
 }
 
@@ -93,21 +102,8 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
     return [([self signatureDecorations][@(validation)] ?: defaultValue) valueForKey:@"stringValue"];
 }
 
-- (NSDictionary *)tokenTextColors {
-    if (!_textColors) {
-        _textColors = @{
-                        @(TokenTextTypeDefault) : [NSColor blackColor],
-                        @(TokenTextTypeHeader) : [NSColor redColor],
-                        @(TokenTextTypePayload) : [NSColor magentaColor],
-                        @(TokenTextTypeSignature) : [NSColor colorWithRed:0 green:185/255.0f blue:241/255.0f alpha:1.0f]
-        };
-    }
-    return _textColors;
-}
-
-- (NSColor *)tokenTextColorForType:(TokenTextType)type {
-    NSColor *defaultValue = [self tokenTextColors][@(TokenTextTypeDefault)];
-    return [self tokenTextColors][@(type)] ?: defaultValue;
+- (NSColor *)tokenTextColorForType:(JWTTokenTextType)type {
+    return [self.tokenDescription tokenTextColorForType:type];
 }
 
 #pragma mark - Setup
@@ -149,11 +145,27 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
     [self setupBottom];
 }
 
+- (void)setupDecriptedViews {
+    NSView *view = self.decriptedView;
+    self.decriptedViewController = [JWTDecriptedViewController new];
+    [view addSubview:self.decriptedViewController.view];
+    // maybe add contstraints.
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupDecorations];
     [self setupEncodingDecodingViews];
+    [self setupDecriptedViews];
     // Do any additional setup after loading the view.
+}
+
+- (void)viewWillAppear {
+    [super viewWillAppear];
+    NSView *view = self.decriptedView;
+    [self.decriptedViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(view);
+    }];
 }
 
 //- (void)setRepresentedObject:(id)representedObject {
@@ -202,18 +214,18 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
 }
 
 #pragma mark - Encoding Customization
-- (NSString *)textPartFromTexts:(NSArray *)texts withType:(TokenTextType)type {
+- (NSString *)textPartFromTexts:(NSArray *)texts withType:(JWTTokenTextType)type {
     NSString *result = nil;
     switch (type) {
-        case TokenTextTypeHeader: {
+        case JWTTokenTextTypeHeader: {
             result = (NSString *)[self extendedArray:texts objectAtIndex:0];
             break;
         }
-        case TokenTextTypePayload: {
+        case JWTTokenTextTypePayload: {
             result = (NSString *)[self extendedArray:texts objectAtIndex:1];
             break;
         }
-        case TokenTextTypeSignature: {
+        case JWTTokenTextTypeSignature: {
             if (texts.count > 2) {
                 result = (NSString *)[[texts subarrayWithRange:NSMakeRange(2, texts.count - 2)] componentsJoinedByString:@"."];
                 break;
@@ -225,7 +237,7 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
     return result;
 }
 
-- (NSDictionary *)encodedTextViewAttributesForTokenTextType:(TokenTextType)type {
+- (NSDictionary *)encodedTextViewAttributesForTokenTextType:(JWTTokenTextType)type {
     NSMutableDictionary *attributes = [[self encodedTextViewDefaultTextAttributes] mutableCopy];
     attributes[NSForegroundColorAttributeName] = [self tokenTextColorForType:type];
     return [attributes copy];
@@ -245,7 +257,7 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
     // color text if you can
     
     NSArray *parts = @[];
-    for (TokenTextType part = TokenTextTypeHeader; part <= TokenTextTypeSignature; ++part) {
+    for (JWTTokenTextType part = JWTTokenTextTypeHeader; part <= JWTTokenTextTypeSignature; ++part) {
         id currentPart = [self textPartFromTexts:texts withType:part];
         if (currentPart) {
             // colorize
@@ -255,7 +267,7 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
         }
     }
     
-    NSDictionary *options = [self encodedTextViewAttributesForTokenTextType:TokenTextTypeDefault];
+    NSDictionary *options = [self encodedTextViewAttributesForTokenTextType:JWTTokenTextTypeDefault];
     
     NSAttributedString *dot = [[NSAttributedString alloc] initWithString:@"." attributes:options];
     NSAttributedString *result = [self array:parts componentsJoinedByAttributedString:dot];
@@ -291,8 +303,11 @@ typedef NS_ENUM(NSInteger, TokenTextType) {
         // recompute jwt of this token.
         // draw jwt
         NSRange range = NSMakeRange(0, self.decodedTextView.string.length);
-        NSString *string = [self stringFromDecodedJWTToken:[self JWTFromToken:textStore.string verifySignature:NO]];
-        [self signatureReactOnVerifiedToken:[self JWTFromToken:textStore.string verifySignature:YES]!=nil];
+        NSString *string = [self stringFromDecodedJWTToken:[self JWTFromToken:textStore.string skipSignatureVerification:YES]];
+        [self signatureReactOnVerifiedToken:[self JWTFromToken:textStore.string skipSignatureVerification:NO]!=nil];
+        // will be udpated.
+        self.decriptedViewController.builder = self.builder;
+        // not used.
         [self.decodedTextView replaceCharactersInRange:range withString:string];
         return NO;
     }

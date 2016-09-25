@@ -24,6 +24,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     return dictionary ?: (dictionary = @{
         @(JWTInvalidFormatError): @"Invalid format! Try to check your encoding algorithm. Maybe you put too many dots as delimiters?",
         @(JWTUnsupportedAlgorithmError): @"Unsupported algorithm! You could implement it by yourself",
+        @(JWTAlgorithmNameMismatchError) : @"Algorithm doesn't match name in header.",
         @(JWTInvalidSignatureError): @"Invalid signature! It seems that signed part of jwt mismatch generated part by algorithm provided in header.",
         @(JWTNoPayloadError): @"No payload! Hey, forget payload?",
         @(JWTNoHeaderError): @"No header! Hmm",
@@ -763,7 +764,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         
         //If the algorithm in the header doesn't match what's expected, verification fails
         if (![theAlgorithmName isEqualToString:headerAlgorithmName]) {
-            *theError = [JWT errorWithCode:JWTUnsupportedAlgorithmError];
+            *theError = [JWT errorWithCode:JWTAlgorithmNameMismatchError];
             return nil;
         }
         
