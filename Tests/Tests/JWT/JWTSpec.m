@@ -452,7 +452,7 @@ describe(@"decoding", ^{
             info = builder.secret(secret).options(@NO).algorithmName(algorithmName).decode;
             error = builder.jwtError;
             NSLog(@"info is: %@ error: %@", info, error);
-            [[@(error.code) should] equal:@(JWTUnsupportedAlgorithmError)];
+            [[@(error.code) should] equal:@(JWTAlgorithmNameMismatchError)];
         });
         
         it(@"decode should generate errors on unsupported algorithms without forced option", ^{
@@ -743,9 +743,8 @@ describe(@"Header tests", ^{
         NSDictionary *decoded = builder.decode;
         
         [[builder.jwtError shouldNot] beNil];
-        [[theValue(builder.jwtError.code) should] equal:theValue(JWTUnsupportedAlgorithmError)];
+        [[theValue(builder.jwtError.code) should] equal:theValue(JWTAlgorithmNameMismatchError)];
         [[decoded should] beNil];
-        
     });
 });
 
