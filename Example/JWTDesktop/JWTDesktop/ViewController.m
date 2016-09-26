@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import <JWT/JWT.h>
 #import <JWT/JWTAlgorithmFactory.h>
+
 #import <Masonry/Masonry.h>
 #import "JWTTokenTextTypeDescription.h"
 
@@ -19,9 +20,13 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
     SignatureValidationTypeInvalid
 };
 
-@interface ViewController() <NSTextViewDelegate, NSTableViewDelegate, NSTableViewDataSource>
+@interface ViewController() <NSTextViewDelegate, NSTextFieldDelegate, NSTableViewDelegate, NSTableViewDataSource>
 @property (weak) IBOutlet NSTextField *algorithmLabel;
 @property (weak) IBOutlet NSPopUpButton *algorithmPopUpButton;
+@property (weak) IBOutlet NSTextField *secretLabel;
+@property (weak) IBOutlet NSTextField *secretTextField;
+@property (weak) IBOutlet NSButton *secretIsBase64EncodedCheckButton;
+
 @property (unsafe_unretained) IBOutlet NSTextView *encodedTextView;
 @property (unsafe_unretained) IBOutlet NSTextView *decodedTextView;
 @property (weak) IBOutlet NSTableView *decodedTableView;
@@ -41,6 +46,22 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
 
 @implementation ViewController
 
+#pragma mark - Refresh UI
+- (void)refreshUI {
+    
+    NSTextStorage *textStorage = self.encodedTextView.textStorage;
+    NSString *string = textStorage.string;
+    [textStorage replaceCharactersInRange:NSMakeRange(0, string.length) withAttributedString:[self encodedTextViewAttributedTextStringForEncodingText:string]];
+    
+    NSRange range = NSMakeRange(0, string.length);
+    NSString *decodedTokenAsJSON = [self stringFromDecodedJWTToken:[self JWTFromToken:string skipSignatureVerification:YES]];
+    [self signatureReactOnVerifiedToken:[self JWTFromToken:string skipSignatureVerification:NO]!=nil];
+    // will be udpated.
+    self.decriptedViewController.builder = self.builder;
+    // not used.
+    [self.decodedTextView replaceCharactersInRange:range withString:decodedTokenAsJSON];
+}
+
 #pragma mark - Helpers
 - (JWTTokenTextTypeDescription *)tokenDescription {
     if (!_tokenDescription) {
@@ -54,17 +75,43 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
     return [self.algorithmPopUpButton selectedItem].title;
 }
 
+- (NSData *)chosenSecretData {
+    NSString *secret = [self chosenSecret];
+    
+    BOOL isBase64Encoded = [self isBase64EncodedSecret];
+    NSData *result = nil;
+
+    if (isBase64Encoded) {
+        result = [[NSData alloc] initWithBase64EncodedString:secret options:0];
+    }
+    
+    return result;
+}
+
 - (NSString *)chosenSecret {
-    return @"secret";
+    return self.secretTextField.stringValue;
+}
+
+- (BOOL)isBase64EncodedSecret {
+    return self.secretIsBase64EncodedCheckButton.integerValue == 1;
 }
 
 - (NSDictionary *)JWTFromToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification {
     NSLog(@"JWT ENCODED TOKEN: %@", token);
     NSString *algorithmName = [self chosenAlgorithmName];
     NSLog(@"JWT Algorithm NAME: %@", algorithmName);
-    NSString *secret = [self chosenSecret];
+    JWTBuilder *builder = [JWTBuilder decodeMessage:token].algorithmName(algorithmName).options(@(skipVerification));
     
-    JWTBuilder *builder = [JWTBuilder decodeMessage:token].secret(secret).algorithmName(algorithmName).options(@(skipVerification));
+    NSData *secretData = [self chosenSecretData];
+    NSString *secret = [self chosenSecret];
+    BOOL isBase64EncodedSecret = [self isBase64EncodedSecret];
+    if (isBase64EncodedSecret) {
+        builder.secretData(secretData);
+    }
+    else {
+        builder.secret(secret);
+    }
+    
     NSDictionary *decoded = builder.decode;
     NSLog(@"JWT ERROR: %@", builder.jwtError);
     NSLog(@"JWT DICTIONARY: %@", decoded);
@@ -116,6 +163,19 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
     [self.algorithmPopUpButton addItemsWithTitles:[self availableAlgorithmsNames]];
     [self.algorithmPopUpButton setAction:@selector(popUpButtonValueChanged:)];
     [self.algorithmPopUpButton setTarget:self];
+    
+    // secretLabel
+    self.secretLabel.stringValue = @"Secret";
+    
+    // secretTextField
+    self.secretTextField.placeholderString = @"Secret";
+    self.secretTextField.delegate = self;
+    
+    // check button
+    self.secretIsBase64EncodedCheckButton.title = @"is Base64Encoded Secret";
+    self.secretIsBase64EncodedCheckButton.integerValue = NO;
+    [self.secretIsBase64EncodedCheckButton setTarget:self];
+    [self.secretIsBase64EncodedCheckButton setAction:@selector(checkBoxState:)];
 }
 
 - (void)setupBottom {
@@ -157,7 +217,21 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
     [self setupDecorations];
     [self setupEncodingDecodingViews];
     [self setupDecriptedViews];
+    [self defaultJWTIOSetup];
+    [self refreshUI];
     // Do any additional setup after loading the view.
+}
+
+- (void)defaultJWTIOSetup {
+    // secret
+    self.secretTextField.stringValue = @"secret";
+    
+    // token
+    self.encodedTextView.string = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
+    
+    // algorithm HS256
+    NSInteger index = [[self availableAlgorithmsNames] indexOfObject:@"HS256"];
+    [self.algorithmPopUpButton selectItemAtIndex:index];
 }
 
 - (void)viewWillAppear {
@@ -196,11 +270,29 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
 }
 
 
-#pragma mark - PopUp Button
+#pragma mark - Actions
 - (void)popUpButtonValueChanged:(id)sender {
-    // recalculate jwt //
-    NSLog(@"now value is: %@", [self chosenAlgorithmName]);
+    [self refreshUI];
 }
+
+-(IBAction)checkBoxState:(id)sender {
+    // Under construction
+    [self refreshUI];
+}
+
+
+#pragma marrk - Delegates / <NSTextFieldDelegate>
+
+- (void)controlTextDidChange:(NSNotification *)obj {
+    if ([obj.name isEqualToString:NSControlTextDidChangeNotification]) {
+        NSTextField *textField = (NSTextField *)obj.object;
+        if (textField == self.secretTextField) {
+            // refresh UI
+            [self refreshUI];
+        }
+    }
+}
+
 #pragma mark - Signature Customization
 - (void)setSignatureValidation:(SignatureValidationType)signatureValidation {
     self.signatureStatusLabel.backgroundColor = [self signatureColorForValidation:signatureValidation];
@@ -296,19 +388,11 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
 - (BOOL)textView:(NSTextView *)textView shouldChangeTextInRange:(NSRange)affectedCharRange replacementString:(NSString *)replacementString {
     
     if (textView == self.encodedTextView) {
-        NSTextStorage * textStore = [textView textStorage];
+        NSTextStorage *textStore = [textView textStorage];
         [textStore replaceCharactersInRange:affectedCharRange withString:replacementString];
-        [textStore replaceCharactersInRange:NSMakeRange(0, textStore.string.length) withAttributedString:[self encodedTextViewAttributedTextStringForEncodingText:textView.string]];
         // react on changes.
         // recompute jwt of this token.
-        // draw jwt
-        NSRange range = NSMakeRange(0, self.decodedTextView.string.length);
-        NSString *string = [self stringFromDecodedJWTToken:[self JWTFromToken:textStore.string skipSignatureVerification:YES]];
-        [self signatureReactOnVerifiedToken:[self JWTFromToken:textStore.string skipSignatureVerification:NO]!=nil];
-        // will be udpated.
-        self.decriptedViewController.builder = self.builder;
-        // not used.
-        [self.decodedTextView replaceCharactersInRange:range withString:string];
+        [self refreshUI];
         return NO;
     }
     return NO;

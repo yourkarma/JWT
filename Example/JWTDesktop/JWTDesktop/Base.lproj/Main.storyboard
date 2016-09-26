@@ -675,7 +675,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="D7O-XY-wd0" userLabel="AlgorithmLabel">
-                                <rect key="frame" x="200" y="360" width="42" height="17"/>
+                                <rect key="frame" x="200" y="372" width="42" height="17"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="ogT-iD-x9z"/>
                                 </constraints>
@@ -686,7 +686,7 @@
                                 </textFieldCell>
                             </textField>
                             <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yLZ-Ur-huV" userLabel="AlgorithmPopUpButton">
-                                <rect key="frame" x="246" y="355" width="76" height="26"/>
+                                <rect key="frame" x="246" y="367" width="76" height="26"/>
                                 <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="ZCZ-l0-XGK" id="MuX-3E-XCZ">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
@@ -835,25 +835,57 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="r3U-FI-Ege" userLabel="SecretLabel">
+                                <rect key="frame" x="200" y="333" width="42" height="19"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="fQG-yn-1WT">
+                                    <font key="font" metaFont="system" size="15"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BTt-D8-1HI" userLabel="SecretTextField">
+                                <rect key="frame" x="248" y="332" width="96" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="96" id="s60-lV-Tu8"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Bvo-u9-SsL">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="Keu-Ro-sxF" userLabel="SecretBase64EncodedCheckButton">
+                                <rect key="frame" x="350" y="334" width="61" height="18"/>
+                                <buttonCell key="cell" type="check" title="Check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Gz5-wv-UKC">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="onc-Qp-bvF" firstAttribute="bottom" secondItem="vXl-0B-yeH" secondAttribute="bottom" id="0HY-I0-wEK"/>
-                            <constraint firstItem="vXl-0B-yeH" firstAttribute="top" secondItem="D7O-XY-wd0" secondAttribute="bottom" constant="45" id="2FP-eO-Dxl"/>
+                            <constraint firstItem="r3U-FI-Ege" firstAttribute="top" secondItem="D7O-XY-wd0" secondAttribute="bottom" constant="20" id="1Qf-Ce-W8e"/>
                             <constraint firstItem="vXl-0B-yeH" firstAttribute="width" secondItem="m2S-Jp-Qdl" secondAttribute="width" multiplier="0.5" id="3Dn-kb-PNS"/>
                             <constraint firstItem="z9r-5V-pdS" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="494-o1-g5h"/>
+                            <constraint firstItem="vXl-0B-yeH" firstAttribute="top" secondItem="r3U-FI-Ege" secondAttribute="bottom" constant="18" id="BSy-60-jKc"/>
+                            <constraint firstItem="r3U-FI-Ege" firstAttribute="trailing" secondItem="D7O-XY-wd0" secondAttribute="trailing" id="EIi-q3-9Wt"/>
                             <constraint firstAttribute="trailing" secondItem="z9r-5V-pdS" secondAttribute="trailing" id="JXb-Wb-ogn"/>
                             <constraint firstItem="YfF-j3-Hxy" firstAttribute="width" secondItem="m2S-Jp-Qdl" secondAttribute="width" multiplier="0.5" id="LZE-Uu-4nJ"/>
                             <constraint firstItem="yLZ-Ur-huV" firstAttribute="leading" secondItem="D7O-XY-wd0" secondAttribute="trailing" constant="8" id="Vkp-E6-cas"/>
                             <constraint firstItem="vXl-0B-yeH" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="WNg-2P-bo9"/>
                             <constraint firstAttribute="bottom" secondItem="z9r-5V-pdS" secondAttribute="bottom" id="Xhx-2U-thk"/>
                             <constraint firstItem="onc-Qp-bvF" firstAttribute="top" secondItem="vXl-0B-yeH" secondAttribute="top" id="Ziw-za-CvC"/>
+                            <constraint firstItem="BTt-D8-1HI" firstAttribute="centerY" secondItem="r3U-FI-Ege" secondAttribute="centerY" id="fjf-QS-OxH"/>
                             <constraint firstItem="YfF-j3-Hxy" firstAttribute="top" secondItem="vXl-0B-yeH" secondAttribute="top" id="g8n-YR-4sW"/>
                             <constraint firstItem="yLZ-Ur-huV" firstAttribute="centerY" secondItem="D7O-XY-wd0" secondAttribute="centerY" id="lAI-mA-w2k"/>
+                            <constraint firstItem="BTt-D8-1HI" firstAttribute="leading" secondItem="r3U-FI-Ege" secondAttribute="trailing" constant="8" id="lG2-WC-bz8"/>
                             <constraint firstItem="YfF-j3-Hxy" firstAttribute="bottom" secondItem="vXl-0B-yeH" secondAttribute="bottom" id="mIQ-YL-mwL"/>
                             <constraint firstItem="z9r-5V-pdS" firstAttribute="top" secondItem="vXl-0B-yeH" secondAttribute="bottom" constant="18" id="oca-GD-oG2"/>
+                            <constraint firstItem="Keu-Ro-sxF" firstAttribute="leading" secondItem="BTt-D8-1HI" secondAttribute="trailing" constant="8" id="pXk-7F-X4I"/>
+                            <constraint firstItem="Keu-Ro-sxF" firstAttribute="centerY" secondItem="BTt-D8-1HI" secondAttribute="centerY" id="qbF-2d-lJ7"/>
                             <constraint firstItem="D7O-XY-wd0" firstAttribute="trailing" secondItem="vXl-0B-yeH" secondAttribute="trailing" id="rjF-97-w5U"/>
                             <constraint firstItem="onc-Qp-bvF" firstAttribute="width" secondItem="m2S-Jp-Qdl" secondAttribute="width" multiplier="0.5" id="tPn-hi-t4X"/>
-                            <constraint firstItem="D7O-XY-wd0" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="42" id="uuY-0O-dAg"/>
+                            <constraint firstItem="D7O-XY-wd0" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="30" id="uuY-0O-dAg"/>
                             <constraint firstAttribute="trailing" secondItem="YfF-j3-Hxy" secondAttribute="trailing" id="wyt-Tf-7aH"/>
                             <constraint firstAttribute="trailing" secondItem="onc-Qp-bvF" secondAttribute="trailing" id="zLM-Zt-oqT"/>
                         </constraints>
@@ -864,6 +896,9 @@
                         <outlet property="decodedTableView" destination="k0L-7X-cJD" id="xYU-YU-Cqr"/>
                         <outlet property="decriptedView" destination="onc-Qp-bvF" id="OGU-wc-0es"/>
                         <outlet property="encodedTextView" destination="RyK-m8-XF3" id="d26-Oy-Vfp"/>
+                        <outlet property="secretIsBase64EncodedCheckButton" destination="Keu-Ro-sxF" id="tt7-ed-K8b"/>
+                        <outlet property="secretLabel" destination="r3U-FI-Ege" id="QLn-bc-q86"/>
+                        <outlet property="secretTextField" destination="BTt-D8-1HI" id="dpP-AC-fcK"/>
                         <outlet property="signatureStatusLabel" destination="z9r-5V-pdS" id="TG0-L5-4mT"/>
                     </connections>
                 </viewController>
