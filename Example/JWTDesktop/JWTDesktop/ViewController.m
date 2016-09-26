@@ -9,7 +9,6 @@
 #import "ViewController.h"
 #import <JWT/JWT.h>
 #import <JWT/JWTAlgorithmFactory.h>
-
 #import <Masonry/Masonry.h>
 #import "JWTTokenTextTypeDescription.h"
 
@@ -105,10 +104,11 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
     NSData *secretData = [self chosenSecretData];
     NSString *secret = [self chosenSecret];
     BOOL isBase64EncodedSecret = [self isBase64EncodedSecret];
-    if (isBase64EncodedSecret) {
+    if (isBase64EncodedSecret && secretData) {
         builder.secretData(secretData);
     }
     else {
+        self.secretIsBase64EncodedCheckButton.state = 0;
         builder.secret(secret);
     }
     
