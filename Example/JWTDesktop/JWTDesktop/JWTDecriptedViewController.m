@@ -42,8 +42,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupUIElements];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload) name:NSWindowDidResizeNotification object:nil];
 }
-
+- (void)reload {
+    [self reloadCollectionView];
+}
 - (void)reloadCollectionView {
     [self.collectionView reloadData];
 }
@@ -115,54 +118,7 @@
     return _tokenDescription;
 }
 
-@end
-
-@implementation JWTDecriptedViewController (NSCollectionViewDelegateFlowLayout)
-
-- (NSSize)sizeWithText:(NSString *)text withWidth:(NSInteger)width {
-    return NSZeroSize;
-}
-
-- (NSSize)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    NSInteger height = 100;
-    if (self.cachedErrorDictionary != nil) {
-        // let it be.
-    }
-    else if (self.cachedResultArray != nil) {
-        CGFloat heightParent = [[collectionView enclosingScrollView] bounds].size.height;
-        if (indexPath.item == 0) {
-            // header, not big.
-            // let's say it has 1/5 of view?
-            height = heightParent / 5.0f;
-        }
-        else {
-            height = heightParent - heightParent / 5.0f;
-        }
-    }
-    
-    CGFloat width = collectionView.frame.size.width;//[[collectionView enclosingScrollView] bounds].size.width;
-    NSSize size = NSMakeSize(width, height);
-    return size;
-}
-
-//- (NSEdgeInsets)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section;
-//- (CGFloat)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section;
-//- (CGFloat)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
-//- (NSSize)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section;
-//- (NSSize)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section;
-
-@end
-
-@implementation JWTDecriptedViewController (NSCollectionViewDataSource)
-- (NSInteger)collectionView:(NSCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    NSInteger count = self.builder == nil ? 0 : (self.cachedErrorDictionary != nil ? 1 : 2);
-    return count;
-}
-
-- (NSInteger)numberOfSectionsInCollectionView:(NSCollectionView *)collectionView {
-    return 1;
-}
+#pragma mark - Collection Helpers.
 
 - (NSString *)textForItemAtIndexPath:(NSIndexPath *)path {
     NSDictionary *itemResult = nil;
@@ -185,6 +141,46 @@
         color = [self.tokenDescription tokenTextColorForType: path.item == 0 ? JWTTokenTextTypeHeader : JWTTokenTextTypePayload];
     }
     return color;
+}
+
+
+@end
+
+@implementation JWTDecriptedViewController (NSCollectionViewDelegateFlowLayout)
+
+- (NSSize)sizeWithText:(NSString *)text withWidth:(NSInteger)width {
+    return NSZeroSize;
+}
+
+- (NSSize)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSString *stringToDisplay = [self textForItemAtIndexPath:indexPath];
+    CGFloat width = collectionView.frame.size.width;//[[collectionView enclosingScrollView] bounds].size.width;
+    
+    NSRect estimatedSize = [stringToDisplay boundingRectWithSize:CGSizeMake(width, 10000) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSForegroundColorAttributeName : [NSFont boldSystemFontOfSize:14]}];
+    
+    NSInteger height = estimatedSize.size.height;
+    
+    NSSize size = NSMakeSize(width, height);
+    return size;
+}
+
+//- (NSEdgeInsets)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section;
+//- (CGFloat)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section;
+//- (CGFloat)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
+//- (NSSize)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section;
+//- (NSSize)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section;
+
+@end
+
+@implementation JWTDecriptedViewController (NSCollectionViewDataSource)
+- (NSInteger)collectionView:(NSCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    NSInteger count = self.builder == nil ? 0 : (self.cachedErrorDictionary != nil ? 1 : 2);
+    return count;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(NSCollectionView *)collectionView {
+    return 1;
 }
 
 - (NSCollectionViewItem *)collectionView:(NSCollectionView *)collectionView itemForRepresentedObjectAtIndexPath:(NSIndexPath *)indexPath {

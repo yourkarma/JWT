@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import <JWT/JWT.h>
 #import <JWT/JWTAlgorithmFactory.h>
+#import <JWT/JWTAlgorithmNone.h>
 #import <Masonry/Masonry.h>
 #import "JWTTokenTextTypeDescription.h"
 
@@ -104,12 +105,14 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
     NSData *secretData = [self chosenSecretData];
     NSString *secret = [self chosenSecret];
     BOOL isBase64EncodedSecret = [self isBase64EncodedSecret];
-    if (isBase64EncodedSecret && secretData) {
-        builder.secretData(secretData);
-    }
-    else {
-        self.secretIsBase64EncodedCheckButton.state = 0;
-        builder.secret(secret);
+    if (![algorithmName isEqualToString:JWTAlgorithmNameNone]) {
+        if (isBase64EncodedSecret && secretData) {
+            builder.secretData(secretData);
+        }
+        else {
+            self.secretIsBase64EncodedCheckButton.state = 0;
+            builder.secret(secret);
+        }
     }
     
     NSDictionary *decoded = builder.decode;
@@ -147,10 +150,6 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
 - (NSString *)signatureTitleForValidation:(SignatureValidationType)validation {
     NSDictionary *defaultValue = [self signatureDecorations][@(SignatureValidationTypeUnknown)];
     return [([self signatureDecorations][@(validation)] ?: defaultValue) valueForKey:@"stringValue"];
-}
-
-- (NSColor *)tokenTextColorForType:(JWTTokenTextType)type {
-    return [self.tokenDescription tokenTextColorForType:type];
 }
 
 #pragma mark - Setup
@@ -242,12 +241,6 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
     }];
 }
 
-//- (void)setRepresentedObject:(id)representedObject {
-//    [super setRepresentedObject:representedObject];
-//
-//    // Update the view, if already loaded.
-//}
-
 #pragma mark - General Helpers
 - (id)extendedArray:(NSArray *)array objectAtIndex:(NSInteger)index {
     if (array.count) {
@@ -331,7 +324,7 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
 
 - (NSDictionary *)encodedTextViewAttributesForTokenTextType:(JWTTokenTextType)type {
     NSMutableDictionary *attributes = [[self encodedTextViewDefaultTextAttributes] mutableCopy];
-    attributes[NSForegroundColorAttributeName] = [self tokenTextColorForType:type];
+    attributes[NSForegroundColorAttributeName] = [self.tokenDescription tokenTextColorForType:type];
     return [attributes copy];
 }
 
