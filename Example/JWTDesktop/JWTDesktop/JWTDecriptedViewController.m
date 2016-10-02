@@ -31,7 +31,6 @@
 @implementation JWTDecriptedViewController
 
 - (void)setupUIElements {
-    self.view.layer.backgroundColor = [NSColor greenColor].CGColor;
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     self.collectionView.minItemSize = NSZeroSize;
@@ -164,12 +163,6 @@
     NSSize size = NSMakeSize(width, height);
     return size;
 }
-
-//- (NSEdgeInsets)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section;
-//- (CGFloat)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section;
-//- (CGFloat)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
-//- (NSSize)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section;
-//- (NSSize)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section;
 
 @end
 
