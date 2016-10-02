@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		043F62F51DA1877E00ADDF97 /* JWTAlgorithmDataHolderChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 043F62F41DA1877E00ADDF97 /* JWTAlgorithmDataHolderChain.m */; };
 		0451466B1D5E2A78007B1D7A /* JWT_iOS_Static.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0451466A1D5E2A78007B1D7A /* JWT_iOS_Static.h */; };
 		0451466D1D5E2A78007B1D7A /* JWT_iOS_Static.m in Sources */ = {isa = PBXBuildFile; fileRef = 0451466C1D5E2A78007B1D7A /* JWT_iOS_Static.m */; };
 		045146931D5E2AC4007B1D7A /* JWT_macOS_Framework.h in Headers */ = {isa = PBXBuildFile; fileRef = 045146921D5E2AC3007B1D7A /* JWT_macOS_Framework.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -143,6 +144,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		043F62F31DA1877E00ADDF97 /* JWTAlgorithmDataHolderChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithmDataHolderChain.h; sourceTree = "<group>"; };
+		043F62F41DA1877E00ADDF97 /* JWTAlgorithmDataHolderChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmDataHolderChain.m; sourceTree = "<group>"; };
 		045145E41D5E243D007B1D7A /* JWTAlgorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithm.h; sourceTree = "<group>"; };
 		045145E51D5E243D007B1D7A /* JWTAlgorithmFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithmFactory.h; sourceTree = "<group>"; };
 		045145E61D5E243D007B1D7A /* JWTAlgorithmFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmFactory.m; sourceTree = "<group>"; };
@@ -381,6 +384,8 @@
 			children = (
 				04AE0E791D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.h */,
 				04AE0E7A1D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.m */,
+				043F62F31DA1877E00ADDF97 /* JWTAlgorithmDataHolderChain.h */,
+				043F62F41DA1877E00ADDF97 /* JWTAlgorithmDataHolderChain.m */,
 			);
 			path = Holders;
 			sourceTree = "<group>";
@@ -860,6 +865,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				045146A71D5E2B1B007B1D7A /* JWTAlgorithmFactory.m in Sources */,
+				043F62F51DA1877E00ADDF97 /* JWTAlgorithmDataHolderChain.m in Sources */,
 				045146A91D5E2B1B007B1D7A /* JWTAlgorithmNone.m in Sources */,
 				045146AB1D5E2B1B007B1D7A /* JWTAlgorithmHS256.m in Sources */,
 				045146AD1D5E2B1B007B1D7A /* JWTAlgorithmHS384.m in Sources */,
