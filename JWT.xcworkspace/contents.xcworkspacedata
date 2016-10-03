@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:JWT.xcodeproj">
+      location = "group:Carthage Example/Carthage Example.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:JWT_Module.xcodeproj">
    </FileRef>
 </Workspace>

@@ -7,7 +7,6 @@
 //
 
 #import <Base64/MF_Base64Additions.h>
-
 #import "JWT.h"
 #import "JWTAlgorithmHS512.h"
 #import "JWTAlgorithmFactory.h"
