@@ -47,7 +47,7 @@ Use modern fluent style instead.
     [JWT encodePayload:payload withSecret:secret algorithm:algorithm];
 
     // Modern
-    [JWTBuilder encodePayload:payload].secret(@"secret").algorithm(algorithm).encode;
+    [JWTBuilder encodePayload:payload].secret(secret).algorithm(algorithm).encode;
 ```
 
 # Installation

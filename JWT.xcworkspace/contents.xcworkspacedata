@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:Carthage Example/Carthage Example.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:JWT_Module.xcodeproj">
+   </FileRef>
+</Workspace>

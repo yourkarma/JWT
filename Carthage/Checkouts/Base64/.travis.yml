@@ -1,0 +1,4 @@
+language: objective-c
+xcode_project: Example/Base64.xcodeproj # path to your xcodeproj folder
+xcode_scheme: Base64
+
