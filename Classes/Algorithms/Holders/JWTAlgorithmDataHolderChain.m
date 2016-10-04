@@ -75,7 +75,7 @@
     if (index != NSNotFound) {
         return self.holders[index];
     }
-    
+
     return nil;
 }
 - (id<JWTAlgorithmDataHolder>)firstHolderBySecretData:(NSData *)secretData {
@@ -90,13 +90,13 @@
 }
 - (NSArray *)singleAlgorithm:(id<JWTAlgorithm>)algorithm withManySecretData:(NSArray *)secretsData {
     NSArray *holders = @[];
-    
+
     id holder = [self firstHolderByAlgorithm:algorithm];
-    
+
     if (!holder) {
         return holders;
     }
-    
+
     for (NSData *secretData in secretsData) {
         id<JWTAlgorithmDataHolder> newHolder = [holder copy];
         [newHolder setCurrentSecretData:secretData];
@@ -107,13 +107,13 @@
 
 - (NSArray *)singleSecretData:(NSData *)secretData withManyAlgorithms:(NSArray *)algorithms {
     NSArray *holders = @[];
-    
+
     id holder = [self firstHolderBySecretData:secretData];
-    
+
     if (!holder) {
         return holders;
     }
-    
+
     for (id<JWTAlgorithm>algorithm in algorithms) {
         id<JWTAlgorithmDataHolder> newHolder = [holder copy];
         [newHolder setCurrentAlgorithm:algorithm];
