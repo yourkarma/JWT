@@ -25,7 +25,6 @@
 @implementation JWTBase64Coder
 
 + (NSString *)base64UrlEncodedStringWithData:(NSData *)data {
-    NSString *result = nil;
     if ([self isBase64AddtionsAvailable] && [data respondsToSelector:@selector(base64UrlEncodedString)]) {
         return [data performSelector:@selector(base64UrlEncodedString)];
     }

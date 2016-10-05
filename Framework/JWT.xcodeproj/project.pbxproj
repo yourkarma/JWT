@@ -71,8 +71,8 @@
 		0451471E1D5E2C2B007B1D7A /* JWTClaimsSetVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 045146011D5E243D007B1D7A /* JWTClaimsSetVerifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		045147211D5E2C2B007B1D7A /* JWT.h in Headers */ = {isa = PBXBuildFile; fileRef = 045146041D5E243D007B1D7A /* JWT.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		04AE0E7B1D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 04AE0E7A1D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.m */; };
-		04AE0E7E1D76E487001AE8F2 /* JWTDeprecations.h in Headers */ = {isa = PBXBuildFile; fileRef = 04AE0E7D1D76E3CD001AE8F2 /* JWTDeprecations.h */; };
-		04AE0E7F1D76E488001AE8F2 /* JWTDeprecations.h in Headers */ = {isa = PBXBuildFile; fileRef = 04AE0E7D1D76E3CD001AE8F2 /* JWTDeprecations.h */; };
+		04AE0E7E1D76E487001AE8F2 /* JWTDeprecations.h in Headers */ = {isa = PBXBuildFile; fileRef = 04AE0E7D1D76E3CD001AE8F2 /* JWTDeprecations.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		04AE0E7F1D76E488001AE8F2 /* JWTDeprecations.h in Headers */ = {isa = PBXBuildFile; fileRef = 04AE0E7D1D76E3CD001AE8F2 /* JWTDeprecations.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		04C005221D70639E001CBDE7 /* JWTAlgorithm.h in Headers */ = {isa = PBXBuildFile; fileRef = 045145E41D5E243D007B1D7A /* JWTAlgorithm.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		04C005231D70639E001CBDE7 /* JWTAlgorithmFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 045145E51D5E243D007B1D7A /* JWTAlgorithmFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		04C005241D70639E001CBDE7 /* JWTAlgorithmNone.h in Headers */ = {isa = PBXBuildFile; fileRef = 045145E71D5E243D007B1D7A /* JWTAlgorithmNone.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -989,7 +989,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -1018,7 +1017,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
