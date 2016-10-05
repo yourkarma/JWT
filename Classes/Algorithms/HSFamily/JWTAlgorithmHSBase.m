@@ -7,7 +7,7 @@
 //
 
 #import "JWTAlgorithmHSBase.h"
-#import <Base64/MF_Base64Additions.h>
+#import "JWTBase64Coder.h"
 #import <CommonCrypto/CommonCrypto.h>
 #import <CommonCrypto/CommonHMAC.h>
 #import "JWTAlgorithmHS256.h"
@@ -73,7 +73,8 @@ NSString *const JWTAlgorithmNameHS512 = @"HS512";
 
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey
 {
-    NSString *expectedSignature = [[self encodePayload:input withSecret:verificationKey] base64UrlEncodedString];
+    NSData *expectedSignatureData = [self encodePayload:input withSecret:verificationKey];
+    NSString *expectedSignature = [JWTBase64Coder base64UrlEncodedStringWithData:expectedSignatureData];
     
     return [expectedSignature isEqualToString:signature];
 }
@@ -82,7 +83,8 @@ NSString *const JWTAlgorithmNameHS512 = @"HS512";
     const char *cString = [input cStringUsingEncoding:NSUTF8StringEncoding];
     NSData *inputData = [NSData dataWithBytes:cString length:strlen(cString)];
     
-    NSString *expectedSignature = [[self encodePayloadData:inputData withSecret:verificationKeyData] base64UrlEncodedString];
+    NSData *expectedSignatureData = [self encodePayloadData:inputData withSecret:verificationKeyData];
+    NSString *expectedSignature = [JWTBase64Coder base64UrlEncodedStringWithData:expectedSignatureData];
     
     return [expectedSignature isEqualToString:signature];
 }
