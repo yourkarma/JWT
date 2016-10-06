@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Karma. All rights reserved.
 //
 
-#import <Base64/MF_Base64Additions.h>
+#import "JWTBase64Coder.h"
 #import "JWT.h"
 #import "JWTAlgorithmHS512.h"
 #import "JWTAlgorithmFactory.h"
@@ -135,7 +135,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     NSString *encodedSegment = nil;
     
     if (encodedSegmentData) {
-        encodedSegment = [encodedSegmentData base64UrlEncodedString];
+        encodedSegment = [JWTBase64Coder base64UrlEncodedStringWithData:encodedSegmentData];//[encodedSegmentData base64UrlEncodedString];
     }
     
     return encodedSegment;
@@ -216,7 +216,8 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     }
     
     NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
-    NSString *signedOutput = [[theAlgorithm encodePayload:signingInput withSecret:theSecret] base64UrlEncodedString];
+    NSData *signedOutputData = [theAlgorithm encodePayload:signingInput withSecret:theSecret];
+    NSString *signedOutput = [JWTBase64Coder base64UrlEncodedStringWithData:signedOutputData];
     
     return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
 }
@@ -292,7 +293,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     
     // decode headerPart
     NSError *jsonError = nil;
-    NSData *headerData = [NSData dataWithBase64String:headerPart];
+    NSData *headerData = [JWTBase64Coder dataWithBase64UrlEncodedString:headerPart];
     id headerJSON = [NSJSONSerialization JSONObjectWithData:headerData
                                                     options:0
                                                       error:&jsonError];
@@ -351,7 +352,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     
     // and decode payload
     jsonError = nil;
-    NSData *payloadData = [NSData dataWithBase64String:payloadPart];
+    NSData *payloadData = [JWTBase64Coder dataWithBase64UrlEncodedString:payloadPart];
     id payloadJSON = [NSJSONSerialization JSONObjectWithData:payloadData
                                                     options:0
                                                       error:&jsonError];
@@ -655,9 +656,12 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
         jwtRsAlgorithm.privateKeyCertificatePassphrase = self.jwtPrivateKeyCertificatePassphrase;
     }
     if (self.jwtSecretData && [self.jwtAlgorithm respondsToSelector:@selector(encodePayloadData:withSecret:)]) {
-        signedOutput = [[self.jwtAlgorithm encodePayloadData:[signingInput dataUsingEncoding:NSUTF8StringEncoding] withSecret:self.jwtSecretData] base64UrlEncodedString];
+        NSData *signedOutputData = [self.jwtAlgorithm encodePayloadData:[signingInput dataUsingEncoding:NSUTF8StringEncoding] withSecret:self.jwtSecretData];
+        
+        signedOutput = [JWTBase64Coder base64UrlEncodedStringWithData:signedOutputData];
     } else {
-        signedOutput = [[self.jwtAlgorithm encodePayload:signingInput withSecret:self.jwtSecret] base64UrlEncodedString];
+        NSData *signedOutputData = [self.jwtAlgorithm encodePayload:signingInput withSecret:self.jwtSecret];
+        signedOutput = [JWTBase64Coder base64UrlEncodedStringWithData:signedOutputData];
     }
 
     if (signedOutput) { // Make sure signing worked (e.g. we may have issues extracting the key from the PKCS12 bundle if passphrase is incorrect)
@@ -688,7 +692,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     NSString *encodedSegment = nil;
     
     if (encodedSegmentData) {
-        encodedSegment = [encodedSegmentData base64UrlEncodedString];
+        encodedSegment = [JWTBase64Coder base64UrlEncodedStringWithData:encodedSegmentData];
     }
     
     return encodedSegment;
@@ -735,7 +739,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     
     // decode headerPart
     NSError *jsonError = nil;
-    NSData *headerData = [NSData dataWithBase64UrlEncodedString:headerPart];
+    NSData *headerData = [JWTBase64Coder dataWithBase64UrlEncodedString:headerPart];
     id headerJSON = [NSJSONSerialization JSONObjectWithData:headerData
                                                     options:0
                                                       error:&jsonError];
@@ -794,7 +798,7 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
     
     // and decode payload
     jsonError = nil;
-    NSData *payloadData = [NSData dataWithBase64UrlEncodedString:payloadPart];
+    NSData *payloadData = [JWTBase64Coder dataWithBase64UrlEncodedString:payloadPart];
     id payloadJSON = [NSJSONSerialization JSONObjectWithData:payloadData
                                                      options:0
                                                        error:&jsonError];

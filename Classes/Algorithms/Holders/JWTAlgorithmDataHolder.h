@@ -17,12 +17,12 @@
 /**
  The verification key to use when encoding/decoding a JWT in data form
  */
-@property (copy, nonatomic, readonly) NSData *currentSecretData __deprecated_msg("msg");
+@property (copy, nonatomic, readwrite) NSData *currentSecretData;
 
 /**
  The <JWTAlgorithm> to use for encoding a JWT
  */
-@property (strong, nonatomic, readonly) id <JWTAlgorithm> currentAlgorithm;
+@property (strong, nonatomic, readwrite) id <JWTAlgorithm> currentAlgorithm;
 @end
 
 @interface JWTAlgorithmBaseDataHolder : NSObject <JWTAlgorithmDataHolder>

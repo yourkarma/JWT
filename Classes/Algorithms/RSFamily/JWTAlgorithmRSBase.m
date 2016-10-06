@@ -7,7 +7,7 @@
 //
 
 #import "JWTAlgorithmRSBase.h"
-#import <Base64/MF_Base64Additions.h>
+#import "JWTBase64Coder.h"
 #import <CommonCrypto/CommonCrypto.h>
 
 /*
@@ -61,7 +61,7 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 
 #pragma mark - JWTAlgorithm
 - (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
-    return [self encodePayloadData:[theString dataUsingEncoding:NSUTF8StringEncoding] withSecret:[NSData dataWithBase64UrlEncodedString:theSecret]];
+    return [self encodePayloadData:[theString dataUsingEncoding:NSUTF8StringEncoding] withSecret:[JWTBase64Coder dataWithBase64UrlEncodedString:theSecret]];
 }
 
 - (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData {
@@ -78,7 +78,7 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 }
 
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey {
-    NSData *certificateData = [NSData dataWithBase64String:verificationKey];
+    NSData *certificateData = [JWTBase64Coder dataWithBase64UrlEncodedString:verificationKey];
     return [self verifySignedInput:input
                      withSignature:signature
                verificationKeyData:certificateData];
@@ -86,7 +86,7 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData {
     NSData *signedData = [input dataUsingEncoding:NSUTF8StringEncoding];
-    NSData *signatureData = [NSData dataWithBase64UrlEncodedString:signature];
+    NSData *signatureData = [JWTBase64Coder dataWithBase64UrlEncodedString:signature];
     SecKeyRef publicKey = [self publicKeyFromCertificate:verificationKeyData];
     BOOL signatureOk = [self PKCSVerifyBytesSHANumberWithRSA:signedData witSignature:signatureData withPublicKey:publicKey];
     (CFRelease(publicKey));

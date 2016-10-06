@@ -1,6 +1,0 @@
-framework module Base64 {
-  umbrella header "Base64.h"
-
-  export *
-  module * { export * }
-}

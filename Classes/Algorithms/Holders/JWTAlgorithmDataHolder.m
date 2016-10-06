@@ -9,8 +9,9 @@
 #import "JWTAlgorithmDataHolder.h"
 #import "JWTAlgorithmFactory.h"
 @interface JWTAlgorithmBaseDataHolder()
-@property (copy, nonatomic, readwrite) NSData *currentSecretData;
-@property (strong, nonatomic, readwrite) id <JWTAlgorithm> currentAlgorithm;
+// not needed by algorithm adoption.
+// @property (copy, nonatomic, readwrite) NSData *currentSecretData;
+// @property (strong, nonatomic, readwrite) id <JWTAlgorithm> currentAlgorithm;
 
 #pragma mark - Setters
 /**
@@ -82,7 +83,7 @@
         self.secret = ^(NSString *secret) {
             return [weakSelf secret:secret];
         };
-        
+
         self.secretData = ^(NSData *secretData) {
             return [weakSelf secretData:secretData];
         };
@@ -93,7 +94,7 @@
 
         self.algorithmName = ^(NSString *algorithmName) {
             return [weakSelf algorithmName:algorithmName];
-        };        
+        };
     }
     return self;
 }
