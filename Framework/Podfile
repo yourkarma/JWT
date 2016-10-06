@@ -1,8 +1,10 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
 def target_names
-  %w(iOS_Static iOS_Framework iOS_Swift macOS_Framework macOS_Swift)
-  .map do |name| 
+  %w(iOS_Static iOS_Framework iOS_Swift macOS_Framework macOS_Swift).reject do |f|
+  	f =~ /Swift/
+  end
+  .map do |name|
 	  'JWT_' + name
   end
 end
@@ -19,4 +21,4 @@ def install
 	end
 end
 
-install
+#install
