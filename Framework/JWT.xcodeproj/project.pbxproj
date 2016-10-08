@@ -198,24 +198,14 @@
 		04AE0E7A1D76DA6E001AE8F2 /* JWTAlgorithmDataHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmDataHolder.m; sourceTree = "<group>"; };
 		04AE0E7D1D76E3CD001AE8F2 /* JWTDeprecations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JWTDeprecations.h; sourceTree = "<group>"; };
 		0FCADB95F316CCA27481F95C /* libPods-JWT_iOS_Static.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JWT_iOS_Static.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1363BB24C195377ABBD5A8C2 /* Pods-JWT_iOS_Framework.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT_iOS_Framework.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JWT_iOS_Framework/Pods-JWT_iOS_Framework.debug.xcconfig"; sourceTree = "<group>"; };
 		15608DDFFFA4CED7C175AC5E /* libPods-JWT_macOS_Swift.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JWT_macOS_Swift.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FDE96A62E6BF470CD9AFFBC /* libPods-JWT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JWT.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		67632B97FA2182866D7757BD /* libPods-JWT_iOS_Framework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JWT_iOS_Framework.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6B501275EF478269AC450A67 /* Pods-JWT_macOS_Swift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT_macOS_Swift.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWT_macOS_Swift/Pods-JWT_macOS_Swift.release.xcconfig"; sourceTree = "<group>"; };
-		75C9C9E3149CD0A87EA70DD0 /* Pods-JWT_iOS_Swift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT_iOS_Swift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JWT_iOS_Swift/Pods-JWT_iOS_Swift.debug.xcconfig"; sourceTree = "<group>"; };
-		769FC0A76BF5FB733847FBBD /* Pods-JWT_iOS_Static.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT_iOS_Static.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWT_iOS_Static/Pods-JWT_iOS_Static.release.xcconfig"; sourceTree = "<group>"; };
-		79DD78410929B6458A6CBF96 /* Pods-JWT_iOS_Swift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT_iOS_Swift.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWT_iOS_Swift/Pods-JWT_iOS_Swift.release.xcconfig"; sourceTree = "<group>"; };
-		97CF92D6FE87E56FA64F9C06 /* Pods-JWT_iOS_Framework.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT_iOS_Framework.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWT_iOS_Framework/Pods-JWT_iOS_Framework.release.xcconfig"; sourceTree = "<group>"; };
 		A1951DB91758990700AF73D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A1951DCA1758990700AF73D9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		A49DC3B76CA5E93341E34F18 /* libPods-JWTTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JWTTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A69D1F767E69F7314128FEB1 /* libPods-JWT_iOS_Swift.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JWT_iOS_Swift.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B9A9B3CA492FA299A73E7E68 /* Pods-JWT_macOS_Framework.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT_macOS_Framework.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JWT_macOS_Framework/Pods-JWT_macOS_Framework.debug.xcconfig"; sourceTree = "<group>"; };
-		C9FD287A3B2D7A1B88985D07 /* Pods-JWT_iOS_Static.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT_iOS_Static.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JWT_iOS_Static/Pods-JWT_iOS_Static.debug.xcconfig"; sourceTree = "<group>"; };
 		F5A7DADFBAB750A6A1A5A0C8 /* libPods-JWT_macOS_Framework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JWT_macOS_Framework.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F73103E79FF710228A5FD433 /* Pods-JWT_macOS_Swift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT_macOS_Swift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JWT_macOS_Swift/Pods-JWT_macOS_Swift.debug.xcconfig"; sourceTree = "<group>"; };
-		FB63CA8FE5855BD272718B75 /* Pods-JWT_macOS_Framework.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWT_macOS_Framework.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWT_macOS_Framework/Pods-JWT_macOS_Framework.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -410,7 +400,6 @@
 				0451469E1D5E2AD2007B1D7A /* JWT_macOS_Swift */,
 				A1951DB81758990700AF73D9 /* Frameworks */,
 				A1951DB71758990700AF73D9 /* Products */,
-				A8B20B9C27505AC1B116D57F /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -441,23 +430,6 @@
 				15608DDFFFA4CED7C175AC5E /* libPods-JWT_macOS_Swift.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		A8B20B9C27505AC1B116D57F /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				1363BB24C195377ABBD5A8C2 /* Pods-JWT_iOS_Framework.debug.xcconfig */,
-				97CF92D6FE87E56FA64F9C06 /* Pods-JWT_iOS_Framework.release.xcconfig */,
-				C9FD287A3B2D7A1B88985D07 /* Pods-JWT_iOS_Static.debug.xcconfig */,
-				769FC0A76BF5FB733847FBBD /* Pods-JWT_iOS_Static.release.xcconfig */,
-				75C9C9E3149CD0A87EA70DD0 /* Pods-JWT_iOS_Swift.debug.xcconfig */,
-				79DD78410929B6458A6CBF96 /* Pods-JWT_iOS_Swift.release.xcconfig */,
-				B9A9B3CA492FA299A73E7E68 /* Pods-JWT_macOS_Framework.debug.xcconfig */,
-				FB63CA8FE5855BD272718B75 /* Pods-JWT_macOS_Framework.release.xcconfig */,
-				F73103E79FF710228A5FD433 /* Pods-JWT_macOS_Swift.debug.xcconfig */,
-				6B501275EF478269AC450A67 /* Pods-JWT_macOS_Swift.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -793,7 +765,6 @@
 /* Begin XCBuildConfiguration section */
 		0451466F1D5E2A78007B1D7A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9FD287A3B2D7A1B88985D07 /* Pods-JWT_iOS_Static.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -819,7 +790,6 @@
 		};
 		045146701D5E2A78007B1D7A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 769FC0A76BF5FB733847FBBD /* Pods-JWT_iOS_Static.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -847,7 +817,6 @@
 		};
 		0451467C1D5E2AA1007B1D7A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1363BB24C195377ABBD5A8C2 /* Pods-JWT_iOS_Framework.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -885,7 +854,6 @@
 		};
 		0451467D1D5E2AA1007B1D7A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 97CF92D6FE87E56FA64F9C06 /* Pods-JWT_iOS_Framework.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -925,7 +893,6 @@
 		};
 		045146891D5E2AAF007B1D7A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 75C9C9E3149CD0A87EA70DD0 /* Pods-JWT_iOS_Swift.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -964,7 +931,6 @@
 		};
 		0451468A1D5E2AAF007B1D7A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 79DD78410929B6458A6CBF96 /* Pods-JWT_iOS_Swift.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -1004,7 +970,6 @@
 		};
 		045146961D5E2AC4007B1D7A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B9A9B3CA492FA299A73E7E68 /* Pods-JWT_macOS_Framework.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -1044,7 +1009,6 @@
 		};
 		045146971D5E2AC4007B1D7A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FB63CA8FE5855BD272718B75 /* Pods-JWT_macOS_Framework.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -1086,7 +1050,6 @@
 		};
 		045146A31D5E2AD2007B1D7A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F73103E79FF710228A5FD433 /* Pods-JWT_macOS_Swift.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -1127,7 +1090,6 @@
 		};
 		045146A41D5E2AD2007B1D7A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6B501275EF478269AC450A67 /* Pods-JWT_macOS_Swift.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
