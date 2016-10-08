@@ -72,9 +72,9 @@ typedef NS_ENUM(NSInteger, JWTError) {
 
 /**
  Decodes a JWT and returns the decoded Header and Payload.
- 
+
  Uses the JWTAlgorithmHS512 for decoding
- 
+
  @param theMessage The encoded JWT
  @param theSecret The verification key to use for validating the JWT signature
  @param theTrustedClaimsSet The JWTClaimsSet to use for verifying the JWT values
@@ -107,9 +107,9 @@ typedef NS_ENUM(NSInteger, JWTError) {
 
 /**
  Decodes a JWT and returns the decoded Header and Payload
- 
+
  Uses the JWTAlgorithmHS512 for decoding
- 
+
  @param theMessage The encoded JWT
  @param theSecret The verification key to use for validating the JWT signature
  @param theError Error pointer, if there is an error decoding the message, upon return contains an NSError object that describes the problem.
@@ -133,7 +133,7 @@ typedef NS_ENUM(NSInteger, JWTError) {
  Uses the JWTAlgorithmHS512 for decoding
  @param theMessage The encoded JWT
  @param theSecret The verification key to use for validating the JWT signature
- @return A dictionary containing the header and payload dictionaries. Keyed to "header" and "payload", respectively. Or nil if an error occurs. 
+ @return A dictionary containing the header and payload dictionaries. Keyed to "header" and "payload", respectively. Or nil if an error occurs.
  */
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret __deprecated_and_will_be_removed_in_release_version(JWTVersion_3_0_0);
 
@@ -143,7 +143,7 @@ typedef NS_ENUM(NSInteger, JWTError) {
 + (JWTBuilder *)decodeMessage:(NSString *)message;
 @end
 
-@interface JWTBuilder : NSObject 
+@interface JWTBuilder : NSObject
 
 + (JWTBuilder *)encodePayload:(NSDictionary *)payload;
 + (JWTBuilder *)encodeClaimsSet:(JWTClaimsSet *)claimsSet;
@@ -177,17 +177,17 @@ typedef NS_ENUM(NSInteger, JWTError) {
 /**
  The verification key to use when encoding/decoding a JWT
  */
-@property (copy, nonatomic, readonly) NSString *jwtSecret __deprecated_and_will_be_removed_in_release_version(JWTVersion_3_0_0);
+@property (copy, nonatomic, readonly) NSString *jwtSecret __first_deprecated_in_release_version(JWTVersion_2_2_0);
 
 /**
  The verification key to use when encoding/decoding a JWT in data form
  */
-@property (copy, nonatomic, readonly) NSData *jwtSecretData __deprecated_and_will_be_removed_in_release_version(JWTVersion_3_0_0);
+@property (copy, nonatomic, readonly) NSData *jwtSecretData __first_deprecated_in_release_version(JWTVersion_2_2_0);
 
 /**
  The passphrase for the PKCS12 blob, which represents the certificate containing the private key for the RS algorithms.
  */
-@property (copy, nonatomic, readonly) NSString *jwtPrivateKeyCertificatePassphrase __deprecated_and_will_be_removed_in_release_version(JWTVersion_3_0_0);
+@property (copy, nonatomic, readonly) NSString *jwtPrivateKeyCertificatePassphrase __first_deprecated_in_release_version(JWTVersion_2_2_0);
 
 /**
  Contains the error that occured during an operation, or nil if no error occured
@@ -197,12 +197,12 @@ typedef NS_ENUM(NSInteger, JWTError) {
 /**
  The <JWTAlgorithm> to use for encoding a JWT
  */
-@property (strong, nonatomic, readonly) id<JWTAlgorithm> jwtAlgorithm __deprecated_and_will_be_removed_in_release_version(JWTVersion_3_0_0);
+@property (strong, nonatomic, readonly) id<JWTAlgorithm> jwtAlgorithm __first_deprecated_in_release_version(JWTVersion_2_2_0);
 
 /**
  The algorithm name to use for decoding the JWT. Required unless force decode is true
  */
-@property (copy, nonatomic, readonly) NSString *jwtAlgorithmName __deprecated_and_will_be_removed_in_release_version(JWTVersion_3_0_0);
+@property (copy, nonatomic, readonly) NSString *jwtAlgorithmName __first_deprecated_in_release_version(JWTVersion_2_2_0);
 
 /**
  The force decode option. If set to true, a JWT won't be validated before decoding.
@@ -239,27 +239,27 @@ typedef NS_ENUM(NSInteger, JWTError) {
 /**
  Sets jwtSecret and returns the JWTBuilder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^secret)(NSString *secret)__deprecated_and_will_be_removed_in_release_version(JWTVersion_3_0_0);
+@property (copy, nonatomic, readonly) JWTBuilder *(^secret)(NSString *secret)__first_deprecated_in_release_version(JWTVersion_2_2_0);
 
 /**
  Sets jwtSecretData and returns the JWTBuilder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^secretData)(NSData *secretData)__deprecated_and_will_be_removed_in_release_version(JWTVersion_3_0_0);
+@property (copy, nonatomic, readonly) JWTBuilder *(^secretData)(NSData *secretData)__first_deprecated_in_release_version(JWTVersion_2_2_0);
 
 /**
  Sets jwtPrivateKeyCertificatePassphrase and returns the JWTBuilder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^privateKeyCertificatePassphrase)(NSString *privateKeyCertificatePassphrase) __deprecated_and_will_be_removed_in_release_version(JWTVersion_3_0_0);
+@property (copy, nonatomic, readonly) JWTBuilder *(^privateKeyCertificatePassphrase)(NSString *privateKeyCertificatePassphrase) __first_deprecated_in_release_version(JWTVersion_2_2_0);
 
 /**
  Sets jwtAlgorithm and returns the JWTBuilder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm)__deprecated_and_will_be_removed_in_release_version(JWTVersion_3_0_0);
+@property (copy, nonatomic, readonly) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm)__first_deprecated_in_release_version(JWTVersion_2_2_0);
 
 /**
  Sets jwtAlgorithmName and returns the JWTBuilder to allow for method chaining. See list of names in appropriate headers.
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^algorithmName)(NSString *algorithmName)__deprecated_and_will_be_removed_in_release_version(JWTVersion_3_0_0);
+@property (copy, nonatomic, readonly) JWTBuilder *(^algorithmName)(NSString *algorithmName)__first_deprecated_in_release_version(JWTVersion_2_2_0);
 
 /**
  Sets jwtOptions and returns the JWTBuilder to allow for method chaining

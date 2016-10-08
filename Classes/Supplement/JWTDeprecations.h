@@ -11,8 +11,10 @@
 
 #define STR(str) #str
 #define JWTVersion_2_1_0 2.1
+#define JWTVersion_2_2_0 2.2
 #define JWTVersion_3_0_0 3.0
 
+#define __first_deprecated_in_release_version(version) __deprecated_msg("first deprecated in release version: "STR(version))
 #define __deprecated_and_will_be_removed_in_release_version(version) __deprecated_msg("deprecated. will be removed in release version: "STR(version))
 #define __available_in_release_version(version) __deprecated_msg("will be introduced in release version: "STR(version))
 
