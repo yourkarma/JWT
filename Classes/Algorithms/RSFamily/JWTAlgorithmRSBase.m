@@ -44,11 +44,11 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 #pragma mark - Override
 // TODO: put assurance that algorithm was properly overriden?
 - (size_t)ccSHANumberDigestLength {
-    return 0;
+    @throw [[NSException alloc] initWithName:NSInternalInconsistencyException reason:@"ccSHANumberDigestLength property should be overriden" userInfo:nil];
 }
 
 - (uint32_t)secPaddingPKCS1SHANumber {
-    return 0;
+    @throw [[NSException alloc] initWithName:NSInternalInconsistencyException reason:@"secPaddingPKCS1SHANumber property should be overriden" userInfo:nil];
 }
 
 - (unsigned char *)CC_SHANumberWithData:(const void *)data withLength:(CC_LONG)len withHashBytes:(unsigned char *)hashBytes {
@@ -71,7 +71,22 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
     if (identity && trust) {
         SecKeyRef privateKey;
         SecIdentityCopyPrivateKey(identity, &privateKey);
-        return [self PKCSSignBytesSHANumberwithRSA:theStringData withPrivateKey:privateKey];
+        NSData *result = [self PKCSSignBytesSHANumberwithRSA:theStringData withPrivateKey:privateKey];
+        
+        if (identity) {
+            CFRelease(identity);
+        }
+        
+        if (trust) {
+            CFRelease(trust);
+        }
+        
+        if (privateKey) {
+            CFRelease(privateKey);
+        }
+        
+        return result;
+        
     } else {
         return nil;
     }
