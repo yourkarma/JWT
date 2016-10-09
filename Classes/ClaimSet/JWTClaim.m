@@ -8,6 +8,8 @@
 
 #import "JWTClaim.h"
 
+// TODO(3.0): Claim aud should check include in collection?
+// Add claims specification tests.
 // "iss" (Issuer) Claim
 // "sub" (Subject) Claim
 // "aud" (Audience) Claim

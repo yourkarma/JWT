@@ -507,38 +507,14 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
 @implementation JWTAlgorithmRSBase (Create)
 
 + (instancetype)algorithm256 {
-//    JWTAlgorithmRSFamilyMemberMutable *base = [JWTAlgorithmRSFamilyMemberMutable new];
-//    base.ccSHANumberDigestLength = CC_SHA256_DIGEST_LENGTH;
-//    base.secPaddingPKCS1SHANumber = kSecPaddingPKCS1SHA256;
-//    base.ccShaNumberWithData = ^unsigned char *(const void *data, CC_LONG len, unsigned char *hashBytes){
-//        return CC_SHA256(data, len, hashBytes);
-//    };
-//    base.name = @"RS256";
-//    return base;
     return [JWTAlgorithmRS256 new];
 }
 
 + (instancetype)algorithm384 {
-//    JWTAlgorithmRSFamilyMemberMutable *base = [JWTAlgorithmRSFamilyMemberMutable new];
-//    base.ccSHANumberDigestLength = CC_SHA384_DIGEST_LENGTH;
-//    base.secPaddingPKCS1SHANumber = kSecPaddingPKCS1SHA384;
-//    base.ccShaNumberWithData = ^unsigned char *(const void *data, CC_LONG len, unsigned char *hashBytes){
-//        return CC_SHA384(data, len, hashBytes);
-//    };
-//    base.name = @"RS384";
-//    return base;
     return [JWTAlgorithmRS384 new];
 }
 
 + (instancetype)algorithm512 {
-//    JWTAlgorithmRSFamilyMemberMutable *base = [JWTAlgorithmRSFamilyMemberMutable new];
-//    base.ccSHANumberDigestLength = CC_SHA512_DIGEST_LENGTH;
-//    base.secPaddingPKCS1SHANumber = kSecPaddingPKCS1SHA512;
-//    base.ccShaNumberWithData = ^unsigned char *(const void *data, CC_LONG len, unsigned char *hashBytes){
-//        return CC_SHA512(data, len, hashBytes);
-//    };
-//    base.name = @"RS512";
-//    return base;
     return [JWTAlgorithmRS512 new];
 }
 
