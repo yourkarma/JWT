@@ -28,11 +28,11 @@ NSString *const JWTAlgorithmNameHS512 = @"HS512";
 @implementation JWTAlgorithmHSBase
 
 - (size_t)ccSHANumberDigestLength {
-    return 0;
+    @throw [[NSException alloc] initWithName:NSInternalInconsistencyException reason:@"ccSHANumberDigestLength property should be overriden" userInfo:nil];
 }
 
 - (uint32_t)ccHmacAlgSHANumber {
-    return 0;
+    @throw [[NSException alloc] initWithName:NSInternalInconsistencyException reason:@"ccHmacAlgSHANumber property should be overriden" userInfo:nil];
 }
 
 - (NSString *)name;
