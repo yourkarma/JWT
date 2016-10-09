@@ -18,7 +18,7 @@ NSString *const JWTAlgorithmNameHS256 = @"HS256";
 NSString *const JWTAlgorithmNameHS384 = @"HS384";
 NSString *const JWTAlgorithmNameHS512 = @"HS512";
 
-// TODO:
+// TODO(3.0):
 // 1. hide algorithms as it was done in RSBase.
 // 2. remove remain headers.
 @interface JWTAlgorithmHSBase ()
@@ -121,29 +121,14 @@ NSString *const JWTAlgorithmNameHS512 = @"HS512";
 @implementation JWTAlgorithmHSBase (Create)
 
 + (instancetype)algorithm256 {
-//    JWTAlgorithmHSBaseTest *base = [JWTAlgorithmHSBaseTest new];
-//    base.ccSHANumberDigestLength = CC_SHA256_DIGEST_LENGTH;
-//    base.ccHmacAlgSHANumber = kCCHmacAlgSHA256;
-//    base.name = @"HS256";
-//    return base;
     return [JWTAlgorithmHS256 new];
 }
 
 + (instancetype)algorithm384 {
-//    JWTAlgorithmHSBaseTest *base = [JWTAlgorithmHSBaseTest new];
-//    base.ccSHANumberDigestLength = CC_SHA384_DIGEST_LENGTH;
-//    base.ccHmacAlgSHANumber = kCCHmacAlgSHA384;
-//    base.name = @"HS384";
-//    return base;
     return [JWTAlgorithmHS384 new];
 }
 
 + (instancetype)algorithm512 {
-//    JWTAlgorithmHSBaseTest *base = [JWTAlgorithmHSBaseTest new];
-//    base.ccSHANumberDigestLength = CC_SHA512_DIGEST_LENGTH;
-//    base.ccHmacAlgSHANumber = kCCHmacAlgSHA512;
-//    base.name = @"HS512";
-//    return base;
     return [JWTAlgorithmHS512 new];
 }
 

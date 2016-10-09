@@ -42,68 +42,6 @@ static NSString *JWTErrorDomain = @"com.karma.jwt";
 + (NSString *)userDescriptionForErrorCode:(JWTError)code {
     NSString *resultString = [self errorDescriptionsAndCodes][@(code)];
     return resultString ?: @"Unexpected error";
-    /*
-    switch (code) {
-        case JWTInvalidFormatError: {
-            resultString = @"Invalid format! Try to check your encoding algorithm. Maybe you put too many dots as delimiters?";
-            break;
-        }
-        case JWTUnsupportedAlgorithmError: {
-            resultString = @"Unsupported algorithm! You could implement it by yourself";
-            break;
-        }
-        case JWTInvalidSignatureError: {
-            resultString = @"Invalid signature! It seems that signed part of jwt mismatch generated part by algorithm provided in header.";
-            break;
-        }
-        case JWTNoPayloadError: {
-            resultString = @"No payload! Hey, forget payload?";
-            break;
-        }
-        case JWTNoHeaderError: {
-            resultString = @"No header! Hmm";
-            break;
-        }
-        case JWTEncodingHeaderError: {
-            resultString = @"It seems that header encoding failed";
-            break;
-        }
-        case JWTEncodingPayloadError: {
-            resultString = @"It seems that payload encoding failed";
-            break;
-        }
-        case JWTEncodingSigningError: {
-            resultString = @"It seems that signing output corrupted. Make sure signing worked (e.g. we may have issues extracting the key from the PKCS12 bundle if passphrase is incorrect).";
-            break;
-        }
-        case JWTClaimsSetVerificationFailed: {
-            resultString = @"It seems that claims verification failed";
-            break;
-        }
-        case JWTInvalidSegmentSerializationError: {
-            resultString = @"It seems that json serialization failed for segment";
-            break;
-        }
-        case JWTUnspecifiedAlgorithmError: {
-            resultString = @"Unspecified algorithm! You must explicitly choose an algorithm to decode with.";
-            break;
-        }
-        case JWTDecodingHeaderError: {
-            resultString = @"Error decoding the JWT Header segment.";
-            break;
-        }
-        case JWTDecodingPayloadError: {
-            resultString = @"Error decoding the JWT Payload segment.";
-            break;
-        }
-        default: {
-            resultString = @"Unexpected error";
-            break;
-        }
-    }
-    
-    return resultString;
-    */
 }
 
 + (NSError *)errorWithCode:(JWTError)code {
