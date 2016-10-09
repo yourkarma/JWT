@@ -1,4 +1,4 @@
-[![JWT](http://jwt.io/assets/logo.svg)](https://jwt.io/)  
+[![JWT](http://jwt.io/assets/logo.svg)](https://jwt.io/)
 [![Build Status](https://travis-ci.org/yourkarma/JWT.svg?branch=master)](https://travis-ci.org/yourkarma/JWT)
 [![Pod Version](http://img.shields.io/cocoapods/v/JWT.svg?style=flat)](http://cocoadocs.org/docsets/JWT)
 [![Pod Platform](http://img.shields.io/cocoapods/p/JWT.svg?style=flat)](http://cocoadocs.org/docsets/JWT)
@@ -13,10 +13,10 @@ A [JSON Web Token][] implementation in Objective-C.
 [JSON Web Token]: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html
 
 # What's new in master and bleeding edge.
-These features are experiments! No warranties!  
+These features are experiments! No warranties!
 ## Whitelists possible algorithms.
-When you need to decode jwt by several algorithms you could specify their names in whitelist.  
-Later this feature possible will migrate to options.  
+When you need to decode jwt by several algorithms you could specify their names in whitelist.
+Later this feature possible will migrate to options.
 For example, someone returns result or error.
 ### Limitations
 Restricted to pair (algorithm or none) due to limitations of unique `secret`.
@@ -58,6 +58,7 @@ Add the following to your [CocoaPods][] Podfile:
 
 [CocoaPods]: http://cocoapods.org
 
+# Documentation
 # Usage
 
 ## JWTBuilder
@@ -87,11 +88,11 @@ You can inspect JWTBuilder by `jwt`-prefixed attributes.
 You can set JWTBuilder attributes by fluent style (block interface).
 
 You can encode arbitrary payloads like so:
-	
+
     NSDictionary *payload = @{@"foo" : @"bar"};
     NSString *secret = @"secret";
     id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:@"HS256"];
-    
+
     [JWTBuilder encodePayload:payload].secret(@"secret").algorithm(algorithm).encode;
 
 If you're using reserved claim names you can encode your claim set like so (all properties are optional):
@@ -105,10 +106,10 @@ If you're using reserved claim names you can encode your claim set like so (all 
     claimsSet.issuedAt = [NSDate date];
     claimsSet.identifier = @"thisisunique";
     claimsSet.type = @"test";
-    
+
     NSString *secret = @"secret";
     id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:@"HS256"];
-    
+
     [JWTBuilder encodeClaimsSet:claimsSet].secret(secret).algorithm(algorithm).encode;
 
 You can decode a JWT like so:
@@ -116,11 +117,11 @@ You can decode a JWT like so:
 	NSString *jwtToken = @"header.payload.signature";
 	NSString *secret = @"secret";
 	NSString *algorithmName = @"HS256"; //Must specify an algorithm to use
-	
+
 	NSDictionary *payload = [JWTBuilder decodeMessage:jwtToken].secret(secret).algorithmName(algorithmName).decode;
 
 If you want to check claims while decoding, you could use next sample of code (all properties are optional):
-    
+
     // Trusted Claims Set
     JWTClaimsSet *trustedClaimsSet = [[JWTClaimsSet alloc] init];
     trustedClaimsSet.issuer = @"Facebook";
@@ -138,24 +139,24 @@ If you want to check claims while decoding, you could use next sample of code (a
 
     JWTBuilder *builder = [JWTBuilder decodeMessage:jwt].secret(secret).algorithmName(algorithmName).claimsSet(trustedClaimsSet);
     NSDictionary *payload = builder.decode;
-    
+
     if (!builder.jwtError) {
         // do your work here
     }
     else {
         // handle error
     }
-    
+
 If you want to enforce a whitelist of valid algorithms:
 
 	NSArray *whitelist = @[@"HS256", @"HS512"];
 	NSString *jwtToken = @"header.payload.signature";
 	NSString *secret = @"secret";
 	NSString *algorithmName = @"HS256";
-	
+
 	//Returns nil
 	NSDictionary *payload = [JWTBuilder decodeMessage:jwtToken].secret(secret).algorithmName(algorithmName).whitelist(@[]).decode;
-	
+
 	//Returns the decoded payload
 	NSDictionary *payload = [JWTBuilder decodeMessage:jwtToken].secret(secret).algorithmName(algorithmName).whitelist(whitelist).decode;
 
@@ -167,16 +168,16 @@ If you want to enforce a whitelist of valid algorithms:
     claimsSet.issuer = @"Facebook";
     claimsSet.subject = @"Token";
     claimsSet.audience = @"http://yourkarma.com";
-    
+
     // encode it
     NSString *secret = @"secret";
     NSString *algorithmName = @"HS384";
     NSDictionary *headers = @{@"custom":@"value"};
     id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:algorithmName];
-    
+
     JWTBuilder *encodeBuilder = [JWT encodeClaimsSet:claimsSet];
     NSString *encodedResult = encodeBuilder.secret(secret).algorithm(algorithm).headers(headers).encode;
-    
+
     if (encodeBuilder.jwtError) {
         // handle error
         NSLog(@"encode failed, error: %@", encodeBuilder.jwtError);
@@ -185,11 +186,11 @@ If you want to enforce a whitelist of valid algorithms:
         // handle encoded result
         NSLog(@"encoded result: %@", encodedResult);
     }
-    
+
     // decode it
     // you can set any property that you want, all properties are optional
     JWTClaimsSet *trustedClaimsSet = [claimsSet copy];
-    
+
     // decode forced ? try YES
     BOOL decodeForced = NO;
     NSNumber *options = @(decodeForced);
@@ -215,15 +216,15 @@ You can also encode/decode using a secret that is represented as an NSData objec
 	NSString *algorithmName = @"HS384";
     NSDictionary *headers = @{@"custom":@"value"};
     id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:algorithmName];
-    
+
     JWTBuilder *encodeBuilder = [JWT encodeClaimsSet:claimsSet];
     NSString *encodedResult = encodeBuilder.secretData(secretData).algorithm(algorithm).headers(headers).encode;
-    
+
     //Decode
     NSString *jwtToken = @"header.payload.signature";
 	NSData *secretData = <your data>
 	NSString *algorithmName = @"HS256"; //Must specify an algorithm to use
-	
+
 	NSDictionary *payload = [JWTBuilder decodeMessage:jwtToken].secretData(secretData).algorithmName(algorithmName).decode;
 
 # Algorithms
@@ -231,7 +232,7 @@ You can also encode/decode using a secret that is represented as an NSData objec
 The following algorithms are supported:
 
 * RS256
-* HS512 - HMAC using SHA-512. 
+* HS512 - HMAC using SHA-512.
 * HS256 / HS384 / HS512
 * None
 
@@ -242,30 +243,30 @@ And you have a secret passphrase for that file: `secret`.
     // Encode
     NSDictionary *payload = @{@"payload" : @"hidden_information"};
     NSString *algorithmName = @"RS256";
-    
+
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"secret_key" ofType:@"p12"];
     NSData *privateKeySecretData = [NSData dataWithContentsOfFile:filePath];
-    
+
     NSString *passphraseForPrivateKey = @"secret";
-    
+
     JWTBuilder *builder = [JWTBuilder encodePayload:payload].secretData(privateKeySecretData).privateKeyCertificatePassphrase(passphraseForPrivateKey).algorithmName(algorithmName);
     NSString *token = builder.encode;
-    
+
     // check error
     if (builder.jwtError) {
         // error occurred.
     }
-    
+
     // Decode
     // Suppose, that you get token from previous example. You need a valid public key for a private key in previous example.
     // Private key stored in @"secret_key.p12". So, you need public key for that private key.
     NSString *publicKey = @"..."; // load public key. Or use it as raw string.
-    
+
     algorithmName = @"RS256";
-    
+
     JWTBuilder *decodeBuilder = [JWTBuilder decodeMessage:token].secret(publicKey).algorithmName(algorithmName);
     NSDictionary *envelopedPayload = decodeBuilder.decode;
-    
+
     // check error
     if (decodeBuilder.jwtError) {
         // error occurred.
@@ -273,11 +274,3 @@ And you have a secret passphrase for that file: `secret`.
 
 
 Additional algorithms can be added by implementing the `JWTAlgorithm` protocol.
-
-# Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
