@@ -1,6 +1,6 @@
 ### New Issue Checklist
 
-* [ ] I have read and understood the [CONTRIBUTING guide](https://github.com/yourkarma/CocoaLumberjack/blob/master/.github/CONTRIBUTING.md)
+* [ ] I have read and understood the [CONTRIBUTING guide](https://github.com/yourkarma/JWT/blob/master/.github/CONTRIBUTING.md)
 * [ ] I have read the [Documentation](https://github.com/yourkarma/JWT#documentation)
 * [ ] I have searched for a similar issue in the [project](https://github.com/yourkarma/JWT/issues) and found none
 
@@ -19,4 +19,3 @@
 ### Issue Description and Steps
 
 Please fill in the detailed description of the issue (full output of any stack trace, compiler error, ...) and the steps to reproduce the issue.
-

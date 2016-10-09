@@ -274,3 +274,7 @@ And you have a secret passphrase for that file: `secret`.
 
 
 Additional algorithms can be added by implementing the `JWTAlgorithm` protocol.
+
+## Before pull request
+
+Please, read [Contribution notes](https://github.com/yourkarma/JWT/blob/master/.github/CONTRIBUTING.md) before make pull request.
