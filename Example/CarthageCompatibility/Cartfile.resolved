@@ -1,2 +1,3 @@
 github "soheilbm/Base64" "67083ec1e3e970ec920cbf126e6957c6e9e88ae4"
-git "/Users/mac/Documents/Projects/GitHub/LolgearForksGits/ObjectiveC/JWT" "066a743bddfd17a58067759d8e6a7ce86225ea00"
+github "CocoaLumberjack/CocoaLumberjack" "3.0.0"
+git "/Users/mac/Documents/Projects/GitHub/LolgearForksGits/ObjectiveC/JWT" "dc606683f194600e85b5376e54d1492851495f7b"
