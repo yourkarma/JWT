@@ -12,7 +12,7 @@
 		042DCB171DB67ADA002D7E55 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 042DCB151DB67ADA002D7E55 /* Main.storyboard */; };
 		042DCB191DB67ADA002D7E55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 042DCB181DB67ADA002D7E55 /* Assets.xcassets */; };
 		042DCB1C1DB67ADA002D7E55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 042DCB1A1DB67ADA002D7E55 /* LaunchScreen.storyboard */; };
-		042DCB251DB67BFA002D7E55 /* JWT_Module.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 042DCB241DB67BFA002D7E55 /* JWT_Module.framework */; };
+		04DEBCEE1DBCF24600C1DF52 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04DEBCED1DBCF24500C1DF52 /* JWT.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +23,7 @@
 		042DCB181DB67ADA002D7E55 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		042DCB1B1DB67ADA002D7E55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		042DCB1D1DB67ADA002D7E55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		042DCB241DB67BFA002D7E55 /* JWT_Module.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JWT_Module.framework; path = Carthage/Build/iOS/JWT_Module.framework; sourceTree = "<group>"; };
+		04DEBCED1DBCF24500C1DF52 /* JWT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JWT.framework; path = Carthage/Build/iOS/JWT.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,7 +31,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				042DCB251DB67BFA002D7E55 /* JWT_Module.framework in Frameworks */,
+				04DEBCEE1DBCF24600C1DF52 /* JWT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +43,7 @@
 			children = (
 				042DCB101DB67ADA002D7E55 /* CarthageCompatibility */,
 				042DCB231DB67BE6002D7E55 /* Frameworks */,
+				04DEBCED1DBCF24500C1DF52 /* JWT.framework */,
 				042DCB0F1DB67ADA002D7E55 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -71,7 +72,6 @@
 		042DCB231DB67BE6002D7E55 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				042DCB241DB67BFA002D7E55 /* JWT_Module.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

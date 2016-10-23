@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import JWT_Module
+import JWT
 
 class ViewController: UIViewController {
 
