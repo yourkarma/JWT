@@ -126,7 +126,7 @@
     return [[self.class alloc] initWithHolders:[self singleAlgorithm:algorithm withManySecretData:secretsData]];
 }
 
-- (instancetype)chainByPopulatingSecretData:(NSData *)secretData withManyAlgorithms:(id<JWTAlgorithm>)algorithms {
+- (instancetype)chainByPopulatingSecretData:(NSData *)secretData withManyAlgorithms:(NSArray *)algorithms {
     return [[self.class alloc] initWithHolders:[self singleSecretData:secretData withManyAlgorithms:algorithms]];
 }
 @end
