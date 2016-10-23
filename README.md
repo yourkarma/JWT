@@ -63,7 +63,7 @@ Install via Cartfile:
 
     github "yourkarma/JWT" "master"
 
-and `import JWT_Module`
+and `import JWT`
 
 # Documentation
 # Usage
