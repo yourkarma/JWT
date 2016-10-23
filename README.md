@@ -59,6 +59,12 @@ Add the following to your [CocoaPods][] Podfile:
 
 [CocoaPods]: http://cocoapods.org
 
+Install via Cartfile:
+
+    github "yourkarma/JWT" "master"
+
+and `import JWT`
+
 # Documentation
 # Usage
 

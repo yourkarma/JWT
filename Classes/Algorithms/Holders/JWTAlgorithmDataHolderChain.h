@@ -29,6 +29,6 @@
 - (NSArray *)singleSecretData:(NSData *)secretData withManyAlgorithms:(NSArray *)algorithms;
 
 - (instancetype)chainByPopulatingAlgorithm:(id<JWTAlgorithm>)algorithm withManySecretData:(NSArray *)secretsData;
-- (instancetype)chainByPopulatingSecretData:(NSData *)secretData withManyAlgorithms:(id<JWTAlgorithm>)algorithms;
+- (instancetype)chainByPopulatingSecretData:(NSData *)secretData withManyAlgorithms:(NSArray *)algorithms;
 
 @end

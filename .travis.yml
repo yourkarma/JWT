@@ -44,6 +44,11 @@ script:
     - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT_macOS_Swift' -configuration Release -sdk macosx | xcpretty -c
     - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT_iOS_Swift' -configuration Release -sdk iphonesimulator | xcpretty -c
 
+    # Carthage.
+    - echo "Build dynamic universal for each platform (osx, ios)"
+    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT' -configuration Release -sdk macosx | xcpretty -c
+    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT' -configuration Release -sdk iphonesimulator | xcpretty -c
+
     # Tests.
     - echo Run tests
     - pod install --project-directory=Tests
