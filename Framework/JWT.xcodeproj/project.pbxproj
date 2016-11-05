@@ -933,7 +933,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = Supplement/JWT.modulemap;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yourkarma.JWT-iOS-Framework";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_iOS_Framework;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -973,7 +973,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = Supplement/JWT.modulemap;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yourkarma.JWT-iOS-Framework";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_iOS_Framework;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1010,7 +1010,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yourkarma.JWT-iOS-Swift";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_iOS_Swift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1050,7 +1050,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yourkarma.JWT-iOS-Swift";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_iOS_Swift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1090,7 +1090,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = Supplement/JWT.modulemap;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yourkarma.JWT-macOS-Framework";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_macOS_Framework;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -1132,7 +1132,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = Supplement/JWT.modulemap;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yourkarma.JWT-macOS-Framework";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_macOS_Framework;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -1172,7 +1172,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yourkarma.JWT-macOS-Swift";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_macOS_Swift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -1215,7 +1215,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yourkarma.JWT-macOS-Swift";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_macOS_Swift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -1429,6 +1429,7 @@
 				04DEBCA91DBCDB8700C1DF52 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A1951DB11758990700AF73D9 /* Build configuration list for PBXProject "JWT" */ = {
 			isa = XCConfigurationList;
