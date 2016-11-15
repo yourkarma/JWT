@@ -127,3 +127,50 @@
 }
 
 @end
+
+/*
+@interface JWTSuccessType : NSObject
+@property (nonatomic, readwrite) NSString *encoded;
+@property (nonatomic, readwrite) NSDictionary *headers;
+@property (nonatomic, readwrite) NSDictionary *payload;
+@end
+@interface JWTDecodedType : JWTSuccessType
+- (instancetype)initWithHeaders:(NSDictionary *)headers withPayload:(NSDictionary *)payload;
+@end
+@interface JWTEncodedType : JWTSuccessType
+- (instancetype)initWithEncoded:(NSString *)encoded;
+@end
+@interface JWTErrorType : NSObject
+- (instancetype)initWithError:(NSError *)error;
+@property (nonatomic, readwrite) NSError *error;
+@end
+@interface JWTResultType : NSObject
+- (instancetype)initWithSuccess:(JWTSuccessType *)success withError:(NSError *)error;
+@property (nonatomic, readwrite) JWTSuccessType *success;
+@property (nonatomic, readwrite) JWTErrorType *error;
+@end
+
+@implementation JWTResultType
+- (instancetype)initWithSuccess:(JWTSuccessType *)success withError:(NSError *)error {
+    if (self = [super init]) {
+        self.success = success;
+        self.error = [[JWTErrorType alloc] initWithError:error];
+    }
+    return self;
+}
+- (void)example {
+    JWTResultType *result = nil;
+    if (result.error.error) {
+        
+    }
+    else {
+        if (result.success.encoded) {
+            
+        }
+        else if (result.success.headers) {
+            
+        }
+    }
+}
+@end
+*/
