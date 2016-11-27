@@ -18,6 +18,8 @@ FOUNDATION_EXPORT const unsigned char JWTVersionString[];
 
 // Coding
 #import <JWT/JWTCoding.h>
+#import <JWT/JWTCoding+VersionOne.h>
+#import <JWT/JWTCoding+VersionTwo.h>
 
 // Algorithms
 #import <JWT/JWTAlgorithm.h>
@@ -39,3 +41,4 @@ FOUNDATION_EXPORT const unsigned char JWTVersionString[];
 // Supplement
 #import <JWT/JWTDeprecations.h>
 #import <JWT/JWTBase64Coder.h>
+#import <JWT/JWTErrorDescription.h>
