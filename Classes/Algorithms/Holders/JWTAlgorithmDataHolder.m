@@ -39,11 +39,11 @@
 @implementation JWTAlgorithmBaseDataHolder
 #pragma mark - Convertions
 - (NSData *)dataFromString:(NSString *)string {
-    return [string dataUsingEncoding:NSUTF8StringEncoding];
+    return [[NSData alloc] initWithBase64EncodedString:string options:0] ?: [string dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)stringFromData:(NSData *)data {
-    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    return [data base64EncodedStringWithOptions:0] ?: [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 #pragma mark - Fluent
@@ -128,27 +128,113 @@
 
 @end
 
-/*
-@interface JWTSuccessType : NSObject
-@property (nonatomic, readwrite) NSString *encoded;
-@property (nonatomic, readwrite) NSDictionary *headers;
-@property (nonatomic, readwrite) NSDictionary *payload;
-@end
-@interface JWTDecodedType : JWTSuccessType
-- (instancetype)initWithHeaders:(NSDictionary *)headers withPayload:(NSDictionary *)payload;
-@end
-@interface JWTEncodedType : JWTSuccessType
+// Public
+@protocol JWTResultTypeSuccessEncodedProtocol <NSObject>
+@property (copy, nonatomic, readonly) NSString *encoded;
 - (instancetype)initWithEncoded:(NSString *)encoded;
 @end
-@interface JWTErrorType : NSObject
+
+// Protected?
+@protocol JWTMutableResultTypeSuccessEncodedProtocol <JWTResultTypeSuccessEncodedProtocol>
+@property (copy, nonatomic, readwrite) NSString *encoded;
+@end
+
+// Public
+@protocol JWTResultTypeSuccessDecodedProtocol <NSObject>
+@property (copy, nonatomic, readonly) NSDictionary *headers;
+@property (copy, nonatomic, readonly) NSDictionary *payload;
+- (instancetype)initWithHeaders:(NSDictionary *)headers withPayload:(NSDictionary *)payload;
+@end
+
+// Protected?
+@protocol JWTMutableResultTypeSuccessDecodedProtocol <JWTResultTypeSuccessDecodedProtocol>
+@property (copy, nonatomic, readwrite) NSDictionary *headers;
+@property (copy, nonatomic, readwrite) NSDictionary *payload;
+@end
+
+// Public
+@interface JWTResultTypeSuccess : NSObject @end
+@interface JWTResultTypeSuccess(JWTResultTypeSuccessEncodedProtocol)<JWTResultTypeSuccessEncodedProtocol>
+@end
+@interface JWTResultTypeSuccess(JWTResultTypeSuccessDecodedProtocol)<JWTResultTypeSuccessDecodedProtocol>
+@end
+
+// Public
+@protocol JWTResultTypeErrorProtocol <NSObject>
+@property (copy, nonatomic, readonly) NSError *error;
 - (instancetype)initWithError:(NSError *)error;
-@property (nonatomic, readwrite) NSError *error;
 @end
+
+// Protected?
+@protocol JWTMutableResultTypeErrorProtocol <JWTResultTypeErrorProtocol>
+@property (copy, nonatomic, readwrite) NSError *error;
+@end
+
+@interface JWTResultTypeError : NSObject @end
+@interface JWTResultTypeError (JWTResultTypeErrorProtocol) <JWTResultTypeErrorProtocol> @end
+
 @interface JWTResultType : NSObject
-- (instancetype)initWithSuccess:(JWTSuccessType *)success withError:(NSError *)error;
-@property (nonatomic, readwrite) JWTSuccessType *success;
-@property (nonatomic, readwrite) JWTErrorType *error;
+- (instancetype)initWithSuccess:(JWTResultTypeSuccess *)success withError:(NSError *)error;
+@property (strong, nonatomic, readonly) JWTResultTypeSuccess *successType;
+@property (strong, nonatomic, readonly) JWTResultTypeError *errorType;
 @end
+
+@implementation JWTResultTypeSuccess @end
+@implementation JWTResultTypeSuccess(JWTResultTypeSuccessEncodedProtocol) @end
+@implementation JWTResultTypeSuccess(JWTResultTypeSuccessDecodedProtocol) @end
+@implementation JWTResultTypeError @end
+@implementation JWTResultTypeError (JWTResultTypeErrorProtocol) @end
+@implementation JWTResultType @end
+/*
+                ResultType
+                   /\
+                  /  \
+                 /    \
+             Success  Error
+ 
+            Protocols: Mutable and Immutable
+ 
+
+ @protocol JWTResultTypeSuccessEncodedProtocol <NSObject>
+ @property (copy, nonatomic, readonly) NSString *encoded;
+ - (instancetype)initWithEncoded:(NSString *)encoded;
+ @end
+ 
+ @protocol JWTResultTypeSuccessDecodedProtocol <NSObject>
+ @property (copy, nonatomic, readonly) NSDictionary *headers;
+ @property (copy, nonatomic, readonly) NSDictionary *payload;
+ - (instancetype)initWithHeaders:(NSDictionary *)headers withPayload:(NSDictionary *)payload;
+ @end
+ 
+ @protocol JWTMutableResultTypeSuccessEncodedProtocol <JWTResultTypeSuccessEncodedProtocol>
+ @property (copy, nonatomic, readwrite) NSString *encoded;
+ @end
+ 
+ @protocol JWTResultTypeSuccessDecodedProtocol <JWTResultTypeSuccessDecodedProtocol>
+ @property (copy, nonatomic, readwrite) NSDictionary *headers;
+ @property (copy, nonatomic, readwrite) NSDictionary *payload;
+ @end
+
+ 
+ 
+ @interface JWTResultTypeSuccess : <JWTMutableResultTypeSuccessEncodedProtocol, JWTMutableResultTypeSuccessDecodedProtocol> @end
+ 
+ @protocol JWTResultTypeErrorProtocol <NSObject>
+ @property (copy, nonatomic, readonly) NSError *error;
+ - (instancetype)initWithError:(NSError *)error;
+ @end
+ 
+ @protocol JWTMutableResultTypeErrorProtocol <JWTResultTypeErrorProtocol>
+ @property (copy, nonatomic, readwrite) NSError *error;
+ @end
+ 
+ @interface JWTResultTypeError <JWTMutableResultTypeError> @end
+
+ @interface JWTResultType : NSObject
+ - (instancetype)initWithSuccess:(JWTResultTypeSuccess *)success withError:(NSError *)error;
+ @property (strong, nonatomic, readonly) id<JWTSuccessType> success;
+ @property (strong, nonatomic, readonly) id<JWTErrorType> error;
+ @end
 
 @implementation JWTResultType
 - (instancetype)initWithSuccess:(JWTSuccessType *)success withError:(NSError *)error {
