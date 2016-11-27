@@ -39,11 +39,23 @@
 @implementation JWTAlgorithmBaseDataHolder
 #pragma mark - Convertions
 - (NSData *)dataFromString:(NSString *)string {
-    return [[NSData alloc] initWithBase64EncodedString:string options:0] ?: [string dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *result = [[NSData alloc] initWithBase64EncodedString:string options:0];
+    
+    if (result == nil) {
+       // tell about it?!
+        NSLog(@"%@ %@ something went wrong. Data is not base64encoded", self.debugDescription, NSStringFromSelector(_cmd));
+    }
+    
+    return result ?: [string dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)stringFromData:(NSData *)data {
-    return [data base64EncodedStringWithOptions:0] ?: [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSString *result = [data base64EncodedStringWithOptions:0];
+    
+    if (result == nil) {
+        NSLog(@"%@ %@ something went wrong. String is not base64encoded", self.debugDescription, NSStringFromSelector(_cmd));
+    }
+    return result ?: [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 #pragma mark - Fluent

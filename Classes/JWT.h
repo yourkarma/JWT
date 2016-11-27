@@ -12,6 +12,7 @@
 #import "JWTCoding.h"
 #import "JWTCoding+VersionOne.h"
 #import "JWTCoding+VersionTwo.h"
+#import "JWTCoding+VersionThree.h"
 
 // Algorithms
 #import "JWTAlgorithm.h"
