@@ -7,10 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-
-#import <JWT/JWTAlgorithm.h>
-#import <JWT/JWTClaimsSet.h>
-
 /**
  @discussion JWT is a general interface for decoding and encoding.
  Now it is to complex and fat to support.

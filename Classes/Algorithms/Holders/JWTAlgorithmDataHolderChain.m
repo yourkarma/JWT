@@ -65,6 +65,15 @@
     return [self chainByAppendingHolders:holder ? @[holder] : nil];
 }
 
+#pragma mark - Create
++ (instancetype)chainWithHolders:(NSArray *)holders {
+    return [[self new] chainByAppendingHolders:holders];
+}
+
++ (instancetype)chainWithHolder:(id<JWTAlgorithmDataHolderProtocol>)holder {
+    return [[self new] chainByAppendingHolder:holder];
+}
+
 @end
 
 @implementation JWTAlgorithmDataHolderChain (Convenient)

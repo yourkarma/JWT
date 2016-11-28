@@ -140,63 +140,12 @@
 
 @end
 
-// Public
-@protocol JWTResultTypeSuccessEncodedProtocol <NSObject>
-@property (copy, nonatomic, readonly) NSString *encoded;
-- (instancetype)initWithEncoded:(NSString *)encoded;
-@end
-
-// Protected?
-@protocol JWTMutableResultTypeSuccessEncodedProtocol <JWTResultTypeSuccessEncodedProtocol>
-@property (copy, nonatomic, readwrite) NSString *encoded;
-@end
-
-// Public
-@protocol JWTResultTypeSuccessDecodedProtocol <NSObject>
-@property (copy, nonatomic, readonly) NSDictionary *headers;
-@property (copy, nonatomic, readonly) NSDictionary *payload;
-- (instancetype)initWithHeaders:(NSDictionary *)headers withPayload:(NSDictionary *)payload;
-@end
-
-// Protected?
-@protocol JWTMutableResultTypeSuccessDecodedProtocol <JWTResultTypeSuccessDecodedProtocol>
-@property (copy, nonatomic, readwrite) NSDictionary *headers;
-@property (copy, nonatomic, readwrite) NSDictionary *payload;
-@end
-
-// Public
-@interface JWTResultTypeSuccess : NSObject @end
-@interface JWTResultTypeSuccess(JWTResultTypeSuccessEncodedProtocol)<JWTResultTypeSuccessEncodedProtocol>
-@end
-@interface JWTResultTypeSuccess(JWTResultTypeSuccessDecodedProtocol)<JWTResultTypeSuccessDecodedProtocol>
-@end
-
-// Public
-@protocol JWTResultTypeErrorProtocol <NSObject>
-@property (copy, nonatomic, readonly) NSError *error;
-- (instancetype)initWithError:(NSError *)error;
-@end
-
-// Protected?
-@protocol JWTMutableResultTypeErrorProtocol <JWTResultTypeErrorProtocol>
-@property (copy, nonatomic, readwrite) NSError *error;
-@end
-
-@interface JWTResultTypeError : NSObject @end
-@interface JWTResultTypeError (JWTResultTypeErrorProtocol) <JWTResultTypeErrorProtocol> @end
-
-@interface JWTResultType : NSObject
-- (instancetype)initWithSuccess:(JWTResultTypeSuccess *)success withError:(NSError *)error;
-@property (strong, nonatomic, readonly) JWTResultTypeSuccess *successType;
-@property (strong, nonatomic, readonly) JWTResultTypeError *errorType;
-@end
-
 @implementation JWTResultTypeSuccess @end
 @implementation JWTResultTypeSuccess(JWTResultTypeSuccessEncodedProtocol) @end
 @implementation JWTResultTypeSuccess(JWTResultTypeSuccessDecodedProtocol) @end
 @implementation JWTResultTypeError @end
 @implementation JWTResultTypeError (JWTResultTypeErrorProtocol) @end
-@implementation JWTResultType @end
+@implementation JWTCodingResultType @end
 /*
                 ResultType
                    /\

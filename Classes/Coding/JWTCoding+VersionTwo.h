@@ -8,7 +8,10 @@
 
 #import <JWT/JWTCoding.h>
 
+@protocol JWTAlgorithm;
+@class JWTClaimsSet;
 @class JWTBuilder;
+
 @interface JWT (VersionTwo)
 #pragma mark - Builder
 + (JWTBuilder *)encodePayload:(NSDictionary *)payload;

@@ -8,6 +8,9 @@
 
 #import <JWT/JWTCoding.h>
 
+@protocol JWTAlgorithm;
+@class JWTClaimsSet;
+
 @interface JWT (VersionOne)
 #pragma mark - Encode
 + (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret;

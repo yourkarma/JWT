@@ -22,6 +22,9 @@
 - (instancetype)chainByAppendingHolders:(NSArray *)holders;
 - (instancetype)chainByAppendingHolder:(id<JWTAlgorithmDataHolderProtocol>)holder;
 
+#pragma mark - Create
++ (instancetype)chainWithHolders:(NSArray *)holders;
++ (instancetype)chainWithHolder:(id<JWTAlgorithmDataHolderProtocol>)holder;
 @end
 
 @interface JWTAlgorithmDataHolderChain (HoldersPopulation)
