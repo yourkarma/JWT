@@ -8,6 +8,9 @@
 
 #import "JWTAlgorithmDataHolder.h"
 #import "JWTAlgorithmFactory.h"
+#import "JWTAlgorithmNone.h"
+#import "JWTRSAlgorithm.h"
+
 @interface JWTAlgorithmBaseDataHolder()
 // not needed by algorithm adoption.
 // @property (copy, nonatomic, readwrite) NSData *currentSecretData;
@@ -37,6 +40,8 @@
 @end
 
 @implementation JWTAlgorithmBaseDataHolder
+@synthesize currentAlgorithm;
+@synthesize currentSecretData;
 #pragma mark - Convertions
 - (NSData *)dataFromString:(NSString *)string {
     NSData *result = [[NSData alloc] initWithBase64EncodedString:string options:0];
@@ -113,6 +118,16 @@
 
 @end
 
+@implementation JWTAlgorithmNoneDataHolder
+- (instancetype)init {
+    if (self = [super init]) {
+        self.currentAlgorithm = [JWTAlgorithmFactory algorithmByName:JWTAlgorithmNameNone];
+        self.currentSecretData = nil;
+    }
+    return self;
+}
+@end
+
 @interface JWTAlgorithmRSFamilyDataHolder()
 #pragma mark - Getters
 @property (copy, nonatomic, readwrite) NSString *currentPrivateKeyCertificatePassphrase;
@@ -122,6 +137,13 @@
 @end
 
 @implementation JWTAlgorithmRSFamilyDataHolder
+- (id<JWTAlgorithm>)currentAlgorithm {
+    id <JWTAlgorithm> algorithm = [super currentAlgorithm];
+    if ([algorithm conformsToProtocol:@protocol(JWTRSAlgorithm)]) {
+        ((id <JWTRSAlgorithm>)algorithm).privateKeyCertificatePassphrase = self.currentPrivateKeyCertificatePassphrase;
+    }
+    return algorithm;
+}
 - (instancetype)privateKeyCertificatePassphrase:(NSString *)passphrase {
     self.currentPrivateKeyCertificatePassphrase = passphrase;
     return self;
@@ -139,85 +161,3 @@
 }
 
 @end
-
-@implementation JWTResultTypeSuccess @end
-@implementation JWTResultTypeSuccess(JWTResultTypeSuccessEncodedProtocol) @end
-@implementation JWTResultTypeSuccess(JWTResultTypeSuccessDecodedProtocol) @end
-@implementation JWTResultTypeError @end
-@implementation JWTResultTypeError (JWTResultTypeErrorProtocol) @end
-@implementation JWTCodingResultType @end
-/*
-                ResultType
-                   /\
-                  /  \
-                 /    \
-             Success  Error
- 
-            Protocols: Mutable and Immutable
- 
-
- @protocol JWTResultTypeSuccessEncodedProtocol <NSObject>
- @property (copy, nonatomic, readonly) NSString *encoded;
- - (instancetype)initWithEncoded:(NSString *)encoded;
- @end
- 
- @protocol JWTResultTypeSuccessDecodedProtocol <NSObject>
- @property (copy, nonatomic, readonly) NSDictionary *headers;
- @property (copy, nonatomic, readonly) NSDictionary *payload;
- - (instancetype)initWithHeaders:(NSDictionary *)headers withPayload:(NSDictionary *)payload;
- @end
- 
- @protocol JWTMutableResultTypeSuccessEncodedProtocol <JWTResultTypeSuccessEncodedProtocol>
- @property (copy, nonatomic, readwrite) NSString *encoded;
- @end
- 
- @protocol JWTResultTypeSuccessDecodedProtocol <JWTResultTypeSuccessDecodedProtocol>
- @property (copy, nonatomic, readwrite) NSDictionary *headers;
- @property (copy, nonatomic, readwrite) NSDictionary *payload;
- @end
-
- 
- 
- @interface JWTResultTypeSuccess : <JWTMutableResultTypeSuccessEncodedProtocol, JWTMutableResultTypeSuccessDecodedProtocol> @end
- 
- @protocol JWTResultTypeErrorProtocol <NSObject>
- @property (copy, nonatomic, readonly) NSError *error;
- - (instancetype)initWithError:(NSError *)error;
- @end
- 
- @protocol JWTMutableResultTypeErrorProtocol <JWTResultTypeErrorProtocol>
- @property (copy, nonatomic, readwrite) NSError *error;
- @end
- 
- @interface JWTResultTypeError <JWTMutableResultTypeError> @end
-
- @interface JWTResultType : NSObject
- - (instancetype)initWithSuccess:(JWTResultTypeSuccess *)success withError:(NSError *)error;
- @property (strong, nonatomic, readonly) id<JWTSuccessType> success;
- @property (strong, nonatomic, readonly) id<JWTErrorType> error;
- @end
-
-@implementation JWTResultType
-- (instancetype)initWithSuccess:(JWTSuccessType *)success withError:(NSError *)error {
-    if (self = [super init]) {
-        self.success = success;
-        self.error = [[JWTErrorType alloc] initWithError:error];
-    }
-    return self;
-}
-- (void)example {
-    JWTResultType *result = nil;
-    if (result.error.error) {
-        
-    }
-    else {
-        if (result.success.encoded) {
-            
-        }
-        else if (result.success.headers) {
-            
-        }
-    }
-}
-@end
-*/
