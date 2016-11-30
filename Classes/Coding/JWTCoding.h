@@ -17,3 +17,7 @@
  JWT_3_0 -> JWT with splitted apart algorithm data and payload data.
  */
 @interface JWT : NSObject @end
+
+typedef NS_OPTIONS(NSInteger, JWTCodingDecodingOptions) {
+    JWTCodingDecodingOptionsSkipVerification = 1
+};
