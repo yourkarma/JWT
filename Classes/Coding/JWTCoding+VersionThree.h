@@ -16,35 +16,32 @@
 @class JWTDecodingBuilder;
 @class JWTAlgorithmDataHolderChain;
 @protocol JWTAlgorithmDataHolderProtocol;
-
-//TODO:
-//Add strings for @"payload" @"header"
-//Add NS_Options for algorithm options
-//Place JWTCodingResultType in separate header.
-//Refactor JWTCodingResultType (could be simpler than now)
 @class JWTCodingResultType;
 
 @interface JWT (VersionThree)
-+ (JWTEncodingBuilder *)encodeWithAlgorithmsAndData:(NSArray *)items;
-+ (JWTEncodingBuilder *)encodeWithAlgorithmsAndDataChain:(JWTAlgorithmDataHolderChain *)chain;
-+ (JWTDecodingBuilder *)decodeWithAlgorithmsAndData:(NSArray *)items;
-+ (JWTDecodingBuilder *)decodeWithAlgorithmsAndDataChain:(JWTAlgorithmDataHolderChain *)chain;
++ (JWTEncodingBuilder *)encodeWithHolders:(NSArray *)holders;
++ (JWTEncodingBuilder *)encodeWithChain:(JWTAlgorithmDataHolderChain *)chain;
++ (JWTDecodingBuilder *)decodeWithHolders:(NSArray *)holders;
++ (JWTDecodingBuilder *)decodeWithChain:(JWTAlgorithmDataHolderChain *)chain;
 @end
 
 @interface JWTCodingBuilder : NSObject
 #pragma mark - Create
-// each element should apply to JWTAlgorithmDataHolderProtocol
-+ (instancetype)createWithAlgorithmsAndData:(NSArray *)items;
-+ (instancetype)createWithAlgorithmsAndDataChain:(JWTAlgorithmDataHolderChain *)chain;
+// each element should conform to JWTAlgorithmDataHolderProtocol
++ (instancetype)createWithHolders:(NSArray *)holders;
++ (instancetype)createWithChain:(JWTAlgorithmDataHolderChain *)chain;
++ (instancetype)createWithEmptyChain;
 
 #pragma mark - Internal
-@property (nonatomic, readonly) JWTAlgorithmDataHolderChain *internalAlgorithmsAndDataChain;
-@property (nonatomic, readonly) NSNumber *internalOptions;
+@property (nonatomic, readonly) JWTAlgorithmDataHolderChain *internalChain;
+@property (copy, nonatomic, readonly) NSNumber *internalOptions;
 
 #pragma mark - Fluent
-@property (nonatomic, readonly) JWTCodingBuilder *(^constructChain)(JWTAlgorithmDataHolderChain *(^block)());
-@property (nonatomic, readonly) JWTCodingBuilder *(^chain)(JWTAlgorithmDataHolderChain *chain);
-@property (nonatomic, readonly) JWTCodingBuilder *(^options)(NSNumber *options);
+@property (copy, nonatomic, readonly) JWTCodingBuilder *(^constructChain)(JWTAlgorithmDataHolderChain *(^block)());
+@property (copy, nonatomic, readonly) JWTCodingBuilder *(^chain)(JWTAlgorithmDataHolderChain *chain);
+@property (copy, nonatomic, readonly) JWTCodingBuilder *(^options)(NSNumber *options);
+@property (copy, nonatomic, readonly) JWTCodingBuilder *(^addHolder)(id<JWTAlgorithmDataHolderProtocol> holder);
+//@property (copy, nonatomic, readonly) JWTCodingBuilder *(^constructHolder)(id<JWTAlgorithmDataHolderProtocol>(^block)(id<JWTAlgorithmDataHolderProtocol> holder));
 @end
 
 @interface JWTCodingBuilder (Sugar)
@@ -62,14 +59,14 @@
 + (instancetype)encodeClaimsSet:(JWTClaimsSet *)claimsSet;
 
 #pragma mark - Internal
-@property (nonatomic, readonly) NSDictionary *internalPayload;
-@property (nonatomic, readonly) NSDictionary *internalHeaders;
+@property (copy, nonatomic, readonly) NSDictionary *internalPayload;
+@property (copy, nonatomic, readonly) NSDictionary *internalHeaders;
 @property (nonatomic, readonly) JWTClaimsSet *internalClaimsSet;
 
 #pragma mark - Fluent
-@property (nonatomic, readonly) JWTEncodingBuilder *(^payload)(NSDictionary *payload);
-@property (nonatomic, readonly) JWTEncodingBuilder *(^headers)(NSDictionary *headers);
-@property (nonatomic, readonly) JWTEncodingBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
+@property (copy, nonatomic, readonly) JWTEncodingBuilder *(^payload)(NSDictionary *payload);
+@property (copy, nonatomic, readonly) JWTEncodingBuilder *(^headers)(NSDictionary *headers);
+@property (copy, nonatomic, readonly) JWTEncodingBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
 
 @end
 
@@ -82,16 +79,15 @@
 + (instancetype)decodeMessage:(NSString *)message;
 
 #pragma mark - Internal
-@property (nonatomic, readonly) NSString *internalMessage;
+@property (copy, nonatomic, readonly) NSString *internalMessage;
+@property (nonatomic, readonly) JWTClaimsSet *internalClaimsSet;
 
 #pragma mark - Fluent
-@property (nonatomic, readonly) JWTDecodingBuilder *(^message)(NSString *message);
+@property (copy, nonatomic, readonly) JWTDecodingBuilder *(^message)(NSString *message);
+@property (copy, nonatomic, readonly) JWTDecodingBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
 
 @end
 
 @interface JWTDecodingBuilder (Coding)
 @property (nonatomic, readonly) JWTCodingResultType *decode;
-@end
-
-@interface JWT (VersionThreeExamples)
 @end
