@@ -26,7 +26,8 @@ NSString *JWTErrorDomain = @"com.karma.jwt";
                                          @(JWTUnspecifiedAlgorithmError): @"Unspecified algorithm! You must explicitly choose an algorithm to decode with.",
                                          @(JWTBlacklistedAlgorithmError): @"Algorithm in blacklist? Try to check whitelist parameter",
                                          @(JWTDecodingHeaderError): @"Error decoding the JWT Header segment.",
-                                         @(JWTDecodingPayloadError): @"Error decoding the JWT Payload segment."
+                                         @(JWTDecodingPayloadError): @"Error decoding the JWT Payload segment.",
+                                         @(JWTDecodingHoldersChainEmptyError) : @"Error decoding the JWT algorithm and data holders chain is empty!"
                                          }, dictionary);
 }
 
