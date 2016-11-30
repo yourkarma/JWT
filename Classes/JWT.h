@@ -10,6 +10,7 @@
 
 // Coding
 #import "JWTCoding.h"
+#import "JWTCoding+ResultTypes.h"
 #import "JWTCoding+VersionOne.h"
 #import "JWTCoding+VersionTwo.h"
 #import "JWTCoding+VersionThree.h"
