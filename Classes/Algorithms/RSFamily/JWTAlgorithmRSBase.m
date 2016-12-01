@@ -68,28 +68,28 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
     SecIdentityRef identity = nil;
     SecTrustRef trust = nil;
     __extractIdentityAndTrust((__bridge CFDataRef)theSecretData, &identity, &trust, (__bridge CFStringRef) self.privateKeyCertificatePassphrase);
+    
+    NSData *result = nil;
+    
     if (identity && trust) {
         SecKeyRef privateKey;
         SecIdentityCopyPrivateKey(identity, &privateKey);
-        NSData *result = [self PKCSSignBytesSHANumberwithRSA:theStringData withPrivateKey:privateKey];
-
-        if (identity) {
-            CFRelease(identity);
-        }
-
-        if (trust) {
-            CFRelease(trust);
-        }
+        result = [self PKCSSignBytesSHANumberwithRSA:theStringData withPrivateKey:privateKey];
 
         if (privateKey) {
             CFRelease(privateKey);
         }
-
-        return result;
-
-    } else {
-        return nil;
     }
+    
+    if (identity) {
+        CFRelease(identity);
+    }
+    
+    if (trust) {
+        CFRelease(trust);
+    }
+
+    return result;
 }
 
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey {
@@ -238,10 +238,13 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
     NSData* signedHash = [NSData dataWithBytes:signedHashBytes
                                         length:(NSUInteger)signedHashBytesSize];
 
-    if (hashBytes)
+    if (hashBytes) {
         free(hashBytes);
-    if (signedHashBytes)
+    }
+    
+    if (signedHashBytes) {
         free(signedHashBytes);
+    }
 
     return signedHash;
 }
