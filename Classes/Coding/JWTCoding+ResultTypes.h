@@ -34,6 +34,13 @@ extern NSString *JWTCodingResultPayload;
 @protocol JWTCodingResultTypeSuccessDecodedProtocol <NSObject>
 @property (copy, nonatomic, readonly) NSDictionary *headers;
 @property (copy, nonatomic, readonly) NSDictionary *payload;
+
+// dictionary @{
+//  JWTCodingResultHeaders : self.headers,
+//  JWTCodingResultPayload : self.payload
+//}
+@property (copy, nonatomic, readonly) NSDictionary *headerAndPayloadDictionary;
+
 @property (nonatomic, readonly) JWTClaimsSet *claimsSet;
 - (instancetype)initWithHeaders:(NSDictionary *)headers withPayload:(NSDictionary *)payload;
 - (instancetype)initWithClaimsSet:(JWTClaimsSet *)claimsSet;

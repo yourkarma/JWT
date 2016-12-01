@@ -37,6 +37,15 @@ NSString *JWTCodingResultPayload = @"payload";
 @synthesize headers = _headers;
 @synthesize payload = _payload;
 @synthesize claimsSet = _claimsSet;
+- (NSDictionary *)headerAndPayloadDictionary {
+    if (self.headers && self.payload) {
+        return @{
+                 JWTCodingResultHeaders: self.headers,
+                 JWTCodingResultPayload: self.payload
+        };
+    }
+    return nil;
+}
 - (instancetype)initWithEncoded:(NSString *)encoded {
     if (self = [super init]) {
         self.encoded = encoded;
