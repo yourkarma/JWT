@@ -14,7 +14,125 @@ A [JSON Web Token][] implementation in Objective-C.
 [JSON Web Token]: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html
 
 # What's new in master and bleeding edge.
-These features are experiments! No warranties!
+Nothing here.
+
+# What's new in Version 3.0
+
+* Fluent style expanded.
+* Coding result types added.
+* Algorithms and data holders.
+* Algorithms and data holders chain.
+
+## Introduction to Algorithms data holders and chain.
+You have algorithm, secret data and unknown jwt token.
+Let's try to decode it.
+
+```
+// create token
+NSString *token = @"...";
+
+// possible that algorithm could return error.
+// you could try use algorithm and data chain.
+
+NSString *firstSecret = @"first";
+NSString *firstAlgorithmName = JWTAlgorithmNameHS384;
+
+id <JWTAlgorithmDataHolderProtocol> firstHolder = [JWTAlgorithmHSFamilyDataHolder new].algorithmName(firstAlgorithmName).secret(firstSecret);
+
+id <JWTAlgorithmDataHolderProtocol> errorHolder = [JWTAlgorithmNoneDataHolder new];
+
+// chain together.
+JWTAlgorithmDataHolderChain *chain = [[JWTAlgorithmDataHolderChain alloc] initWithHolders:@[firstHolder, errorHolder]];
+
+// or add them in builder
+[JWTDecodingBuilder decodeMessage:token].addHolder(firstHolder).addHolder(errorHolder);
+
+// or add them as chain
+[JWTDecodingBuilder decodeMessage:token].chain(chain);
+```
+
+Maybe you would like to try different secrets.
+
+```
+// possible that your algorithm has several secrets.
+// you don't know which secret to use.
+// but you want to decode it.
+NSString *firstSecret = @"first";
+NSArray *manySecrets = @[@"second", @"third", @"forty two"];
+// translate to data
+NSArray *manySecretsData = @[];
+for (NSString *secret in manySecrets) {
+    NSData *secretData = [JWTBase64Coder dataWithBase64UrlEncodedString:secret];
+    if (secret) {
+        manySecretsData = [manySecretsData arrayByAddingObject:secretData];
+    }
+}
+
+NSString *algorithmName = JWTAlgorithmNameHS384;
+
+id <JWTAlgorithmDataHolderProtocol> firstHolder = [JWTAlgorithmHSFamilyDataHolder new].algorithmName(algorithmName).secret(firstSecret);
+
+// lets create chain
+JWTAlgorithmDataHolderChain *chain = [JWTAlgorithmDataHolderChain chainWithHolder:firstHolder];
+
+// and lets populate chain with secrets.
+NSLog(@"chain has: %@", chain.debugDescription);
+
+JWTAlgorithmDataHolderChain *expandedChain = [chain chainByPopulatingAlgorithm:firstHolder.currentAlgorithm withManySecretData:manySecretsData];
+
+// now we have expanded chain with many secrets and one algorithm.
+NSLog(@"expanded chain has: %@", expandedChain.debugDescription);
+```
+
+## Decode and encode with chain.
+
+```
+JWTClaimsSet *claimsSet = [[JWTClaimsSet alloc] init];
+// fill it
+claimsSet.issuer = @"Facebook";
+claimsSet.subject = @"Token";
+claimsSet.audience = @"https://jwt.io";
+
+// encode it
+NSString *secret = @"secret";
+NSString *algorithmName = @"HS384";
+NSDictionary *headers = @{@"custom":@"value"};
+
+id<JWTAlgorithmDataHolderProtocol>holder = [JWTAlgorithmHSFamilyDataHolder new].algorithmName(algorithmName).secret(secret);
+
+JWTCodingResultType *result = [JWTEncodingBuilder encodeClaimsSet:claimsSet].headers(headers).addHolder(holder).result;
+
+NSString *encodedToken = result.successResult.encoded;
+if (result.successResult) {
+    // handle encoded result
+    NSLog(@"encoded result: %@", result.successResult.encoded);
+}
+else {
+    // handle error
+    NSLog(@"encode failed, error: %@", result.errorResult.error);
+}
+
+// decode it
+// you can set any property that you want, all properties are optional
+JWTClaimsSet *trustedClaimsSet = [claimsSet copy];
+
+NSNumber *options = @(JWTCodingDecodingOptionsNone);
+NSString *yourJwt = encodedToken; // from previous example
+JWTCodingResultType *decodedResult = [JWTDecodingBuilder decodeMessage:yourJwt].claimsSet(claimsSet).addHolder(holder).options(options).and.result;
+
+if (decodedResult.successResult) {
+    // handle decoded result
+    NSLog(@"decoded result: %@", decodedResult.successResult.headerAndPayloadDictionary);
+    NSLog(@"headers: %@", decodedResult.successResult.headers);
+    NSLog(@"payload: %@", decodedResult.successResult.payload);
+}
+else {
+    // handle error
+    NSLog(@"decode failed, error: %@", decodedResult.errorResult.error);
+}
+```
+
+# Experiments in Version 2.0
 ## Whitelists possible algorithms.
 When you need to decode jwt by several algorithms you could specify their names in whitelist.
 Later this feature possible will migrate to options.
@@ -37,8 +155,9 @@ Restricted to pair (algorithm or none) due to limitations of unique `secret`.
 ```
 
 # What's new in Version 2.0
-Old plain style deprecated.
-Use modern fluent style instead.
+
+* Old plain style deprecated.
+* Use modern fluent style instead.
 
 ```
     NSDictionary *payload = @{@"foo" : @"bar"};
