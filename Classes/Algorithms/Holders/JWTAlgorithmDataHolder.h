@@ -61,10 +61,19 @@
 
 @end
 
-@interface JWTAlgorithmHSFamilyDataHolder : JWTAlgorithmBaseDataHolder @end
-@interface JWTAlgorithmNoneDataHolder : JWTAlgorithmBaseDataHolder @end
+@protocol JWTAlgorithmDataHolderCreateProtocol <NSObject>
 
-@interface JWTAlgorithmRSFamilyDataHolder : JWTAlgorithmBaseDataHolder
++ (instancetype)createWithAlgorithm256;
++ (instancetype)createWithAlgorithm384;
++ (instancetype)createWithAlgorithm512;
+
+@end
+
+@interface JWTAlgorithmNoneDataHolder : JWTAlgorithmBaseDataHolder @end
+@interface JWTAlgorithmHSFamilyDataHolder : JWTAlgorithmBaseDataHolder <JWTAlgorithmDataHolderCreateProtocol>
+@end
+
+@interface JWTAlgorithmRSFamilyDataHolder : JWTAlgorithmBaseDataHolder <JWTAlgorithmDataHolderCreateProtocol>
 #pragma mark - Getters
 /**
  The passphrase for the PKCS12 blob, which represents the certificate containing the private key for the RS algorithms.
