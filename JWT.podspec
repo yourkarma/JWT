@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'JWT'
-  s.version      = '2.2.0'
+  s.version      = '3.0.0-beta.1'
   s.summary      = 'A JSON Web Token implementation in Objective-C.'
   s.homepage     = 'https://github.com/yourkarma/jwt'
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
