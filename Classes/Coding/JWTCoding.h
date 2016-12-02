@@ -19,5 +19,6 @@
 @interface JWT : NSObject @end
 
 typedef NS_OPTIONS(NSInteger, JWTCodingDecodingOptions) {
+    JWTCodingDecodingOptionsNone = 0,
     JWTCodingDecodingOptionsSkipVerification = 1
 };
