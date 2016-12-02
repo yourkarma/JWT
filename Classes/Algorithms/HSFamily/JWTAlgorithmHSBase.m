@@ -10,20 +10,12 @@
 #import "JWTBase64Coder.h"
 #import <CommonCrypto/CommonCrypto.h>
 #import <CommonCrypto/CommonHMAC.h>
-#import "JWTAlgorithmHS256.h"
-#import "JWTAlgorithmHS384.h"
-#import "JWTAlgorithmHS512.h"
 
 NSString *const JWTAlgorithmNameHS256 = @"HS256";
 NSString *const JWTAlgorithmNameHS384 = @"HS384";
 NSString *const JWTAlgorithmNameHS512 = @"HS512";
 
-// TODO(3.0):
-// 1. hide algorithms as it was done in RSBase.
-// 2. remove remain headers.
-@interface JWTAlgorithmHSBase ()
-
-@end
+@interface JWTAlgorithmHSBase () @end
 
 @implementation JWTAlgorithmHSBase
 
@@ -94,7 +86,57 @@ NSString *const JWTAlgorithmNameHS512 = @"HS512";
 @interface JWTAlgorithmHSFamilyMember : JWTAlgorithmHSBase @end
 @implementation JWTAlgorithmHSFamilyMember @end
 
-/* JWTAlgorithmHS256 : JWTAlgorithmHSFamilyMember and others */
+@interface JWTAlgorithmHS256 : JWTAlgorithmHSBase @end
+@interface JWTAlgorithmHS384 : JWTAlgorithmHSBase @end
+@interface JWTAlgorithmHS512 : JWTAlgorithmHSBase @end
+
+@implementation JWTAlgorithmHS256
+
+- (size_t)ccSHANumberDigestLength {
+    return CC_SHA256_DIGEST_LENGTH;
+}
+
+- (uint32_t)ccHmacAlgSHANumber {
+    return kCCHmacAlgSHA256;
+}
+
+- (NSString *)name {
+    return @"HS256";
+}
+
+@end
+
+@implementation JWTAlgorithmHS384
+
+- (size_t)ccSHANumberDigestLength {
+    return CC_SHA384_DIGEST_LENGTH;
+}
+
+- (uint32_t)ccHmacAlgSHANumber {
+    return kCCHmacAlgSHA384;
+}
+
+- (NSString *)name {
+    return @"HS384";
+}
+
+@end
+
+@implementation JWTAlgorithmHS512
+
+- (size_t)ccSHANumberDigestLength {
+    return CC_SHA512_DIGEST_LENGTH;
+}
+
+- (uint32_t)ccHmacAlgSHANumber {
+    return kCCHmacAlgSHA512;
+}
+
+- (NSString *)name {
+    return @"HS512";
+}
+
+@end
 
 @interface JWTAlgorithmHSFamilyMemberMutable : JWTAlgorithmHSFamilyMember
 @property (assign, nonatomic, readwrite) size_t ccSHANumberDigestLength;

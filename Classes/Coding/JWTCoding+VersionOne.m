@@ -11,8 +11,8 @@
 
 #import "JWTRSAlgorithm.h"
 
-#import "JWTAlgorithmHS512.h"
 #import "JWTAlgorithmFactory.h"
+#import "JWTAlgorithmHSBase.h"
 
 #import "JWTAlgorithmDataHolder.h"
 
@@ -59,7 +59,7 @@
 
 + (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret;
 {
-    return [self encodeClaimsSet:theClaimsSet withSecret:theSecret algorithm:[[JWTAlgorithmHS512 alloc] init]];
+    return [self encodeClaimsSet:theClaimsSet withSecret:theSecret algorithm:[JWTAlgorithmFactory algorithmByName:JWTAlgorithmNameHS512]];
 }
 
 + (NSString *)encodeClaimsSet:(JWTClaimsSet *)theClaimsSet withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
@@ -70,7 +70,7 @@
 
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret;
 {
-    return [self encodePayload:thePayload withSecret:theSecret algorithm:[[JWTAlgorithmHS512 alloc] init]];
+    return [self encodePayload:thePayload withSecret:theSecret algorithm:[JWTAlgorithmFactory algorithmByName:JWTAlgorithmNameHS512]];
 }
 
 + (NSString *)encodePayload:(NSDictionary *)thePayload withSecret:(NSString *)theSecret algorithm:(id<JWTAlgorithm>)theAlgorithm;
@@ -139,7 +139,7 @@
 
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withTrustedClaimsSet:(JWTClaimsSet *)theTrustedClaimsSet withError:(NSError *__autoreleasing *)theError withForcedOption:(BOOL)theForcedOption
 {
-    return [self decodeMessage:theMessage withSecret:theSecret withTrustedClaimsSet:theTrustedClaimsSet withError:theError withForcedAlgorithmByName:[[JWTAlgorithmHS512 alloc] init].name withForcedOption:theForcedOption];
+    return [self decodeMessage:theMessage withSecret:theSecret withTrustedClaimsSet:theTrustedClaimsSet withError:theError withForcedAlgorithmByName:JWTAlgorithmNameHS512 withForcedOption:theForcedOption];
 }
 
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withTrustedClaimsSet:(JWTClaimsSet *)theTrustedClaimsSet withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName withForcedOption:(BOOL)theForcedOption
@@ -172,7 +172,7 @@
 
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedOption:(BOOL)theForcedOption;
 {
-    return [self decodeMessage:theMessage withSecret:theSecret withError:theError withForcedAlgorithmByName:[[JWTAlgorithmHS512 alloc] init].name skipVerification:theForcedOption];
+    return [self decodeMessage:theMessage withSecret:theSecret withError:theError withForcedAlgorithmByName:JWTAlgorithmNameHS512 skipVerification:theForcedOption];
 }
 
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError *__autoreleasing *)theError withForcedAlgorithmByName:(NSString *)theAlgorithmName;
@@ -285,7 +285,7 @@
 
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret withError:(NSError * __autoreleasing *)theError;
 {
-    return [self decodeMessage:theMessage withSecret:theSecret withError:theError withForcedAlgorithmByName:[[JWTAlgorithmHS512 alloc] init].name];
+    return [self decodeMessage:theMessage withSecret:theSecret withError:theError withForcedAlgorithmByName:JWTAlgorithmNameHS512];
 }
 
 + (NSDictionary *)decodeMessage:(NSString *)theMessage withSecret:(NSString *)theSecret;

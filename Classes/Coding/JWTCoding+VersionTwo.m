@@ -11,7 +11,6 @@
 
 #import "JWTRSAlgorithm.h"
 
-#import "JWTAlgorithmHS512.h"
 #import "JWTAlgorithmFactory.h"
 
 #import "JWTAlgorithmDataHolder.h"
