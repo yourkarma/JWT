@@ -25,7 +25,7 @@ context(@"serialization", ^{
         claimsSet = [[JWTClaimsSet alloc] init];
         claimsSet.issuer = @"Facebook";
         claimsSet.subject = @"Token";
-        claimsSet.audience = @"http://yourkarma.com";
+        claimsSet.audience = @"https://jwt.io";
         claimsSet.expirationDate = [NSDate dateWithTimeIntervalSince1970:expirationDateTS];
         claimsSet.notBeforeDate = [NSDate dateWithTimeIntervalSince1970:notBeforeDateTS];
         claimsSet.issuedAt = [NSDate dateWithTimeIntervalSince1970:issuedAtTS];
@@ -82,7 +82,7 @@ context(@"deserialization", ^{
         serialized = @{
             @"iss": @"Facebook",
             @"sub": @"Token",
-            @"aud": @"http://yourkarma.com",
+            @"aud": @"https://jwt.io",
             @"exp": @(64092211200),
             @"nbf": @(-62135769600),
             @"iat": @(1370005175),

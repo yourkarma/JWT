@@ -7,7 +7,7 @@
 //
 
 #import "JWTErrorDescription.h"
-NSString *JWTErrorDomain = @"com.karma.jwt";
+NSString *JWTErrorDomain = @"io.jwt";
 @implementation JWTErrorDescription
 + (NSDictionary *)userDescriptionsAndCodes {
     static NSDictionary *userDescriptionsAndCodes = nil;
