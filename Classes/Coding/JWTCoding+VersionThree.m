@@ -37,8 +37,9 @@
 @property (copy, nonatomic, readwrite) NSNumber *internalOptions;
 
 #pragma mark - Fluent
-@property (copy, nonatomic, readwrite) JWTCodingBuilder *(^constructChain)(JWTAlgorithmDataHolderChain *(^block)());
 @property (copy, nonatomic, readwrite) JWTCodingBuilder *(^chain)(JWTAlgorithmDataHolderChain *chain);
+@property (copy, nonatomic, readwrite) JWTCodingBuilder *(^constructChain)(JWTAlgorithmDataHolderChain *(^block)());
+@property (copy, nonatomic, readwrite) JWTCodingBuilder *(^modifyChain)(JWTAlgorithmDataHolderChain *(^block)(JWTAlgorithmDataHolderChain * chain));
 @property (copy, nonatomic, readwrite) JWTCodingBuilder *(^options)(NSNumber *options);
 @property (copy, nonatomic, readwrite) JWTCodingBuilder *(^addHolder)(id<JWTAlgorithmDataHolderProtocol> holder);
 @property (copy, nonatomic, readwrite) JWTCodingBuilder *(^constructHolder)(id<JWTAlgorithmDataHolderProtocol>(^block)(id<JWTAlgorithmDataHolderProtocol> holder));
@@ -77,6 +78,15 @@
         }
         return weakSelf;
     };
+    
+    self.modifyChain = ^(JWTAlgorithmDataHolderChain *(^block)(JWTAlgorithmDataHolderChain *chain)) {
+        if (block) {
+            JWTAlgorithmDataHolderChain *chain = block(chain);
+            return [weakSelf chain:chain];
+        }
+        return weakSelf;
+    };
+
 
     self.options = ^(NSNumber *options) {
         return [weakSelf options:options];
