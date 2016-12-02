@@ -414,17 +414,18 @@
     // claimsSet verification.
     JWTCodingResultType *result = nil;
     if (error) {
-        result = [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:error]];
+        return [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:error]];
     }
-    else if (claimsSet) {
+    
+    if (claimsSet) {
         BOOL claimsVerified = [JWTClaimsSetVerifier verifyClaimsSet:[JWTClaimsSetSerializer claimsSetWithDictionary:decodedDictionary[JWTCodingResultPayload]] withTrustedClaimsSet:claimsSet];
         if (!claimsVerified){
             error = [JWTErrorDescription errorWithCode:JWTClaimsSetVerificationFailed];
-            result = [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:error]];
+            return [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:error]];
         }
     }
     
-    else if (decodedDictionary) {
+    if (decodedDictionary) {
         NSDictionary *headers = decodedDictionary[JWTCodingResultHeaders];
         NSDictionary *payload = decodedDictionary[JWTCodingResultPayload];
         result = [[JWTCodingResultType alloc] initWithSuccessResult:[[JWTCodingResultTypeSuccess alloc] initWithHeaders:headers withPayload:payload]];
