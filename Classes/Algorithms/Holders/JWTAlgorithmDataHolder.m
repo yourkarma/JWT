@@ -118,13 +118,30 @@
 }
 @end
 
+@interface JWTAlgorithmBaseDataHolder (Debug)
+- (NSDictionary *)debugInformation;
+@end
+@implementation JWTAlgorithmBaseDataHolder (Debug)
+- (NSString *)debugDescription {
+    return [[self debugInformation] debugDescription];
+}
+- (NSDictionary *)debugInformation {
+    return @{
+             @"algorithmName" : self.currentAlgorithmName ?: @"unknown",
+             @"algorithm" : [self.currentAlgorithm debugDescription] ?: @"unknown",
+             @"secretData" : [self.currentSecretData debugDescription]
+             };
+}
+
+@end
+
 @implementation JWTAlgorithmBaseDataHolder
 @synthesize currentAlgorithm;
 @synthesize currentSecretData;
 
 #pragma mark - Custom Getters
 - (NSString *)currentAlgorithmName {
-    return [self.algorithm name];
+    return [self.currentAlgorithm name];
 }
 
 - (NSString *)currentSecret {
@@ -139,6 +156,13 @@
     return self;
 }
 
+#pragma mark - Copy
+- (id)copyWithZone:(NSZone *)zone {
+    JWTAlgorithmBaseDataHolder *holder = [self.class new];
+    holder.currentAlgorithm = self.currentAlgorithm;
+    holder.currentSecretData = self.currentSecretData;
+    return holder;
+}
 @end
 
 @interface JWTAlgorithmBaseDataHolder(Create)
@@ -181,6 +205,15 @@
 @property (copy, nonatomic, readwrite) JWTAlgorithmRSFamilyDataHolder *(^privateKeyCertificatePassphrase)(NSString *privateKeyCertificatePassphrase);
 @end
 
+@implementation JWTAlgorithmRSFamilyDataHolder (Debug)
+- (NSDictionary *)debugInformation {
+    NSDictionary *add = @{@"privateKeyCertificatePassphrase" : self.currentPrivateKeyCertificatePassphrase ?: @"unknown"};
+    NSMutableDictionary *result = [[super debugInformation] mutableCopy];
+    [result addEntriesFromDictionary:add];
+    return result;
+}
+@end
+
 @implementation JWTAlgorithmRSFamilyDataHolder
 
 #pragma mark - Initialization
@@ -209,6 +242,13 @@
 - (instancetype)privateKeyCertificatePassphrase:(NSString *)passphrase {
     self.currentPrivateKeyCertificatePassphrase = passphrase;
     return self;
+}
+
+#pragma mark - Copy
+- (id)copyWithZone:(NSZone *)zone {
+    JWTAlgorithmRSFamilyDataHolder *holder = [super copyWithZone:zone];
+    holder.privateKeyCertificatePassphrase = self.privateKeyCertificatePassphrase;
+    return holder;
 }
 @end
 

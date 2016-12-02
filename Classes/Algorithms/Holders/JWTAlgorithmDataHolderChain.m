@@ -74,6 +74,10 @@
     return [[self new] chainByAppendingHolder:holder];
 }
 
+#pragma mark - Debug
+- (NSString *)debugDescription {
+    return [NSString stringWithFormat:@"%@ holders: %@", self.class, [self.holders valueForKey:@"debugDescription"]];
+}
 @end
 
 @implementation JWTAlgorithmDataHolderChain (Convenient)
@@ -109,7 +113,7 @@
     for (NSData *secretData in secretsData) {
         id<JWTAlgorithmDataHolderProtocol> newHolder = [holder copy];
         [newHolder setCurrentSecretData:secretData];
-        [holders arrayByAddingObject:newHolder];
+        holders = [holders arrayByAddingObject:newHolder];
     }
     return holders;
 }

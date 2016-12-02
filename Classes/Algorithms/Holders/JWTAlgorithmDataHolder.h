@@ -13,7 +13,7 @@
 // TODO: available in 3.0
 // All methods with secret as NSString in algorithms will be deprecated or removed.
 
-@protocol JWTAlgorithmDataHolderProtocol <NSObject>
+@protocol JWTAlgorithmDataHolderProtocol <NSObject, NSCopying>
 /**
  The verification key to use when encoding/decoding a JWT in data form
  */
