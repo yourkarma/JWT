@@ -13,7 +13,7 @@
 // TODO: available in 3.0
 // All methods with secret as NSString in algorithms will be deprecated or removed.
 
-@protocol JWTAlgorithmDataHolder <NSObject>
+@protocol JWTAlgorithmDataHolderProtocol <NSObject, NSCopying>
 /**
  The verification key to use when encoding/decoding a JWT in data form
  */
@@ -25,7 +25,7 @@
 @property (strong, nonatomic, readwrite) id <JWTAlgorithm> currentAlgorithm;
 @end
 
-@interface JWTAlgorithmBaseDataHolder : NSObject <JWTAlgorithmDataHolder>
+@interface JWTAlgorithmBaseDataHolder : NSObject <JWTAlgorithmDataHolderProtocol>
 
 #pragma mark - Getters
 /**
@@ -61,10 +61,19 @@
 
 @end
 
-@interface JWTAlgorithmHSFamilyDataHolder : JWTAlgorithmBaseDataHolder
+@protocol JWTAlgorithmDataHolderCreateProtocol <NSObject>
+
++ (instancetype)createWithAlgorithm256;
++ (instancetype)createWithAlgorithm384;
++ (instancetype)createWithAlgorithm512;
+
 @end
 
-@interface JWTAlgorithmRSFamilyDataHolder : JWTAlgorithmBaseDataHolder
+@interface JWTAlgorithmNoneDataHolder : JWTAlgorithmBaseDataHolder @end
+@interface JWTAlgorithmHSFamilyDataHolder : JWTAlgorithmBaseDataHolder <JWTAlgorithmDataHolderCreateProtocol>
+@end
+
+@interface JWTAlgorithmRSFamilyDataHolder : JWTAlgorithmBaseDataHolder <JWTAlgorithmDataHolderCreateProtocol>
 #pragma mark - Getters
 /**
  The passphrase for the PKCS12 blob, which represents the certificate containing the private key for the RS algorithms.

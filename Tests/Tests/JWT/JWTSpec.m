@@ -15,51 +15,22 @@
 #import <Base64/MF_Base64Additions.h>
 
 SPEC_BEGIN(JWTSpec)
-
-describe(@"markdown examples", ^{
-    it(@"fluent example should work correctly", ^{
-        // suppose, that you create ClaimsSet
-        JWTClaimsSet *claimsSet = [[JWTClaimsSet alloc] init];
-        // fill it
-        claimsSet.issuer = @"Facebook";
-        claimsSet.subject = @"Token";
-        claimsSet.audience = @"http://yourkarma.com";
+describe(@"Issue examples", ^{
+    it(@"Crashing RS256 decoding #112", ^{
+        NSString *publicKey = @" MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDdlatRjRjogo3WojgGHFHYLugdUWAY9iR3fy4arWNA1KoS8kVw33cJibXr8bvwUAUparCwlvdbH6dvEOfou0/gCFQsHUfQrSDv+MuSUMAe8jzKE4qW+jK+xQU9a03GUnKHkkle+Q0pX/g6jXZ7r1/xAK5Do2kQ+X5xK9cipRgEKwIDAQAB==";
+        NSString *algorithmName = @"RS256";
+        NSString *message = @"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.EkN-DOsnsuRjRO6BxXemmJDm3HbxrbRzXglbN2S4sOkopdU4IsDxTI8jO19W_A4K8ZPJijNLis4EZsHeY559a4DFOd50_OqgHGuERTqYZyuhtF39yxJPAjUESwxk2J5k_4zM3O-vtd1Ghyo4IbqKKSy6J9mTniYJPenn5-HIirE";
+        JWTBuilder *builder = [JWTBuilder decodeMessage:message].secret(publicKey).algorithmName(algorithmName);
+        NSDictionary *dictionary = builder.decode;
         
-        // encode it
-        NSString *secret = @"secret";
-        NSString *algorithmName = @"HS384";
-        NSDictionary *headers = @{@"custom":@"value"};
-        JWTBuilder *encodeBuilder = [JWT encodeClaimsSet:claimsSet];
-        NSString *encodedResult = encodeBuilder.secret(secret).algorithmName(algorithmName).headers(headers).encode;
-        
-        if (encodeBuilder.jwtError) {
-            // handle error
-            NSLog(@"encode failed, error: %@", encodeBuilder.jwtError);
+        // should be invalid certificate error.
+        if (builder.jwtError) {
+            NSLog(@"%@ error occurred: %@", self, builder.jwtError);
         }
         else {
-            // handle encoded result
-            NSLog(@"encoded result: %@", encodedResult);
+            NSLog(@"%@ payload! %@", self, dictionary);
         }
-        
-        // decode it
-        // you can set any property that you want, all properties are optional
-        JWTClaimsSet *trustedClaimsSet = [claimsSet copy];
-        
-        // decode forced ? try YES
-        BOOL decodeForced = NO;
-        NSNumber *options = @(decodeForced);
-        NSString *yourJwt = encodedResult; // from previous example
-        NSString *yourSecret = secret; // from previous example
-        JWTBuilder *decodeBuilder = [JWT decodeMessage:yourJwt];
-        NSDictionary *decodedResult = decodeBuilder.message(yourJwt).secret(yourSecret).claimsSet(trustedClaimsSet).options(options).decode;
-        if (decodeBuilder.jwtError) {
-            // handle error
-            NSLog(@"decode failed, error: %@", decodeBuilder.jwtError);
-        }
-        else {
-            // handle decoded result
-            NSLog(@"decoded result: %@", decodedResult);
-        }
+        [[dictionary should] beNil];
     });
 });
 
@@ -182,7 +153,7 @@ describe(@"encoding", ^{
         NSDictionary *dictionary = @{
                                      @"iss": @"Facebook",
                                      @"sub": @"Token",
-                                     @"aud": @"http://yourkarma.com",
+                                     @"aud": @"https://jwt.io",
                                      @"exp": @(64092211200),
                                      @"nbf": @(-62135769600),
                                      @"iat": @(1370005175.80196),
@@ -494,7 +465,7 @@ describe(@"decoding", ^{
             JWTClaimsSet *claimsSet = [[JWTClaimsSet alloc] init];
             claimsSet.issuer = @"Facebook";
             claimsSet.subject = @"Token";
-            claimsSet.audience = @"http://yourkarma.com";
+            claimsSet.audience = @"https://jwt.io";
             claimsSet.expirationDate = [NSDate distantFuture];
             claimsSet.notBeforeDate = [NSDate distantPast];
             claimsSet.issuedAt = [NSDate date];

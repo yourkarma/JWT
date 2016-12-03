@@ -15,13 +15,16 @@
 
 #pragma mark - Initialization
 - (instancetype)initWithHolders:(NSArray *)holders;
-- (instancetype)initWithHolder:(id<JWTAlgorithmDataHolder>)holder;
+- (instancetype)initWithHolder:(id<JWTAlgorithmDataHolderProtocol>)holder;
 
 #pragma mark - Appending
 - (instancetype)chainByAppendingChain:(JWTAlgorithmDataHolderChain *)chain;
 - (instancetype)chainByAppendingHolders:(NSArray *)holders;
-- (instancetype)chainByAppendingHolder:(id<JWTAlgorithmDataHolder>)holder;
+- (instancetype)chainByAppendingHolder:(id<JWTAlgorithmDataHolderProtocol>)holder;
 
+#pragma mark - Create
++ (instancetype)chainWithHolders:(NSArray *)holders;
++ (instancetype)chainWithHolder:(id<JWTAlgorithmDataHolderProtocol>)holder;
 @end
 
 @interface JWTAlgorithmDataHolderChain (HoldersPopulation)

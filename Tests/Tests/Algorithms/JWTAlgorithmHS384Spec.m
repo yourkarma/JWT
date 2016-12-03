@@ -9,7 +9,7 @@
 #import <Kiwi/Kiwi.h>
 #import <Base64/MF_Base64Additions.h>
 
-#import "JWTAlgorithmHS384.h"
+#import <JWT/JWTAlgorithmHSBase.h>
 
 static NSString *dataAlgorithmKey = @"algorithm";
 static NSString *algorithmBehaviour = @"algorithmHS384Behaviour";
@@ -17,7 +17,7 @@ static NSString *algorithmBehaviour = @"algorithmHS384Behaviour";
 SHARED_EXAMPLES_BEGIN(JWTAlgorithmHS384SpecExamples)
 
 sharedExamplesFor(algorithmBehaviour, ^(NSDictionary *data) {
-    __block JWTAlgorithmHS384 *algorithm;
+    __block JWTAlgorithmHSBase *algorithm;
     
     beforeEach(^{
         algorithm = data[dataAlgorithmKey];
@@ -92,10 +92,6 @@ sharedExamplesFor(algorithmBehaviour, ^(NSDictionary *data) {
 SHARED_EXAMPLES_END
 
 SPEC_BEGIN(JWTAlgorithmHS384Spec)
-context(@"Clean", ^{
-    itBehavesLike(algorithmBehaviour, @{dataAlgorithmKey: [[JWTAlgorithmHS384 alloc] init]});
-});
-
 context(@"HSBased", ^{
     itBehavesLike(algorithmBehaviour, @{dataAlgorithmKey: [JWTAlgorithmHSBase algorithm384]});
 });

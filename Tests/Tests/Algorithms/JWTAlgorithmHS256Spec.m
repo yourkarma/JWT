@@ -9,7 +9,7 @@
 #import <Kiwi/Kiwi.h>
 #import <Base64/MF_Base64Additions.h>
 
-#import "JWTAlgorithmHS256.h"
+#import <JWT/JWTAlgorithmHSBase.h>
 
 static NSString *dataAlgorithmKey = @"algorithm";
 static NSString *algorithmBehavior = @"algorithmHS256Behaviour";
@@ -17,7 +17,7 @@ static NSString *algorithmBehavior = @"algorithmHS256Behaviour";
 SHARED_EXAMPLES_BEGIN(JWTAlgorithmHS256SpecExamples)
 
 sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
-    __block JWTAlgorithmHS256 *algorithm;
+    __block JWTAlgorithmHSBase *algorithm;
     
     beforeEach(^{
         algorithm = data[dataAlgorithmKey];
@@ -92,10 +92,6 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
 SHARED_EXAMPLES_END
 
 SPEC_BEGIN(JWTAlgorithmHS256Spec)
-
-context(@"Clean", ^{
-    itBehavesLike(algorithmBehavior, @{dataAlgorithmKey: [[JWTAlgorithmHS256 alloc] init]});
-});
 
 context(@"HSBased", ^{
     itBehavesLike(algorithmBehavior, @{dataAlgorithmKey: [JWTAlgorithmHSBase algorithm256]});

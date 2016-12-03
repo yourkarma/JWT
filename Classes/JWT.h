@@ -10,6 +10,10 @@
 
 // Coding
 #import "JWTCoding.h"
+#import "JWTCoding+ResultTypes.h"
+#import "JWTCoding+VersionOne.h"
+#import "JWTCoding+VersionTwo.h"
+#import "JWTCoding+VersionThree.h"
 
 // Algorithms
 #import "JWTAlgorithm.h"
@@ -31,3 +35,4 @@
 // Supplement
 #import "JWTDeprecations.h"
 #import "JWTBase64Coder.h"
+#import "JWTErrorDescription.h"

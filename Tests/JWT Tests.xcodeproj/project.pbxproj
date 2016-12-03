@@ -29,6 +29,7 @@
 		045147881D5E312A007B1D7A /* JWTAlgorithmRS256Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0451476A1D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m */; };
 		0451478D1D5E312A007B1D7A /* JWTClaimsSerializerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147701D5E310E007B1D7A /* JWTClaimsSerializerSpec.m */; };
 		0451478F1D5E312A007B1D7A /* JWTSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147731D5E310E007B1D7A /* JWTSpec.m */; };
+		04A5A58A1DF14FE300FBDF4C /* JWTMarkdownSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A5A5891DF14FE300FBDF4C /* JWTMarkdownSpec.m */; };
 		266295C3B6ECE08039A16D33 /* libPods-macOS_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA3357EF30AB81C42D84520 /* libPods-macOS_Tests.a */; };
 		C7EE20EA1A0314172C1619E0 /* libPods-iOS_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE336FA6028E75B72C080FB /* libPods-iOS_Tests.a */; };
 /* End PBXBuildFile section */
@@ -49,6 +50,7 @@
 		0451476E1D5E310E007B1D7A /* Test certificate and public key 2.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Test certificate and public key 2.pem"; sourceTree = "<group>"; };
 		045147701D5E310E007B1D7A /* JWTClaimsSerializerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSerializerSpec.m; sourceTree = "<group>"; };
 		045147731D5E310E007B1D7A /* JWTSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTSpec.m; sourceTree = "<group>"; };
+		04A5A5891DF14FE300FBDF4C /* JWTMarkdownSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTMarkdownSpec.m; sourceTree = "<group>"; };
 		3FCCA63374729ECF2D825059 /* Pods-macOS_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-macOS_Tests/Pods-macOS_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		5ADC34F8889C3EDF8BB83D24 /* Pods-macOS_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-macOS_Tests/Pods-macOS_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		66440C9134BC0B535139C516 /* Pods-iOS_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS_Tests/Pods-iOS_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				045147731D5E310E007B1D7A /* JWTSpec.m */,
+				04A5A5891DF14FE300FBDF4C /* JWTMarkdownSpec.m */,
 			);
 			path = JWT;
 			sourceTree = "<group>";
@@ -384,6 +387,7 @@
 				045147751D5E310E007B1D7A /* JWTAlgorithmHS384Spec.m in Sources */,
 				0451477D1D5E310E007B1D7A /* JWTClaimsSerializerSpec.m in Sources */,
 				045147741D5E310E007B1D7A /* JWTAlgorithmHS256Spec.m in Sources */,
+				04A5A58A1DF14FE300FBDF4C /* JWTMarkdownSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -500,7 +504,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yourkarma.iOS-Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.jwt.iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 			};
@@ -543,7 +547,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yourkarma.iOS-Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.jwt.iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -594,7 +598,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yourkarma.macOS-Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.jwt.macOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -637,7 +641,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yourkarma.macOS-Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.jwt.macOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};

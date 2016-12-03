@@ -8,6 +8,12 @@
 
 #import "JWTAlgorithmDataHolder.h"
 #import "JWTAlgorithmFactory.h"
+#import "JWTAlgorithmNone.h"
+#import "JWTRSAlgorithm.h"
+#import "JWTAlgorithmHSBase.h"
+#import "JWTAlgorithmRSBase.h"
+#import "JWTBase64Coder.h"
+
 @interface JWTAlgorithmBaseDataHolder()
 // not needed by algorithm adoption.
 // @property (copy, nonatomic, readwrite) NSData *currentSecretData;
@@ -36,16 +42,41 @@
 
 @end
 
-@implementation JWTAlgorithmBaseDataHolder
+@interface JWTAlgorithmBaseDataHolder (Convertions)
+
+- (NSData *)dataFromString:(NSString *)string;
+- (NSString *)stringFromData:(NSData *)data;
+
+@end
+
+@implementation JWTAlgorithmBaseDataHolder (Convertions)
 #pragma mark - Convertions
 - (NSData *)dataFromString:(NSString *)string {
-    return [string dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *result = [JWTBase64Coder dataWithBase64UrlEncodedString:string];
+    
+    if (result == nil) {
+        // tell about it?!
+        NSLog(@"%@ %@ something went wrong. Data is not base64encoded", self.debugDescription, NSStringFromSelector(_cmd));
+    }
+    
+    return result ?: [string dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)stringFromData:(NSData *)data {
-    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSString *result = [JWTBase64Coder base64UrlEncodedStringWithData:data];
+    
+    if (result == nil) {
+        NSLog(@"%@ %@ something went wrong. String is not base64encoded", self.debugDescription, NSStringFromSelector(_cmd));
+    }
+    return result ?: [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
+@end
 
+@interface JWTAlgorithmBaseDataHolder (Fluent)
+- (void)setupFluent;
+@end
+
+@implementation JWTAlgorithmBaseDataHolder (Fluent)
 #pragma mark - Fluent
 - (instancetype)secretData:(NSData *)secretData {
     self.currentSecretData = secretData;
@@ -67,9 +98,50 @@
     return self;
 }
 
+- (void)setupFluent {
+    __weak typeof(self) weakSelf = self;
+    self.secret = ^(NSString *secret) {
+        return [weakSelf secret:secret];
+    };
+    
+    self.secretData = ^(NSData *secretData) {
+        return [weakSelf secretData:secretData];
+    };
+    
+    self.algorithm = ^(id<JWTAlgorithm> algorithm) {
+        return [weakSelf algorithm:algorithm];
+    };
+    
+    self.algorithmName = ^(NSString *algorithmName) {
+        return [weakSelf algorithmName:algorithmName];
+    };
+}
+@end
+
+@interface JWTAlgorithmBaseDataHolder (Debug)
+- (NSDictionary *)debugInformation;
+@end
+@implementation JWTAlgorithmBaseDataHolder (Debug)
+- (NSString *)debugDescription {
+    return [[self debugInformation] debugDescription];
+}
+- (NSDictionary *)debugInformation {
+    return @{
+             @"algorithmName" : self.currentAlgorithmName ?: @"unknown",
+             @"algorithm" : [self.currentAlgorithm debugDescription] ?: @"unknown",
+             @"secretData" : [self.currentSecretData debugDescription]
+             };
+}
+
+@end
+
+@implementation JWTAlgorithmBaseDataHolder
+@synthesize currentAlgorithm;
+@synthesize currentSecretData;
+
 #pragma mark - Custom Getters
 - (NSString *)currentAlgorithmName {
-    return [self.algorithm name];
+    return [self.currentAlgorithm name];
 }
 
 - (NSString *)currentSecret {
@@ -79,26 +151,50 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        __weak typeof(self) weakSelf = self;
-        self.secret = ^(NSString *secret) {
-            return [weakSelf secret:secret];
-        };
-
-        self.secretData = ^(NSData *secretData) {
-            return [weakSelf secretData:secretData];
-        };
-
-        self.algorithm = ^(id<JWTAlgorithm> algorithm) {
-            return [weakSelf algorithm:algorithm];
-        };
-
-        self.algorithmName = ^(NSString *algorithmName) {
-            return [weakSelf algorithmName:algorithmName];
-        };
+        [self setupFluent];
     }
     return self;
 }
 
+#pragma mark - Copy
+- (id)copyWithZone:(NSZone *)zone {
+    JWTAlgorithmBaseDataHolder *holder = [self.class new];
+    holder.currentAlgorithm = self.currentAlgorithm;
+    holder.currentSecretData = self.currentSecretData;
+    return holder;
+}
+@end
+
+@interface JWTAlgorithmBaseDataHolder(Create)
+- (instancetype)initWithAlgorithmName:(NSString *)name;
+@end
+
+@implementation JWTAlgorithmBaseDataHolder(Create)
+- (instancetype)initWithAlgorithmName:(NSString *)name {
+    return [self init].algorithmName(name);
+}
+@end
+
+@implementation JWTAlgorithmNoneDataHolder
+- (instancetype)init {
+    if (self = [super init]) {
+        self.currentAlgorithm = [JWTAlgorithmFactory algorithmByName:JWTAlgorithmNameNone];
+        self.currentSecretData = nil;
+    }
+    return self;
+}
+@end
+
+@implementation JWTAlgorithmHSFamilyDataHolder
++ (instancetype)createWithAlgorithm256 {
+    return [[self alloc] initWithAlgorithmName:JWTAlgorithmNameHS256];
+}
++ (instancetype)createWithAlgorithm384 {
+    return [[self alloc] initWithAlgorithmName:JWTAlgorithmNameHS384];
+}
++ (instancetype)createWithAlgorithm512 {
+    return [[self alloc] initWithAlgorithmName:JWTAlgorithmNameHS512];
+}
 @end
 
 @interface JWTAlgorithmRSFamilyDataHolder()
@@ -109,21 +205,59 @@
 @property (copy, nonatomic, readwrite) JWTAlgorithmRSFamilyDataHolder *(^privateKeyCertificatePassphrase)(NSString *privateKeyCertificatePassphrase);
 @end
 
+@implementation JWTAlgorithmRSFamilyDataHolder (Debug)
+- (NSDictionary *)debugInformation {
+    NSDictionary *add = @{@"privateKeyCertificatePassphrase" : self.currentPrivateKeyCertificatePassphrase ?: @"unknown"};
+    NSMutableDictionary *result = [[super debugInformation] mutableCopy];
+    [result addEntriesFromDictionary:add];
+    return result;
+}
+@end
+
 @implementation JWTAlgorithmRSFamilyDataHolder
+
+#pragma mark - Initialization
++ (instancetype)createWithAlgorithm256 {
+    return [[self alloc] initWithAlgorithmName:JWTAlgorithmNameRS256];
+}
+
++ (instancetype)createWithAlgorithm384 {
+    return [[self alloc] initWithAlgorithmName:JWTAlgorithmNameRS384];
+}
+
++ (instancetype)createWithAlgorithm512 {
+    return [[self alloc] initWithAlgorithmName:JWTAlgorithmNameRS512];
+}
+
+#pragma mark - Getters
+- (id<JWTAlgorithm>)currentAlgorithm {
+    id <JWTAlgorithm> algorithm = [super currentAlgorithm];
+    if ([algorithm conformsToProtocol:@protocol(JWTRSAlgorithm)]) {
+        ((id <JWTRSAlgorithm>)algorithm).privateKeyCertificatePassphrase = self.currentPrivateKeyCertificatePassphrase;
+    }
+    return algorithm;
+}
+
+#pragma mark - Setters
 - (instancetype)privateKeyCertificatePassphrase:(NSString *)passphrase {
     self.currentPrivateKeyCertificatePassphrase = passphrase;
     return self;
 }
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        __weak typeof(self) weakSelf = self;
-        self.privateKeyCertificatePassphrase = ^(NSString *privateKeyCertificatePassphrase) {
-            return [weakSelf privateKeyCertificatePassphrase:privateKeyCertificatePassphrase];
-        };
-    }
-    return self;
+#pragma mark - Copy
+- (id)copyWithZone:(NSZone *)zone {
+    JWTAlgorithmRSFamilyDataHolder *holder = [super copyWithZone:zone];
+    holder.privateKeyCertificatePassphrase = self.privateKeyCertificatePassphrase;
+    return holder;
 }
+@end
 
+@implementation JWTAlgorithmRSFamilyDataHolder (Fluent)
+- (void)setupFluent {
+    [super setupFluent];
+    __weak typeof(self) weakSelf = self;
+    self.privateKeyCertificatePassphrase = ^(NSString *privateKeyCertificatePassphrase) {
+        return [weakSelf privateKeyCertificatePassphrase:privateKeyCertificatePassphrase];
+    };
+}
 @end

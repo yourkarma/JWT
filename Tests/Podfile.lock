@@ -1,6 +1,6 @@
 PODS:
   - Base64 (1.1.2)
-  - JWT (2.2.0):
+  - JWT (3.0.0-beta.1):
     - Base64 (~> 1.1.2)
   - Kiwi (2.4.0)
 
@@ -14,7 +14,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
-  JWT: cf73c0ab0dac762df3de8a3f1164352089d97780
+  JWT: 033b401ec3935ef009e0eddfd529f56bb4ab8724
   Kiwi: f49c9d54b28917df5928fe44968a39ed198cb8a8
 
 PODFILE CHECKSUM: ff7603a55b6a1be7ba8ea4473ecf3ce38d656d06
