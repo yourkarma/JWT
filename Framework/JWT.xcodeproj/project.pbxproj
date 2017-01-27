@@ -232,11 +232,11 @@
 		045146001D5E243D007B1D7A /* JWTClaimsSetSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSetSerializer.m; sourceTree = "<group>"; };
 		045146011D5E243D007B1D7A /* JWTClaimsSetVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTClaimsSetVerifier.h; sourceTree = "<group>"; };
 		045146021D5E243D007B1D7A /* JWTClaimsSetVerifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSetVerifier.m; sourceTree = "<group>"; };
-		045146681D5E2A78007B1D7A /* libJWT_iOS_Static.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJWT_iOS_Static.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		045146761D5E2AA1007B1D7A /* JWT_iOS_Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JWT_iOS_Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		045146831D5E2AAF007B1D7A /* JWT_iOS_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JWT_iOS_Swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		045146901D5E2AC3007B1D7A /* JWT_macOS_Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JWT_macOS_Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0451469D1D5E2AD2007B1D7A /* JWT_macOS_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JWT_macOS_Swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		045146681D5E2A78007B1D7A /* libJWT-iOS-Static.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libJWT-iOS-Static.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		045146761D5E2AA1007B1D7A /* JWT-iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "JWT-iOS.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		045146831D5E2AAF007B1D7A /* JWT-iOS-Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "JWT-iOS-Swift.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		045146901D5E2AC3007B1D7A /* JWT-macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "JWT-macOS.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0451469D1D5E2AD2007B1D7A /* JWT-macOS-Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "JWT-macOS-Swift.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		045872631DEF02ED0052D2A9 /* JWTCoding+ResultTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JWTCoding+ResultTypes.h"; sourceTree = "<group>"; };
 		045872641DEF02ED0052D2A9 /* JWTCoding+ResultTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "JWTCoding+ResultTypes.m"; sourceTree = "<group>"; };
 		049C95711DEAFB3B008839C8 /* JWTCoding+VersionOne.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JWTCoding+VersionOne.h"; sourceTree = "<group>"; };
@@ -438,11 +438,11 @@
 		A1951DB71758990700AF73D9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				045146681D5E2A78007B1D7A /* libJWT_iOS_Static.a */,
-				045146761D5E2AA1007B1D7A /* JWT_iOS_Framework.framework */,
-				045146831D5E2AAF007B1D7A /* JWT_iOS_Swift.framework */,
-				045146901D5E2AC3007B1D7A /* JWT_macOS_Framework.framework */,
-				0451469D1D5E2AD2007B1D7A /* JWT_macOS_Swift.framework */,
+				045146681D5E2A78007B1D7A /* libJWT-iOS-Static.a */,
+				045146761D5E2AA1007B1D7A /* JWT-iOS.framework */,
+				045146831D5E2AAF007B1D7A /* JWT-iOS-Swift.framework */,
+				045146901D5E2AC3007B1D7A /* JWT-macOS.framework */,
+				0451469D1D5E2AD2007B1D7A /* JWT-macOS-Swift.framework */,
 				04DEBCA31DBCDB8600C1DF52 /* JWT.framework */,
 			);
 			name = Products;
@@ -561,9 +561,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		045146671D5E2A78007B1D7A /* JWT_iOS_Static */ = {
+		045146671D5E2A78007B1D7A /* JWT-iOS-Static */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0451466E1D5E2A78007B1D7A /* Build configuration list for PBXNativeTarget "JWT_iOS_Static" */;
+			buildConfigurationList = 0451466E1D5E2A78007B1D7A /* Build configuration list for PBXNativeTarget "JWT-iOS-Static" */;
 			buildPhases = (
 				045146641D5E2A78007B1D7A /* Sources */,
 				045146651D5E2A78007B1D7A /* Frameworks */,
@@ -573,14 +573,14 @@
 			);
 			dependencies = (
 			);
-			name = JWT_iOS_Static;
+			name = "JWT-iOS-Static";
 			productName = JWT_iOS_Static;
-			productReference = 045146681D5E2A78007B1D7A /* libJWT_iOS_Static.a */;
+			productReference = 045146681D5E2A78007B1D7A /* libJWT-iOS-Static.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		045146751D5E2AA1007B1D7A /* JWT_iOS_Framework */ = {
+		045146751D5E2AA1007B1D7A /* JWT-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0451467B1D5E2AA1007B1D7A /* Build configuration list for PBXNativeTarget "JWT_iOS_Framework" */;
+			buildConfigurationList = 0451467B1D5E2AA1007B1D7A /* Build configuration list for PBXNativeTarget "JWT-iOS" */;
 			buildPhases = (
 				045146711D5E2AA1007B1D7A /* Sources */,
 				045146721D5E2AA1007B1D7A /* Frameworks */,
@@ -591,14 +591,14 @@
 			);
 			dependencies = (
 			);
-			name = JWT_iOS_Framework;
+			name = "JWT-iOS";
 			productName = JWT_iOS_Framework;
-			productReference = 045146761D5E2AA1007B1D7A /* JWT_iOS_Framework.framework */;
+			productReference = 045146761D5E2AA1007B1D7A /* JWT-iOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		045146821D5E2AAF007B1D7A /* JWT_iOS_Swift */ = {
+		045146821D5E2AAF007B1D7A /* JWT-iOS-Swift */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 045146881D5E2AAF007B1D7A /* Build configuration list for PBXNativeTarget "JWT_iOS_Swift" */;
+			buildConfigurationList = 045146881D5E2AAF007B1D7A /* Build configuration list for PBXNativeTarget "JWT-iOS-Swift" */;
 			buildPhases = (
 				0451467E1D5E2AAF007B1D7A /* Sources */,
 				0451467F1D5E2AAF007B1D7A /* Frameworks */,
@@ -610,14 +610,14 @@
 			dependencies = (
 				045147251D5E2CD2007B1D7A /* PBXTargetDependency */,
 			);
-			name = JWT_iOS_Swift;
+			name = "JWT-iOS-Swift";
 			productName = JWT_iOS_Swift;
-			productReference = 045146831D5E2AAF007B1D7A /* JWT_iOS_Swift.framework */;
+			productReference = 045146831D5E2AAF007B1D7A /* JWT-iOS-Swift.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		0451468F1D5E2AC3007B1D7A /* JWT_macOS_Framework */ = {
+		0451468F1D5E2AC3007B1D7A /* JWT-macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 045146951D5E2AC4007B1D7A /* Build configuration list for PBXNativeTarget "JWT_macOS_Framework" */;
+			buildConfigurationList = 045146951D5E2AC4007B1D7A /* Build configuration list for PBXNativeTarget "JWT-macOS" */;
 			buildPhases = (
 				0451468B1D5E2AC3007B1D7A /* Sources */,
 				0451468C1D5E2AC3007B1D7A /* Frameworks */,
@@ -628,14 +628,14 @@
 			);
 			dependencies = (
 			);
-			name = JWT_macOS_Framework;
+			name = "JWT-macOS";
 			productName = JWT_macOS_Framework;
-			productReference = 045146901D5E2AC3007B1D7A /* JWT_macOS_Framework.framework */;
+			productReference = 045146901D5E2AC3007B1D7A /* JWT-macOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		0451469C1D5E2AD2007B1D7A /* JWT_macOS_Swift */ = {
+		0451469C1D5E2AD2007B1D7A /* JWT-macOS-Swift */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 045146A21D5E2AD2007B1D7A /* Build configuration list for PBXNativeTarget "JWT_macOS_Swift" */;
+			buildConfigurationList = 045146A21D5E2AD2007B1D7A /* Build configuration list for PBXNativeTarget "JWT-macOS-Swift" */;
 			buildPhases = (
 				045146981D5E2AD2007B1D7A /* Sources */,
 				045146991D5E2AD2007B1D7A /* Frameworks */,
@@ -647,9 +647,9 @@
 			dependencies = (
 				045147271D5E2CDE007B1D7A /* PBXTargetDependency */,
 			);
-			name = JWT_macOS_Swift;
+			name = "JWT-macOS-Swift";
 			productName = JWT_macOS_Swift;
-			productReference = 0451469D1D5E2AD2007B1D7A /* JWT_macOS_Swift.framework */;
+			productReference = 0451469D1D5E2AD2007B1D7A /* JWT-macOS-Swift.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		04DEBCA21DBCDB8600C1DF52 /* JWT */ = {
@@ -714,11 +714,11 @@
 			projectRoot = "";
 			targets = (
 				04DEBCA21DBCDB8600C1DF52 /* JWT */,
-				045146671D5E2A78007B1D7A /* JWT_iOS_Static */,
-				045146751D5E2AA1007B1D7A /* JWT_iOS_Framework */,
-				045146821D5E2AAF007B1D7A /* JWT_iOS_Swift */,
-				0451468F1D5E2AC3007B1D7A /* JWT_macOS_Framework */,
-				0451469C1D5E2AD2007B1D7A /* JWT_macOS_Swift */,
+				045146671D5E2A78007B1D7A /* JWT-iOS-Static */,
+				045146751D5E2AA1007B1D7A /* JWT-iOS */,
+				045146821D5E2AAF007B1D7A /* JWT-iOS-Swift */,
+				0451468F1D5E2AC3007B1D7A /* JWT-macOS */,
+				0451469C1D5E2AD2007B1D7A /* JWT-macOS-Swift */,
 			);
 		};
 /* End PBXProject section */
@@ -877,12 +877,12 @@
 /* Begin PBXTargetDependency section */
 		045147251D5E2CD2007B1D7A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 045146751D5E2AA1007B1D7A /* JWT_iOS_Framework */;
+			target = 045146751D5E2AA1007B1D7A /* JWT-iOS */;
 			targetProxy = 045147241D5E2CD2007B1D7A /* PBXContainerItemProxy */;
 		};
 		045147271D5E2CDE007B1D7A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 0451468F1D5E2AC3007B1D7A /* JWT_macOS_Framework */;
+			target = 0451468F1D5E2AC3007B1D7A /* JWT-macOS */;
 			targetProxy = 045147261D5E2CDE007B1D7A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -973,7 +973,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = Supplement/JWT.modulemap;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_iOS_Framework;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jwtio.$(PRODUCT_NAME)";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1013,7 +1014,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = Supplement/JWT.modulemap;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_iOS_Framework;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jwtio.$(PRODUCT_NAME)";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1050,7 +1052,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_iOS_Swift;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jwtio.$(PRODUCT_NAME)";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1090,7 +1093,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_iOS_Swift;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jwtio.$(PRODUCT_NAME)";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1130,7 +1134,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = Supplement/JWT.modulemap;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_macOS_Framework;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jwtio.$(PRODUCT_NAME)";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -1172,7 +1177,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = Supplement/JWT.modulemap;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_macOS_Framework;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jwtio.$(PRODUCT_NAME)";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -1212,7 +1218,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "";
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_macOS_Swift;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jwtio.$(PRODUCT_NAME)";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -1255,7 +1262,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MODULEMAP_FILE = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jwtio.JWT_macOS_Swift;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jwtio.$(PRODUCT_NAME)";
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -1417,7 +1425,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0451466E1D5E2A78007B1D7A /* Build configuration list for PBXNativeTarget "JWT_iOS_Static" */ = {
+		0451466E1D5E2A78007B1D7A /* Build configuration list for PBXNativeTarget "JWT-iOS-Static" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0451466F1D5E2A78007B1D7A /* Debug */,
@@ -1426,7 +1434,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0451467B1D5E2AA1007B1D7A /* Build configuration list for PBXNativeTarget "JWT_iOS_Framework" */ = {
+		0451467B1D5E2AA1007B1D7A /* Build configuration list for PBXNativeTarget "JWT-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0451467C1D5E2AA1007B1D7A /* Debug */,
@@ -1435,7 +1443,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		045146881D5E2AAF007B1D7A /* Build configuration list for PBXNativeTarget "JWT_iOS_Swift" */ = {
+		045146881D5E2AAF007B1D7A /* Build configuration list for PBXNativeTarget "JWT-iOS-Swift" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				045146891D5E2AAF007B1D7A /* Debug */,
@@ -1444,7 +1452,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		045146951D5E2AC4007B1D7A /* Build configuration list for PBXNativeTarget "JWT_macOS_Framework" */ = {
+		045146951D5E2AC4007B1D7A /* Build configuration list for PBXNativeTarget "JWT-macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				045146961D5E2AC4007B1D7A /* Debug */,
@@ -1453,7 +1461,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		045146A21D5E2AD2007B1D7A /* Build configuration list for PBXNativeTarget "JWT_macOS_Swift" */ = {
+		045146A21D5E2AD2007B1D7A /* Build configuration list for PBXNativeTarget "JWT-macOS-Swift" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				045146A31D5E2AD2007B1D7A /* Debug */,
