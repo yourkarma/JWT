@@ -81,7 +81,7 @@
     
     self.modifyChain = ^(JWTAlgorithmDataHolderChain *(^block)(JWTAlgorithmDataHolderChain *chain)) {
         if (block) {
-            JWTAlgorithmDataHolderChain *chain = block(chain);
+            JWTAlgorithmDataHolderChain *chain = block(weakSelf.internalChain);
             return [weakSelf chain:chain];
         }
         return weakSelf;
@@ -256,7 +256,10 @@
         return nil;
     }
     
-    NSDictionary *header = @{@"typ": @"JWT", @"alg": theAlgorithmName};
+    NSDictionary *header = @{
+                             @"alg": theAlgorithmName,
+                             @"typ": @"JWT"
+                             };
     NSMutableDictionary *allHeaders = [header mutableCopy];
 
     if (theHeaders.allKeys.count > 0) {
