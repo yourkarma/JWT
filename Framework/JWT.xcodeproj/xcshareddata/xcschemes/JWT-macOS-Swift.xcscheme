@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0451469C1D5E2AD2007B1D7A"
-               BuildableName = "JWT-macOS-Swift.framework"
+               BuildableName = "JWTSwift.framework"
                BlueprintName = "JWT-macOS-Swift"
                ReferencedContainer = "container:JWT.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0451469C1D5E2AD2007B1D7A"
-            BuildableName = "JWT-macOS-Swift.framework"
+            BuildableName = "JWTSwift.framework"
             BlueprintName = "JWT-macOS-Swift"
             ReferencedContainer = "container:JWT.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0451469C1D5E2AD2007B1D7A"
-            BuildableName = "JWT-macOS-Swift.framework"
+            BuildableName = "JWTSwift.framework"
             BlueprintName = "JWT-macOS-Swift"
             ReferencedContainer = "container:JWT.xcodeproj">
          </BuildableReference>

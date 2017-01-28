@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "045146671D5E2A78007B1D7A"
-               BuildableName = "libJWT-iOS-Static.a"
+               BuildableName = "libJWT.a"
                BlueprintName = "JWT-iOS-Static"
                ReferencedContainer = "container:JWT.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "045146671D5E2A78007B1D7A"
-            BuildableName = "libJWT-iOS-Static.a"
+            BuildableName = "libJWT.a"
             BlueprintName = "JWT-iOS-Static"
             ReferencedContainer = "container:JWT.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "045146671D5E2A78007B1D7A"
-            BuildableName = "libJWT-iOS-Static.a"
+            BuildableName = "libJWT.a"
             BlueprintName = "JWT-iOS-Static"
             ReferencedContainer = "container:JWT.xcodeproj">
          </BuildableReference>

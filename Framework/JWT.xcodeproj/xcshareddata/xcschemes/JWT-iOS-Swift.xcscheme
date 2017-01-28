@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "045146821D5E2AAF007B1D7A"
-               BuildableName = "JWT-iOS-Swift.framework"
+               BuildableName = "JWTSwift.framework"
                BlueprintName = "JWT-iOS-Swift"
                ReferencedContainer = "container:JWT.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "045146821D5E2AAF007B1D7A"
-            BuildableName = "JWT-iOS-Swift.framework"
+            BuildableName = "JWTSwift.framework"
             BlueprintName = "JWT-iOS-Swift"
             ReferencedContainer = "container:JWT.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "045146821D5E2AAF007B1D7A"
-            BuildableName = "JWT-iOS-Swift.framework"
+            BuildableName = "JWTSwift.framework"
             BlueprintName = "JWT-iOS-Swift"
             ReferencedContainer = "container:JWT.xcodeproj">
          </BuildableReference>
