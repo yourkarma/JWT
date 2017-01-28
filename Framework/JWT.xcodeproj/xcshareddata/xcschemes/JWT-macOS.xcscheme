@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0800"
+   LastUpgradeVersion = "0820"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0451469C1D5E2AD2007B1D7A"
-               BuildableName = "JWT_macOS_Swift.framework"
-               BlueprintName = "JWT_macOS_Swift"
+               BlueprintIdentifier = "0451468F1D5E2AC3007B1D7A"
+               BuildableName = "JWT.framework"
+               BlueprintName = "JWT-macOS"
                ReferencedContainer = "container:JWT.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0451469C1D5E2AD2007B1D7A"
-            BuildableName = "JWT_macOS_Swift.framework"
-            BlueprintName = "JWT_macOS_Swift"
+            BlueprintIdentifier = "0451468F1D5E2AC3007B1D7A"
+            BuildableName = "JWT.framework"
+            BlueprintName = "JWT-macOS"
             ReferencedContainer = "container:JWT.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0451469C1D5E2AD2007B1D7A"
-            BuildableName = "JWT_macOS_Swift.framework"
-            BlueprintName = "JWT_macOS_Swift"
+            BlueprintIdentifier = "0451468F1D5E2AC3007B1D7A"
+            BuildableName = "JWT.framework"
+            BlueprintName = "JWT-macOS"
             ReferencedContainer = "container:JWT.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

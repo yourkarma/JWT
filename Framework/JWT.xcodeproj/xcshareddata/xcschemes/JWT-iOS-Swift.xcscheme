@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0800"
+   LastUpgradeVersion = "0820"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "045146671D5E2A78007B1D7A"
-               BuildableName = "libJWT_iOS_Static.a"
-               BlueprintName = "JWT_iOS_Static"
+               BlueprintIdentifier = "045146821D5E2AAF007B1D7A"
+               BuildableName = "JWTSwift.framework"
+               BlueprintName = "JWT-iOS-Swift"
                ReferencedContainer = "container:JWT.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "045146671D5E2A78007B1D7A"
-            BuildableName = "libJWT_iOS_Static.a"
-            BlueprintName = "JWT_iOS_Static"
+            BlueprintIdentifier = "045146821D5E2AAF007B1D7A"
+            BuildableName = "JWTSwift.framework"
+            BlueprintName = "JWT-iOS-Swift"
             ReferencedContainer = "container:JWT.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "045146671D5E2A78007B1D7A"
-            BuildableName = "libJWT_iOS_Static.a"
-            BlueprintName = "JWT_iOS_Static"
+            BlueprintIdentifier = "045146821D5E2AAF007B1D7A"
+            BuildableName = "JWTSwift.framework"
+            BlueprintName = "JWT-iOS-Swift"
             ReferencedContainer = "container:JWT.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
