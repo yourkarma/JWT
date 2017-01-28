@@ -81,7 +81,7 @@
     
     self.modifyChain = ^(JWTAlgorithmDataHolderChain *(^block)(JWTAlgorithmDataHolderChain *chain)) {
         if (block) {
-            JWTAlgorithmDataHolderChain *chain = block(chain);
+            JWTAlgorithmDataHolderChain *chain = block(weakSelf.internalChain);
             return [weakSelf chain:chain];
         }
         return weakSelf;
