@@ -256,7 +256,10 @@
         return nil;
     }
     
-    NSDictionary *header = @{@"typ": @"JWT", @"alg": theAlgorithmName};
+    NSDictionary *header = @{
+                             @"alg": theAlgorithmName,
+                             @"typ": @"JWT"
+                             };
     NSMutableDictionary *allHeaders = [header mutableCopy];
 
     if (theHeaders.allKeys.count > 0) {
