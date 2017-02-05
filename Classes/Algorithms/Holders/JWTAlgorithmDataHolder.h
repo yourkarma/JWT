@@ -17,12 +17,12 @@
 /**
  The verification key to use when encoding/decoding a JWT in data form
  */
-@property (copy, nonatomic, readwrite) NSData *currentSecretData;
+@property (copy, nonatomic, readwrite) NSData *internalSecretData;
 
 /**
  The <JWTAlgorithm> to use for encoding a JWT
  */
-@property (strong, nonatomic, readwrite) id <JWTAlgorithm> currentAlgorithm;
+@property (strong, nonatomic, readwrite) id <JWTAlgorithm> internalAlgorithm;
 @end
 
 @interface JWTAlgorithmBaseDataHolder : NSObject <JWTAlgorithmDataHolderProtocol>
@@ -31,12 +31,12 @@
 /**
  The verification key to use when encoding/decoding a JWT
  */
-@property (copy, nonatomic, readonly) NSString *currentSecret;
+@property (copy, nonatomic, readonly) NSString *internalSecret;
 
 /**
  The algorithm name to use for decoding the JWT. Required unless force decode is true
  */
-@property (copy, nonatomic, readonly) NSString *currentAlgorithmName;
+@property (copy, nonatomic, readonly) NSString *internalAlgorithmName;
 
 #pragma mark - Setters
 /**
@@ -72,17 +72,22 @@
 @interface JWTAlgorithmNoneDataHolder : JWTAlgorithmBaseDataHolder @end
 @interface JWTAlgorithmHSFamilyDataHolder : JWTAlgorithmBaseDataHolder <JWTAlgorithmDataHolderCreateProtocol>
 @end
-
+@protocol JWTCryptoKeyProtocol;
 @interface JWTAlgorithmRSFamilyDataHolder : JWTAlgorithmBaseDataHolder <JWTAlgorithmDataHolderCreateProtocol>
 #pragma mark - Getters
 /**
  The passphrase for the PKCS12 blob, which represents the certificate containing the private key for the RS algorithms.
  */
-@property (copy, nonatomic, readonly) NSString *currentPrivateKeyCertificatePassphrase;
-
+@property (copy, nonatomic, readonly) NSString *internalPrivateKeyCertificatePassphrase;
+@property (copy, nonatomic, readonly) NSString *internalKeyExtractorType;
+@property (strong, nonatomic, readonly) id<JWTCryptoKeyProtocol> internalSignKey;
+@property (strong, nonatomic, readonly) id<JWTCryptoKeyProtocol> internalVerifyKey;
 #pragma mark - Setters
 /**
  Sets jwtPrivateKeyCertificatePassphrase and returns the JWTAlgorithmRSFamilyDataHolder to allow for method chaining
  */
 @property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^privateKeyCertificatePassphrase)(NSString *privateKeyCertificatePassphrase);
+@property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^keyExtractorType)(NSString *keyExtractorType);
+@property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^signKey)(id<JWTCryptoKeyProtocol> signKey);
+@property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^verifyKey)(id<JWTCryptoKeyProtocol> verifyKey);
 @end

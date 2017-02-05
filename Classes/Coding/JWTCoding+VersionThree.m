@@ -219,8 +219,8 @@
     }
     
     for (id <JWTAlgorithmDataHolderProtocol>holder in holders) {
-        id <JWTAlgorithm>algorithm = holder.currentAlgorithm;
-        NSData *secretData = holder.currentSecretData;
+        id <JWTAlgorithm>algorithm = holder.internalAlgorithm;
+        NSData *secretData = holder.internalSecretData;
         encodedMessage = [self encodeWithAlgorithm:algorithm withHeaders:headers withPayload:payload withSecretData:secretData withError:&error];
         if (encodedMessage && (error == nil)) {
             break;
@@ -405,8 +405,8 @@
     
     for (id <JWTAlgorithmDataHolderProtocol>holder in self.internalChain.holders) {
         // try decode!
-        id <JWTAlgorithm> algorithm = holder.currentAlgorithm;
-        NSData *secretData = holder.currentSecretData;
+        id <JWTAlgorithm> algorithm = holder.internalAlgorithm;
+        NSData *secretData = holder.internalSecretData;
         // try to retrieve passphrase.
         decodedDictionary = [self decodeMessage:message secretData:secretData algorithm:algorithm options:options error:&error];
         if (decodedDictionary && (error == nil)) {

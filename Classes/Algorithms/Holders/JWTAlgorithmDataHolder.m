@@ -16,8 +16,8 @@
 
 @interface JWTAlgorithmBaseDataHolder()
 // not needed by algorithm adoption.
-// @property (copy, nonatomic, readwrite) NSData *currentSecretData;
-// @property (strong, nonatomic, readwrite) id <JWTAlgorithm> currentAlgorithm;
+// @property (copy, nonatomic, readwrite) NSData *internalSecretData;
+// @property (strong, nonatomic, readwrite) id <JWTAlgorithm> internalAlgorithm;
 
 #pragma mark - Setters
 /**
@@ -79,22 +79,22 @@
 @implementation JWTAlgorithmBaseDataHolder (Fluent)
 #pragma mark - Fluent
 - (instancetype)secretData:(NSData *)secretData {
-    self.currentSecretData = secretData;
+    self.internalSecretData = secretData;
     return self;
 }
 
 - (instancetype)secret:(NSString *)secret {
-    self.currentSecretData = [self dataFromString:secret];
+    self.internalSecretData = [self dataFromString:secret];
     return self;
 }
 
 - (instancetype)algorithm:(id<JWTAlgorithm>)algorithm {
-    self.currentAlgorithm = algorithm;
+    self.internalAlgorithm = algorithm;
     return self;
 }
 
 - (instancetype)algorithmName:(NSString *)algorithmName {
-    self.currentAlgorithm = [JWTAlgorithmFactory algorithmByName:algorithmName];
+    self.internalAlgorithm = [JWTAlgorithmFactory algorithmByName:algorithmName];
     return self;
 }
 
@@ -127,25 +127,25 @@
 }
 - (NSDictionary *)debugInformation {
     return @{
-             @"algorithmName" : self.currentAlgorithmName ?: @"unknown",
-             @"algorithm" : [self.currentAlgorithm debugDescription] ?: @"unknown",
-             @"secretData" : [self.currentSecretData debugDescription]
+             @"algorithmName" : self.internalAlgorithmName ?: @"unknown",
+             @"algorithm" : [self.internalAlgorithm debugDescription] ?: @"unknown",
+             @"secretData" : [self.internalSecretData debugDescription]
              };
 }
 
 @end
 
 @implementation JWTAlgorithmBaseDataHolder
-@synthesize currentAlgorithm;
-@synthesize currentSecretData;
+@synthesize internalAlgorithm;
+@synthesize internalSecretData;
 
 #pragma mark - Custom Getters
-- (NSString *)currentAlgorithmName {
-    return [self.currentAlgorithm name];
+- (NSString *)internalAlgorithmName {
+    return [self.internalAlgorithm name];
 }
 
-- (NSString *)currentSecret {
-    return [self stringFromData:self.currentSecretData];
+- (NSString *)internalSecret {
+    return [self stringFromData:self.internalSecretData];
 }
 
 - (instancetype)init {
@@ -159,8 +159,8 @@
 #pragma mark - Copy
 - (id)copyWithZone:(NSZone *)zone {
     JWTAlgorithmBaseDataHolder *holder = [self.class new];
-    holder.currentAlgorithm = self.currentAlgorithm;
-    holder.currentSecretData = self.currentSecretData;
+    holder.internalAlgorithm = self.internalAlgorithm;
+    holder.internalSecretData = self.internalSecretData;
     return holder;
 }
 @end
@@ -178,8 +178,8 @@
 @implementation JWTAlgorithmNoneDataHolder
 - (instancetype)init {
     if (self = [super init]) {
-        self.currentAlgorithm = [JWTAlgorithmFactory algorithmByName:JWTAlgorithmNameNone];
-        self.currentSecretData = nil;
+        self.internalAlgorithm = [JWTAlgorithmFactory algorithmByName:JWTAlgorithmNameNone];
+        self.internalSecretData = nil;
     }
     return self;
 }
@@ -199,15 +199,20 @@
 
 @interface JWTAlgorithmRSFamilyDataHolder()
 #pragma mark - Getters
-@property (copy, nonatomic, readwrite) NSString *currentPrivateKeyCertificatePassphrase;
-
+@property (copy, nonatomic, readwrite) NSString *internalPrivateKeyCertificatePassphrase;
+@property (copy, nonatomic, readwrite) NSString *internalKeyExtractorType;
+@property (strong, nonatomic, readwrite) id<JWTCryptoKeyProtocol> internalSignKey;
+@property (strong, nonatomic, readwrite) id<JWTCryptoKeyProtocol> internalVerifyKey;
 #pragma mark - Setters
 @property (copy, nonatomic, readwrite) JWTAlgorithmRSFamilyDataHolder *(^privateKeyCertificatePassphrase)(NSString *privateKeyCertificatePassphrase);
+@property (copy, nonatomic, readwrite) JWTAlgorithmRSFamilyDataHolder *(^keyExtractorType)(NSString *keyExtractorType);
+@property (copy, nonatomic, readwrite) JWTAlgorithmRSFamilyDataHolder *(^signKey)(id<JWTCryptoKeyProtocol> signKey);
+@property (copy, nonatomic, readwrite) JWTAlgorithmRSFamilyDataHolder *(^verifyKey)(id<JWTCryptoKeyProtocol> verifyKey);
 @end
 
 @implementation JWTAlgorithmRSFamilyDataHolder (Debug)
 - (NSDictionary *)debugInformation {
-    NSDictionary *add = @{@"privateKeyCertificatePassphrase" : self.currentPrivateKeyCertificatePassphrase ?: @"unknown"};
+    NSDictionary *add = @{@"privateKeyCertificatePassphrase" : self.internalPrivateKeyCertificatePassphrase ?: @"unknown"};
     NSMutableDictionary *result = [[super debugInformation] mutableCopy];
     [result addEntriesFromDictionary:add];
     return result;
@@ -230,24 +235,43 @@
 }
 
 #pragma mark - Getters
-- (id<JWTAlgorithm>)currentAlgorithm {
-    id <JWTAlgorithm> algorithm = [super currentAlgorithm];
+- (id<JWTAlgorithm>)internalAlgorithm {
+    id <JWTAlgorithm> algorithm = [super internalAlgorithm];
     if ([algorithm conformsToProtocol:@protocol(JWTRSAlgorithm)]) {
-        ((id <JWTRSAlgorithm>)algorithm).privateKeyCertificatePassphrase = self.currentPrivateKeyCertificatePassphrase;
+        id<JWTRSAlgorithm>currentAlgorithm = ((id <JWTRSAlgorithm>)algorithm);
+        currentAlgorithm.privateKeyCertificatePassphrase = self.internalPrivateKeyCertificatePassphrase;
+        currentAlgorithm.keyExtractorType = self.internalKeyExtractorType;
+        currentAlgorithm.signKey = self.internalSignKey;
+        currentAlgorithm.verifyKey = self.internalVerifyKey;
     }
     return algorithm;
 }
 
 #pragma mark - Setters
 - (instancetype)privateKeyCertificatePassphrase:(NSString *)passphrase {
-    self.currentPrivateKeyCertificatePassphrase = passphrase;
+    self.internalPrivateKeyCertificatePassphrase = passphrase;
+    return self;
+}
+- (instancetype)keyExtractorType:(NSString *)type {
+    self.internalKeyExtractorType = type;
+    return self;
+}
+- (instancetype)signKey:(id<JWTCryptoKeyProtocol>)key {
+    self.internalSignKey = key;
+    return self;
+}
+- (instancetype)verifyKey:(id<JWTCryptoKeyProtocol>)key {
+    self.internalVerifyKey = key;
     return self;
 }
 
 #pragma mark - Copy
 - (id)copyWithZone:(NSZone *)zone {
     JWTAlgorithmRSFamilyDataHolder *holder = [super copyWithZone:zone];
-    holder.privateKeyCertificatePassphrase = self.privateKeyCertificatePassphrase;
+    holder.internalPrivateKeyCertificatePassphrase = self.internalPrivateKeyCertificatePassphrase;
+    holder.internalKeyExtractorType = self.internalKeyExtractorType;
+    holder.internalSignKey = self.internalSignKey;
+    holder.internalVerifyKey = self.internalVerifyKey;
     return holder;
 }
 @end
@@ -258,6 +282,15 @@
     __weak typeof(self) weakSelf = self;
     self.privateKeyCertificatePassphrase = ^(NSString *privateKeyCertificatePassphrase) {
         return [weakSelf privateKeyCertificatePassphrase:privateKeyCertificatePassphrase];
+    };
+    self.keyExtractorType = ^(NSString *keyExtractorType) {
+        return [weakSelf keyExtractorType:keyExtractorType];
+    };
+    self.signKey = ^(id<JWTCryptoKeyProtocol> key){
+        return [weakSelf signKey:key];
+    };
+    self.verifyKey = ^(id<JWTCryptoKeyProtocol> key){
+        return [weakSelf verifyKey:key];
     };
 }
 @end
