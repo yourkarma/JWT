@@ -21,6 +21,8 @@
 		045147881D5E312A007B1D7A /* JWTAlgorithmRS256Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0451476A1D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m */; };
 		0451478D1D5E312A007B1D7A /* JWTClaimsSerializerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147701D5E310E007B1D7A /* JWTClaimsSerializerSpec.m */; };
 		0451478F1D5E312A007B1D7A /* JWTSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147731D5E310E007B1D7A /* JWTSpec.m */; };
+		049C0DF41E47A38C0062B8C3 /* private_256_right.pem in Resources */ = {isa = PBXBuildFile; fileRef = 049C0DF21E47A38C0062B8C3 /* private_256_right.pem */; };
+		049C0DF51E47A38C0062B8C3 /* private_256_wrong.pem in Resources */ = {isa = PBXBuildFile; fileRef = 049C0DF31E47A38C0062B8C3 /* private_256_wrong.pem */; };
 		04A5A58A1DF14FE300FBDF4C /* JWTMarkdownSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A5A5891DF14FE300FBDF4C /* JWTMarkdownSpec.m */; };
 		04EBA9041E3D099B0025090A /* private_256_right.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04EBA9001E3D099B0025090A /* private_256_right.p12 */; };
 		04EBA9051E3D099B0025090A /* private_256_wrong.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04EBA9011E3D099B0025090A /* private_256_wrong.p12 */; };
@@ -46,6 +48,8 @@
 		0451476A1D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmRS256Tests.m; sourceTree = "<group>"; };
 		045147701D5E310E007B1D7A /* JWTClaimsSerializerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSerializerSpec.m; sourceTree = "<group>"; };
 		045147731D5E310E007B1D7A /* JWTSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTSpec.m; sourceTree = "<group>"; };
+		049C0DF21E47A38C0062B8C3 /* private_256_right.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = private_256_right.pem; sourceTree = "<group>"; };
+		049C0DF31E47A38C0062B8C3 /* private_256_wrong.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = private_256_wrong.pem; sourceTree = "<group>"; };
 		04A5A5891DF14FE300FBDF4C /* JWTMarkdownSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTMarkdownSpec.m; sourceTree = "<group>"; };
 		04EBA9001E3D099B0025090A /* private_256_right.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = private_256_right.p12; sourceTree = "<group>"; };
 		04EBA9011E3D099B0025090A /* private_256_wrong.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = private_256_wrong.p12; sourceTree = "<group>"; };
@@ -129,6 +133,8 @@
 		045147651D5E310E007B1D7A /* Algorithms */ = {
 			isa = PBXGroup;
 			children = (
+				049C0DF21E47A38C0062B8C3 /* private_256_right.pem */,
+				049C0DF31E47A38C0062B8C3 /* private_256_wrong.pem */,
 				04EBA9001E3D099B0025090A /* private_256_right.p12 */,
 				04EBA9011E3D099B0025090A /* private_256_wrong.p12 */,
 				04EBA9021E3D099B0025090A /* public_256_right.pem */,
@@ -239,7 +245,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 0451472C1D5E2F93007B1D7A /* Build configuration list for PBXProject "JWT Tests" */;
+			buildConfigurationList = 0451472C1D5E2F93007B1D7A /* Build configuration list for PBXProject "Tests" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -262,6 +268,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				049C0DF51E47A38C0062B8C3 /* private_256_wrong.pem in Resources */,
+				049C0DF41E47A38C0062B8C3 /* private_256_right.pem in Resources */,
 				04EBA9041E3D099B0025090A /* private_256_right.p12 in Resources */,
 				04EBA9051E3D099B0025090A /* private_256_wrong.p12 in Resources */,
 				04EBA9061E3D099B0025090A /* public_256_right.pem in Resources */,
@@ -650,7 +658,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0451472C1D5E2F93007B1D7A /* Build configuration list for PBXProject "JWT Tests" */ = {
+		0451472C1D5E2F93007B1D7A /* Build configuration list for PBXProject "Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0451472D1D5E2F93007B1D7A /* Debug */,

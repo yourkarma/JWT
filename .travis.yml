@@ -54,9 +54,9 @@ script:
     - pod install --project-directory=Tests
     # 32-bit tests
     - echo Run iOS Tests
-    - xcodebuild test -workspace 'Tests/JWT Tests.xcworkspace/' -scheme 'iOS_Tests' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 5,OS=latest' | xcpretty -c
+    - xcodebuild test -workspace 'Tests/Tests.xcworkspace/' -scheme 'iOS_Tests' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 5,OS=latest' | xcpretty -c
     # 64-bit tests
-    - xcodebuild test -workspace 'Tests/JWT Tests.xcworkspace/' -scheme 'iOS_Tests' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 5s,OS=latest' | xcpretty -c
+    - xcodebuild test -workspace 'Tests/Tests.xcworkspace/' -scheme 'iOS_Tests' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 5s,OS=latest' | xcpretty -c
     # mac OS tests
     # UNCOMMENT WHEN READY!
     # - echo Run Mac OS Tests

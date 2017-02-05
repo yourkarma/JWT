@@ -5,6 +5,19 @@
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForRunning = "YES"
+            buildForTesting = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0451473F1D5E3004007B1D7A"
+               BuildableName = "macOS_Tests.xctest"
+               BlueprintName = "macOS_Tests"
+               ReferencedContainer = "container:Tests.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
    </BuildAction>
    <TestAction
       buildConfiguration = "Debug"
@@ -16,10 +29,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "045147321D5E2FF0007B1D7A"
-               BuildableName = "iOS_Tests.xctest"
-               BlueprintName = "iOS_Tests"
-               ReferencedContainer = "container:JWT Tests.xcodeproj">
+               BlueprintIdentifier = "0451473F1D5E3004007B1D7A"
+               BuildableName = "macOS_Tests.xctest"
+               BlueprintName = "macOS_Tests"
+               ReferencedContainer = "container:Tests.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

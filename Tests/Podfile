@@ -1,11 +1,10 @@
 source 'https://github.com/CocoaPods/Specs'
 
 def framework_name
-	'JWT' 
+	'JWT'
 end
 
-xcodeproj framework_name + ' ' + 'Tests'
-#workspace '../Framework/JWT'
+xcodeproj 'Tests'
 inhibit_all_warnings!
 
 def import_pods
