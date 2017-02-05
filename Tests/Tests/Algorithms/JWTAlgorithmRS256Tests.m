@@ -10,16 +10,27 @@
 #import <Base64/MF_Base64Additions.h>
 #import "JWT.h"
 #import "JWTAlgorithmRSBase.h"
+#import "JWTCryptoKeyExtractor.h"
 
 static NSString *algorithmBehavior = @"algorithmRS256Behaviour";
 static NSString *dataAlgorithmKey = @"dataAlgorithmKey";
 
 @interface JWTAlgorithmRS256Examples_RSA_Helper : NSObject
 + (NSString *)extractCertificateFromPemFileWithName:(NSString *)name;
++ (NSString *)extractKeyFromPemFileWithName:(NSString *)name;
++ (NSArray *)extractFromPemFileWithName:(NSString *)name byRegex:(NSRegularExpression *)expression;
 @end
 
 @implementation JWTAlgorithmRS256Examples_RSA_Helper
 + (NSString *)extractCertificateFromPemFileWithName:(NSString *)name; {
+    NSRegularExpression *expression = [[NSRegularExpression alloc] initWithPattern:@"-----BEGIN CERTIFICATE-----(.+?)-----END CERTIFICATE-----" options:NSRegularExpressionDotMatchesLineSeparators error:nil];
+    return [self extractFromPemFileWithName:name byRegex:expression].firstObject;
+}
++ (NSString *)extractKeyFromPemFileWithName:(NSString *)name {
+    NSRegularExpression *expression = [[NSRegularExpression alloc] initWithPattern:@"-----BEGIN(?:[\\w\\s]|)+KEY-----(.+?)-----END(?:[\\w\\s])+KEY-----" options:NSRegularExpressionDotMatchesLineSeparators error:nil];
+    return [self extractFromPemFileWithName:name byRegex:expression].firstObject;
+}
++ (NSArray *)extractFromPemFileWithName:(NSString *)name byRegex:(NSRegularExpression *)expression {
     NSURL *fileURL = [[NSBundle bundleForClass:self.class] URLForResource:name withExtension:@"pem"];
     NSError *error = nil;
     NSString *fileContent = [NSString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
@@ -29,22 +40,17 @@ static NSString *dataAlgorithmKey = @"dataAlgorithmKey";
         return nil;
     }
     
-    NSRegularExpression *expression = [[NSRegularExpression alloc] initWithPattern:@"-----BEGIN CERTIFICATE-----(.+?)-----END CERTIFICATE-----" options:NSRegularExpressionDotMatchesLineSeparators error:&error];
-    
-    if (error) {
-        NSLog(@"%@ error: %@", self.debugDescription, error);
-        return nil;
-    }
-    
     NSArray *matches = [expression matchesInString:fileContent options:0 range:NSMakeRange(0, fileContent.length)];
     NSTextCheckingResult *result = matches.firstObject;
-    NSString *extractedString = nil;
+    NSArray *resultArray = @[];
     
     if (result) {
-        extractedString = [fileContent substringWithRange:[result rangeAtIndex:1]];
+        for (NSUInteger i = 1; i < result.numberOfRanges; ++i) {
+            NSString *extractedString = [fileContent substringWithRange:[result rangeAtIndex:i]];
+            resultArray = [resultArray arrayByAddingObject:extractedString];
+        }
     }
-    
-    return extractedString;
+    return resultArray;
 }
 @end
 
@@ -119,6 +125,122 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
         };
     });
 
+    context(@"KeyExtracting", ^{
+        __block NSDictionary *keyExtractingTokens = @{};
+        __block NSDictionary *keyExtractingDataHolders = @{};
+        __block NSString *privateFromP12Key = @"privateFromP12Key";
+        __block NSString *privatePemEncodedKey = @"privatePemEncodedKey";
+        __block NSString *publicWithCertificateKey = @"publicWithCertificateKey";
+        __block NSString *publicPemEncodedKey = @"publicPemEncodedKey";
+        
+        beforeAll(^{
+//            __block NSDictionary *keyExtractingTokens = @{};
+//            
+//            __block NSString *privateFromP12Key = @"privateFromP12Key";
+//            __block NSString *privatePemEncodedKey = @"privatePemEncodedKey";
+//            __block NSString *publicWithCertificateKey = @"publicWithCertificateKey";
+//            __block NSString *publicPemEncodedKey = @"publicPemEncodedKey";
+            
+            NSMutableDictionary *mutableKeyExtractingTokens = [keyExtractingTokens mutableCopy];
+            NSMutableDictionary *mutableKeyExtractingDataHolders = [keyExtractingDataHolders mutableCopy];
+            NSString *privatePemEncodedString = [JWTAlgorithmRS256Examples_RSA_Helper extractKeyFromPemFileWithName:@"private_256_right"];
+            NSString *publicPemEncodedString = [JWTAlgorithmRS256Examples_RSA_Helper extractKeyFromPemFileWithName:@"public_256_right"];
+            {
+                // private from p12
+                NSString *key = privateFromP12Key;
+                JWTCodingResultType *result = nil;
+                id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor privateKeyInP12].type).privateKeyCertificatePassphrase(valid_privateKeyCertificatePassphrase).algorithm(algorithm).algorithmName(algorithmName).secretData(privateKeyCertificateData);
+                
+                mutableKeyExtractingDataHolders[key] = dataHolder;
+                
+                JWTCodingBuilder *newBuilder = [JWTEncodingBuilder encodePayload:payloadDictionary].addHolder(dataHolder);
+                
+                result = newBuilder.result;
+                if (result.successResult) {
+                    mutableKeyExtractingTokens[key] = result.successResult.encoded;
+                }
+            }
+            {
+                // private pem encoded
+                NSString *key = privatePemEncodedKey;
+                JWTCodingResultType *result = nil;
+                id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor privateKeyWithPEMBase64].type).privateKeyCertificatePassphrase(valid_privateKeyCertificatePassphrase).algorithm(algorithm).algorithmName(algorithmName).secret(privatePemEncodedString);
+                
+                mutableKeyExtractingDataHolders[key] = dataHolder;
+                
+                JWTCodingBuilder *newBuilder = [JWTEncodingBuilder encodePayload:payloadDictionary].addHolder(dataHolder);
+                
+                result = newBuilder.result;
+                if (result.successResult) {
+                    mutableKeyExtractingTokens[key] = result.successResult.encoded;
+                }
+            }
+            {
+                // public from certificate
+                NSString *key = publicWithCertificateKey;
+                JWTCodingResultType *result = nil;
+                id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor publicKeyWithCertificate].type).algorithm(algorithm).algorithmName(algorithmName).secret(valid_publicKeyCertificateString);
+                
+                mutableKeyExtractingDataHolders[key] = dataHolder;
+                
+                JWTCodingBuilder *newBuilder = [JWTEncodingBuilder encodePayload:payloadDictionary].addHolder(dataHolder);
+                
+                result = newBuilder.result;
+                
+                if (result.successResult) {
+//                    mutableKeyExtractingTokens[key] = result.successResult.encoded;
+                }
+            }
+            
+            {
+                // public pem encoded.
+                NSString *key = publicPemEncodedKey;
+                JWTCodingResultType *result = nil;
+                id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor publicKeyWithPEMBase64].type).algorithm(algorithm).algorithmName(algorithmName).secret(publicPemEncodedString);
+                
+                mutableKeyExtractingDataHolders[key] = dataHolder;
+                
+                JWTCodingBuilder *newBuilder = [JWTEncodingBuilder encodePayload:payloadDictionary].addHolder(dataHolder);
+                
+                result = newBuilder.result;
+                if (result.successResult) {
+//                    mutableKeyExtractingTokens[key] = result.successResult.encoded;
+                }
+            }
+            keyExtractingTokens = [mutableKeyExtractingTokens copy];
+            keyExtractingDataHolders = [mutableKeyExtractingDataHolders copy];
+        });
+        context(@"Decoding", ^{
+            it(@"ByExtractedKeys", ^{
+                NSLog(@"tokens are: %@", keyExtractingTokens);
+                for (NSString *decodeByKey in keyExtractingDataHolders) {
+                    id<JWTAlgorithmDataHolderProtocol> dataHolder = keyExtractingDataHolders[decodeByKey];
+                    for (NSString *key in keyExtractingTokens) {
+                        if ([key hasPrefix:[decodeByKey substringToIndex:2]]) {
+                            // skip public and public or private and private.
+                            NSLog(@"Pair: <%@> decodeBy <%@> skipped", key, decodeByKey);
+                            continue;
+                        }
+                        if ([decodeByKey hasPrefix:@"publicPem"]) {
+                            continue;
+                        }
+                        NSString *token = keyExtractingTokens[key];
+                        JWTCodingBuilder *newBuilder = [JWTDecodingBuilder decodeMessage:token].addHolder(dataHolder);
+                        JWTCodingResultType *result = newBuilder.result;
+                        if (result.successResult) {
+                            NSLog(@"Pair: <%@> decodeBy <%@> passed", key, decodeByKey);
+                            assertDecodedDictionary(result.successResult.headerAndPayloadDictionary);
+                        }
+                        else {
+                            NSLog(@"Pair: <%@> decodeBy <%@> failed", key, decodeByKey);
+                            assertDecodedDictionary(nil);
+                        }
+                    }
+                }
+            });
+
+        });
+    });
     context(@"Encoding", ^{
         context(@"Valid", ^{
             it(@"DataWithValidPrivateKeyCertificatePassphrase", ^{

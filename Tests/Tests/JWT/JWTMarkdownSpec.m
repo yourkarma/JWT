@@ -44,7 +44,7 @@ describe(@"markdown examples", ^{
             // and lets populate chain with secrets.
             NSLog(@"chain has: %@", chain.debugDescription);
 
-            JWTAlgorithmDataHolderChain *expandedChain = [chain chainByPopulatingAlgorithm:firstHolder.currentAlgorithm withManySecretData:manySecretsData];
+            JWTAlgorithmDataHolderChain *expandedChain = [chain chainByPopulatingAlgorithm:firstHolder.internalAlgorithm withManySecretData:manySecretsData];
 
             // now we have expanded chain with many secrets and one algorithm.
             NSLog(@"expanded chain has: %@", expandedChain.debugDescription);
@@ -77,7 +77,7 @@ describe(@"markdown examples", ^{
             [JWTDecodingBuilder decodeMessage:token].addHolder(firstHolder).addHolder(errorHolder);
 
             // or add them as chain
-            [JWTDecodingBuilder decodeMessage:claimsSet].chain(chain);
+            [JWTDecodingBuilder decodeMessage:token].chain(chain);
         });
         it(@"API should api work correctly", ^{
             JWTClaimsSet *claimsSet = [[JWTClaimsSet alloc] init];
