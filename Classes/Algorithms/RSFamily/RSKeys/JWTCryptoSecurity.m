@@ -9,17 +9,34 @@
 #import "JWTCryptoSecurity.h"
 
 @implementation JWTCryptoSecurity
-+ (SecKeyRef)addKeyWithData:(NSData *)data asPublic:(BOOL)public tag:(NSString *)tag error:(NSError *__autoreleasing*)error; {
++ (NSDictionary *)dictionaryByCombiningDictionaries:(NSArray *)dictionaries {
+    NSMutableDictionary *result = [@{} mutableCopy];
+    for (NSDictionary *dictionary in dictionaries) {
+        [result addEntriesFromDictionary:dictionary];
+    }
+    return [result copy];
+}
++ (NSString *)keyTypeRSA {
+    return (__bridge NSString *)kSecAttrKeyTypeRSA;
+}
++ (NSString *)keyTypeEC {
+//    extern const CFStringRef kSecAttrKeyTypeEC
+//    __OSX_AVAILABLE_STARTING(__MAC_10_9, __IPHONE_4_0);
+//    extern const CFStringRef kSecAttrKeyTypeECSECPrimeRandom
+//    __OSX_AVAILABLE_STARTING(__MAC_10_12, __IPHONE_10_0);
+    return (__bridge NSString *)kSecAttrKeyTypeEC;
+}
++ (SecKeyRef)addKeyWithData:(NSData *)data asPublic:(BOOL)public tag:(NSString *)tag type:(NSString *)type error:(NSError *__autoreleasing*)error; {
+    NSString *keyClass = (__bridge NSString *)(public ? kSecAttrKeyClassPublic : kSecAttrKeyClassPrivate);
+    NSInteger sizeInBits = data.length * 8;
+    NSDictionary *attributes = @{
+        (__bridge NSString*)kSecAttrKeyType : type,
+        (__bridge NSString*)kSecAttrKeyClass : keyClass,
+        (__bridge NSString*)kSecAttrKeySizeInBits : @(sizeInBits)
+    };
 
-    CFStringRef keyClass = public ? kSecAttrKeyClassPublic : kSecAttrKeyClassPrivate;
-    BOOL versionOverTen = SecKeyCreateWithData != NULL;
-    if (versionOverTen) {
-        NSInteger sizeInBits = data.length * 8;
-        NSDictionary *attributes = @{
-                                     (__bridge NSString*)kSecAttrKeyType : (__bridge NSString*)kSecAttrKeyTypeRSA,
-                                     (__bridge NSString*)kSecAttrKeyClass : (__bridge NSString*)keyClass,
-                                     (__bridge NSString*)kSecAttrKeySizeInBits : @(sizeInBits)
-                                     };
+    BOOL createKeyWithDataAvailable = &SecKeyCreateWithData != NULL;
+    if (createKeyWithDataAvailable) {
         CFErrorRef createError = NULL;
         SecKeyRef key = SecKeyCreateWithData((__bridge CFDataRef)data, (__bridge CFDictionaryRef)attributes, &createError);
         if (error && createError != nil) {
@@ -29,18 +46,22 @@
     }
     // oh... not avaialbe API :/
     else {
+
         CFTypeRef result = NULL;
         NSData *tagData = [tag dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *commonAttributes = @{
+            (__bridge NSString*)kSecClass: (__bridge NSString*)kSecClassKey,
+            (__bridge NSString*)kSecAttrApplicationTag: tagData,
+            (__bridge NSString*)kSecAttrAccessible: (__bridge NSString*)kSecAttrAccessibleWhenUnlocked
+        };
+
+
         NSDictionary *addItemAttributes = @{
-                                           (__bridge NSString*)kSecClass: (__bridge NSString*)kSecClassKey,
-                                           (__bridge NSString*)kSecAttrApplicationTag: tagData,
-                                           (__bridge NSString*)kSecAttrKeyType: (__bridge NSString*)kSecAttrKeyTypeRSA,
-                                           (__bridge NSString*)kSecValueData: data,
-                                           (__bridge NSString*)kSecAttrKeyClass: (__bridge NSString*)keyClass,
-                                           (__bridge NSString*)kSecReturnPersistentRef: @(YES),
-                                           (__bridge NSString*)kSecAttrAccessible: (__bridge NSString*)kSecAttrAccessibleWhenUnlocked
-                                           };
-        OSStatus addItemStatus = SecItemAdd((__bridge CFDictionaryRef)addItemAttributes, &result);
+           (__bridge NSString*)kSecValueData: data,
+           (__bridge NSString*)kSecReturnPersistentRef: @(YES),
+        };
+
+        OSStatus addItemStatus = SecItemAdd((__bridge CFDictionaryRef)[self dictionaryByCombiningDictionaries:@[attributes, commonAttributes, addItemAttributes]], &result);
         if (addItemStatus != errSecSuccess && addItemStatus != errSecDuplicateItem) {
             // add item error
             // not duplicate and not added to keychain.
@@ -48,15 +69,11 @@
         }
 
         NSDictionary *copyAttributes = @{
-                (__bridge NSString*)kSecClass: (__bridge NSString*)kSecClassKey,
-                (__bridge NSString*)kSecAttrApplicationTag: tagData,
-                (__bridge NSString*)kSecAttrKeyType: (__bridge NSString*)kSecAttrKeyTypeRSA,
-                (__bridge NSString*)kSecAttrKeyClass: (__bridge NSString*)keyClass,
-                (__bridge NSString*)kSecAttrAccessible: (__bridge NSString*)kSecAttrAccessibleWhenUnlocked,
                 (__bridge NSString*)kSecReturnRef: @(YES),
         };
+
         CFTypeRef key = NULL;
-        OSStatus copyItemStatus = SecItemCopyMatching((__bridge CFDictionaryRef)copyAttributes, &key);
+        OSStatus copyItemStatus = SecItemCopyMatching((__bridge CFDictionaryRef)[self dictionaryByCombiningDictionaries:@[attributes, commonAttributes, copyAttributes]], &key);
         if (key == NULL) {
             // copy item error
         }
@@ -64,6 +81,63 @@
     }
 
     return NULL;
+}
++ (SecKeyRef)addKeyWithData:(NSData *)data asPublic:(BOOL)public tag:(NSString *)tag error:(NSError *__autoreleasing*)error; {
+
+    return [self addKeyWithData:data asPublic:public tag:tag type:[self keyTypeRSA] error:error];
+//    CFStringRef keyClass = public ? kSecAttrKeyClassPublic : kSecAttrKeyClassPrivate;
+//    BOOL createKeyWithDataAvailable = &SecKeyCreateWithData != NULL;
+//    if (createKeyWithDataAvailable) {
+//        NSInteger sizeInBits = data.length * 8;
+//        NSDictionary *attributes = @{
+//                                     (__bridge NSString*)kSecAttrKeyType : (__bridge NSString*)kSecAttrKeyTypeRSA,
+//                                     (__bridge NSString*)kSecAttrKeyClass : (__bridge NSString*)keyClass,
+//                                     (__bridge NSString*)kSecAttrKeySizeInBits : @(sizeInBits)
+//                                     };
+//        CFErrorRef createError = NULL;
+//        SecKeyRef key = SecKeyCreateWithData((__bridge CFDataRef)data, (__bridge CFDictionaryRef)attributes, &createError);
+//        if (error && createError != nil) {
+//            *error = (__bridge NSError*)createError;
+//        }
+//        return key;
+//    }
+//    // oh... not avaialbe API :/
+//    else {
+//        CFTypeRef result = NULL;
+//        NSData *tagData = [tag dataUsingEncoding:NSUTF8StringEncoding];
+//        NSDictionary *addItemAttributes = @{
+//                                           (__bridge NSString*)kSecClass: (__bridge NSString*)kSecClassKey,
+//                                           (__bridge NSString*)kSecAttrApplicationTag: tagData,
+//                                           (__bridge NSString*)kSecAttrKeyType: (__bridge NSString*)kSecAttrKeyTypeRSA,
+//                                           (__bridge NSString*)kSecValueData: data,
+//                                           (__bridge NSString*)kSecAttrKeyClass: (__bridge NSString*)keyClass,
+//                                           (__bridge NSString*)kSecReturnPersistentRef: @(YES),
+//                                           (__bridge NSString*)kSecAttrAccessible: (__bridge NSString*)kSecAttrAccessibleWhenUnlocked
+//                                           };
+//        OSStatus addItemStatus = SecItemAdd((__bridge CFDictionaryRef)addItemAttributes, &result);
+//        if (addItemStatus != errSecSuccess && addItemStatus != errSecDuplicateItem) {
+//            // add item error
+//            // not duplicate and not added to keychain.
+//            return NULL;
+//        }
+//
+//        NSDictionary *copyAttributes = @{
+//                (__bridge NSString*)kSecClass: (__bridge NSString*)kSecClassKey,
+//                (__bridge NSString*)kSecAttrApplicationTag: tagData,
+//                (__bridge NSString*)kSecAttrKeyType: (__bridge NSString*)kSecAttrKeyTypeRSA,
+//                (__bridge NSString*)kSecAttrKeyClass: (__bridge NSString*)keyClass,
+//                (__bridge NSString*)kSecAttrAccessible: (__bridge NSString*)kSecAttrAccessibleWhenUnlocked,
+//                (__bridge NSString*)kSecReturnRef: @(YES),
+//        };
+//        CFTypeRef key = NULL;
+//        OSStatus copyItemStatus = SecItemCopyMatching((__bridge CFDictionaryRef)copyAttributes, &key);
+//        if (key == NULL) {
+//            // copy item error
+//        }
+//        return (SecKeyRef)key;
+//    }
+//
+//    return NULL;
 }
 
 + (SecKeyRef)keyByTag:(NSString *)tag error:(NSError *__autoreleasing*)error; {
