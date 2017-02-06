@@ -60,4 +60,4 @@ script:
     # mac OS tests
     # UNCOMMENT WHEN READY!
     # - echo Run Mac OS Tests
-    - xcodebuild test -workspace 'Tests/JWT Tests.xcworkspace/' -scheme 'macOS_Tests' -sdk macosx | xcpretty -c
+    - xcodebuild test -workspace 'Tests/Tests.xcworkspace/' -scheme 'macOS_Tests' -sdk macosx | xcpretty -c
