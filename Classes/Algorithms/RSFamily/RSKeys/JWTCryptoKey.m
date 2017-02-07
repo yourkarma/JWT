@@ -25,7 +25,9 @@
     return [self initWithData:[JWTBase64Coder dataWithBase64UrlEncodedString:base64String]];
 }
 - (instancetype)initWithPemEncoded:(NSString *)encoded {
-    NSString *clean = [JWTCryptoSecurity stringByRemovingPemHeadersFromString:encoded];
+    //TODO: check correctness.
+    //maybe use clean initWithBase64String and remove ?: encoded tail.
+    NSString *clean = [JWTCryptoSecurity keyFromPemFileContent:encoded] ?: encoded;//[JWTCryptoSecurity stringByRemovingPemHeadersFromString:encoded];
     return [self initWithBase64String:clean];
 }
 - (instancetype)initWithPemAtURL:(NSURL *)url {
