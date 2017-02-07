@@ -11,6 +11,7 @@
 #import "JWT.h"
 #import "JWTAlgorithmRSBase.h"
 #import "JWTCryptoKeyExtractor.h"
+#import "JWTCryptoSecurity.h"
 
 static NSString *algorithmBehavior = @"algorithmRS256Behaviour";
 static NSString *dataAlgorithmKey = @"dataAlgorithmKey";
@@ -18,39 +19,14 @@ static NSString *dataAlgorithmKey = @"dataAlgorithmKey";
 @interface JWTAlgorithmRS256Examples_RSA_Helper : NSObject
 + (NSString *)extractCertificateFromPemFileWithName:(NSString *)name;
 + (NSString *)extractKeyFromPemFileWithName:(NSString *)name;
-+ (NSArray *)extractFromPemFileWithName:(NSString *)name byRegex:(NSRegularExpression *)expression;
 @end
 
 @implementation JWTAlgorithmRS256Examples_RSA_Helper
 + (NSString *)extractCertificateFromPemFileWithName:(NSString *)name; {
-    NSRegularExpression *expression = [[NSRegularExpression alloc] initWithPattern:@"-----BEGIN CERTIFICATE-----(.+?)-----END CERTIFICATE-----" options:NSRegularExpressionDotMatchesLineSeparators error:nil];
-    return [self extractFromPemFileWithName:name byRegex:expression].firstObject;
+    return [JWTCryptoSecurity certificateFromPemFileWithName:name];
 }
 + (NSString *)extractKeyFromPemFileWithName:(NSString *)name {
-    NSRegularExpression *expression = [[NSRegularExpression alloc] initWithPattern:@"-----BEGIN(?:[\\w\\s]|)+KEY-----(.+?)-----END(?:[\\w\\s])+KEY-----" options:NSRegularExpressionDotMatchesLineSeparators error:nil];
-    return [self extractFromPemFileWithName:name byRegex:expression].firstObject;
-}
-+ (NSArray *)extractFromPemFileWithName:(NSString *)name byRegex:(NSRegularExpression *)expression {
-    NSURL *fileURL = [[NSBundle bundleForClass:self.class] URLForResource:name withExtension:@"pem"];
-    NSError *error = nil;
-    NSString *fileContent = [NSString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
-    
-    if (error) {
-        NSLog(@"%@ error: %@", self.debugDescription, error);
-        return nil;
-    }
-    
-    NSArray *matches = [expression matchesInString:fileContent options:0 range:NSMakeRange(0, fileContent.length)];
-    NSTextCheckingResult *result = matches.firstObject;
-    NSArray *resultArray = @[];
-    
-    if (result) {
-        for (NSUInteger i = 1; i < result.numberOfRanges; ++i) {
-            NSString *extractedString = [fileContent substringWithRange:[result rangeAtIndex:i]];
-            resultArray = [resultArray arrayByAddingObject:extractedString];
-        }
-    }
-    return resultArray;
+    return [JWTCryptoSecurity keyFromPemFileWithName:name];
 }
 @end
 

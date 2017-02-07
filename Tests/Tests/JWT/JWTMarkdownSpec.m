@@ -9,10 +9,69 @@
 #import <Kiwi/Kiwi.h>
 
 #import "JWT.h"
+#import "JWTCryptoKeyExtractor.h"
 
 SPEC_BEGIN(JWTMarkdownSpec)
 describe(@"markdown examples", ^{
     context(@"VersionThree", ^{
+        it(@"API should work well with Pem keys loading", ^{
+            NSString *privatePemFilename = @"private_256_right";
+            NSString *publicPemFilename = @"public_256_right";
+            NSString *passphrase = @"password";
+            NSString *(^loadKey)(NSString *, NSBundle *) = ^NSString *(NSString *name, NSBundle *bundle){
+                 NSURL *fileURL = [bundle URLForResource:name withExtension:@"pem"];
+                 NSError *error = nil;
+                 NSString *fileContent = [NSString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
+                 if (error) {
+                     NSLog(@"%@ error: %@", self.debugDescription, error);
+                     return nil;
+                 }
+                return fileContent;
+            };
+            NSBundle *bundle = [NSBundle bundleForClass:self.class];
+            NSString *publicPemKey = loadKey(publicPemFilename, bundle);
+            NSString *privatePemKey = loadKey(privatePemFilename, bundle);
+            
+            // sign and verify
+            {
+                NSString *algorithmName = @"RS256";
+                id <JWTAlgorithmDataHolderProtocol> signDataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor privateKeyWithPEMBase64].type).privateKeyCertificatePassphrase(passphrase).algorithmName(algorithmName).secret(privatePemKey);
+                
+                id <JWTAlgorithmDataHolderProtocol> verifyDataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor publicKeyWithPEMBase64].type).algorithmName(algorithmName).secret(publicPemKey);
+                
+                NSDictionary *payloadDictionary = @{@"hello": @"world"};
+                
+                JWTCodingBuilder *signBuilder = [JWTEncodingBuilder encodePayload:payloadDictionary].addHolder(signDataHolder);
+                JWTCodingResultType *signResult = signBuilder.result;
+                NSString *token = nil;
+                if (signResult.successResult) {
+                    // success
+                    NSLog(@"%@ success: %@", self.debugDescription, signResult.successResult.encoded);
+                    token = signResult.successResult.encoded;
+                }
+                else {
+                    // error
+                    NSLog(@"%@ error: %@", self.debugDescription, signResult.errorResult.error);
+                }
+                
+                // verify
+                if (token == nil) {
+                    NSLog(@"something wrong");
+                }
+                
+                JWTCodingBuilder *verifyBuilder = [JWTDecodingBuilder decodeMessage:token].addHolder(verifyDataHolder);
+                JWTCodingResultType *verifyResult = verifyBuilder.result;
+                if (verifyResult.successResult) {
+                    // success
+                    NSLog(@"%@ success: %@", self.debugDescription, verifyResult.successResult.payload);
+                    token = verifyResult.successResult.encoded;
+                }
+                else {
+                    // error
+                    NSLog(@"%@ error: %@", self.debugDescription, verifyResult.errorResult.error);
+                }
+            }
+        });
         it(@"API should show work with chains moderate", ^{
             JWTClaimsSet *claimsSet = [[JWTClaimsSet alloc] init];
             // fill it
