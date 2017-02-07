@@ -106,7 +106,9 @@
         };
 
         CFTypeRef key = NULL;
-        OSStatus copyItemStatus = SecItemCopyMatching((__bridge CFDictionaryRef)[self dictionaryByCombiningDictionaries:@[attributes, commonAttributes, copyAttributes]], &key);
+        // TODO: Add error handling later.
+        OSStatus copyItemStatus = errSecSuccess;
+        SecItemCopyMatching((__bridge CFDictionaryRef)[self dictionaryByCombiningDictionaries:@[attributes, commonAttributes, copyAttributes]], &key);
         if (key == NULL) {
             // copy item error
         }
@@ -126,7 +128,7 @@
 + (void)removeKeyByTag:(NSString *)tag error:(NSError *__autoreleasing*)error; {
     NSData *tagData = [tag dataUsingEncoding:NSUTF8StringEncoding];
     if (tagData == nil) {
-        // tell that nothing to remove.
+        // tell that nothing to remove.        
         return;
     }
     NSDictionary *removeAttributes = @{
@@ -346,8 +348,9 @@ typedef NS_ENUM(NSInteger, JWTPublicHeaderStrippingError) {
     }
     //    var byteArray = [UInt8](repeating: 0, count: count)
     //    (keyData as NSData).getBytes(&byteArray, length: keyData.count)
-    UInt8 *bytes = (UInt8*)malloc(countOfBytes);
-    memcpy(bytes, [currentData bytes], countOfBytes);
+//    UInt8 *bytes = (UInt8*)malloc(countOfBytes);
+    UInt8 *bytes = (UInt8 *)[currentData bytes];
+//    memcpy(bytes, [currentData bytes], countOfBytes);
 
     //    var index = 0
     //    guard byteArray[index] == 0x30 else {

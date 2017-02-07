@@ -37,20 +37,18 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 @property (nonatomic, readonly) id <JWTCryptoKeyExtractorProtocol> keyExtractor;
 @end
 
-@interface JWTAlgorithmRSBase (NSCopying) @end
-@implementation JWTAlgorithmRSBase (NSCopying)
+@implementation JWTAlgorithmRSBase
+
+#pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone {
     // create new.
-    id <JWTRSAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:[self name]];
+    id <JWTRSAlgorithm> algorithm = (id<JWTRSAlgorithm>)[JWTAlgorithmFactory algorithmByName:[self name]];
     algorithm.privateKeyCertificatePassphrase = self.privateKeyCertificatePassphrase;
     algorithm.keyExtractorType = self.keyExtractorType;
     algorithm.signKey = self.signKey;
     algorithm.verifyKey = self.verifyKey;
     return algorithm;
 }
-@end
-
-@implementation JWTAlgorithmRSBase
 
 @synthesize privateKeyCertificatePassphrase;
 @synthesize keyExtractorType;

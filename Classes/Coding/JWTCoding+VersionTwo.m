@@ -358,7 +358,9 @@
     
     if (parts.count < 3) {
         // generate error?
-        *theError = [JWTErrorDescription errorWithCode:JWTInvalidFormatError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTInvalidFormatError];
+        }
         return nil;
     }
     
@@ -498,7 +500,9 @@
         else {
             //If a whitelist is passed in, ensure the chosen algorithm is allowed
             if (![theWhitelist containsObject:theAlgorithmName]) {
-                *theError = [JWTErrorDescription errorWithCode:JWTBlacklistedAlgorithmError];
+                if (theError) {
+                    *theError = [JWTErrorDescription errorWithCode:JWTBlacklistedAlgorithmError];
+                }
                 return nil;
             }
         }

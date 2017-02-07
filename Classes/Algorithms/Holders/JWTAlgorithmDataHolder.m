@@ -212,7 +212,11 @@
 
 @implementation JWTAlgorithmRSFamilyDataHolder (Debug)
 - (NSDictionary *)debugInformation {
-    NSDictionary *add = @{@"privateKeyCertificatePassphrase" : self.internalPrivateKeyCertificatePassphrase ?: @"unknown"};
+    NSDictionary *add = @{@"privateKeyCertificatePassphrase" : self.internalPrivateKeyCertificatePassphrase ?: @"unknown",
+                          @"keyExtractorType" : self.internalKeyExtractorType ?: @"unknown",
+                          @"signKey" : [self.signKey debugDescription] ?: @"unknown",
+                          @"verifyKey" : [self.verifyKey debugDescription] ?: @"unknown"
+                          };
     NSMutableDictionary *result = [[super debugInformation] mutableCopy];
     [result addEntriesFromDictionary:add];
     return result;
@@ -275,18 +279,6 @@
     holder.internalSignKey = self.internalSignKey;
     holder.internalVerifyKey = self.internalVerifyKey;
     return holder;
-}
-
-#pragma mark - Debug
-- (NSDictionary *)debugInformation {
-    NSDictionary *debugInformation = [super debugInformation];
-    NSMutableDictionary *result = [debugInformation mutableCopy];
-    [result addEntriesFromDictionary:@{
-                                       @"keyExtractorType" : self.internalKeyExtractorType ?: @"unknown",
-                                       @"signKey" : [self.signKey debugDescription] ?: @"unknown",
-                                       @"verifyKey" : [self.verifyKey debugDescription] ?: @"unknown"
-                                       }];
-    return [result copy];
 }
 @end
 

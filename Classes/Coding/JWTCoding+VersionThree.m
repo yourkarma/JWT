@@ -245,14 +245,18 @@
     // do it!
     
     if (!theAlgorithm) {
-        *theError = [JWTErrorDescription errorWithCode:JWTUnspecifiedAlgorithmError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTUnspecifiedAlgorithmError];
+        }
         return nil;
     }
 
     NSString *theAlgorithmName = [theAlgorithm name];
     
     if (!theAlgorithmName) {
-        *theError = [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError];
+        }
         return nil;
     }
     
@@ -270,7 +274,9 @@
     
     if (!headerSegment) {
         // encode header segment error
-        *theError = [JWTErrorDescription errorWithCode:JWTEncodingHeaderError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTEncodingHeaderError];
+        }
         return nil;
     }
     
@@ -278,7 +284,9 @@
     
     if (!payloadSegment) {
         // encode payment segment error
-        *theError = [JWTErrorDescription errorWithCode:JWTEncodingPayloadError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTEncodingPayloadError];
+        }
         return nil;
     }
 
@@ -301,7 +309,9 @@
 
     if (!signedOutput) {
         // Make sure signing worked (e.g. we may have issues extracting the key from the PKCS12 bundle if passphrase is incorrect)
-        *theError = [JWTErrorDescription errorWithCode:JWTEncodingSigningError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTEncodingSigningError];
+        }
         return nil;
     }
     
@@ -446,7 +456,9 @@
     
     if (parts.count < 3) {
         // generate error?
-        *theError = [JWTErrorDescription errorWithCode:JWTInvalidFormatError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTInvalidFormatError];
+        }
         return nil;
     }
     
