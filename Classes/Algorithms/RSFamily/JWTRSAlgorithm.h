@@ -6,7 +6,7 @@
 #import <Foundation/Foundation.h>
 #import "JWTAlgorithm.h"
 @protocol JWTCryptoKeyProtocol;
-@protocol JWTRSAlgorithm <JWTAlgorithm>
+@protocol JWTRSAlgorithm <JWTAlgorithm, NSCopying>
 
 @required
 

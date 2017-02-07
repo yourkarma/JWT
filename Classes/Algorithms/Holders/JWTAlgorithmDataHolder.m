@@ -238,11 +238,13 @@
 - (id<JWTAlgorithm>)internalAlgorithm {
     id <JWTAlgorithm> algorithm = [super internalAlgorithm];
     if ([algorithm conformsToProtocol:@protocol(JWTRSAlgorithm)]) {
-        id<JWTRSAlgorithm>currentAlgorithm = ((id <JWTRSAlgorithm>)algorithm);
+        // copy?
+        id<JWTRSAlgorithm>currentAlgorithm = [(id <JWTRSAlgorithm>)algorithm copyWithZone:nil];
         currentAlgorithm.privateKeyCertificatePassphrase = self.internalPrivateKeyCertificatePassphrase;
         currentAlgorithm.keyExtractorType = self.internalKeyExtractorType;
         currentAlgorithm.signKey = self.internalSignKey;
         currentAlgorithm.verifyKey = self.internalVerifyKey;
+        algorithm = currentAlgorithm;
     }
     return algorithm;
 }
@@ -273,6 +275,18 @@
     holder.internalSignKey = self.internalSignKey;
     holder.internalVerifyKey = self.internalVerifyKey;
     return holder;
+}
+
+#pragma mark - Debug
+- (NSDictionary *)debugInformation {
+    NSDictionary *debugInformation = [super debugInformation];
+    NSMutableDictionary *result = [debugInformation mutableCopy];
+    [result addEntriesFromDictionary:@{
+                                       @"keyExtractorType" : self.internalKeyExtractorType ?: @"unknown",
+                                       @"signKey" : [self.signKey debugDescription] ?: @"unknown",
+                                       @"verifyKey" : [self.verifyKey debugDescription] ?: @"unknown"
+                                       }];
+    return [result copy];
 }
 @end
 

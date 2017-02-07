@@ -287,10 +287,6 @@
     NSString *signedOutput = nil;
 
     // this happens somewhere outside.
-//    if ([theAlgorithm conformsToProtocol:@protocol(JWTRSAlgorithm)]) {
-//        id<JWTRSAlgorithm> jwtRsAlgorithm = (id <JWTRSAlgorithm>) self.jwtAlgorithm;
-//        jwtRsAlgorithm.privateKeyCertificatePassphrase = self.jwtPrivateKeyCertificatePassphrase;
-//    }
     
     if (theSecretData && [theAlgorithm respondsToSelector:@selector(encodePayloadData:withSecret:)]) {
         // not sure that it is correct.
@@ -492,7 +488,17 @@
             return nil;
         }
         
-        id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:theAlgorithmName];
+        // A shit logic, but...
+        // You should copy algorithm if this algorithm conforms to RSAlgorithm (NSCopying).
+        // Now RS Algorithm holds too much. ( All data about keys :/ )
+        // Need further investigation.
+        id<JWTAlgorithm> algorithm = nil;
+        if ([theAlgorithm conformsToProtocol:@protocol(JWTRSAlgorithm)]) {
+            algorithm = [(id<JWTRSAlgorithm>)theAlgorithm copyWithZone:nil];
+        }
+        else {
+            algorithm = [JWTAlgorithmFactory algorithmByName:theAlgorithmName];
+        }
         
         if (!algorithm) {
             *theError = [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError];

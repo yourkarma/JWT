@@ -11,6 +11,7 @@
 #import "JWTCryptoSecurity.h"
 #import "JWTCryptoKeyExtractor.h"
 #import "JWTCryptoKey.h"
+#import "JWTAlgorithmFactory.h"
 #import <CommonCrypto/CommonCrypto.h>
 /*
 *    * Possible inheritence *
@@ -34,6 +35,19 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 
 @interface JWTAlgorithmRSBase()
 @property (nonatomic, readonly) id <JWTCryptoKeyExtractorProtocol> keyExtractor;
+@end
+
+@interface JWTAlgorithmRSBase (NSCopying) @end
+@implementation JWTAlgorithmRSBase (NSCopying)
+- (id)copyWithZone:(NSZone *)zone {
+    // create new.
+    id <JWTRSAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:[self name]];
+    algorithm.privateKeyCertificatePassphrase = self.privateKeyCertificatePassphrase;
+    algorithm.keyExtractorType = self.keyExtractorType;
+    algorithm.signKey = self.signKey;
+    algorithm.verifyKey = self.verifyKey;
+    return algorithm;
+}
 @end
 
 @implementation JWTAlgorithmRSBase
