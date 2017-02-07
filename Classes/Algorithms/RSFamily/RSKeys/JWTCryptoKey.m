@@ -45,15 +45,16 @@
             return nil;
         }
         
-        NSData *keyData = [JWTCryptoSecurity dataByRemovingPublicKeyHeader:data];
+        NSError *removingHeaderError = nil;
+        NSData *keyData = [JWTCryptoSecurity dataByRemovingPublicKeyHeader:data error:&removingHeaderError];
         
-        if (!keyData) {
+        if (!keyData || removingHeaderError) {
             return nil;
         }
         
-        NSError *error = nil;
-        self.key = [JWTCryptoSecurity addKeyWithData:keyData asPublic:YES tag:self.tag error:&error];
-        if (!self.key || error) {
+        NSError *addKeyError = nil;
+        self.key = [JWTCryptoSecurity addKeyWithData:keyData asPublic:YES tag:self.tag error:&addKeyError];
+        if (!self.key || addKeyError) {
             return nil;
         }
     }
@@ -135,6 +136,29 @@
         return nil;
     }
 
+    return self;
+}
+@end
+
+@interface JWTCryptoKeyBuilder()
+@property (assign, nonatomic, readwrite) BOOL public;
+@property (assign, nonatomic, readwrite) NSString *type;
+@end
+@implementation JWTCryptoKeyBuilder
+- (instancetype)forPublic {
+    self.public = YES;
+    return self;
+}
+- (instancetype)forPrivate {
+    self.public = NO;
+    return self;
+}
+- (instancetype)forRSA {
+    self.type = @"RSA";
+    return self;
+}
+- (instancetype)forEC {
+    self.type = @"EC";
     return self;
 }
 @end

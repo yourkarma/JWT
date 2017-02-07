@@ -27,5 +27,5 @@
 @end
 
 @interface JWTCryptoSecurity (PublicKey)
-+ (NSData *)dataByRemovingPublicKeyHeader:(NSData *)data;
++ (NSData *)dataByRemovingPublicKeyHeader:(NSData *)data error:(NSError *__autoreleasing*)error;
 @end

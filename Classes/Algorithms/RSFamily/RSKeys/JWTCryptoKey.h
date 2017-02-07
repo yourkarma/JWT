@@ -14,6 +14,15 @@
 @property (assign, nonatomic, readonly) SecKeyRef key;
 @end
 
+@interface JWTCryptoKeyBuilder : NSObject
+@property (assign, nonatomic, readonly) BOOL public;
+@property (assign, nonatomic, readonly) NSString *type;
+- (instancetype)forPublic;
+- (instancetype)forPrivate;
+- (instancetype)forRSA;
+- (instancetype)forEC;
+@end
+
 @interface JWTCryptoKey : NSObject<JWTCryptoKeyProtocol>
 - (instancetype)initWithData:(NSData *)data; //NS_DESIGNATED_INITIALIZER
 - (instancetype)initWithBase64String:(NSString *)base64String;
