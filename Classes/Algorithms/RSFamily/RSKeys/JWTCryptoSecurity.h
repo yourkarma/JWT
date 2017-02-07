@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Security/Security.h>
+// Thanks for https://github.com/TakeScoop/SwiftyRSA!
 @interface JWTCryptoSecurity : NSObject
 + (NSString *)keyTypeRSA;
 + (NSString *)keyTypeEC;

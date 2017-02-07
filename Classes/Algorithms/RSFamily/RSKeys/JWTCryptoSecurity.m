@@ -68,9 +68,8 @@
         (__bridge NSString*)kSecAttrKeyClass : keyClass,
         (__bridge NSString*)kSecAttrKeySizeInBits : @(sizeInBits)
     };
-
-    BOOL createKeyWithDataAvailable = &SecKeyCreateWithData != NULL;
-    if (createKeyWithDataAvailable) {
+    
+    if (SecKeyCreateWithData != NULL) {
         CFErrorRef createError = NULL;
         SecKeyRef key = SecKeyCreateWithData((__bridge CFDataRef)data, (__bridge CFDictionaryRef)attributes, &createError);
         if (error && createError != nil) {
