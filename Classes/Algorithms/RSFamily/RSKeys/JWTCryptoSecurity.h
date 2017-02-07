@@ -24,6 +24,12 @@
 @end
 
 @interface JWTCryptoSecurity (Pem)
++ (NSString *)certificateFromPemFileContent:(NSString *)content;
++ (NSString *)keyFromPemFileContent:(NSString *)content;
++ (NSArray *)itemsFromPemFileContent:(NSString *)content byRegex:(NSRegularExpression *)expression;
++ (NSString *)certificateFromPemFileWithName:(NSString *)name;
++ (NSString *)keyFromPemFileWithName:(NSString *)name;
++ (NSArray *)itemsFromPemFileWithName:(NSString *)name byRegex:(NSRegularExpression *)expression;
 + (NSString *)stringByRemovingPemHeadersFromString:(NSString *)string;
 @end
 
