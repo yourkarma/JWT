@@ -134,13 +134,6 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
         __block NSString *publicPemEncodedKey = @"publicPemEncodedKey";
         
         beforeAll(^{
-//            __block NSDictionary *keyExtractingTokens = @{};
-//            
-//            __block NSString *privateFromP12Key = @"privateFromP12Key";
-//            __block NSString *privatePemEncodedKey = @"privatePemEncodedKey";
-//            __block NSString *publicWithCertificateKey = @"publicWithCertificateKey";
-//            __block NSString *publicPemEncodedKey = @"publicPemEncodedKey";
-            
             NSMutableDictionary *mutableKeyExtractingTokens = [keyExtractingTokens mutableCopy];
             NSMutableDictionary *mutableKeyExtractingDataHolders = [keyExtractingDataHolders mutableCopy];
             NSString *privatePemEncodedString = [JWTAlgorithmRS256Examples_RSA_Helper extractKeyFromPemFileWithName:@"private_256_right"];
@@ -149,7 +142,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                 // private from p12
                 NSString *key = privateFromP12Key;
                 JWTCodingResultType *result = nil;
-                id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor privateKeyInP12].type).privateKeyCertificatePassphrase(valid_privateKeyCertificatePassphrase).algorithm(algorithm).algorithmName(algorithmName).secretData(privateKeyCertificateData);
+                id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor privateKeyInP12].type).privateKeyCertificatePassphrase(valid_privateKeyCertificatePassphrase).algorithm(algorithm).secretData(privateKeyCertificateData);
                 
                 mutableKeyExtractingDataHolders[key] = dataHolder;
                 
@@ -164,7 +157,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                 // private pem encoded
                 NSString *key = privatePemEncodedKey;
                 JWTCodingResultType *result = nil;
-                id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor privateKeyWithPEMBase64].type).privateKeyCertificatePassphrase(valid_privateKeyCertificatePassphrase).algorithm(algorithm).algorithmName(algorithmName).secret(privatePemEncodedString);
+                id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor privateKeyWithPEMBase64].type).privateKeyCertificatePassphrase(valid_privateKeyCertificatePassphrase).algorithm(algorithm).secret(privatePemEncodedString);
                 
                 mutableKeyExtractingDataHolders[key] = dataHolder;
                 
@@ -179,7 +172,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                 // public from certificate
                 NSString *key = publicWithCertificateKey;
                 JWTCodingResultType *result = nil;
-                id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor publicKeyWithCertificate].type).algorithm(algorithm).algorithmName(algorithmName).secret(valid_publicKeyCertificateString);
+                id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor publicKeyWithCertificate].type).algorithm(algorithm).secret(valid_publicKeyCertificateString);
                 
                 mutableKeyExtractingDataHolders[key] = dataHolder;
                 
@@ -196,7 +189,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                 // public pem encoded.
                 NSString *key = publicPemEncodedKey;
                 JWTCodingResultType *result = nil;
-                id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor publicKeyWithPEMBase64].type).algorithm(algorithm).algorithmName(algorithmName).secret(publicPemEncodedString);
+                id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor publicKeyWithPEMBase64].type).algorithm(algorithm).secret(publicPemEncodedString);
                 
                 mutableKeyExtractingDataHolders[key] = dataHolder;
                 
@@ -221,9 +214,9 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                             NSLog(@"Pair: <%@> decodeBy <%@> skipped", key, decodeByKey);
                             continue;
                         }
-                        if ([decodeByKey hasPrefix:@"publicPem"]) {
-                            continue;
-                        }
+//                        if ([decodeByKey hasPrefix:publicPemEncodedKey]) {
+//                            continue;
+//                        }
                         NSString *token = keyExtractingTokens[key];
                         JWTCodingBuilder *newBuilder = [JWTDecodingBuilder decodeMessage:token].addHolder(dataHolder);
                         JWTCodingResultType *result = newBuilder.result;
@@ -232,7 +225,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                             assertDecodedDictionary(result.successResult.headerAndPayloadDictionary);
                         }
                         else {
-                            NSLog(@"Pair: <%@> decodeBy <%@> failed", key, decodeByKey);
+                            NSLog(@"Pair: <%@> decodeBy <%@> failed. Error: %@", key, decodeByKey, result.errorResult.error);
                             assertDecodedDictionary(nil);
                         }
                     }
