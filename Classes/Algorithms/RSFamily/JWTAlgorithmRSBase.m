@@ -8,8 +8,11 @@
 
 #import "JWTAlgorithmRSBase.h"
 #import "JWTBase64Coder.h"
+#import "JWTCryptoSecurity.h"
+#import "JWTCryptoKeyExtractor.h"
+#import "JWTCryptoKey.h"
+#import "JWTAlgorithmFactory.h"
 #import <CommonCrypto/CommonCrypto.h>
-
 /*
 *    * Possible inheritence *
 *
@@ -25,24 +28,36 @@
 *         RSFamilyMemberMutable
 *
 */
-/*
-    TODO: rename RSBaseTest into RSFamilyMemberMutable
-*/
 
 NSString *const JWTAlgorithmNameRS256 = @"RS256";
 NSString *const JWTAlgorithmNameRS384 = @"RS384";
 NSString *const JWTAlgorithmNameRS512 = @"RS512";
 
 @interface JWTAlgorithmRSBase()
-
+@property (nonatomic, readonly) id <JWTCryptoKeyExtractorProtocol> keyExtractor;
 @end
 
 @implementation JWTAlgorithmRSBase
 
-@synthesize privateKeyCertificatePassphrase;
+#pragma mark - NSCopying
+- (id)copyWithZone:(NSZone *)zone {
+    // create new.
+    id <JWTRSAlgorithm> algorithm = (id<JWTRSAlgorithm>)[JWTAlgorithmFactory algorithmByName:[self name]];
+    algorithm.privateKeyCertificatePassphrase = self.privateKeyCertificatePassphrase;
+    algorithm.keyExtractorType = self.keyExtractorType;
+    algorithm.signKey = self.signKey;
+    algorithm.verifyKey = self.verifyKey;
+    return algorithm;
+}
 
+@synthesize privateKeyCertificatePassphrase;
+@synthesize keyExtractorType;
+@synthesize signKey;
+@synthesize verifyKey;
+- (id<JWTCryptoKeyExtractorProtocol>) keyExtractor {
+    return [JWTCryptoKeyExtractor createWithType:self.keyExtractorType];
+}
 #pragma mark - Override
-// TODO: put assurance that algorithm was properly overriden?
 - (size_t)ccSHANumberDigestLength {
     @throw [[NSException alloc] initWithName:NSInternalInconsistencyException reason:@"ccSHANumberDigestLength property should be overriden" userInfo:nil];
 }
@@ -65,28 +80,41 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 }
 
 - (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData {
-    SecIdentityRef identity = nil;
-    SecTrustRef trust = nil;
-    __extractIdentityAndTrust((__bridge CFDataRef)theSecretData, &identity, &trust, (__bridge CFStringRef) self.privateKeyCertificatePassphrase);
-    
     NSData *result = nil;
-    
-    if (identity && trust) {
-        SecKeyRef privateKey;
-        SecIdentityCopyPrivateKey(identity, &privateKey);
-        result = [self PKCSSignBytesSHANumberwithRSA:theStringData withPrivateKey:privateKey];
-
-        if (privateKey) {
-            CFRelease(privateKey);
+    if (self.signKey || self.keyExtractor) {
+        NSError *error = nil;
+        id <JWTCryptoKeyProtocol> keyItem = self.signKey ?: [self.keyExtractor keyFromData:theSecretData parameters:@{ [JWTCryptoKeyExtractor parametersKeyCertificatePassphrase] : self.privateKeyCertificatePassphrase ?: [NSNull null] } error:&error];
+        
+        if (error || keyItem == nil) {
+            // tell about error
+            [JWTCryptoSecurity removeKeyByTag:keyItem.tag error:&error];
+        }
+        else {
+            result = [self signData:theStringData withKey:keyItem.key];
         }
     }
-    
-    if (identity) {
-        CFRelease(identity);
-    }
-    
-    if (trust) {
-        CFRelease(trust);
+    else {
+        SecIdentityRef identity = nil;
+        SecTrustRef trust = nil;
+        __extractIdentityAndTrust((__bridge CFDataRef)theSecretData, &identity, &trust, (__bridge CFStringRef) self.privateKeyCertificatePassphrase);
+        
+        if (identity && trust) {
+            SecKeyRef privateKey;
+            SecIdentityCopyPrivateKey(identity, &privateKey);
+            result = [self signData:theStringData withKey:privateKey];
+            
+            if (privateKey) {
+                CFRelease(privateKey);
+            }
+        }
+        
+        if (identity) {
+            CFRelease(identity);
+        }
+        
+        if (trust) {
+            CFRelease(trust);
+        }
     }
 
     return result;
@@ -94,98 +122,69 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey {
     NSData *certificateData = [JWTBase64Coder dataWithBase64UrlEncodedString:verificationKey];
-    return [self verifySignedInput:input
-                     withSignature:signature
-               verificationKeyData:certificateData];
+    return [self verifySignedInput:input withSignature:signature verificationKeyData:certificateData];
 }
 
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData {
     NSData *signedData = [input dataUsingEncoding:NSUTF8StringEncoding];
     NSData *signatureData = [JWTBase64Coder dataWithBase64UrlEncodedString:signature];
-    SecKeyRef publicKey = [self publicKeyFromCertificate:verificationKeyData];
-    // TODO: special error handling here.
-    // add error handling later?
-    if (publicKey != NULL) {
-        BOOL signatureOk = [self PKCSVerifyBytesSHANumberWithRSA:signedData witSignature:signatureData withPublicKey:publicKey];
-        (CFRelease(publicKey));
-        return signatureOk;
+    NSError *error = nil;
+    if (self.verifyKey || self.keyExtractor) {
+        id<JWTCryptoKeyProtocol> keyItem = self.verifyKey?: [self.keyExtractor keyFromData:verificationKeyData parameters:nil error:&error];
+        BOOL verified = NO;
+        
+        if (error || keyItem == nil) {
+            // error while getting key.
+            // cleanup.
+            // tell about error
+            NSError *removeError = nil;
+            [JWTCryptoSecurity removeKeyByTag:keyItem.tag error:&removeError];
+            if (removeError) {
+                //???
+            }
+            return verified;
+        }
+        else {
+            verified = [self verifyData:signedData witSignature:signatureData withKey:keyItem.key];
+        }
+        
+        NSError *removeError = nil;
+        [JWTCryptoSecurity removeKeyByTag:keyItem.tag error:&removeError];
+        
+        return verified;
+    }
+    else {
+        SecKeyRef publicKey = [self publicKeyFromCertificate:verificationKeyData];
+        // TODO: special error handling here.
+        // add error handling later?
+        if (publicKey != NULL) {
+            BOOL verified = [self verifyData:signedData witSignature:signatureData withKey:publicKey];
+            CFRelease(publicKey);
+            return verified;
+        }
     }
     return NO;
 }
 
 #pragma mark - Private ( Override-part depends on platform )
-- (BOOL)PKCSVerifyBytesSHANumberWithRSA:(NSData *)plainData witSignature:(NSData *)signature withPublicKey:(SecKeyRef) publicKey {
+- (BOOL)verifyData:(NSData *)plainData witSignature:(NSData *)signature withKey:(SecKeyRef) publicKey {
     return NO;
 }
 
-- (NSData *)PKCSSignBytesSHANumberwithRSA:(NSData *)plainData withPrivateKey:(SecKeyRef)privateKey {
+- (NSData *)signData:(NSData *)plainData withKey:(SecKeyRef)privateKey {
     return nil;
 }
 
 #pragma mark - Private Helpers
 - (SecKeyRef)publicKeyFromCertificate:(NSData *)certificateData {
-    SecCertificateRef certificate = SecCertificateCreateWithData(NULL, (__bridge CFDataRef)certificateData);
-    if (certificate != NULL) {
-        SecPolicyRef secPolicy = SecPolicyCreateBasicX509();
-        SecTrustRef trust;
-        SecTrustCreateWithCertificates(certificate, secPolicy, &trust);
-        SecTrustResultType resultType;
-        SecTrustEvaluate(trust, &resultType);
-        SecKeyRef publicKey = SecTrustCopyPublicKey(trust);
-        (CFRelease(trust));
-        (CFRelease(secPolicy));
-        (CFRelease(certificate));
-        return publicKey;
-    }
-    return NULL;
+    return [JWTCryptoSecurity publicKeyFromCertificate:certificateData];
 }
 
 OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
         SecIdentityRef *outIdentity,
         SecTrustRef *outTrust,
         CFStringRef keyPassword) {
-    OSStatus securityError = errSecSuccess;
-
-
-    const void *keys[] =   { kSecImportExportPassphrase };
-    const void *values[] = { keyPassword };
-    CFDictionaryRef optionsDictionary = NULL;
-
-    /* Create a dictionary containing the passphrase if one
-       was specified.  Otherwise, create an empty dictionary. */
-    optionsDictionary = CFDictionaryCreate(
-            NULL, keys,
-            values, (keyPassword ? 1 : 0),
-            NULL, NULL);  // 1
-
-    CFArrayRef items = NULL;
-    securityError = SecPKCS12Import(inPKCS12Data,
-            optionsDictionary,
-            &items);                    // 2
-
-
-    //
-    if (securityError == 0) {                                   // 3
-        CFDictionaryRef myIdentityAndTrust = CFArrayGetValueAtIndex (items, 0);
-        const void *tempIdentity = NULL;
-        tempIdentity = CFDictionaryGetValue (myIdentityAndTrust,
-                kSecImportItemIdentity);
-        CFRetain(tempIdentity);
-        *outIdentity = (SecIdentityRef)tempIdentity;
-        const void *tempTrust = NULL;
-        tempTrust = CFDictionaryGetValue (myIdentityAndTrust, kSecImportItemTrust);
-
-        CFRetain(tempTrust);
-        *outTrust = (SecTrustRef)tempTrust;
-    }
-
-    if (optionsDictionary)                                      // 4
-        CFRelease(optionsDictionary);
-
-    if (items)
-        CFRelease(items);
-
-    return securityError;
+    return [JWTCryptoSecurity extractIdentityAndTrustFromPKCS12:inPKCS12Data password:keyPassword identity:outIdentity trust:outTrust];
 }
 
 @end
@@ -193,7 +192,7 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
 #if TARGET_OS_MAC && TARGET_OS_IPHONE
 @interface JWTAlgorithmRSBaseIOS : JWTAlgorithmRSBase @end
 @implementation JWTAlgorithmRSBaseIOS
-- (BOOL)PKCSVerifyBytesSHANumberWithRSA:(NSData *)plainData witSignature:(NSData *)signature withPublicKey:(SecKeyRef) publicKey {
+- (BOOL)verifyData:(NSData *)plainData witSignature:(NSData *)signature withKey:(SecKeyRef) publicKey {
     size_t signedHashBytesSize = SecKeyGetBlockSize(publicKey);
     const void* signedHashBytes = [signature bytes];
 
@@ -213,7 +212,7 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
     return status == errSecSuccess;
 }
 
-- (NSData *)PKCSSignBytesSHANumberwithRSA:(NSData *)plainData withPrivateKey:(SecKeyRef)privateKey {
+- (NSData *)signData:(NSData *)plainData withKey:(SecKeyRef)privateKey {
     size_t signedHashBytesSize = SecKeyGetBlockSize(privateKey);
     uint8_t* signedHashBytes = malloc(signedHashBytesSize);
     memset(signedHashBytes, 0x0, signedHashBytesSize);
@@ -241,7 +240,7 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
     if (hashBytes) {
         free(hashBytes);
     }
-    
+
     if (signedHashBytes) {
         free(signedHashBytes);
     }
@@ -313,7 +312,7 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
 
     return resultData;
 }
-- (BOOL)PKCSVerifyBytesSHANumberWithRSA:(NSData *)plainData witSignature:(NSData *)signature withPublicKey:(SecKeyRef) publicKey {
+- (BOOL)verifyData:(NSData *)plainData witSignature:(NSData *)signature withKey:(SecKeyRef) publicKey {
 
     size_t signedHashBytesSize = SecKeyGetBlockSize(publicKey);
     //const void* signedHashBytes = [signature bytes];
@@ -346,7 +345,7 @@ OSStatus __extractIdentityAndTrust(CFDataRef inPKCS12Data,
     return result;
 }
 
-- (NSData *)PKCSSignBytesSHANumberwithRSA:(NSData *)plainData withPrivateKey:(SecKeyRef)privateKey {
+- (NSData *)signData:(NSData *)plainData withKey:(SecKeyRef)privateKey {
     size_t signedHashBytesSize = SecKeyGetBlockSize(privateKey);
     //uint8_t* signedHashBytes = malloc(signedHashBytesSize);
     //memset(signedHashBytes, 0x0, signedHashBytesSize);

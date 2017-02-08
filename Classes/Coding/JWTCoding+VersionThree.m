@@ -219,8 +219,8 @@
     }
     
     for (id <JWTAlgorithmDataHolderProtocol>holder in holders) {
-        id <JWTAlgorithm>algorithm = holder.currentAlgorithm;
-        NSData *secretData = holder.currentSecretData;
+        id <JWTAlgorithm>algorithm = holder.internalAlgorithm;
+        NSData *secretData = holder.internalSecretData;
         encodedMessage = [self encodeWithAlgorithm:algorithm withHeaders:headers withPayload:payload withSecretData:secretData withError:&error];
         if (encodedMessage && (error == nil)) {
             break;
@@ -245,14 +245,18 @@
     // do it!
     
     if (!theAlgorithm) {
-        *theError = [JWTErrorDescription errorWithCode:JWTUnspecifiedAlgorithmError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTUnspecifiedAlgorithmError];
+        }
         return nil;
     }
 
     NSString *theAlgorithmName = [theAlgorithm name];
     
     if (!theAlgorithmName) {
-        *theError = [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError];
+        }
         return nil;
     }
     
@@ -270,7 +274,9 @@
     
     if (!headerSegment) {
         // encode header segment error
-        *theError = [JWTErrorDescription errorWithCode:JWTEncodingHeaderError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTEncodingHeaderError];
+        }
         return nil;
     }
     
@@ -278,7 +284,9 @@
     
     if (!payloadSegment) {
         // encode payment segment error
-        *theError = [JWTErrorDescription errorWithCode:JWTEncodingPayloadError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTEncodingPayloadError];
+        }
         return nil;
     }
 
@@ -287,10 +295,6 @@
     NSString *signedOutput = nil;
 
     // this happens somewhere outside.
-//    if ([theAlgorithm conformsToProtocol:@protocol(JWTRSAlgorithm)]) {
-//        id<JWTRSAlgorithm> jwtRsAlgorithm = (id <JWTRSAlgorithm>) self.jwtAlgorithm;
-//        jwtRsAlgorithm.privateKeyCertificatePassphrase = self.jwtPrivateKeyCertificatePassphrase;
-//    }
     
     if (theSecretData && [theAlgorithm respondsToSelector:@selector(encodePayloadData:withSecret:)]) {
         // not sure that it is correct.
@@ -305,7 +309,9 @@
 
     if (!signedOutput) {
         // Make sure signing worked (e.g. we may have issues extracting the key from the PKCS12 bundle if passphrase is incorrect)
-        *theError = [JWTErrorDescription errorWithCode:JWTEncodingSigningError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTEncodingSigningError];
+        }
         return nil;
     }
     
@@ -405,8 +411,8 @@
     
     for (id <JWTAlgorithmDataHolderProtocol>holder in self.internalChain.holders) {
         // try decode!
-        id <JWTAlgorithm> algorithm = holder.currentAlgorithm;
-        NSData *secretData = holder.currentSecretData;
+        id <JWTAlgorithm> algorithm = holder.internalAlgorithm;
+        NSData *secretData = holder.internalSecretData;
         // try to retrieve passphrase.
         decodedDictionary = [self decodeMessage:message secretData:secretData algorithm:algorithm options:options error:&error];
         if (decodedDictionary && (error == nil)) {
@@ -450,7 +456,9 @@
     
     if (parts.count < 3) {
         // generate error?
-        *theError = [JWTErrorDescription errorWithCode:JWTInvalidFormatError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTInvalidFormatError];
+        }
         return nil;
     }
     
@@ -492,7 +500,17 @@
             return nil;
         }
         
-        id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:theAlgorithmName];
+        // A shit logic, but...
+        // You should copy algorithm if this algorithm conforms to RSAlgorithm (NSCopying).
+        // Now RS Algorithm holds too much. ( All data about keys :/ )
+        // Need further investigation.
+        id<JWTAlgorithm> algorithm = nil;
+        if ([theAlgorithm conformsToProtocol:@protocol(JWTRSAlgorithm)]) {
+            algorithm = [(id<JWTRSAlgorithm>)theAlgorithm copyWithZone:nil];
+        }
+        else {
+            algorithm = [JWTAlgorithmFactory algorithmByName:theAlgorithmName];
+        }
         
         if (!algorithm) {
             *theError = [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError];

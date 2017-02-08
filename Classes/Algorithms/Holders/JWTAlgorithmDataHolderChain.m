@@ -83,7 +83,7 @@
 @implementation JWTAlgorithmDataHolderChain (Convenient)
 - (id<JWTAlgorithmDataHolderProtocol>)firstHolderByAlgorithm:(id<JWTAlgorithm>)algorithm {
     NSInteger index = [self.holders indexOfObjectPassingTest:^BOOL(id <JWTAlgorithmDataHolderProtocol> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        return [[[obj currentAlgorithm] name] isEqualToString:[algorithm name]];
+        return [[[obj internalAlgorithm] name] isEqualToString:[algorithm name]];
     }];
     if (index != NSNotFound) {
         return self.holders[index];
@@ -93,7 +93,7 @@
 }
 - (id<JWTAlgorithmDataHolderProtocol>)firstHolderBySecretData:(NSData *)secretData {
     NSInteger index = [self.holders indexOfObjectPassingTest:^BOOL(id <JWTAlgorithmDataHolderProtocol> _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        return [[obj currentSecretData] isEqualToData:secretData];
+        return [[obj internalSecretData] isEqualToData:secretData];
     }];
     if (index != NSNotFound) {
         return self.holders[index];
@@ -112,7 +112,7 @@
 
     for (NSData *secretData in secretsData) {
         id<JWTAlgorithmDataHolderProtocol> newHolder = [holder copy];
-        [newHolder setCurrentSecretData:secretData];
+        [newHolder setInternalSecretData:secretData];
         holders = [holders arrayByAddingObject:newHolder];
     }
     return holders;
@@ -129,7 +129,7 @@
 
     for (id<JWTAlgorithm>algorithm in algorithms) {
         id<JWTAlgorithmDataHolderProtocol> newHolder = [holder copy];
-        [newHolder setCurrentAlgorithm:algorithm];
+        [newHolder setInternalAlgorithm:algorithm];
         [holders arrayByAddingObject:newHolder];
     }
     return holders;

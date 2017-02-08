@@ -5,11 +5,15 @@
 
 #import <Foundation/Foundation.h>
 #import "JWTAlgorithm.h"
-
-@protocol JWTRSAlgorithm <JWTAlgorithm>
+@protocol JWTCryptoKeyProtocol;
+@protocol JWTRSAlgorithm <JWTAlgorithm, NSCopying>
 
 @required
 
 @property(nonatomic, readwrite, copy) NSString *privateKeyCertificatePassphrase;
 
+@optional
+@property(nonatomic, readwrite, copy) NSString *keyExtractorType;
+@property(nonatomic, readwrite, strong) id<JWTCryptoKeyProtocol> signKey;
+@property(nonatomic, readwrite, strong) id<JWTCryptoKeyProtocol> verifyKey;
 @end

@@ -20,6 +20,7 @@ Nothing here.
 * Coding result types added.
 * Algorithms and data holders.
 * Algorithms and data holders chain.
+* Keys loaded from Pem files.
 
 ## Introduction to Algorithms data holders and chain.
 You have algorithm, secret data and unknown jwt token.
@@ -127,6 +128,65 @@ if (decodedResult.successResult) {
 else {
     // handle error
     NSLog(@"decode failed, error: %@", decodedResult.errorResult.error);
+}
+```
+
+## Keys loaded from Pem files.
+
+You have a key in pem file. And you want to use it directly for sign/verify.
+Suppose, that "public_rsa.pem" and "private_rsa.pem" are public and private keys in pem format.
+```objective-c
+// Load keys
+- (NSString *)pemKeyStringFromFileWithName:(NSString *)string inBundle:(NSBundle *)bundle {
+    NSURL *fileURL = [bundle URLForResource:name withExtension:@"pem"];
+    NSError *error = nil;
+    NSString *fileContent = [NSString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
+    if (error) {
+        NSLog(@"%@ error: %@", self.debugDescription, error);
+        return nil;
+    }
+}
+
+// Sign and verify
+- (void)signAndVerifyWithPrivateKeyPemString:(NSString *)privateKey publicKeyPemString:(NSString *)publicKey privateKeyPassphrase:(NSString *)passphrase {
+    NSString *algorithmName = @"RS256";
+
+    id <JWTAlgorithmDataHolderProtocol> signDataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor privateKeyWithPEMBase64].type).privateKeyCertificatePassphrase(passphrase).algorithmName(algorithmName).secret(privateKey);
+
+    id <JWTAlgorithmDataHolderProtocol> verifyDataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor publicKeyWithPEMBase64].type).algorithmName(algorithmName).secret(publicKey);
+
+    // sign
+    NSDictionary *payloadDictionary = @{@"hello": @"world"};
+
+    JWTCodingBuilder *signBuilder = [JWTEncodingBuilder encodePayload:payloadDictionary].addHolder(signDataHolder);
+    JWTCodingResultType *signResult = signBuilder.result;
+    NSString *token = nil;
+    if (signResult.successResult) {
+        // success
+        NSLog(@"%@ success: %@", self.debugDescription, signResult.successResult.encoded);
+        token = signResult.successResult.encoded;
+    }
+    else {
+        // error
+        NSLog(@"%@ error: %@", self.debugDescription, signResult.errorResult.error);
+    }
+
+    // verify
+    if (token == nil) {
+        NSLog(@"something wrong");
+    }
+
+    JWTCodingBuilder *verifyBuilder = [JWTDecodingBuilder decodeMessage:token].addHolder(verifyDataHolder);
+    JWTCodingResultType *verifyResult = verifyBuilder.result;
+    if (verifyResult.successResult) {
+        // success
+        NSLog(@"%@ success: %@", self.debugDescription, verifyResult.successResult.payload);
+        token = verifyResult.successResult.encoded;
+    }
+    else {
+        // error
+        NSLog(@"%@ error: %@", self.debugDescription, verifyResult.errorResult.error);
+    }
 }
 ```
 

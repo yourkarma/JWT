@@ -105,7 +105,9 @@
     
     if (!headerSegment) {
         // encode header segment error
-        *theError = [JWTErrorDescription errorWithCode:JWTEncodingHeaderError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTEncodingHeaderError];
+        }
         return nil;
     }
     
@@ -113,7 +115,9 @@
     
     if (!payloadSegment) {
         // encode payment segment error
-        *theError = [JWTErrorDescription errorWithCode:JWTEncodingPayloadError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTEncodingPayloadError];
+        }
         return nil;
     }
     
@@ -191,7 +195,9 @@
     
     if (parts.count < 3) {
         // generate error?
-        *theError = [JWTErrorDescription errorWithCode:JWTInvalidFormatError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTInvalidFormatError];
+        }
         return nil;
     }
     
