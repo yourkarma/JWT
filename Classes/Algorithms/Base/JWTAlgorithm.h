@@ -12,6 +12,22 @@
 @protocol JWTAlgorithm <NSObject>
 
 @required
+/**
+ Signs data using provided secret data.
+ @param hash The data to sign.
+ @param secret The secret to use for signing.
+ @param error The inout error.
+ */
+- (NSData *)signHash:(NSData *)hash key:(NSData *)key error:(NSError *__autoreleasing*)error;
+/**
+ Verifies data using.
+ @param hash The data to sign.
+ @param secret The secret to use for signing.
+ @param error The inout error.
+ */
+- (BOOL)verifyHash:(NSData *)hash signature:(NSData *)signature key:(NSData *)key error:(NSError *__autoreleasing*)error;
+
+//@required
 
 @property (nonatomic, readonly, copy) NSString *name;
 
@@ -50,5 +66,4 @@
  @return YES if the provided signature is valid, NO otherwise
  */
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData;
-
 @end

@@ -75,33 +75,29 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 }
 
 #pragma mark - JWTAlgorithm
-- (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
-    return [self encodePayloadData:[theString dataUsingEncoding:NSUTF8StringEncoding] withSecret:[JWTBase64Coder dataWithBase64UrlEncodedString:theSecret]];
-}
-
-- (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData {
+- (NSData *)signHash:(NSData *)hash key:(NSData *)key error:(NSError *__autoreleasing *)error {
     NSData *result = nil;
     if (self.signKey || self.keyExtractor) {
         NSError *error = nil;
-        id <JWTCryptoKeyProtocol> keyItem = self.signKey ?: [self.keyExtractor keyFromData:theSecretData parameters:@{ [JWTCryptoKeyExtractor parametersKeyCertificatePassphrase] : self.privateKeyCertificatePassphrase ?: [NSNull null] } error:&error];
+        id <JWTCryptoKeyProtocol> keyItem = self.signKey ?: [self.keyExtractor keyFromData:key parameters:@{ [JWTCryptoKeyExtractor parametersKeyCertificatePassphrase] : self.privateKeyCertificatePassphrase ?: [NSNull null] } error:&error];
         
         if (error || keyItem == nil) {
             // tell about error
             [JWTCryptoSecurity removeKeyByTag:keyItem.tag error:&error];
         }
         else {
-            result = [self signData:theStringData withKey:keyItem.key];
+            result = [self signData:hash withKey:keyItem.key];
         }
     }
     else {
         SecIdentityRef identity = nil;
         SecTrustRef trust = nil;
-        __extractIdentityAndTrust((__bridge CFDataRef)theSecretData, &identity, &trust, (__bridge CFStringRef) self.privateKeyCertificatePassphrase);
+        __extractIdentityAndTrust((__bridge CFDataRef)key, &identity, &trust, (__bridge CFStringRef) self.privateKeyCertificatePassphrase);
         
         if (identity && trust) {
             SecKeyRef privateKey;
             SecIdentityCopyPrivateKey(identity, &privateKey);
-            result = [self signData:theStringData withKey:privateKey];
+            result = [self signData:hash withKey:privateKey];
             
             if (privateKey) {
                 CFRelease(privateKey);
@@ -116,21 +112,11 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
             CFRelease(trust);
         }
     }
-
     return result;
 }
-
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey {
-    NSData *certificateData = [JWTBase64Coder dataWithBase64UrlEncodedString:verificationKey];
-    return [self verifySignedInput:input withSignature:signature verificationKeyData:certificateData];
-}
-
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData {
-    NSData *signedData = [input dataUsingEncoding:NSUTF8StringEncoding];
-    NSData *signatureData = [JWTBase64Coder dataWithBase64UrlEncodedString:signature];
-    NSError *error = nil;
+- (BOOL)verifyHash:(NSData *)hash signature:(NSData *)signature key:(NSData *)key error:(NSError *__autoreleasing *)error {
     if (self.verifyKey || self.keyExtractor) {
-        id<JWTCryptoKeyProtocol> keyItem = self.verifyKey?: [self.keyExtractor keyFromData:verificationKeyData parameters:nil error:&error];
+        id<JWTCryptoKeyProtocol> keyItem = self.verifyKey?: [self.keyExtractor keyFromData:key parameters:nil error:error];
         BOOL verified = NO;
         
         if (error || keyItem == nil) {
@@ -145,7 +131,7 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
             return verified;
         }
         else {
-            verified = [self verifyData:signedData witSignature:signatureData withKey:keyItem.key];
+            verified = [self verifyData:hash witSignature:signature withKey:keyItem.key];
         }
         
         NSError *removeError = nil;
@@ -154,16 +140,109 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
         return verified;
     }
     else {
-        SecKeyRef publicKey = [self publicKeyFromCertificate:verificationKeyData];
+        SecKeyRef publicKey = [self publicKeyFromCertificate:key];
         // TODO: special error handling here.
         // add error handling later?
         if (publicKey != NULL) {
-            BOOL verified = [self verifyData:signedData witSignature:signatureData withKey:publicKey];
+            BOOL verified = [self verifyData:hash witSignature:signature withKey:publicKey];
             CFRelease(publicKey);
             return verified;
         }
     }
     return NO;
+}
+
+- (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
+    return [self encodePayloadData:[theString dataUsingEncoding:NSUTF8StringEncoding] withSecret:[JWTBase64Coder dataWithBase64UrlEncodedString:theSecret]];
+}
+//
+- (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData {
+    return [self signHash:theStringData key:theSecretData error:nil];
+//    NSData *result = nil;
+//    if (self.signKey || self.keyExtractor) {
+//        NSError *error = nil;
+//        id <JWTCryptoKeyProtocol> keyItem = self.signKey ?: [self.keyExtractor keyFromData:theSecretData parameters:@{ [JWTCryptoKeyExtractor parametersKeyCertificatePassphrase] : self.privateKeyCertificatePassphrase ?: [NSNull null] } error:&error];
+//        
+//        if (error || keyItem == nil) {
+//            // tell about error
+//            [JWTCryptoSecurity removeKeyByTag:keyItem.tag error:&error];
+//        }
+//        else {
+//            result = [self signData:theStringData withKey:keyItem.key];
+//        }
+//    }
+//    else {
+//        SecIdentityRef identity = nil;
+//        SecTrustRef trust = nil;
+//        __extractIdentityAndTrust((__bridge CFDataRef)theSecretData, &identity, &trust, (__bridge CFStringRef) self.privateKeyCertificatePassphrase);
+//        
+//        if (identity && trust) {
+//            SecKeyRef privateKey;
+//            SecIdentityCopyPrivateKey(identity, &privateKey);
+//            result = [self signData:theStringData withKey:privateKey];
+//            
+//            if (privateKey) {
+//                CFRelease(privateKey);
+//            }
+//        }
+//        
+//        if (identity) {
+//            CFRelease(identity);
+//        }
+//        
+//        if (trust) {
+//            CFRelease(trust);
+//        }
+//    }
+//
+//    return result;
+}
+//
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey {
+    NSData *certificateData = [JWTBase64Coder dataWithBase64UrlEncodedString:verificationKey];
+    return [self verifySignedInput:input withSignature:signature verificationKeyData:certificateData];
+}
+//
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData {
+    return [self verifyHash:[input dataUsingEncoding:NSUTF8StringEncoding] signature:[JWTBase64Coder dataWithBase64UrlEncodedString:signature] key:verificationKeyData error:nil];
+//    NSData *signedData = [input dataUsingEncoding:NSUTF8StringEncoding];
+//    NSData *signatureData = [JWTBase64Coder dataWithBase64UrlEncodedString:signature];
+//    NSError *error = nil;
+//    if (self.verifyKey || self.keyExtractor) {
+//        id<JWTCryptoKeyProtocol> keyItem = self.verifyKey?: [self.keyExtractor keyFromData:verificationKeyData parameters:nil error:&error];
+//        BOOL verified = NO;
+//        
+//        if (error || keyItem == nil) {
+//            // error while getting key.
+//            // cleanup.
+//            // tell about error
+//            NSError *removeError = nil;
+//            [JWTCryptoSecurity removeKeyByTag:keyItem.tag error:&removeError];
+//            if (removeError) {
+//                //???
+//            }
+//            return verified;
+//        }
+//        else {
+//            verified = [self verifyData:signedData witSignature:signatureData withKey:keyItem.key];
+//        }
+//        
+//        NSError *removeError = nil;
+//        [JWTCryptoSecurity removeKeyByTag:keyItem.tag error:&removeError];
+//        
+//        return verified;
+//    }
+//    else {
+//        SecKeyRef publicKey = [self publicKeyFromCertificate:verificationKeyData];
+//        // TODO: special error handling here.
+//        // add error handling later?
+//        if (publicKey != NULL) {
+//            BOOL verified = [self verifyData:signedData witSignature:signatureData withKey:publicKey];
+//            CFRelease(publicKey);
+//            return verified;
+//        }
+//    }
+//    return NO;
 }
 
 #pragma mark - Private ( Override-part depends on platform )

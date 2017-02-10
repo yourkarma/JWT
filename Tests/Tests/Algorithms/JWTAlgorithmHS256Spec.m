@@ -27,6 +27,14 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
         [[algorithm.name should] equal:@"HS256"];
     });
     
+    it(@"HMAC encodes the payload canonically", ^{
+        NSString *payload = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9";
+        NSString *secret = @"secret";
+        NSString *signature = @"TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
+        
+        [[theValue([algorithm verifySignedInput:payload withSignature:signature verificationKey:secret]) should] beTrue];
+    });
+    
     it(@"HMAC encodes the payload using SHA256", ^{
         NSData *encodedPayload = [algorithm encodePayload:@"payload" withSecret:@"secret"];
         [[[encodedPayload base64String] should] equal:@"uC/LeRrOxXhZuYm0MKgmSIzi5Hn9+SMmvQoug3WkK6Q="];
