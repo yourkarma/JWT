@@ -57,16 +57,16 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
         invalid_privateKeyCertificatePassphrase = @"incorrect_password";
         
         // From "Test certificate and public key 1.pem"
-        valid_publicKeyCertificateString    = [JWTAlgorithmRS256Examples_RSA_Helper extractCertificateFromPemFileWithName:@"public_256_right"];
+        valid_publicKeyCertificateString    = [JWTAlgorithmRS256Examples_RSA_Helper extractCertificateFromPemFileWithName:@"rs256-public"];
 
         // From "Test certificate and public key 2.pem"
-        invalid_publicKeyCertificateString  = [JWTAlgorithmRS256Examples_RSA_Helper extractCertificateFromPemFileWithName:@"public_256_wrong"];
+        invalid_publicKeyCertificateString  = [JWTAlgorithmRS256Examples_RSA_Helper extractCertificateFromPemFileWithName:@"rs256-wrong-public"];
         
         payloadDictionary = @{@"hello":@"world"};
         headerDictionary = @{@"alg":algorithmName, @"typ":@"JWT"};
         headerAndPayloadDictionary = @{JWTCodingResultHeaders : headerDictionary, JWTCodingResultPayload : payloadDictionary};
         
-        NSString *p12FilePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"private_256_right"
+        NSString *p12FilePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"rs256-private"
                                                                                  ofType:@"p12"];
         privateKeyCertificateData = [NSData dataWithContentsOfFile:p12FilePath];
         
@@ -112,8 +112,8 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
         beforeAll(^{
             NSMutableDictionary *mutableKeyExtractingTokens = [keyExtractingTokens mutableCopy];
             NSMutableDictionary *mutableKeyExtractingDataHolders = [keyExtractingDataHolders mutableCopy];
-            NSString *privatePemEncodedString = [JWTAlgorithmRS256Examples_RSA_Helper extractKeyFromPemFileWithName:@"private_256_right"];
-            NSString *publicPemEncodedString = [JWTAlgorithmRS256Examples_RSA_Helper extractKeyFromPemFileWithName:@"public_256_right"];
+            NSString *privatePemEncodedString = [JWTAlgorithmRS256Examples_RSA_Helper extractKeyFromPemFileWithName:@"rs256-private"];
+            NSString *publicPemEncodedString = [JWTAlgorithmRS256Examples_RSA_Helper extractKeyFromPemFileWithName:@"rs256-public"];
             {
                 // private from p12
                 NSString *key = privateFromP12Key;
@@ -160,7 +160,6 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
 //                    mutableKeyExtractingTokens[key] = result.successResult.encoded;
                 }
             }
-            
             {
                 // public pem encoded.
                 NSString *key = publicPemEncodedKey;
