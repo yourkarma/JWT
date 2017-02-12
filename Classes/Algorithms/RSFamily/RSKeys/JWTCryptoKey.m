@@ -34,6 +34,7 @@
 @interface JWTCryptoKey ()
 @property (copy, nonatomic, readwrite) NSString *tag;
 @property (assign, nonatomic, readwrite) SecKeyRef key;
+@property (copy, nonatomic, readwrite) NSData *rawKey;
 @end
 @interface JWTCryptoKey (Class)
 + (NSString *)uniqueTag;

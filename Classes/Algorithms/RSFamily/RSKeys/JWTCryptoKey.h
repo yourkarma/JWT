@@ -12,6 +12,7 @@
 @protocol JWTCryptoKeyProtocol <NSObject>
 @property (copy, nonatomic, readonly) NSString *tag;
 @property (assign, nonatomic, readonly) SecKeyRef key;
+@property (copy, nonatomic, readonly) NSData *rawKey;
 @end
 
 @interface JWTCryptoKeyBuilder : NSObject
