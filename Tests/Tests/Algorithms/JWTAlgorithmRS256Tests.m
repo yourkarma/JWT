@@ -37,45 +37,44 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
     __block NSString *valid_token;
     __block NSString *valid_privateKeyCertificatePassphrase;
     __block NSString *valid_publicKeyCertificateString;
-    
+
     __block NSString *invalid_token;
     __block NSString *invalid_privateKeyCertificatePassphrase;
     __block NSString *invalid_publicKeyCertificateString;
-    
+
     __block NSData *privateKeyCertificateData;
     __block NSString *algorithmName;
     __block NSDictionary *headerAndPayloadDictionary;
     __block NSDictionary *headerDictionary;
     __block NSDictionary *payloadDictionary;
-    
+
     __block void (^assertDecodedDictionary)(NSDictionary *);
     __block void (^assertToken)(NSString *);
     beforeAll(^{
-        
+
         algorithmName = @"RS256";
-        
+
         valid_privateKeyCertificatePassphrase = @"password";
         invalid_privateKeyCertificatePassphrase = @"incorrect_password";
-        
+
         // From "Test certificate and public key 1.pem"
         valid_publicKeyCertificateString    = [JWTAlgorithmRS256Examples_RSA_Helper extractCertificateFromPemFileWithName:@"rs256-public"];
 
         // From "Test certificate and public key 2.pem"
         invalid_publicKeyCertificateString  = [JWTAlgorithmRS256Examples_RSA_Helper extractCertificateFromPemFileWithName:@"rs256-wrong-public"];
-        
+
         payloadDictionary = @{@"hello":@"world"};
         headerDictionary = @{@"alg":algorithmName, @"typ":@"JWT"};
         headerAndPayloadDictionary = @{JWTCodingResultHeaders : headerDictionary, JWTCodingResultPayload : payloadDictionary};
-        
-        NSString *p12FilePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"rs256-private"
-                                                                                 ofType:@"p12"];
+
+        NSString *p12FilePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"rs256-private" ofType:@"p12"];
         privateKeyCertificateData = [NSData dataWithContentsOfFile:p12FilePath];
-        
-        
+
+
         JWTCodingResultType *generated_token_result = [JWTEncodingBuilder encodePayload:payloadDictionary].addHolder([JWTAlgorithmRSFamilyDataHolder new].privateKeyCertificatePassphrase(valid_privateKeyCertificatePassphrase).algorithmName(algorithmName).secretData(privateKeyCertificateData)).result;
         valid_token     = generated_token_result.successResult.encoded;
         invalid_token   = [valid_token stringByReplacingOccurrencesOfString:@"F" withString:@"D"];
-        
+
         assertDecodedDictionary = ^(NSDictionary *decodedDictionary) {
             [[(decodedDictionary) shouldNot] beNil];
             [[(decodedDictionary) should] equal:headerAndPayloadDictionary];
@@ -86,18 +85,18 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
         assertToken = ^(NSString *token) {
             [[theValue(token) shouldNot] beNil];
             JWTBuilder *builder = [JWTBuilder decodeMessage:token].secret(valid_publicKeyCertificateString).algorithmName(algorithmName).algorithm(algorithm);
-            
+
             NSDictionary *decodedDictionary = builder.decode;
-            
+
             NSError *error = builder.jwtError;
-            
+
             if (error) {
                 NSLog(@"%@ error(%@)", self.debugDescription, error);
             }
-            
+
             NSLog(@"%@ decodedDictionary(%@)", self.debugDescription, decodedDictionary);
             assertDecodedDictionary(decodedDictionary);
-            
+
             NSLog(@"%@ token(%@)", self.debugDescription, token);
         };
     });
@@ -109,7 +108,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
         __block NSString *privatePemEncodedKey = @"privatePemEncodedKey";
         __block NSString *publicWithCertificateKey = @"publicWithCertificateKey";
         __block NSString *publicPemEncodedKey = @"publicPemEncodedKey";
-        
+
         beforeAll(^{
             NSMutableDictionary *mutableKeyExtractingTokens = [keyExtractingTokens mutableCopy];
             NSMutableDictionary *mutableKeyExtractingDataHolders = [keyExtractingDataHolders mutableCopy];
@@ -120,11 +119,11 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                 NSString *key = privateFromP12Key;
                 JWTCodingResultType *result = nil;
                 id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor privateKeyInP12].type).privateKeyCertificatePassphrase(valid_privateKeyCertificatePassphrase).algorithm(algorithm).secretData(privateKeyCertificateData);
-                
+
                 mutableKeyExtractingDataHolders[key] = dataHolder;
-                
+
                 JWTCodingBuilder *newBuilder = [JWTEncodingBuilder encodePayload:payloadDictionary].addHolder(dataHolder);
-                
+
                 result = newBuilder.result;
                 if (result.successResult) {
                     mutableKeyExtractingTokens[key] = result.successResult.encoded;
@@ -135,11 +134,11 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                 NSString *key = privatePemEncodedKey;
                 JWTCodingResultType *result = nil;
                 id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor privateKeyWithPEMBase64].type).privateKeyCertificatePassphrase(valid_privateKeyCertificatePassphrase).algorithm(algorithm).secret(privatePemEncodedString);
-                
+
                 mutableKeyExtractingDataHolders[key] = dataHolder;
-                
+
                 JWTCodingBuilder *newBuilder = [JWTEncodingBuilder encodePayload:payloadDictionary].addHolder(dataHolder);
-                
+
                 result = newBuilder.result;
                 if (result.successResult) {
                     mutableKeyExtractingTokens[key] = result.successResult.encoded;
@@ -150,13 +149,13 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                 NSString *key = publicWithCertificateKey;
                 JWTCodingResultType *result = nil;
                 id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor publicKeyWithCertificate].type).algorithm(algorithm).secret(valid_publicKeyCertificateString);
-                
+
                 mutableKeyExtractingDataHolders[key] = dataHolder;
-                
+
                 JWTCodingBuilder *newBuilder = [JWTEncodingBuilder encodePayload:payloadDictionary].addHolder(dataHolder);
-                
+
                 result = newBuilder.result;
-                
+
                 if (result.successResult) {
 //                    mutableKeyExtractingTokens[key] = result.successResult.encoded;
                 }
@@ -166,11 +165,11 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                 NSString *key = publicPemEncodedKey;
                 JWTCodingResultType *result = nil;
                 id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor publicKeyWithPEMBase64].type).algorithm(algorithm).secret(publicPemEncodedString);
-                
+
                 mutableKeyExtractingDataHolders[key] = dataHolder;
-                
+
                 JWTCodingBuilder *newBuilder = [JWTEncodingBuilder encodePayload:payloadDictionary].addHolder(dataHolder);
-                
+
                 result = newBuilder.result;
                 if (result.successResult) {
 //                    mutableKeyExtractingTokens[key] = result.successResult.encoded;
@@ -246,7 +245,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                     }
                 }
             });
-            
+
             it(@"StringWithValidPrivateKeyCertificatePassphrase", ^{
                 NSString *certificateString = [privateKeyCertificateData base64UrlEncodedString];
                 NSString *token = [JWTBuilder encodePayload:payloadDictionary].secret(certificateString).privateKeyCertificatePassphrase(valid_privateKeyCertificatePassphrase).algorithmName(algorithmName).algorithm(algorithm).encode;
@@ -254,7 +253,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                 assertToken(token);
             });
         });
-        
+
         context(@"Invalid", ^{
             it(@"DataWithInvalidPrivateKeyCertificatePassphrase", ^{
                 NSString *token = [JWTBuilder encodePayload:payloadDictionary].secretData(privateKeyCertificateData).privateKeyCertificatePassphrase(invalid_privateKeyCertificatePassphrase).algorithmName(algorithmName).algorithm(algorithm).encode;
@@ -267,7 +266,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
             });
         });
     });
-//    
+//
 //    pending(@"FailedTests", ^{
 //        it(@"StringFailsWithValidSignatureAndInvalidPublicKey", ^{
 //            NSDictionary *decodedDictionary = [JWTBuilder decodeMessage:validTokenToDecode].secret(invalidPublicKeyCertificateString).algorithmName(algorithmName).algorithm(algorithm).decode;
@@ -295,7 +294,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                 {
                     JWTBuilder *builder = [JWTBuilder decodeMessage:valid_token].secret(valid_publicKeyCertificateString).algorithmName(algorithmName).algorithm(algorithm);
                     NSDictionary *decodedDictionary = builder.decode;
-                    
+
                     assertDecodedDictionary(decodedDictionary);
                 }
                 {
@@ -312,7 +311,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
             it(@"DataSucceedsWithValidSignatureAndValidPublicKey", ^{
                 NSData *certificateData = [NSData dataWithBase64UrlEncodedString:valid_publicKeyCertificateString];
                 JWTBuilder *builder = [JWTBuilder decodeMessage:valid_token].secretData(certificateData).algorithmName(algorithmName).algorithm(algorithm);
-                
+
                 NSDictionary *decodedDictionary = builder.decode;
                 assertDecodedDictionary(decodedDictionary);
             });
@@ -331,7 +330,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                 NSDictionary *decodedDictionary = [JWTBuilder decodeMessage:invalid_token].secretData(certificateData).algorithmName(algorithmName).algorithm(algorithm).decode;
                 [[(decodedDictionary) should] beNil];
             });
-            
+
             it(@"DataFailsWithValidSignatureAndInvalidPublicKey", ^{
                 NSData *certificateData = [NSData dataWithBase64UrlEncodedString:invalid_publicKeyCertificateString];
                 NSDictionary *decodedDictionary = [JWTBuilder decodeMessage:valid_token].secretData(certificateData).algorithmName(algorithmName).algorithm(algorithm).decode;
@@ -349,7 +348,7 @@ SPEC_BEGIN(JWTAlgorithmRS256Spec)
         // Use algorithm by name. JWTBuilder.algorithmName(RS256)
 //        itBehavesLike(algorithmBehavior, @{});
     });
-    context(@"Clean", ^{        
+    context(@"Clean", ^{
 //        itBehavesLike(algorithmBehavior, @{dataAlgorithmKey: [JWTAlgorithmRS256 new]});
     });
     context(@"RSBased", ^{
