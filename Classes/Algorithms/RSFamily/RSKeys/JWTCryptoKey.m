@@ -9,62 +9,118 @@
 #import "JWTCryptoKey.h"
 #import "JWTCryptoSecurity.h"
 #import "JWTBase64Coder.h"
+@interface JWTCryptoKeyBuilder()
++ (NSString *)keyTypeRSA;
++ (NSString *)keyTypeEC;
+@property (assign, nonatomic, readwrite) BOOL public;
+@property (assign, nonatomic, readwrite) NSString *keyType;
+@end
+@implementation JWTCryptoKeyBuilder
++ (NSString *)keyTypeRSA {
+    return @"RSA";
+}
++ (NSString *)keyTypeEC {
+    return @"EC";
+}
+- (instancetype)keyTypeRSA {
+    self.keyType = [self.class keyTypeRSA];
+    return self;
+}
+- (instancetype)keyTypeEC {
+    self.keyType = [self.class keyTypeEC];
+    return self;
+}
+@end
 @interface JWTCryptoKey ()
 @property (copy, nonatomic, readwrite) NSString *tag;
 @property (assign, nonatomic, readwrite) SecKeyRef key;
+@property (copy, nonatomic, readwrite) NSData *rawKey;
+@end
+@interface JWTCryptoKey (Class)
 + (NSString *)uniqueTag;
 @end
-@implementation JWTCryptoKey
+@implementation JWTCryptoKey (Class)
 + (NSString *)uniqueTag {
     return [[NSUUID UUID].UUIDString stringByReplacingOccurrencesOfString:@"-" withString:@""].lowercaseString;
 }
-- (instancetype)initWithData:(NSData *)data {
+@end
+@implementation JWTCryptoKey (Parameters)
++ (NSString *)parametersKeyBuilder {
+    return NSStringFromSelector(_cmd);
+}
+@end
+@interface JWTCryptoKey (ParametersExtraction)
+- (NSString *)extractedSecKeyTypeWithParameters:(NSDictionary *)parameters;
+@end
+@implementation JWTCryptoKey (ParametersExtraction)
+- (NSString *)extractedSecKeyTypeWithParameters:(NSDictionary *)parameters {
+    NSString *type = [(JWTCryptoKeyBuilder *)parameters[[self.class parametersKeyBuilder]] keyType];
+    NSString *result = nil;
+    if ([type isEqualToString:[JWTCryptoKeyBuilder keyTypeEC]]) {
+        result = [JWTCryptoSecurity keyTypeEC];
+    }
+    return result ?: [JWTCryptoSecurity keyTypeRSA];
+}
+@end
+@implementation JWTCryptoKey
+- (instancetype)initWithData:(NSData *)data parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
     return [super init];
 }
-- (instancetype)initWithBase64String:(NSString *)base64String {
-    return [self initWithData:[JWTBase64Coder dataWithBase64UrlEncodedString:base64String]];
+- (instancetype)initWithBase64String:(NSString *)base64String parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
+    return [self initWithData:[JWTBase64Coder dataWithBase64UrlEncodedString:base64String] parameters:parameters error:error];
 }
-- (instancetype)initWithPemEncoded:(NSString *)encoded {
+- (instancetype)initWithPemEncoded:(NSString *)encoded parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
     //TODO: check correctness.
     //maybe use clean initWithBase64String and remove ?: encoded tail.
     NSString *clean = [JWTCryptoSecurity keyFromPemFileContent:encoded] ?: encoded;//[JWTCryptoSecurity stringByRemovingPemHeadersFromString:encoded];
-    return [self initWithBase64String:clean];
+    return [self initWithBase64String:clean parameters:parameters error:error];
 }
-- (instancetype)initWithPemAtURL:(NSURL *)url {
+- (instancetype)initWithPemAtURL:(NSURL *)url parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
     // contents of url
-    NSError *error = nil;
-    NSString *pemEncoded = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
-    return [self initWithPemEncoded:pemEncoded];
+    NSError *contentsExtractingError = nil;
+    NSString *pemEncoded = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&contentsExtractingError];
+    if (error && contentsExtractingError) {
+        *error = contentsExtractingError;
+        return nil;
+    }
+    return [self initWithPemEncoded:pemEncoded parameters:parameters error:error];
 }
 @end
 @implementation JWTCryptoKeyPublic
-- (instancetype)initWithData:(NSData *)data {
-    self = [super initWithData:data];
+- (instancetype)initWithData:(NSData *)data parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
+    self = [super initWithData:data parameters:parameters error:error];
     if (self) {
         self.tag = [self.class uniqueTag];
-        
+
         if (!data) {
             return nil;
         }
-        
+
         NSError *removingHeaderError = nil;
         NSData *keyData = [JWTCryptoSecurity dataByRemovingPublicKeyHeader:data error:&removingHeaderError];
-        
+
         if (!keyData || removingHeaderError) {
+            if (error && removingHeaderError != nil) {
+                *error = removingHeaderError;
+            }
             return nil;
         }
-        
+
         NSError *addKeyError = nil;
-        self.key = [JWTCryptoSecurity addKeyWithData:keyData asPublic:YES tag:self.tag error:&addKeyError];
+        self.key = [JWTCryptoSecurity addKeyWithData:keyData asPublic:YES tag:self.tag type:[self extractedSecKeyTypeWithParameters:parameters] error:&addKeyError];
         if (!self.key || addKeyError) {
+            if (error && addKeyError != nil) {
+                *error = removingHeaderError;
+            }
             return nil;
         }
     }
     return self;
 }
-- (instancetype)initWithCertificateData:(NSData *)certificateData {
+- (instancetype)initWithCertificateData:(NSData *)certificateData parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
     SecKeyRef key = [JWTCryptoSecurity publicKeyFromCertificate:certificateData];
-    if (key == NULL) {
+    if (!key) {
+        // error: Public certificate incorrect.
         return nil;
     }
 
@@ -74,39 +130,43 @@
 
     return self;
 }
-- (instancetype)initWithCertificateBase64String:(NSString *)certificate {
+- (instancetype)initWithCertificateBase64String:(NSString *)certificate parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
     // cleanup certificate if needed.
     // call initWithCertificateData:(NSData *)certificateData
     NSData *certificateData = nil;
-    return [self initWithCertificateData:certificateData];
+    return [self initWithCertificateData:certificateData parameters:parameters error:error];
 }
 @end
 
 @implementation JWTCryptoKeyPrivate
-- (instancetype)initWithData:(NSData *)data {
-    self = [super init];
+- (instancetype)initWithData:(NSData *)data parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
+    self = [super initWithData:data parameters:parameters error:error];
     if (self) {
         self.tag = [self.class uniqueTag];
-        NSError *error;
-        NSData *keyData = data;
+        NSError *addKeyError = nil;
         if (!data) {
+            // error: no data?
+            // or put it in superclass?
             return nil;
         }
-        self.key = [JWTCryptoSecurity addKeyWithData:keyData asPublic:NO tag:self.tag error:&error];
-        if (!self.key || error) {
+        self.key = [JWTCryptoSecurity addKeyWithData:data asPublic:NO tag:self.tag type:[self extractedSecKeyTypeWithParameters:parameters] error:&addKeyError];
+        if (!self.key || addKeyError) {
+            if (error && addKeyError) {
+                *error = addKeyError;
+            }
             return nil;
         }
     }
     return self;
 }
 // Exists
-- (instancetype)initWithP12AtURL:(NSURL *)url withPassphrase:(NSString *)passphrase {
+- (instancetype)initWithP12AtURL:(NSURL *)url withPassphrase:(NSString *)passphrase parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
     // take data.
     // cleanup if needed.
     NSData *data = [NSData dataWithContentsOfURL:url];
-    return [self initWithP12Data:data withPassphrase:passphrase];
+    return [self initWithP12Data:data withPassphrase:passphrase parameters:parameters error:error];
 }
-- (instancetype)initWithP12Data:(NSData *)p12Data withPassphrase:(NSString *)passphrase {
+- (instancetype)initWithP12Data:(NSData *)p12Data withPassphrase:(NSString *)passphrase parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
     if (p12Data == nil) {
         return nil;
     }
@@ -135,32 +195,10 @@
     }
 
     if (!identityAndTrust) {
+        //error: no identity and trust.
         return nil;
     }
 
-    return self;
-}
-@end
-
-@interface JWTCryptoKeyBuilder()
-@property (assign, nonatomic, readwrite) BOOL public;
-@property (assign, nonatomic, readwrite) NSString *type;
-@end
-@implementation JWTCryptoKeyBuilder
-- (instancetype)forPublic {
-    self.public = YES;
-    return self;
-}
-- (instancetype)forPrivate {
-    self.public = NO;
-    return self;
-}
-- (instancetype)forRSA {
-    self.type = @"RSA";
-    return self;
-}
-- (instancetype)forEC {
-    self.type = @"EC";
     return self;
 }
 @end

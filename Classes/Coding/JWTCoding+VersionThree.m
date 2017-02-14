@@ -295,18 +295,29 @@
     NSString *signedOutput = nil;
 
     // this happens somewhere outside.
-    
-    if (theSecretData && [theAlgorithm respondsToSelector:@selector(encodePayloadData:withSecret:)]) {
-        // not sure that it is correct.
-        NSData *signedOutputData = [theAlgorithm encodePayloadData:[signingInput dataUsingEncoding:NSUTF8StringEncoding] withSecret:theSecretData];
+
+    NSError *algorithmError = nil;
+    if (theSecretData && [theAlgorithm respondsToSelector:@selector(signHash:key:error:)]) {
+          NSData *signedOutputData = [theAlgorithm signHash:[signingInput dataUsingEncoding:NSUTF8StringEncoding] key:theSecretData error:&algorithmError];
         signedOutput = [JWTBase64Coder base64UrlEncodedStringWithData:signedOutputData];
     }
+//    if (theSecretData && [theAlgorithm respondsToSelector:@selector(encodePayloadData:withSecret:)]) {
+//        // not sure that it is correct.
+//        NSData *signedOutputData = [theAlgorithm encodePayloadData:[signingInput dataUsingEncoding:NSUTF8StringEncoding] withSecret:theSecretData];
+//        signedOutput = [JWTBase64Coder base64UrlEncodedStringWithData:signedOutputData];
+//    }
     // not used now.
 //    else {
 //        NSData *signedOutputData = [theAlgorithm encodePayload:signingInput withSecret:self.jwtSecret];
 //        signedOutput = [JWTBase64Coder base64UrlEncodedStringWithData:signedOutputData];
 //    }
 
+    if (algorithmError) {
+        // algorithmError
+        if (theError) {
+            *theError = algorithmError;
+        }
+    }
     if (!signedOutput) {
         // Make sure signing worked (e.g. we may have issues extracting the key from the PKCS12 bundle if passphrase is incorrect)
         if (theError) {
@@ -520,15 +531,24 @@
         // Verify the signed part
         NSString *signingInput = [@[headerPart, payloadPart] componentsJoinedByString:@"."];
         BOOL signatureValid = NO;
-        
-        if (theSecretData && [algorithm respondsToSelector:@selector(verifySignedInput:withSignature:verificationKeyData:)]) {
-            signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKeyData:theSecretData];
 
-            // Not used now.
-//        } else {
-//            signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKey:theSecret];
+        NSError *algorithmError = nil;
+        if (theSecretData && [algorithm respondsToSelector:@selector(verifyHash:signature:key:error:)]) {
+            signatureValid =
+            //[algorithm verifySignedInput:signingInput withSignature:signedPart verificationKeyData:theSecretData];
+            [algorithm verifyHash:[signingInput dataUsingEncoding:NSUTF8StringEncoding] signature:[JWTBase64Coder dataWithBase64UrlEncodedString:signedPart] key:theSecretData error:&algorithmError];
         }
+//        if (theSecretData && [algorithm respondsToSelector:@selector(verifySignedInput:withSignature:verificationKeyData:)]) {
+//            signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKeyData:theSecretData];
+//
+//            // Not used now.
+////        } else {
+////            signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKey:theSecret];
+//        }
         
+        if (algorithmError) {
+            *theError = algorithmError;
+        }
         if (!signatureValid) {
             *theError = [JWTErrorDescription errorWithCode:JWTInvalidSignatureError];
             return nil;

@@ -7,6 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		044FEE8A1E52434300352625 /* rs256-wrong-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 044FEE891E52434300352625 /* rs256-wrong-public.pem */; };
+		044FEE8B1E52434A00352625 /* rs256-wrong-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 044FEE891E52434300352625 /* rs256-wrong-public.pem */; };
+		044FEE8C1E52434E00352625 /* ec256-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DDB1E4DD77D0036CC3A /* ec256-private.pem */; };
+		044FEE8D1E52434E00352625 /* ec256-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DDC1E4DD77D0036CC3A /* ec256-public.pem */; };
+		044FEE8E1E52434E00352625 /* ec256-wrong-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DDD1E4DD77D0036CC3A /* ec256-wrong-private.pem */; };
+		044FEE8F1E52434E00352625 /* ec256-wrong-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DDE1E4DD77D0036CC3A /* ec256-wrong-public.pem */; };
+		044FEE901E52434E00352625 /* ec384-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DDF1E4DD77D0036CC3A /* ec384-private.pem */; };
+		044FEE911E52434E00352625 /* ec384-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE01E4DD77D0036CC3A /* ec384-public.pem */; };
+		044FEE921E52434E00352625 /* ec384-wrong-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE11E4DD77D0036CC3A /* ec384-wrong-private.pem */; };
+		044FEE931E52434E00352625 /* ec384-wrong-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE21E4DD77D0036CC3A /* ec384-wrong-public.pem */; };
+		044FEE941E52434E00352625 /* ec512-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE31E4DD77D0036CC3A /* ec512-private.pem */; };
+		044FEE951E52434E00352625 /* ec512-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE41E4DD77D0036CC3A /* ec512-public.pem */; };
+		044FEE961E52434E00352625 /* ec512-wrong-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE51E4DD77D0036CC3A /* ec512-wrong-private.pem */; };
+		044FEE971E52434E00352625 /* ec512-wrong-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE61E4DD77D0036CC3A /* ec512-wrong-public.pem */; };
+		044FEE981E52434E00352625 /* rs256-private.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE71E4DD77D0036CC3A /* rs256-private.p12 */; };
+		044FEE991E52434E00352625 /* rs256-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE81E4DD77D0036CC3A /* rs256-private.pem */; };
+		044FEE9A1E52434E00352625 /* rs256-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEA1E4DD77D0036CC3A /* rs256-public.pem */; };
+		044FEE9B1E52434E00352625 /* rs256-wrong-private.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEB1E4DD77D0036CC3A /* rs256-wrong-private.p12 */; };
+		044FEE9C1E52434E00352625 /* rs256-wrong-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEC1E4DD77D0036CC3A /* rs256-wrong-private.pem */; };
 		045147741D5E310E007B1D7A /* JWTAlgorithmHS256Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147661D5E310E007B1D7A /* JWTAlgorithmHS256Spec.m */; };
 		045147751D5E310E007B1D7A /* JWTAlgorithmHS384Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147671D5E310E007B1D7A /* JWTAlgorithmHS384Spec.m */; };
 		045147761D5E310E007B1D7A /* JWTAlgorithmHS512Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147681D5E310E007B1D7A /* JWTAlgorithmHS512Spec.m */; };
@@ -21,22 +40,30 @@
 		045147881D5E312A007B1D7A /* JWTAlgorithmRS256Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0451476A1D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m */; };
 		0451478D1D5E312A007B1D7A /* JWTClaimsSerializerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147701D5E310E007B1D7A /* JWTClaimsSerializerSpec.m */; };
 		0451478F1D5E312A007B1D7A /* JWTSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147731D5E310E007B1D7A /* JWTSpec.m */; };
-		049C0DF41E47A38C0062B8C3 /* private_256_right.pem in Resources */ = {isa = PBXBuildFile; fileRef = 049C0DF21E47A38C0062B8C3 /* private_256_right.pem */; };
-		049C0DF51E47A38C0062B8C3 /* private_256_wrong.pem in Resources */ = {isa = PBXBuildFile; fileRef = 049C0DF31E47A38C0062B8C3 /* private_256_wrong.pem */; };
+		04857DED1E4DD77D0036CC3A /* ec256-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DDB1E4DD77D0036CC3A /* ec256-private.pem */; };
+		04857DEE1E4DD77D0036CC3A /* ec256-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DDC1E4DD77D0036CC3A /* ec256-public.pem */; };
+		04857DEF1E4DD77D0036CC3A /* ec256-wrong-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DDD1E4DD77D0036CC3A /* ec256-wrong-private.pem */; };
+		04857DF01E4DD77D0036CC3A /* ec256-wrong-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DDE1E4DD77D0036CC3A /* ec256-wrong-public.pem */; };
+		04857DF11E4DD77D0036CC3A /* ec384-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DDF1E4DD77D0036CC3A /* ec384-private.pem */; };
+		04857DF21E4DD77D0036CC3A /* ec384-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE01E4DD77D0036CC3A /* ec384-public.pem */; };
+		04857DF31E4DD77D0036CC3A /* ec384-wrong-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE11E4DD77D0036CC3A /* ec384-wrong-private.pem */; };
+		04857DF41E4DD77D0036CC3A /* ec384-wrong-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE21E4DD77D0036CC3A /* ec384-wrong-public.pem */; };
+		04857DF51E4DD77D0036CC3A /* ec512-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE31E4DD77D0036CC3A /* ec512-private.pem */; };
+		04857DF61E4DD77D0036CC3A /* ec512-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE41E4DD77D0036CC3A /* ec512-public.pem */; };
+		04857DF71E4DD77D0036CC3A /* ec512-wrong-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE51E4DD77D0036CC3A /* ec512-wrong-private.pem */; };
+		04857DF81E4DD77D0036CC3A /* ec512-wrong-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE61E4DD77D0036CC3A /* ec512-wrong-public.pem */; };
+		04857DF91E4DD77D0036CC3A /* rs256-private.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE71E4DD77D0036CC3A /* rs256-private.p12 */; };
+		04857DFA1E4DD77D0036CC3A /* rs256-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE81E4DD77D0036CC3A /* rs256-private.pem */; };
+		04857DFC1E4DD77D0036CC3A /* rs256-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEA1E4DD77D0036CC3A /* rs256-public.pem */; };
+		04857DFD1E4DD77D0036CC3A /* rs256-wrong-private.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEB1E4DD77D0036CC3A /* rs256-wrong-private.p12 */; };
+		04857DFE1E4DD77D0036CC3A /* rs256-wrong-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEC1E4DD77D0036CC3A /* rs256-wrong-private.pem */; };
 		04A5A58A1DF14FE300FBDF4C /* JWTMarkdownSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A5A5891DF14FE300FBDF4C /* JWTMarkdownSpec.m */; };
-		04EBA9041E3D099B0025090A /* private_256_right.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04EBA9001E3D099B0025090A /* private_256_right.p12 */; };
-		04EBA9051E3D099B0025090A /* private_256_wrong.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04EBA9011E3D099B0025090A /* private_256_wrong.p12 */; };
-		04EBA9061E3D099B0025090A /* public_256_right.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04EBA9021E3D099B0025090A /* public_256_right.pem */; };
-		04EBA9071E3D099B0025090A /* public_256_wrong.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04EBA9031E3D099B0025090A /* public_256_wrong.pem */; };
-		04EBA90D1E3D13140025090A /* public_256_right.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04EBA9021E3D099B0025090A /* public_256_right.pem */; };
-		04EBA90E1E3D13160025090A /* public_256_wrong.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04EBA9031E3D099B0025090A /* public_256_wrong.pem */; };
-		04EBA90F1E3D13180025090A /* private_256_wrong.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04EBA9011E3D099B0025090A /* private_256_wrong.p12 */; };
-		04EBA9111E3D131B0025090A /* private_256_right.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04EBA9001E3D099B0025090A /* private_256_right.p12 */; };
 		266295C3B6ECE08039A16D33 /* libPods-macOS_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA3357EF30AB81C42D84520 /* libPods-macOS_Tests.a */; };
 		C7EE20EA1A0314172C1619E0 /* libPods-iOS_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE336FA6028E75B72C080FB /* libPods-iOS_Tests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		044FEE891E52434300352625 /* rs256-wrong-public.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "rs256-wrong-public.pem"; sourceTree = "<group>"; };
 		045147331D5E2FF0007B1D7A /* iOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		045147381D5E2FF0007B1D7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		045147401D5E3004007B1D7A /* macOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,13 +75,24 @@
 		0451476A1D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmRS256Tests.m; sourceTree = "<group>"; };
 		045147701D5E310E007B1D7A /* JWTClaimsSerializerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSerializerSpec.m; sourceTree = "<group>"; };
 		045147731D5E310E007B1D7A /* JWTSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTSpec.m; sourceTree = "<group>"; };
-		049C0DF21E47A38C0062B8C3 /* private_256_right.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = private_256_right.pem; sourceTree = "<group>"; };
-		049C0DF31E47A38C0062B8C3 /* private_256_wrong.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = private_256_wrong.pem; sourceTree = "<group>"; };
+		04857DDB1E4DD77D0036CC3A /* ec256-private.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec256-private.pem"; sourceTree = "<group>"; };
+		04857DDC1E4DD77D0036CC3A /* ec256-public.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec256-public.pem"; sourceTree = "<group>"; };
+		04857DDD1E4DD77D0036CC3A /* ec256-wrong-private.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec256-wrong-private.pem"; sourceTree = "<group>"; };
+		04857DDE1E4DD77D0036CC3A /* ec256-wrong-public.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec256-wrong-public.pem"; sourceTree = "<group>"; };
+		04857DDF1E4DD77D0036CC3A /* ec384-private.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec384-private.pem"; sourceTree = "<group>"; };
+		04857DE01E4DD77D0036CC3A /* ec384-public.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec384-public.pem"; sourceTree = "<group>"; };
+		04857DE11E4DD77D0036CC3A /* ec384-wrong-private.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec384-wrong-private.pem"; sourceTree = "<group>"; };
+		04857DE21E4DD77D0036CC3A /* ec384-wrong-public.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec384-wrong-public.pem"; sourceTree = "<group>"; };
+		04857DE31E4DD77D0036CC3A /* ec512-private.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec512-private.pem"; sourceTree = "<group>"; };
+		04857DE41E4DD77D0036CC3A /* ec512-public.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec512-public.pem"; sourceTree = "<group>"; };
+		04857DE51E4DD77D0036CC3A /* ec512-wrong-private.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec512-wrong-private.pem"; sourceTree = "<group>"; };
+		04857DE61E4DD77D0036CC3A /* ec512-wrong-public.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec512-wrong-public.pem"; sourceTree = "<group>"; };
+		04857DE71E4DD77D0036CC3A /* rs256-private.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "rs256-private.p12"; sourceTree = "<group>"; };
+		04857DE81E4DD77D0036CC3A /* rs256-private.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "rs256-private.pem"; sourceTree = "<group>"; };
+		04857DEA1E4DD77D0036CC3A /* rs256-public.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "rs256-public.pem"; sourceTree = "<group>"; };
+		04857DEB1E4DD77D0036CC3A /* rs256-wrong-private.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "rs256-wrong-private.p12"; sourceTree = "<group>"; };
+		04857DEC1E4DD77D0036CC3A /* rs256-wrong-private.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "rs256-wrong-private.pem"; sourceTree = "<group>"; };
 		04A5A5891DF14FE300FBDF4C /* JWTMarkdownSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTMarkdownSpec.m; sourceTree = "<group>"; };
-		04EBA9001E3D099B0025090A /* private_256_right.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = private_256_right.p12; sourceTree = "<group>"; };
-		04EBA9011E3D099B0025090A /* private_256_wrong.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = private_256_wrong.p12; sourceTree = "<group>"; };
-		04EBA9021E3D099B0025090A /* public_256_right.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = public_256_right.pem; sourceTree = "<group>"; };
-		04EBA9031E3D099B0025090A /* public_256_wrong.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = public_256_wrong.pem; sourceTree = "<group>"; };
 		3FCCA63374729ECF2D825059 /* Pods-macOS_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-macOS_Tests/Pods-macOS_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		5ADC34F8889C3EDF8BB83D24 /* Pods-macOS_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-macOS_Tests/Pods-macOS_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		66440C9134BC0B535139C516 /* Pods-iOS_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS_Tests/Pods-iOS_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -86,6 +124,7 @@
 		045147281D5E2F93007B1D7A = {
 			isa = PBXGroup;
 			children = (
+				04857DD91E4DD77D0036CC3A /* Resources */,
 				045147641D5E310E007B1D7A /* Tests */,
 				045147351D5E2FF0007B1D7A /* iOS_Tests */,
 				045147411D5E3004007B1D7A /* macOS_Tests */,
@@ -133,12 +172,6 @@
 		045147651D5E310E007B1D7A /* Algorithms */ = {
 			isa = PBXGroup;
 			children = (
-				049C0DF21E47A38C0062B8C3 /* private_256_right.pem */,
-				049C0DF31E47A38C0062B8C3 /* private_256_wrong.pem */,
-				04EBA9001E3D099B0025090A /* private_256_right.p12 */,
-				04EBA9011E3D099B0025090A /* private_256_wrong.p12 */,
-				04EBA9021E3D099B0025090A /* public_256_right.pem */,
-				04EBA9031E3D099B0025090A /* public_256_wrong.pem */,
 				045147661D5E310E007B1D7A /* JWTAlgorithmHS256Spec.m */,
 				045147671D5E310E007B1D7A /* JWTAlgorithmHS384Spec.m */,
 				045147681D5E310E007B1D7A /* JWTAlgorithmHS512Spec.m */,
@@ -163,6 +196,39 @@
 				04A5A5891DF14FE300FBDF4C /* JWTMarkdownSpec.m */,
 			);
 			path = JWT;
+			sourceTree = "<group>";
+		};
+		04857DD91E4DD77D0036CC3A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				04857DDA1E4DD77D0036CC3A /* Certs */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		04857DDA1E4DD77D0036CC3A /* Certs */ = {
+			isa = PBXGroup;
+			children = (
+				044FEE891E52434300352625 /* rs256-wrong-public.pem */,
+				04857DDB1E4DD77D0036CC3A /* ec256-private.pem */,
+				04857DDC1E4DD77D0036CC3A /* ec256-public.pem */,
+				04857DDD1E4DD77D0036CC3A /* ec256-wrong-private.pem */,
+				04857DDE1E4DD77D0036CC3A /* ec256-wrong-public.pem */,
+				04857DDF1E4DD77D0036CC3A /* ec384-private.pem */,
+				04857DE01E4DD77D0036CC3A /* ec384-public.pem */,
+				04857DE11E4DD77D0036CC3A /* ec384-wrong-private.pem */,
+				04857DE21E4DD77D0036CC3A /* ec384-wrong-public.pem */,
+				04857DE31E4DD77D0036CC3A /* ec512-private.pem */,
+				04857DE41E4DD77D0036CC3A /* ec512-public.pem */,
+				04857DE51E4DD77D0036CC3A /* ec512-wrong-private.pem */,
+				04857DE61E4DD77D0036CC3A /* ec512-wrong-public.pem */,
+				04857DE71E4DD77D0036CC3A /* rs256-private.p12 */,
+				04857DE81E4DD77D0036CC3A /* rs256-private.pem */,
+				04857DEA1E4DD77D0036CC3A /* rs256-public.pem */,
+				04857DEB1E4DD77D0036CC3A /* rs256-wrong-private.p12 */,
+				04857DEC1E4DD77D0036CC3A /* rs256-wrong-private.pem */,
+			);
+			path = Certs;
 			sourceTree = "<group>";
 		};
 		3204B5F7E2A42D7544EAB749 /* Frameworks */ = {
@@ -268,12 +334,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				049C0DF51E47A38C0062B8C3 /* private_256_wrong.pem in Resources */,
-				049C0DF41E47A38C0062B8C3 /* private_256_right.pem in Resources */,
-				04EBA9041E3D099B0025090A /* private_256_right.p12 in Resources */,
-				04EBA9051E3D099B0025090A /* private_256_wrong.p12 in Resources */,
-				04EBA9061E3D099B0025090A /* public_256_right.pem in Resources */,
-				04EBA9071E3D099B0025090A /* public_256_wrong.pem in Resources */,
+				04857DF81E4DD77D0036CC3A /* ec512-wrong-public.pem in Resources */,
+				04857DF31E4DD77D0036CC3A /* ec384-wrong-private.pem in Resources */,
+				044FEE8A1E52434300352625 /* rs256-wrong-public.pem in Resources */,
+				04857DED1E4DD77D0036CC3A /* ec256-private.pem in Resources */,
+				04857DF91E4DD77D0036CC3A /* rs256-private.p12 in Resources */,
+				04857DFD1E4DD77D0036CC3A /* rs256-wrong-private.p12 in Resources */,
+				04857DFE1E4DD77D0036CC3A /* rs256-wrong-private.pem in Resources */,
+				04857DF11E4DD77D0036CC3A /* ec384-private.pem in Resources */,
+				04857DF41E4DD77D0036CC3A /* ec384-wrong-public.pem in Resources */,
+				04857DF71E4DD77D0036CC3A /* ec512-wrong-private.pem in Resources */,
+				04857DFA1E4DD77D0036CC3A /* rs256-private.pem in Resources */,
+				04857DF61E4DD77D0036CC3A /* ec512-public.pem in Resources */,
+				04857DF01E4DD77D0036CC3A /* ec256-wrong-public.pem in Resources */,
+				04857DF51E4DD77D0036CC3A /* ec512-private.pem in Resources */,
+				04857DF21E4DD77D0036CC3A /* ec384-public.pem in Resources */,
+				04857DEF1E4DD77D0036CC3A /* ec256-wrong-private.pem in Resources */,
+				04857DFC1E4DD77D0036CC3A /* rs256-public.pem in Resources */,
+				04857DEE1E4DD77D0036CC3A /* ec256-public.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,10 +359,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04EBA90D1E3D13140025090A /* public_256_right.pem in Resources */,
-				04EBA90F1E3D13180025090A /* private_256_wrong.p12 in Resources */,
-				04EBA9111E3D131B0025090A /* private_256_right.p12 in Resources */,
-				04EBA90E1E3D13160025090A /* public_256_wrong.pem in Resources */,
+				044FEE921E52434E00352625 /* ec384-wrong-private.pem in Resources */,
+				044FEE8C1E52434E00352625 /* ec256-private.pem in Resources */,
+				044FEE8B1E52434A00352625 /* rs256-wrong-public.pem in Resources */,
+				044FEE971E52434E00352625 /* ec512-wrong-public.pem in Resources */,
+				044FEE9B1E52434E00352625 /* rs256-wrong-private.p12 in Resources */,
+				044FEE9C1E52434E00352625 /* rs256-wrong-private.pem in Resources */,
+				044FEE901E52434E00352625 /* ec384-private.pem in Resources */,
+				044FEE991E52434E00352625 /* rs256-private.pem in Resources */,
+				044FEE911E52434E00352625 /* ec384-public.pem in Resources */,
+				044FEE941E52434E00352625 /* ec512-private.pem in Resources */,
+				044FEE8F1E52434E00352625 /* ec256-wrong-public.pem in Resources */,
+				044FEE981E52434E00352625 /* rs256-private.p12 in Resources */,
+				044FEE8E1E52434E00352625 /* ec256-wrong-private.pem in Resources */,
+				044FEE8D1E52434E00352625 /* ec256-public.pem in Resources */,
+				044FEE961E52434E00352625 /* ec512-wrong-private.pem in Resources */,
+				044FEE931E52434E00352625 /* ec384-wrong-public.pem in Resources */,
+				044FEE9A1E52434E00352625 /* rs256-public.pem in Resources */,
+				044FEE951E52434E00352625 /* ec512-public.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -43,7 +43,7 @@
 
 @implementation JWTCryptoKeyExtractor_Public_Pem_Certificate
 - (id<JWTCryptoKeyProtocol>)keyFromData:(NSData *)data parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing *)error {
-    return [[JWTCryptoKeyPublic alloc] initWithCertificateData:data];
+    return [[JWTCryptoKeyPublic alloc] initWithCertificateData:data parameters:parameters error:error];
 }
 @end
 
@@ -55,7 +55,7 @@
     if ([certificatePassphrase isEqual:[NSNull null]]) {
         certificatePassphrase = nil;
     }
-    return [[JWTCryptoKeyPrivate alloc] initWithP12Data:data withPassphrase:certificatePassphrase];
+    return [[JWTCryptoKeyPrivate alloc] initWithP12Data:data withPassphrase:certificatePassphrase parameters:parameters error:error];
 }
 @end
 
@@ -66,7 +66,7 @@
     return [self keyFromString:[JWTBase64Coder base64UrlEncodedStringWithData:data] parameters:parameters error:error];
 }
 - (id<JWTCryptoKeyProtocol>)keyFromString:(NSString *)string parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing *)error {
-    return [[JWTCryptoKeyPublic alloc] initWithPemEncoded:string];
+    return [[JWTCryptoKeyPublic alloc] initWithPemEncoded:string parameters:parameters error:error];
 }
 @end
 
@@ -77,7 +77,7 @@
     return [self keyFromString:[JWTBase64Coder base64UrlEncodedStringWithData:data] parameters:parameters error:error];
 }
 - (id<JWTCryptoKeyProtocol>)keyFromString:(NSString *)string parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing *)error {
-    return [[JWTCryptoKeyPrivate alloc] initWithPemEncoded:string];
+    return [[JWTCryptoKeyPrivate alloc] initWithPemEncoded:string parameters:parameters error:error];
 }
 @end
 
