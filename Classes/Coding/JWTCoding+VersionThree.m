@@ -317,6 +317,7 @@
         if (theError) {
             *theError = algorithmError;
         }
+        return nil;
     }
     if (!signedOutput) {
         // Make sure signing worked (e.g. we may have issues extracting the key from the PKCS12 bundle if passphrase is incorrect)
@@ -484,12 +485,16 @@
                                                     options:0
                                                       error:&jsonError];
     if (jsonError) {
-        *theError = [JWTErrorDescription errorWithCode:JWTDecodingHeaderError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTDecodingHeaderError];
+        }
         return nil;
     }
     NSDictionary *header = (NSDictionary *)headerJSON;
     if (!header) {
-        *theError = [JWTErrorDescription errorWithCode:JWTNoHeaderError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTNoHeaderError];
+        }
         return nil;
     }
     
@@ -499,7 +504,9 @@
         //It is insecure to trust the header's value for the algorithm, since
         //the signature hasn't been verified yet, so an algorithm must be provided
         if (!theAlgorithmName) {
-            *theError = [JWTErrorDescription errorWithCode:JWTUnspecifiedAlgorithmError];
+            if (theError) {
+                *theError = [JWTErrorDescription errorWithCode:JWTUnspecifiedAlgorithmError];
+            }
             return nil;
         }
         
@@ -507,7 +514,9 @@
         
         //If the algorithm in the header doesn't match what's expected, verification fails
         if (![theAlgorithmName isEqualToString:headerAlgorithmName]) {
-            *theError = [JWTErrorDescription errorWithCode:JWTAlgorithmNameMismatchError];
+            if (theError) {
+                *theError = [JWTErrorDescription errorWithCode:JWTAlgorithmNameMismatchError];
+            }
             return nil;
         }
         
@@ -524,7 +533,9 @@
         }
         
         if (!algorithm) {
-            *theError = [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError];
+            if (theError) {
+                *theError = [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError];
+            }
             return nil;
         }
         
@@ -547,10 +558,15 @@
 //        }
         
         if (algorithmError) {
-            *theError = algorithmError;
+            if (theError) {
+                *theError = algorithmError;
+            }
+            return nil;
         }
         if (!signatureValid) {
-            *theError = [JWTErrorDescription errorWithCode:JWTInvalidSignatureError];
+            if (theError) {
+                *theError = [JWTErrorDescription errorWithCode:JWTInvalidSignatureError];
+            }
             return nil;
         }
     }
@@ -562,13 +578,17 @@
                                                      options:0
                                                        error:&jsonError];
     if (jsonError) {
-        *theError = [JWTErrorDescription errorWithCode:JWTDecodingPayloadError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTDecodingPayloadError];
+        }
         return nil;
     }
     NSDictionary *payload = (NSDictionary *)payloadJSON;
     
     if (!payload) {
-        *theError = [JWTErrorDescription errorWithCode:JWTNoPayloadError];
+        if (theError) {
+            *theError = [JWTErrorDescription errorWithCode:JWTNoPayloadError];
+        }
         return nil;
     }
     
