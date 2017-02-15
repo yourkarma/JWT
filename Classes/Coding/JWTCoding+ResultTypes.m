@@ -16,6 +16,7 @@ NSString *JWTCodingResultPayload = @"payload";
 // Protected?
 @protocol JWTMutableCodingResultTypeSuccessEncodedProtocol <JWTCodingResultTypeSuccessEncodedProtocol>
 @property (copy, nonatomic, readwrite) NSString *encoded;
+@property (copy, nonatomic, readwrite) NSString *token;
 @end
 
 // Protected?
@@ -49,6 +50,12 @@ NSString *JWTCodingResultPayload = @"payload";
 - (instancetype)initWithEncoded:(NSString *)encoded {
     if (self = [super init]) {
         self.encoded = encoded;
+    }
+    return self;
+}
+- (instancetype)initWithToken:(NSString *)token {
+    if (self = [super init]) {
+        self.token = token;
     }
     return self;
 }
