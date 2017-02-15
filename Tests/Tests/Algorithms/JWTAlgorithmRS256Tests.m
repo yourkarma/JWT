@@ -7,7 +7,7 @@
 //
 
 #import <Kiwi/Kiwi.h>
-#import <Base64/MF_Base64Additions.h>
+#import "JWTBase64Coder.h"
 #import "JWT.h"
 #import "JWTAlgorithmRSBase.h"
 #import "JWTCryptoKeyExtractor.h"
@@ -247,7 +247,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
             });
 
             it(@"StringWithValidPrivateKeyCertificatePassphrase", ^{
-                NSString *certificateString = [privateKeyCertificateData base64UrlEncodedString];
+                NSString *certificateString = [JWTBase64Coder base64UrlEncodedStringWithData:privateKeyCertificateData];
                 NSString *token = [JWTBuilder encodePayload:payloadDictionary].secret(certificateString).privateKeyCertificatePassphrase(valid_privateKeyCertificatePassphrase).algorithmName(algorithmName).algorithm(algorithm).encode;
                 NSLog(@"token: %@\n valid_token: %@\n publicKey: %@\n headerAndPayloadDictionary: %@\n privateKey: %@",token,valid_token, valid_publicKeyCertificateString, headerAndPayloadDictionary, privateKeyCertificateData);
                 assertToken(token);
@@ -260,7 +260,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                 [[(token) should] beNil];
             });
             it(@"StringWithInvalidPrivateKeyCertificatePassphrase", ^{
-                NSString *certificateString = [privateKeyCertificateData base64UrlEncodedString];
+                NSString *certificateString = [JWTBase64Coder base64UrlEncodedStringWithData:privateKeyCertificateData];
                 NSString *token = [JWTBuilder encodePayload:payloadDictionary].secret(certificateString).privateKeyCertificatePassphrase(invalid_privateKeyCertificatePassphrase).algorithmName(algorithmName).algorithm(algorithm).encode;
                 [[(token) should] beNil];
             });
@@ -309,7 +309,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                 }
             });
             it(@"DataSucceedsWithValidSignatureAndValidPublicKey", ^{
-                NSData *certificateData = [NSData dataWithBase64UrlEncodedString:valid_publicKeyCertificateString];
+                NSData *certificateData = [JWTBase64Coder dataWithBase64UrlEncodedString:valid_publicKeyCertificateString];
                 JWTBuilder *builder = [JWTBuilder decodeMessage:valid_token].secretData(certificateData).algorithmName(algorithmName).algorithm(algorithm);
 
                 NSDictionary *decodedDictionary = builder.decode;
@@ -326,13 +326,13 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
                 [[(decodedDictionary) should] beNil];
             });
             it(@"DataFailsWithInValidSignatureAndValidPublicKey", ^{
-                NSData *certificateData = [NSData dataWithBase64UrlEncodedString:valid_publicKeyCertificateString];
+                NSData *certificateData = [JWTBase64Coder dataWithBase64UrlEncodedString:valid_publicKeyCertificateString];
                 NSDictionary *decodedDictionary = [JWTBuilder decodeMessage:invalid_token].secretData(certificateData).algorithmName(algorithmName).algorithm(algorithm).decode;
                 [[(decodedDictionary) should] beNil];
             });
 
             it(@"DataFailsWithValidSignatureAndInvalidPublicKey", ^{
-                NSData *certificateData = [NSData dataWithBase64UrlEncodedString:invalid_publicKeyCertificateString];
+                NSData *certificateData = [JWTBase64Coder dataWithBase64UrlEncodedString:invalid_publicKeyCertificateString];
                 NSDictionary *decodedDictionary = [JWTBuilder decodeMessage:valid_token].secretData(certificateData).algorithmName(algorithmName).algorithm(algorithm).decode;
                 [[(decodedDictionary) should] beNil];
             });

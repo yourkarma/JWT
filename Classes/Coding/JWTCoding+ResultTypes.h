@@ -28,6 +28,8 @@ extern NSString *JWTCodingResultPayload;
 @protocol JWTCodingResultTypeSuccessEncodedProtocol <NSObject>
 @property (copy, nonatomic, readonly) NSString *encoded;
 - (instancetype)initWithEncoded:(NSString *)encoded;
+@property (copy, nonatomic, readonly) NSString *token;
+- (instancetype)initWithToken:(NSString *)token;
 @end
 
 // Public

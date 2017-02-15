@@ -1,6 +1,6 @@
 exit(0)
 
-# generate private rsa key.
+# generate rsa private key.
 openssl genrsa -out private_1.pem
 
 # request certificate with private key in pem format.
@@ -20,3 +20,9 @@ openssl rsa -in private_256_right.pem -pubout -out public_256_right.pem
 
 # extract p12 to pem with all data ( nodes )
 openssl pkcs12 -in private_256_right.p12 -out private_256_right.pem -nodes
+
+# generate ecdsa private key.
+openssl ecparam -genkey -name prime256v1  -out ec256-private.pem
+
+# generate ecdsa public key.
+openssl ec -in ec256-private.pem -pubout -out ec256-public.pem
