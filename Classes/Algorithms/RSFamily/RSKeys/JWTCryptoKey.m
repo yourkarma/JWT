@@ -14,6 +14,8 @@
 + (NSString *)keyTypeEC;
 @property (assign, nonatomic, readwrite) BOOL public;
 @property (assign, nonatomic, readwrite) NSString *keyType;
+@property (nonatomic, readonly) BOOL withKeyTypeRSA;
+@property (nonatomic, readonly) BOOL withKeyTypeEC;
 @end
 @implementation JWTCryptoKeyBuilder
 + (NSString *)keyTypeRSA {
@@ -29,6 +31,12 @@
 - (instancetype)keyTypeEC {
     self.keyType = [self.class keyTypeEC];
     return self;
+}
+- (BOOL)withKeyTypeRSA {
+    return [self.keyType isEqualToString:self.class.keyTypeRSA];
+}
+- (BOOL)withKeyTypeEC {
+    return [self.keyType isEqualToString:self.class.keyTypeEC];
 }
 @end
 @interface JWTCryptoKey ()
@@ -51,12 +59,16 @@
 @end
 @interface JWTCryptoKey (ParametersExtraction)
 - (NSString *)extractedSecKeyTypeWithParameters:(NSDictionary *)parameters;
+- (JWTCryptoKeyBuilder *)extractedBuilderWithParameters:(NSDictionary *)parameters;
 @end
 @implementation JWTCryptoKey (ParametersExtraction)
+- (JWTCryptoKeyBuilder *)extractedBuilderWithParameters:(NSDictionary *)parameters {
+    return (JWTCryptoKeyBuilder *)parameters[[self.class parametersKeyBuilder]];
+}
 - (NSString *)extractedSecKeyTypeWithParameters:(NSDictionary *)parameters {
-    NSString *type = [(JWTCryptoKeyBuilder *)parameters[[self.class parametersKeyBuilder]] keyType];
+    JWTCryptoKeyBuilder *builder = [self extractedBuilderWithParameters:parameters];
     NSString *result = nil;
-    if ([type isEqualToString:[JWTCryptoKeyBuilder keyTypeEC]]) {
+    if (builder.withKeyTypeEC) {
         result = [JWTCryptoSecurity keyTypeEC];
     }
     return result ?: [JWTCryptoSecurity keyTypeRSA];
@@ -97,16 +109,27 @@
         }
 
         NSError *removingHeaderError = nil;
-        NSData *keyData = [JWTCryptoSecurity dataByRemovingPublicKeyHeader:data error:&removingHeaderError];
-
-        if (!keyData || removingHeaderError) {
-            if (error && removingHeaderError != nil) {
-                *error = removingHeaderError;
+        // asks builder
+        
+        JWTCryptoKeyBuilder *builder = [self extractedBuilderWithParameters:parameters];
+        NSData *keyData = data;
+        if (builder.withKeyTypeRSA) {
+        keyData = [JWTCryptoSecurity dataByRemovingPublicKeyHeader:data error:&removingHeaderError];
+            if (!keyData || removingHeaderError) {
+                if (error && removingHeaderError != nil) {
+                    *error = removingHeaderError;
+                }
+                return nil;
             }
-            return nil;
+        }
+        
+        if (builder.withKeyTypeEC) {
+            // unknown here.
+            // process keyData before passing it to JWTCryptoSecurity+addKey... method. 
         }
 
         NSError *addKeyError = nil;
+        
         self.key = [JWTCryptoSecurity addKeyWithData:keyData asPublic:YES tag:self.tag type:[self extractedSecKeyTypeWithParameters:parameters] error:&addKeyError];
         if (!self.key || addKeyError) {
             if (error && addKeyError != nil) {
