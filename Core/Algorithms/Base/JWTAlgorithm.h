@@ -15,14 +15,14 @@
 /**
  Signs data using provided secret data.
  @param hash The data to sign.
- @param secret The secret to use for signing.
+ @param key The secret to use for signing.
  @param error The inout error.
  */
 - (NSData *)signHash:(NSData *)hash key:(NSData *)key error:(NSError *__autoreleasing*)error;
 /**
  Verifies data using.
  @param hash The data to sign.
- @param secret The secret to use for signing.
+ @param signature The secret to use for signing.
  @param error The inout error.
  */
 - (BOOL)verifyHash:(NSData *)hash signature:(NSData *)signature key:(NSData *)key error:(NSError *__autoreleasing*)error;

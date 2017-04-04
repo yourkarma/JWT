@@ -156,7 +156,7 @@
     NSString *stringToDisplay = [self textForItemAtIndexPath:indexPath];
     CGFloat width = collectionView.frame.size.width;//[[collectionView enclosingScrollView] bounds].size.width;
     
-    NSRect estimatedSize = [stringToDisplay boundingRectWithSize:CGSizeMake(width, 10000) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{NSForegroundColorAttributeName : [NSFont boldSystemFontOfSize:14]}];
+    NSRect estimatedSize = [stringToDisplay boundingRectWithSize:CGSizeMake(width, 10000) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:/*@{NSForegroundColorAttributeName : [NSFont boldSystemFontOfSize:14]}*/nil];
     
     NSInteger height = estimatedSize.size.height;
     
