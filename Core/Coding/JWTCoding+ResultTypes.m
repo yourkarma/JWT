@@ -38,6 +38,9 @@ NSString *JWTCodingResultPayload = @"payload";
 @synthesize headers = _headers;
 @synthesize payload = _payload;
 @synthesize claimsSet = _claimsSet;
+//Not used yet. Could be replacement for _encoded.
+@synthesize token = _token;
+
 - (NSDictionary *)headerAndPayloadDictionary {
     if (self.headers && self.payload) {
         return @{

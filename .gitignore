@@ -17,6 +17,9 @@ DerivedData
 *.ipa
 *.xcuserstate
 
+# AppCode JetBrains
+.idea/
+
 # rvm
 .ruby-version
 .ruby-gemset

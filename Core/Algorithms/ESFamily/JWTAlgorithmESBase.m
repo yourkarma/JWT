@@ -22,16 +22,20 @@
 - (void)importKey;
 //importKey(publicKey, format: .importKeyBinary, keyType: .keyPublic)
 @end
-@implementation JWTAlgorithmESBase (ImportKeys) @end
+@implementation JWTAlgorithmESBase (ImportKeys)
+- (void)importKey {
+    return;
+}
+@end
 
 @implementation JWTAlgorithmESBase (JWTAsymmetricKeysAlgorithm)
 - (NSString *)name {
     return @"ESBase";
 }
 - (NSData *)signHash:(NSData *)hash key:(NSData *)key error:(NSError *__autoreleasing *)error {
-    
+    return nil;
 }
 - (BOOL)verifyHash:(NSData *)hash signature:(NSData *)signature key:(NSData *)key error:(NSError *__autoreleasing *)error {
-    
+    return NO;
 }
 @end
