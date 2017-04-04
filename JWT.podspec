@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '6.0'
   s.osx.deployment_target = '10.8'
-  s.source_files = 'Classes/**/*.{h,m}'
+  s.source_files = 'Core/**/*.{h,m}'
   #s.osx.exclude_files = 'JWT/**/*JWTAlgorithmRS*.{h,m}'
   s.requires_arc = true
   s.framework    = 'Security'

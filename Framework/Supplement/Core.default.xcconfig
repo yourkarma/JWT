@@ -1,0 +1,3 @@
+MODULEMAP_FILE = $(SOURCE_ROOT)/../Core/FrameworkSupplement/Map.modulemap;
+//FRAMEWORK_SEARCH_PATHS = $(inherited) "$(SOURCE_ROOT)/../../Release_Frameworks";
+//CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
