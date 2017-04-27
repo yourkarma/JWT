@@ -31,12 +31,13 @@ context(@"serialization", ^{
         claimsSet.issuedAt = [NSDate dateWithTimeIntervalSince1970:issuedAtTS];
         claimsSet.identifier = @"thisisunique";
         claimsSet.type = @"test";
+        claimsSet.scope = @"https://www.googleapis.com/auth/devstorage.read_write";
         serialized = [JWTClaimsSetSerializer dictionaryWithClaimsSet:claimsSet];
         
     });
 
     it(@"number of serialized values", ^{
-        [[serialized should] haveCountOf:8];
+        [[serialized should] haveCountOf:9];
     });
     
     it(@"serializes the issuer property", ^{
@@ -70,7 +71,12 @@ context(@"serialization", ^{
 
     it(@"serializes the type property", ^{
         [[serialized should] haveValue:claimsSet.type forKey:@"typ"];
-        
+
+    });
+
+    it(@"serializes the scope property", ^{
+        [[serialized should] haveValue:claimsSet.scope forKey:@"scope"];
+
     });
 });
 
@@ -87,7 +93,8 @@ context(@"deserialization", ^{
             @"nbf": @(-62135769600),
             @"iat": @(1370005175),
             @"jti": @"thisisunique",
-            @"typ": @"test"
+            @"typ": @"test",
+            @"scope": @"https://www.googleapis.com/auth/devstorage.read_write"
         };
         deserialized = [JWTClaimsSetSerializer claimsSetWithDictionary:serialized];
     });
@@ -119,9 +126,13 @@ context(@"deserialization", ^{
     it(@"deserializes the JWT ID property", ^{
         [[deserialized.identifier should] equal:[serialized objectForKey:@"jti"]];
     });
-    
+
     it(@"deserializes the type property", ^{
         [[deserialized.type should] equal:[serialized objectForKey:@"typ"]];
+    });
+
+    it(@"deserializes the scope property", ^{
+        [[deserialized.scope should] equal:[serialized objectForKey:@"scope"]];
     });
 });
         

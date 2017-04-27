@@ -18,6 +18,7 @@
 // "iat" (Issued At) Claim
 // "jti" (JWT ID) Claim
 // "typ" (Type) Claim
+// "scope" (Scope) Claim
 
 @interface JWTClaimIssuer : JWTClaim
 
@@ -160,6 +161,22 @@
 
 @end
 
+@interface JWTClaimScope : JWTClaim
+
+@end
+
+@implementation JWTClaimScope
+
++ (NSString *)name {
+    return @"scope";
+}
+
++ (BOOL)verifyValue:(NSString *)value withTrustedValue:(NSString *)trustedValue {
+    return [trustedValue isEqualToString:value];
+}
+
+@end
+
 
 @implementation JWTClaim
 + (NSString *)name {
@@ -176,7 +193,8 @@
 		[JWTClaimNotBefore name] : [JWTClaimNotBefore new],
 		[JWTClaimIssuedAt name] : [JWTClaimIssuedAt new],
 		[JWTClaimJWTID name] : [JWTClaimJWTID new],
-		[JWTClaimType name] : [JWTClaimType new]
+		[JWTClaimType name] : [JWTClaimType new],
+        [JWTClaimScope name] : [JWTClaimScope new]
 	}, dictionary);
 }
 
