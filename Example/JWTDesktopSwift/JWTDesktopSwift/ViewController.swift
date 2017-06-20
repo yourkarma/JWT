@@ -8,8 +8,7 @@
 
 import Cocoa
 import JWT
-//import Masonry
-import Masonry
+import SnapKit
 
 enum SignatureValidationType : Int {
     case Unknown
@@ -105,7 +104,9 @@ extension ViewController {
         let string = textStorage.string;
         let range = NSMakeRange(0, string.characters.count);
         if let attributedString = self.encodedAttributedString(text: string) {
+            self.encodedTextView.undoManager?.beginUndoGrouping()
             textStorage.replaceCharacters(in: range, with: attributedString)
+            self.encodedTextView.undoManager?.endUndoGrouping()
         }
 
         let jwtVerified = self.JWT(token: string, skipVerification: false) != nil
@@ -247,16 +248,22 @@ extension ViewController {
 }
 
 // MARK - EncodingTextViewDelegate
+//extension ViewController : NSTextViewDelegate {
+//    func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
+//        if (textView == self.encodedTextView) {
+//            if let textStore = textView.textStorage {
+//                textStore.replaceCharacters(in: affectedCharRange, with: replacementString!)
+//            }
+//            self.refreshUI()
+//            return false
+//        }
+//        return false
+//    }
+//}
+
 extension ViewController : NSTextViewDelegate {
-    func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
-        if (textView == self.encodedTextView) {
-            if let textStore = textView.textStorage {
-                textStore.replaceCharacters(in: affectedCharRange, with: replacementString!)
-            }
-            self.refreshUI()
-            return false
-        }
-        return false
+    func textDidChange(_ notification: Notification) {
+        self.refreshUI()
     }
 }
 
@@ -358,8 +365,11 @@ class ViewController: NSViewController {
         self.secretTextField.stringValue = "secret"
         
         // token
-        self.encodedTextView.string = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
-        
+        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        var range = NSRange()
+        range.location = 0
+        range.length = token.characters.count
+        self.encodedTextView.insertText(token, replacementRange: range)
         // algorithm HS256
         if let index = self.availableAlgorithmsNames.index(where: {
             $0 == JWTAlgorithmNameHS256
@@ -372,10 +382,9 @@ class ViewController: NSViewController {
         super.viewWillAppear()
         let view = self.decriptedView
         let subview = self.decriptedViewController.view
-        
-        
-        subview.mas_makeConstraints { (make) in
-            _ = make?.edges.equalTo()(view)
+
+        subview.snp.makeConstraints { (maker) in
+            maker.edges.equalTo((view?.snp.edges)!)
         }
     }
 }
