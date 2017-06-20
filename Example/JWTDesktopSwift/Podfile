@@ -11,8 +11,8 @@ end
 
 def handmade
   pod 'JWT', path: '../../'
-  # pod 'SnapKit', '~> 3.0'
-  pod 'Masonry'
+  pod 'SnapKit' #, '~> 3.0'
+  # pod 'Masonry'
 end
 
 target target_name do

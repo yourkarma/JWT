@@ -107,12 +107,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 04A74B7C1DA00D840030DDE6 /* Build configuration list for PBXNativeTarget "JWTDesktopSwift" */;
 			buildPhases = (
-				E775B9E8218E40E41AFAA894 /* 📦 Check Pods Manifest.lock */,
+				E775B9E8218E40E41AFAA894 /* [CP] Check Pods Manifest.lock */,
 				04A74B691DA00D830030DDE6 /* Sources */,
 				04A74B6A1DA00D830030DDE6 /* Frameworks */,
 				04A74B6B1DA00D830030DDE6 /* Resources */,
-				D87B59047BF196F770AF9976 /* 📦 Embed Pods Frameworks */,
-				DEB00FC38344571BBD0C48B4 /* 📦 Copy Pods Resources */,
+				D87B59047BF196F770AF9976 /* [CP] Embed Pods Frameworks */,
+				DEB00FC38344571BBD0C48B4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -130,7 +130,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = JWTIO;
 				TargetAttributes = {
 					04A74B6C1DA00D830030DDE6 = {
@@ -172,14 +172,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		D87B59047BF196F770AF9976 /* 📦 Embed Pods Frameworks */ = {
+		D87B59047BF196F770AF9976 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -187,14 +187,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JWTDesktopSwift/Pods-JWTDesktopSwift-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DEB00FC38344571BBD0C48B4 /* 📦 Copy Pods Resources */ = {
+		DEB00FC38344571BBD0C48B4 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -202,19 +202,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JWTDesktopSwift/Pods-JWTDesktopSwift-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E775B9E8218E40E41AFAA894 /* 📦 Check Pods Manifest.lock */ = {
+		E775B9E8218E40E41AFAA894 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -264,6 +264,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -313,6 +314,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

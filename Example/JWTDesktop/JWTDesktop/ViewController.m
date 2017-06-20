@@ -51,9 +51,14 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
     
     NSTextStorage *textStorage = self.encodedTextView.textStorage;
     NSString *string = textStorage.string;
-    [textStorage replaceCharactersInRange:NSMakeRange(0, string.length) withAttributedString:[self encodedTextViewAttributedTextStringForEncodingText:string]];
-    
+    NSAttributedString *attributedString = [self encodedTextViewAttributedTextStringForEncodingText:string];
     NSRange range = NSMakeRange(0, string.length);
+    
+//    [self.encodedTextView insertText:attributedString replacementRange:range];
+    [self.encodedTextView.undoManager beginUndoGrouping];
+    [textStorage replaceCharactersInRange:range withAttributedString:attributedString];
+    [self.encodedTextView.undoManager endUndoGrouping];
+    
     NSString *decodedTokenAsJSON = [self stringFromDecodedJWTToken:[self JWTFromToken:string skipSignatureVerification:YES]];
     [self signatureReactOnVerifiedToken:[self JWTFromToken:string skipSignatureVerification:NO]!=nil];
     // will be udpated.
@@ -226,7 +231,10 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
     self.secretTextField.stringValue = @"secret";
     
     // token
-    self.encodedTextView.string = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
+//    [self.encodedTextView.textStorage text]
+    NSString *token = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
+    [self.encodedTextView insertText:token replacementRange:NSMakeRange(0, token.length)];
+    
     
     // algorithm HS256
     NSInteger index = [[self availableAlgorithmsNames] indexOfObject:@"HS256"];
@@ -378,18 +386,21 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
 
 #pragma mark - EncodedTextView / <NSTextViewDelegate>
 
-- (BOOL)textView:(NSTextView *)textView shouldChangeTextInRange:(NSRange)affectedCharRange replacementString:(NSString *)replacementString {
-    
-    if (textView == self.encodedTextView) {
-        NSTextStorage *textStore = [textView textStorage];
-        [textStore replaceCharactersInRange:affectedCharRange withString:replacementString];
-        // react on changes.
-        // recompute jwt of this token.
-        [self refreshUI];
-        return NO;
-    }
-    return NO;
+- (void)textDidChange:(NSNotification *)notification {
+    [self refreshUI];
 }
+//- (BOOL)textView:(NSTextView *)textView shouldChangeTextInRange:(NSRange)affectedCharRange replacementString:(NSString *)replacementString {
+//    
+//    if (textView == self.encodedTextView) {
+////        NSTextStorage *textStore = [textView textStorage];
+////        [textStore replaceCharactersInRange:affectedCharRange withString:replacementString];
+//        // react on changes.
+//        // recompute jwt of this token.
+//        [self refreshUI];
+//        return YES;
+//    }
+//    return NO;
+//}
 
 #pragma mark - DecodedTableView / <NSTableViewDataSource>
 

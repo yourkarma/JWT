@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "JWTAlgorithm.h"
 #import "JWTDeprecations.h"
+#import "JWTBase64Coder.h"
 
 // TODO: available in 3.0
 // All methods with secret as NSString in algorithms will be deprecated or removed.
@@ -23,6 +24,11 @@
  The <JWTAlgorithm> to use for encoding a JWT
  */
 @property (strong, nonatomic, readwrite) id <JWTAlgorithm> internalAlgorithm;
+
+/**
+ The <JWTStringCoder__Protocol> string coder. It converts data to string and vice versa.
+ */
+@property (strong, nonatomic, readwrite) id <JWTStringCoder__Protocol> internalStringCoder;
 @end
 
 @interface JWTAlgorithmBaseDataHolder : NSObject <JWTAlgorithmDataHolderProtocol>
@@ -59,6 +65,10 @@
  */
 @property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^algorithmName)(NSString *algorithmName);
 
+/**
+ Sets stringCoder and returns the JWTAlgorithmBaseDataHolder to allow for method chaining. See list of names in appropriate headers.
+ */
+@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^stringCoder)(id<JWTStringCoder__Protocol> stringCoder);
 @end
 
 @protocol JWTAlgorithmDataHolderCreateProtocol <NSObject>

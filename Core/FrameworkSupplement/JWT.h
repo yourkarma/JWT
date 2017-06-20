@@ -27,6 +27,7 @@ FOUNDATION_EXPORT const unsigned char JWTVersionString[];
 #import <JWT/JWTAlgorithm.h>
 #import <JWT/JWTRSAlgorithm.h>
 #import <JWT/JWTAlgorithmFactory.h>
+#import <JWT/JWTAlgorithmNone.h>
 #import <JWT/JWTAlgorithmHSBase.h>
 #import <JWT/JWTAlgorithmRSBase.h>
 
