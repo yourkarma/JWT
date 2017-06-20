@@ -86,7 +86,7 @@ extension ViewController {
         self.builder = builder
         
         guard let decoded = builder?.decode else {
-            print("JWT ERROR \(builder?.jwtError)")
+            print("JWT ERROR \(String(describing: builder?.jwtError))")
             return nil
         }
         
@@ -351,6 +351,41 @@ class ViewController: NSViewController {
         view?.addSubview(self.decriptedViewController.view)
     }
     
+    func tryToEncode() {
+        let claimsSet = JWTClaimsSet()
+        claimsSet.subject = "1234567890"
+        let dictionary = [
+            "name" : "John Doe",
+            "admin": true
+        ] as [String : Any]
+        let secret = "secret"
+        let holder = JWTAlgorithmHSFamilyDataHolder.createWithAlgorithm256().secret(secret)
+        let builder = JWTEncodingBuilder.encode(claimsSet).payload(dictionary)?.addHolder(holder)
+        let builderResult = builder?.result
+        
+        if let result = builderResult {
+            if let success = result.successResult {
+                print("SUCCESS: \(success.encoded)")
+            }
+            
+            if let error = result.errorResult {
+                print("ERROR: \(error.error)")
+            }
+        }
+        
+        let decodingBuilder = JWTDecodingBuilder.decodeMessage(builderResult?.successResult.encoded).addHolder(holder)
+        
+        if let result = decodingBuilder?.result {
+            if let success = result.successResult {
+                print("SUCCESS: \(success.headerAndPayloadDictionary)")
+            }
+            
+            if let error = result.errorResult {
+                print("ERROR: \(error.error)")
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupDecorations()
@@ -358,6 +393,7 @@ class ViewController: NSViewController {
         self.setupDecriptedViews()
         self.defaultJWTIOSetup()
         self.refreshUI()
+        self.tryToEncode()
     }
     
     func defaultJWTIOSetup() {
