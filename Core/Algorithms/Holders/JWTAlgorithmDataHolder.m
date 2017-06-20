@@ -40,6 +40,10 @@
  */
 @property (copy, nonatomic, readwrite) JWTAlgorithmBaseDataHolder *(^algorithmName)(NSString *algorithmName);
 
+/**
+ Sets stringCoder and returns the JWTAlgorithmBaseDataHolder to allow for method chaining. See list of names in appropriate headers.
+ */
+@property (copy, nonatomic, readwrite) JWTAlgorithmBaseDataHolder *(^stringCoder)(id<JWTStringCoder__Protocol> stringCoder);
 @end
 
 @interface JWTAlgorithmBaseDataHolder (Convertions)
@@ -52,18 +56,18 @@
 @implementation JWTAlgorithmBaseDataHolder (Convertions)
 #pragma mark - Convertions
 - (NSData *)dataFromString:(NSString *)string {
-    NSData *result = [JWTBase64Coder dataWithBase64UrlEncodedString:string];
+    NSData *result = [self.internalStringCoder dataWithString:string];
     
     if (result == nil) {
         // tell about it?!
         NSLog(@"%@ %@ something went wrong. Data is not base64encoded", self.debugDescription, NSStringFromSelector(_cmd));
     }
     
-    return result ?: [string dataUsingEncoding:NSUTF8StringEncoding];
+    return result;// ?: [string dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)stringFromData:(NSData *)data {
-    NSString *result = [JWTBase64Coder base64UrlEncodedStringWithData:data];
+    NSString *result = [self.internalStringCoder stringWithData:data];
     
     if (result == nil) {
         NSLog(@"%@ %@ something went wrong. String is not base64encoded", self.debugDescription, NSStringFromSelector(_cmd));
@@ -98,6 +102,11 @@
     return self;
 }
 
+- (instancetype)stringCoder:(id<JWTStringCoder__Protocol>)stringCoder {
+    self.internalStringCoder = stringCoder;
+    return self;
+}
+
 - (void)setupFluent {
     __weak typeof(self) weakSelf = self;
     self.secret = ^(NSString *secret) {
@@ -115,6 +124,10 @@
     self.algorithmName = ^(NSString *algorithmName) {
         return [weakSelf algorithmName:algorithmName];
     };
+
+    self.stringCoder = ^(id <JWTStringCoder__Protocol> stringCoder) {
+        return [weakSelf stringCoder:stringCoder];
+    };
 }
 @end
 
@@ -129,7 +142,8 @@
     return @{
              @"algorithmName" : self.internalAlgorithmName ?: @"unknown",
              @"algorithm" : [self.internalAlgorithm debugDescription] ?: @"unknown",
-             @"secretData" : [self.internalSecretData debugDescription]
+             @"secretData" : [self.internalSecretData debugDescription] ?: @"unknown",
+             @"stringCoder" : [self.internalStringCoder debugDescription] ?: @"unknown"
              };
 }
 
@@ -138,6 +152,11 @@
 @implementation JWTAlgorithmBaseDataHolder
 @synthesize internalAlgorithm;
 @synthesize internalSecretData;
+@synthesize internalStringCoder = _internalStringCoder;
+
+- (id<JWTStringCoder__Protocol>)internalStringCoder {
+    return _internalStringCoder ?: [JWTBase64Coder new];
+}
 
 #pragma mark - Custom Getters
 - (NSString *)internalAlgorithmName {
@@ -161,6 +180,7 @@
     JWTAlgorithmBaseDataHolder *holder = [self.class new];
     holder.internalAlgorithm = self.internalAlgorithm;
     holder.internalSecretData = self.internalSecretData;
+    holder.internalStringCoder = self.internalStringCoder;
     return holder;
 }
 @end
