@@ -43,3 +43,28 @@
 }
 
 @end
+
+@implementation JWTBase64Coder (JWTStringCoder__Protocol)
+- (NSString *)stringWithData:(NSData *)data {
+    return [self.class base64UrlEncodedStringWithData:data];
+}
+- (NSData *)dataWithString:(NSString *)string {
+    return [self.class dataWithBase64UrlEncodedString:string];
+}
+@end
+
+@implementation JWTStringCoder__For__Encoding
++ (instancetype)utf8Encoding {
+    JWTStringCoder__For__Encoding *coding = [self new];
+    coding.stringEncoding = NSUTF8StringEncoding;
+    return coding;
+}
+@end
+@implementation JWTStringCoder__For__Encoding (JWTStringCoder__Protocol)
+- (NSString *)stringWithData:(NSData *)data {
+    return [[NSString alloc] initWithData:data encoding:self.stringEncoding];
+}
+- (NSData *)dataWithString:(NSString *)string {
+    return [string dataUsingEncoding:self.stringEncoding];
+}
+@end
