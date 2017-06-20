@@ -144,6 +144,7 @@
 @property (copy, nonatomic, readwrite) NSDictionary *internalPayload;
 @property (copy, nonatomic, readwrite) NSDictionary *internalHeaders;
 @property (strong, nonatomic, readwrite) JWTClaimsSet *internalClaimsSet;
+@property (copy, nonatomic, readwrite) NSDictionary *internalMixingClaimsPayload;
 
 #pragma mark - Fluent
 @property (copy, nonatomic, readwrite) JWTEncodingBuilder *(^payload)(NSDictionary *payload);
@@ -191,23 +192,35 @@
 
 @implementation JWTEncodingBuilder
 #pragma mark - Getters
-- (NSDictionary *)internalPayload {
-    return _internalPayload ?: [JWTClaimsSetSerializer dictionaryWithClaimsSet:_internalClaimsSet];
+- (NSDictionary *)internalMixingClaimsPayload {
+    NSMutableDictionary *dictionary = [@{} mutableCopy];
+    if (_internalPayload) {
+        [dictionary addEntriesFromDictionary:_internalPayload];
+    }
+    
+    if (_internalClaimsSet) {
+        [dictionary addEntriesFromDictionary:[JWTClaimsSetSerializer dictionaryWithClaimsSet:_internalClaimsSet]];
+    }
+    
+    return dictionary;
 }
+
 #pragma mark - Create
 + (instancetype)encodePayload:(NSDictionary *)payload {
     return ((JWTEncodingBuilder *)[self createWithEmptyChain]).payload(payload);
 }
+
 + (instancetype)encodeClaimsSet:(JWTClaimsSet *)claimsSet {
     return ((JWTEncodingBuilder *)[self createWithEmptyChain]).claimsSet(claimsSet);
 }
+
 @end
 
 @implementation JWTEncodingBuilder (Coding)
 - (JWTCodingResultType *)encode {
     
     NSDictionary *headers = self.internalHeaders;
-    NSDictionary *payload = self.internalPayload;
+    NSDictionary *payload = self.internalMixingClaimsPayload;
     
     NSString *encodedMessage = nil;
     NSError *error = nil;
