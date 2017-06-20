@@ -12,7 +12,7 @@
 
 + (NSArray *)claimsSetKeys
 {
-    return @[@"iss", @"sub", @"aud", @"exp", @"nbf", @"iat", @"jti", @"typ"];
+    return @[@"iss", @"sub", @"aud", @"exp", @"nbf", @"iat", @"jti", @"typ", @"scope"];
 }
 
 + (NSDictionary *)dictionaryWithClaimsSet:(JWTClaimsSet *)theClaimsSet;
@@ -26,6 +26,8 @@
     [self dictionary:dictionary setDateIfNotNil:theClaimsSet.issuedAt forKey:@"iat"];
     [self dictionary:dictionary setObjectIfNotNil:theClaimsSet.identifier forKey:@"jti"];
     [self dictionary:dictionary setObjectIfNotNil:theClaimsSet.type forKey:@"typ"];
+    [self dictionary:dictionary setObjectIfNotNil:theClaimsSet.scope forKey:@"scope"];
+
     return [dictionary copy];
 }
 
@@ -40,6 +42,8 @@
     claimsSet.issuedAt = [NSDate dateWithTimeIntervalSince1970:[[theDictionary objectForKey:@"iat"] doubleValue]];
     claimsSet.identifier = [theDictionary objectForKey:@"jti"];
     claimsSet.type = [theDictionary objectForKey:@"typ"];
+    claimsSet.scope = [theDictionary objectForKey:@"scope"];
+
     return claimsSet;
 }
 
