@@ -21,7 +21,8 @@
     newClaimsSet.issuedAt = self.issuedAt;
     newClaimsSet.identifier = self.identifier;
     newClaimsSet.type = self.type;
-    
+    newClaimsSet.scope = self.scope;
+
     return newClaimsSet;
 }
 

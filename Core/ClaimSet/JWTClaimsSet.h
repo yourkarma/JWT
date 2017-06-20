@@ -18,5 +18,6 @@
 @property (nonatomic, readwrite, copy) NSDate *issuedAt;
 @property (nonatomic, readwrite, copy) NSString *identifier;
 @property (nonatomic, readwrite, copy) NSString *type;
+@property (nonatomic, readwrite, copy) NSString *scope;
 
 @end
