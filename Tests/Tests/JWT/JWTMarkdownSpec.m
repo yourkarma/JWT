@@ -15,8 +15,8 @@ SPEC_BEGIN(JWTMarkdownSpec)
 describe(@"markdown examples", ^{
     context(@"VersionThree", ^{
         it(@"API should work well with Pem keys loading", ^{
-            NSString *privatePemFilename = @"private_256_right";
-            NSString *publicPemFilename = @"public_256_right";
+            NSString *privatePemFilename = @"rs256-private";
+            NSString *publicPemFilename = @"rs256-public";
             NSString *passphrase = @"password";
             NSString *(^loadKey)(NSString *, NSBundle *) = ^NSString *(NSString *name, NSBundle *bundle){
                  NSURL *fileURL = [bundle URLForResource:name withExtension:@"pem"];
