@@ -60,7 +60,7 @@
     
     if (result == nil) {
         // tell about it?!
-        NSLog(@"%@ %@ something went wrong. Data is not base64encoded", self.debugDescription, NSStringFromSelector(_cmd));
+        NSLog(@"%@ %@ something went wrong. Data is not base64encoded! %@", self.debugDescription, NSStringFromSelector(_cmd), string);
     }
     
     return result;// ?: [string dataUsingEncoding:NSUTF8StringEncoding];
@@ -234,8 +234,8 @@
 - (NSDictionary *)debugInformation {
     NSDictionary *add = @{@"privateKeyCertificatePassphrase" : self.internalPrivateKeyCertificatePassphrase ?: @"unknown",
                           @"keyExtractorType" : self.internalKeyExtractorType ?: @"unknown",
-                          @"signKey" : [self.signKey debugDescription] ?: @"unknown",
-                          @"verifyKey" : [self.verifyKey debugDescription] ?: @"unknown"
+                          @"signKey" : self.internalSignKey ?: @"unknown",
+                          @"verifyKey" : self.internalVerifyKey ?: @"unknown"
                           };
     NSMutableDictionary *result = [[super debugInformation] mutableCopy];
     [result addEntriesFromDictionary:add];
