@@ -18,8 +18,10 @@
 }
 @end
 
-#if __has_include("MF_Base64Additions.h")
+#if __has_include(<Base64/MF_Base64Additions.h>)
 #import <Base64/MF_Base64Additions.h>
+#elif __has_include("MF_Base64Additions.h")
+#import "MF_Base64Additions.h"
 #endif
 
 @implementation JWTBase64Coder
