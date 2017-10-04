@@ -107,10 +107,10 @@
 
         CFTypeRef key = NULL;
         // TODO: Add error handling later.
-        OSStatus copyItemStatus = errSecSuccess;
-        SecItemCopyMatching((__bridge CFDictionaryRef)[self dictionaryByCombiningDictionaries:@[attributes, commonAttributes, copyAttributes]], &key);
+        OSStatus copyItemStatus = SecItemCopyMatching((__bridge CFDictionaryRef)[self dictionaryByCombiningDictionaries:@[attributes, commonAttributes, copyAttributes]], &key);
         if (key == NULL) {
             // copy item error
+            *error = [NSError errorWithDomain:@"org.opensource.jwt" code:copyItemStatus userInfo:@{NSLocalizedDescriptionKey: @"error"}];
         }
         return (SecKeyRef)key;
     }
@@ -211,7 +211,7 @@
     return [self itemsFromPemFileContent:content byRegex:expression].firstObject;
 }
 + (NSString *)keyFromPemFileContent:(NSString *)content {
-    NSRegularExpression *expression = [[NSRegularExpression alloc] initWithPattern:@"-----BEGIN(?:[\\w\\s]|)+KEY-----(.+?)-----END(?:[\\w\\s])+KEY-----" options:NSRegularExpressionDotMatchesLineSeparators error:nil];
+    NSRegularExpression *expression = [[NSRegularExpression alloc] initWithPattern:@"-----BEGIN(?:[\\w\\s])+KEY-----(.+?)-----END(?:[\\w\\s])+KEY-----" options:NSRegularExpressionDotMatchesLineSeparators error:nil];
     return [self itemsFromPemFileContent:content byRegex:expression].firstObject;
 }
 + (NSArray *)itemsFromPemFileContent:(NSString *)content byRegex:(NSRegularExpression *)expression {
@@ -224,6 +224,14 @@
             NSString *extractedString = [content substringWithRange:[result rangeAtIndex:i]];
             resultArray = [resultArray arrayByAddingObject:extractedString];
         }
+        
+        // here we should remove all new line separators from all lines.
+        NSArray *strippedItems = @[];
+        for (NSString *item in resultArray) {
+            NSString *clean = [item stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+            strippedItems = [strippedItems arrayByAddingObject:clean];
+        }
+        resultArray = strippedItems;
     }
     return resultArray;
 }
