@@ -14,6 +14,10 @@
 
 SPEC_BEGIN(JWTIssuesSpec)
 describe(@"Issue examples", ^{
+    it(@"RS256 key should be read correctly from file", ^{
+        id key = [JWTCryptoSecurity keyFromPemFileWithName:@"rs256-public"];
+        NSLog(@"%@ key: %@", self.debugDescription, key);
+    });
     it(@"RS256 signature verification crashes application #141", ^{
         NSString *publicKey = @"MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAM/l2OJO6C6eZWwV4h2FooxI2YZ/XNL+BP7kEB7wiudqi0vGRAheahe+vtazFE+J3V1iy+bwIqLXop571zgj6G0CAwEAAQ==";
         NSString *algorithmName = JWTAlgorithmNameRS256;
