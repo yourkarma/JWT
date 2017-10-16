@@ -59,10 +59,15 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
     [textStorage replaceCharactersInRange:range withAttributedString:attributedString];
     [self.encodedTextView.undoManager endUndoGrouping];
     
-    NSString *decodedTokenAsJSON = [self stringFromDecodedJWTToken:[self JWTFromToken:string skipSignatureVerification:YES]];
-    [self signatureReactOnVerifiedToken:[self JWTFromToken:string skipSignatureVerification:NO]!=nil];
+    NSError *error = nil;
+    NSDictionary *result = [self JWTFromToken:string skipSignatureVerification:YES error:&error];
+    
+    NSString *decodedTokenAsJSON = [self stringFromDecodedJWTToken:result];
+    BOOL signatureVerified = [self JWTFromToken:string skipSignatureVerification:NO error:nil]!=nil;
+    [self signatureReactOnVerifiedToken:signatureVerified];
     // will be udpated.
-    self.decriptedViewController.builder = self.builder;
+    JWTCodingResultType *resultType = error ? [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:error]] : [[JWTCodingResultType alloc] initWithSuccessResult:[[JWTCodingResultTypeSuccess alloc] initWithHeaders:result[JWTCodingResultHeaders] withPayload:result[JWTCodingResultPayload]]];
+    self.decriptedViewController.resultType = resultType;
     // not used.
     [self.decodedTextView replaceCharactersInRange:range withString:decodedTokenAsJSON];
 }
@@ -101,15 +106,75 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
     return self.secretIsBase64EncodedCheckButton.integerValue == 1;
 }
 
-- (NSDictionary *)JWTFromToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification {
+- (NSDictionary *)v3__JWTFromToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification error:(NSError *__autoreleasing*)error {
     NSLog(@"JWT ENCODED TOKEN: %@", token);
     NSString *algorithmName = [self chosenAlgorithmName];
     NSLog(@"JWT Algorithm NAME: %@", algorithmName);
+    NSData *secretData = [self chosenSecretData];
+    NSString *secret = [self chosenSecret];
+    BOOL isBase64EncodedSecret = [self isBase64EncodedSecret];
+    // unchek button if needed
+    if (!(isBase64EncodedSecret && secretData)) {
+        self.secretIsBase64EncodedCheckButton.state = 0;
+    }
+    
+    NSError *theError = nil;
+    id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:algorithmName];
+    if (!algorithm) {
+        return nil;
+    }
+    id<JWTAlgorithmDataHolderProtocol> holder = nil;
+    if ([algorithm isKindOfClass:[JWTAlgorithmRSBase class]]) {
+        NSError *keyError = nil;
+        id<JWTCryptoKeyProtocol>key = [[JWTCryptoKey alloc] initWithPemEncoded:secret parameters:nil error:&keyError];
+        theError = keyError;
+        if (!theError) {
+            holder = [JWTAlgorithmRSFamilyDataHolder new].verifyKey(key).algorithmName(algorithmName).secretData([NSData new]);
+        }
+    }
+    else if ([algorithm isKindOfClass:[JWTAlgorithmHSBase class]]){
+        JWTAlgorithmHSFamilyDataHolder *aHolder = [JWTAlgorithmHSFamilyDataHolder new];
+        if (isBase64EncodedSecret && secretData) {
+            aHolder.secretData(secretData);
+        }
+        else {
+            aHolder.secret(secret);
+        }
+        holder = aHolder.algorithmName(algorithmName);
+    }
+    else if ([algorithm isKindOfClass:[JWTAlgorithmNone class]]) {
+        holder = [JWTAlgorithmNoneDataHolder new];
+    }
+    
+    if (theError) {
+        NSLog(@"JWT internalError: %@", theError);
+        if (error) {
+            *error = theError;
+        }
+        return nil;
+    }
+    
+    JWTCodingBuilder *builder = [JWTDecodingBuilder decodeMessage:token].addHolder(holder).options(@(skipVerification));
+    JWTCodingResultType *result = builder.result;
+    // TODO: Fix
+    // signature is not verified well even for JWT.IO example.
+    // it happens in case of base64 data corruption. (url encoded vs not url uncoded)
+    NSLog(@"JWT ERROR: %@ -> %@", result.errorResult, result.errorResult.error);
+    NSLog(@"JWT RESULT: %@ -> %@", result.successResult, result.successResult.headerAndPayloadDictionary);
+    return result.successResult.headerAndPayloadDictionary;
+}
+
+- (NSDictionary *)v2__JWTFromToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification error:(NSError *__autoreleasing*)error {
+    NSLog(@"JWT ENCODED TOKEN: %@", token);
+    NSString *algorithmName = [self chosenAlgorithmName];
+    NSLog(@"JWT Algorithm NAME: %@", algorithmName);
+
     JWTBuilder *builder = [JWTBuilder decodeMessage:token].algorithmName(algorithmName).options(@(skipVerification));
     
     NSData *secretData = [self chosenSecretData];
     NSString *secret = [self chosenSecret];
     BOOL isBase64EncodedSecret = [self isBase64EncodedSecret];
+    
     if (![algorithmName isEqualToString:JWTAlgorithmNameNone]) {
         if (isBase64EncodedSecret && secretData) {
             builder.secretData(secretData);
@@ -125,6 +190,10 @@ typedef NS_ENUM(NSInteger, SignatureValidationType) {
     NSLog(@"JWT DICTIONARY: %@", decoded);
     self.builder = builder;
     return decoded;
+}
+
+- (NSDictionary *)JWTFromToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification error:(NSError *__autoreleasing*)error {
+    return [self v3__JWTFromToken:token skipSignatureVerification:skipVerification error:error];
 }
 
 #pragma mark - Data

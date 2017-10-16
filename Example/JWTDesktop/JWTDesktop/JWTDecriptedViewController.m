@@ -14,6 +14,7 @@
 @property (copy, nonatomic, readwrite) NSString *collectionViewItemIdentifier;
 @property (strong, nonatomic, readwrite) NSArray *cachedResultArray;
 @property (strong, nonatomic, readwrite) NSDictionary *cachedErrorDictionary;
+@property (assign, nonatomic, readwrite) NSInteger countOfRows;
 
 @property (copy, nonatomic, readonly) NSString *errorText;
 @property (copy, nonatomic, readonly) NSString *headerText;
@@ -68,18 +69,46 @@
 - (void)reloadData {
     self.cachedResultArray = nil;
     self.cachedErrorDictionary = nil;
-    NSDictionary *result = self.builder.decode;
-    
-    if (self.builder.jwtError != nil) {
-        self.cachedErrorDictionary = @{
-                                       @"Error" : self.builder.jwtError.localizedDescription
-                                       };
+    if (self.resultType) {
+        if (self.resultType.successResult) {
+            NSDictionary *result = self.resultType.successResult.headerAndPayloadDictionary;
+            self.cachedResultArray = @[
+                                       @{@"header" : result[JWTCodingResultHeaders] ?: @""},
+                                       @{@"payload" : result[JWTCodingResultPayload] ?: @""}
+                                       ];
+        }
+        else {
+            NSString *errorDescription = self.resultType.errorResult.error ? self.resultType.errorResult.error.localizedDescription : @"UnknownError! Report about it!";
+            self.cachedErrorDictionary = @{
+                                           @"error" : errorDescription
+                                           };
+        }
     }
-    else if (result != nil) {
-        self.cachedResultArray =  @[
-                                    @{@"header" : result[@"header"] ?: @""},
-                                    @{@"payload" : result[@"payload"] ?: @""}
-                                    ];
+    else {
+        NSDictionary *result = self.builder.decode;
+        if (self.builder.jwtError != nil) {
+            self.cachedErrorDictionary = @{
+                                           @"error" : self.builder.jwtError.localizedDescription
+                                           };
+        }
+        else if (result != nil) {
+            self.cachedResultArray =  @[
+                                        @{@"header" : result[@"header"] ?: @""},
+                                        @{@"payload" : result[@"payload"] ?: @""}
+                                        ];
+        }
+    }
+}
+
+- (NSInteger)countOfRows {
+    if (self.cachedErrorDictionary) {
+        return 1;
+    }
+    else if (self.cachedResultArray) {
+        return self.cachedResultArray.count;
+    }
+    else {
+        return 0;
     }
 }
 
@@ -105,6 +134,14 @@
 - (void)setBuilder:(JWTBuilder *)builder {
     if (_builder != builder) {
         _builder = builder;
+        [self reloadData];
+        [self reloadCollectionView];
+    }
+}
+
+- (void)setResultType:(JWTCodingResultType *)resultType {
+    if (_resultType != resultType) {
+        _resultType = resultType;
         [self reloadData];
         [self reloadCollectionView];
     }
@@ -168,7 +205,7 @@
 
 @implementation JWTDecriptedViewController (NSCollectionViewDataSource)
 - (NSInteger)collectionView:(NSCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    NSInteger count = self.builder == nil ? 0 : (self.cachedErrorDictionary != nil ? 1 : 2);
+    NSInteger count = self.countOfRows;
     return count;
 }
 
