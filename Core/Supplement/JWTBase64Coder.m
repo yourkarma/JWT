@@ -44,14 +44,33 @@
     }
 }
 
++ (NSData *)dataWithString:(NSString *)string {
+    // check if base64.
+    if (string == nil) {
+        return nil;
+    }
+    
+    // check that string is base64 encoded
+    NSData *data = [[NSData alloc] initWithBase64EncodedString:string options:0];
+    
+    NSString *stringToPass = data != nil ? string : [[string dataUsingEncoding:NSUTF8StringEncoding] base64EncodedStringWithOptions:0];
+    
+    NSData *result = [self dataWithBase64UrlEncodedString:stringToPass];
+    return result;
+}
+
++ (NSString *)stringWithData:(NSData *)data {
+    return [self.class base64UrlEncodedStringWithData:data];
+}
+
 @end
 
 @implementation JWTBase64Coder (JWTStringCoder__Protocol)
 - (NSString *)stringWithData:(NSData *)data {
-    return [self.class base64UrlEncodedStringWithData:data];
+    return [self.class stringWithData:data];
 }
 - (NSData *)dataWithString:(NSString *)string {
-    return [self.class dataWithBase64UrlEncodedString:string];
+    return [self.class dataWithString:string];
 }
 @end
 
