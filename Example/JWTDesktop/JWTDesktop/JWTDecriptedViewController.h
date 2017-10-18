@@ -12,5 +12,6 @@
 @interface JWTDecriptedViewController : NSViewController
 
 @property (strong, nonatomic, readwrite) JWTBuilder *builder;
+@property (strong, nonatomic, readwrite) JWTCodingResultType *resultType;
 
 @end

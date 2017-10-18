@@ -77,8 +77,12 @@
     return result ?: [JWTCryptoSecurity keyTypeRSA];
 }
 @end
-@implementation JWTCryptoKey
+@interface JWTCryptoKey (Generator) <JWTCryptoKey__Generator__Protocol>
+@end
+
+@implementation JWTCryptoKey (Generator)
 - (instancetype)initWithData:(NSData *)data parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
+    // add check that everything is fine.
     return [super init];
 }
 - (instancetype)initWithBase64String:(NSString *)base64String parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
@@ -101,6 +105,19 @@
     return [self initWithPemEncoded:pemEncoded parameters:parameters error:error];
 }
 @end
+
+@implementation JWTCryptoKey @end
+
+@implementation JWTCryptoKey (Check)
+- (instancetype)checkedWithError:(NSError *__autoreleasing*)error {
+    BOOL checked = self.key != NULL;
+    if (error) {
+        *error = [NSError errorWithDomain:@"org.opensource.jwt.security.key" code:-200 userInfo:@{NSLocalizedDescriptionKey : @"Security key not retrieved! something went wrong!"}];
+    }
+    return self;
+}
+@end
+
 @implementation JWTCryptoKeyPublic
 - (instancetype)initWithData:(NSData *)data parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
     self = [super initWithData:data parameters:parameters error:error];
