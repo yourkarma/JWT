@@ -27,3 +27,14 @@
 @property (strong, nonatomic, readonly) NSArray *availableAlgorithms;
 @property (strong, nonatomic, readonly) NSArray *availableAlgorithmsNames;
 @end
+
+@interface ViewController__DataSeed: NSObject
+@property (copy, nonatomic, readonly) NSString *algorithmName;
+@property (copy, nonatomic, readonly) NSString *secret;
+@property (copy, nonatomic, readonly) NSString *token;
+@end
+
+@interface ViewController__DataSeed (Create)
++ (instancetype)HS256;
++ (instancetype)RS256;
+@end
