@@ -18,6 +18,10 @@
 		04701E681D97F0E5007A0A86 /* JWTDecriptedCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 04701E661D97F0E5007A0A86 /* JWTDecriptedCollectionViewItem.m */; };
 		04701E691D97F0E5007A0A86 /* JWTDecriptedCollectionViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04701E671D97F0E5007A0A86 /* JWTDecriptedCollectionViewItem.xib */; };
 		04701E6C1D981F8C007A0A86 /* JWTTokenTextTypeDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 04701E6B1D981F8C007A0A86 /* JWTTokenTextTypeDescription.m */; };
+		0A5BC6ED1FA77232000BDAB4 /* SignatureValidationDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BC6EC1FA77232000BDAB4 /* SignatureValidationDescription.m */; };
+		0A5BC6F01FA773A8000BDAB4 /* ViewController+Model.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BC6EF1FA773A8000BDAB4 /* ViewController+Model.m */; };
+		0A5BC6F31FA77809000BDAB4 /* NSArrayExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BC6F21FA77809000BDAB4 /* NSArrayExtension.m */; };
+		0A5BC6F61FA77D9D000BDAB4 /* JWTTokenDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BC6F51FA77D9D000BDAB4 /* JWTTokenDecoder.m */; };
 		D409F6C340474CDB7CA108BE /* libPods-JWTDesktop.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0EC4FDC2D76F5A1074A63D2 /* libPods-JWTDesktop.a */; };
 		DB17256DE61643E08ADC47F5 /* libPods-JWTDesktopTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 447DF4A5AF64E7BE744EEE2F /* libPods-JWTDesktopTests.a */; };
 /* End PBXBuildFile section */
@@ -53,6 +57,14 @@
 		04701E671D97F0E5007A0A86 /* JWTDecriptedCollectionViewItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JWTDecriptedCollectionViewItem.xib; sourceTree = "<group>"; };
 		04701E6A1D981F8C007A0A86 /* JWTTokenTextTypeDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTTokenTextTypeDescription.h; sourceTree = "<group>"; };
 		04701E6B1D981F8C007A0A86 /* JWTTokenTextTypeDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTTokenTextTypeDescription.m; sourceTree = "<group>"; };
+		0A5BC6EB1FA77232000BDAB4 /* SignatureValidationDescription.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SignatureValidationDescription.h; sourceTree = "<group>"; };
+		0A5BC6EC1FA77232000BDAB4 /* SignatureValidationDescription.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SignatureValidationDescription.m; sourceTree = "<group>"; };
+		0A5BC6EE1FA773A8000BDAB4 /* ViewController+Model.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ViewController+Model.h"; sourceTree = "<group>"; };
+		0A5BC6EF1FA773A8000BDAB4 /* ViewController+Model.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ViewController+Model.m"; sourceTree = "<group>"; };
+		0A5BC6F11FA77809000BDAB4 /* NSArrayExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSArrayExtension.h; sourceTree = "<group>"; };
+		0A5BC6F21FA77809000BDAB4 /* NSArrayExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSArrayExtension.m; sourceTree = "<group>"; };
+		0A5BC6F41FA77D9D000BDAB4 /* JWTTokenDecoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JWTTokenDecoder.h; sourceTree = "<group>"; };
+		0A5BC6F51FA77D9D000BDAB4 /* JWTTokenDecoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JWTTokenDecoder.m; sourceTree = "<group>"; };
 		447DF4A5AF64E7BE744EEE2F /* libPods-JWTDesktopTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JWTDesktopTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C8C468A8F611D2B9E066749 /* Pods-JWTDesktopTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTDesktopTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JWTDesktopTests/Pods-JWTDesktopTests.debug.xcconfig"; sourceTree = "<group>"; };
 		77679CE619F73022DA0F1176 /* Pods-JWTDesktopTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTDesktopTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWTDesktopTests/Pods-JWTDesktopTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -120,6 +132,14 @@
 				04701E671D97F0E5007A0A86 /* JWTDecriptedCollectionViewItem.xib */,
 				04701E6A1D981F8C007A0A86 /* JWTTokenTextTypeDescription.h */,
 				04701E6B1D981F8C007A0A86 /* JWTTokenTextTypeDescription.m */,
+				0A5BC6EB1FA77232000BDAB4 /* SignatureValidationDescription.h */,
+				0A5BC6EC1FA77232000BDAB4 /* SignatureValidationDescription.m */,
+				0A5BC6EE1FA773A8000BDAB4 /* ViewController+Model.h */,
+				0A5BC6EF1FA773A8000BDAB4 /* ViewController+Model.m */,
+				0A5BC6F11FA77809000BDAB4 /* NSArrayExtension.h */,
+				0A5BC6F21FA77809000BDAB4 /* NSArrayExtension.m */,
+				0A5BC6F41FA77D9D000BDAB4 /* JWTTokenDecoder.h */,
+				0A5BC6F51FA77D9D000BDAB4 /* JWTTokenDecoder.m */,
 			);
 			path = JWTDesktop;
 			sourceTree = "<group>";
@@ -362,8 +382,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				04526B201CF3A2690090C5A3 /* ViewController.m in Sources */,
+				0A5BC6ED1FA77232000BDAB4 /* SignatureValidationDescription.m in Sources */,
+				0A5BC6F61FA77D9D000BDAB4 /* JWTTokenDecoder.m in Sources */,
 				04526B1D1CF3A2690090C5A3 /* main.m in Sources */,
+				0A5BC6F31FA77809000BDAB4 /* NSArrayExtension.m in Sources */,
 				04526B1A1CF3A2690090C5A3 /* AppDelegate.m in Sources */,
+				0A5BC6F01FA773A8000BDAB4 /* ViewController+Model.m in Sources */,
 				04701E6C1D981F8C007A0A86 /* JWTTokenTextTypeDescription.m in Sources */,
 				04701E631D97F001007A0A86 /* JWTDecriptedViewController.m in Sources */,
 				04701E681D97F0E5007A0A86 /* JWTDecriptedCollectionViewItem.m in Sources */,
