@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 #import <AppKit/AppKit.h>
+#import "NSArrayExtension.h"
 
 typedef NS_ENUM(NSInteger, JWTTokenTextType) {
     JWTTokenTextTypeDefault, // dot text color
@@ -16,6 +18,16 @@ typedef NS_ENUM(NSInteger, JWTTokenTextType) {
     JWTTokenTextTypeSignature
 };
 
-@interface JWTTokenTextTypeDescription : NSObject
+@interface JWTTokenTextTypeDescription: NSObject
 - (NSColor *)tokenTextColorForType:(JWTTokenTextType)type;
+- (NSDictionary *)encodedTextAttributesForType:(JWTTokenTextType)type;
+@end
+
+@interface JWTTokenTextTypeSerialization: NSObject
+- (NSString *)textPartFromTexts:(NSArray *)texts type:(JWTTokenTextType)type;
+- (NSString *)stringFromDecodedToken:(NSDictionary *)token;
+@end
+
+@interface JWTTokenTextTypeAppearance: NSObject
+- (NSAttributedString *)encodedAttributedTextForText:(NSString *)text serialization:(JWTTokenTextTypeSerialization *)serialization tokenDescription:(JWTTokenTextTypeDescription *)tokenDescription;
 @end

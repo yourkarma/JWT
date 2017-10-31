@@ -106,15 +106,25 @@
 }
 @end
 
-@implementation JWTCryptoKey @end
-
 @implementation JWTCryptoKey (Check)
+- (void)cleanup {
+    if (self.key != NULL) {
+        CFRelease(self.key);
+    }
+}
+
 - (instancetype)checkedWithError:(NSError *__autoreleasing*)error {
     BOOL checked = self.key != NULL;
     if (error) {
         *error = [NSError errorWithDomain:@"org.opensource.jwt.security.key" code:-200 userInfo:@{NSLocalizedDescriptionKey : @"Security key not retrieved! something went wrong!"}];
     }
     return self;
+}
+@end
+
+@implementation JWTCryptoKey
+- (void)dealloc {
+    [self cleanup];
 }
 @end
 
@@ -155,6 +165,7 @@
             if (error && addKeyError != nil) {
                 *error = removingHeaderError;
             }
+            [self cleanup];
             return nil;
         }
     }
@@ -197,6 +208,7 @@
             if (error && addKeyError) {
                 *error = addKeyError;
             }
+            [self cleanup];
             return nil;
         }
     }

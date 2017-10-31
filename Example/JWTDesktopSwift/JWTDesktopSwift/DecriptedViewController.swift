@@ -10,30 +10,6 @@ import Cocoa
 import JWT
 //import JW
 
-// MARK - JSON helper
-extension String {
-    static func json(_ object: Any?) -> String {
-        guard let jsonObject = object else {
-            return ""
-        }
-        
-        if !JSONSerialization.isValidJSONObject(jsonObject) {
-            print("object is not valid JSONObject: \(jsonObject)")
-            return ""
-        }
-        
-        guard let data = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted) else {
-            return ""
-        }
-        
-        guard let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) else {
-            return ""
-        }
-        
-        return string as String
-    }
-}
-
 class DecriptedViewController: NSViewController {
     // MARK - Outlets
     @IBOutlet weak var collectionView: NSCollectionView!
@@ -48,6 +24,15 @@ class DecriptedViewController: NSViewController {
             self.reloadCollectionView()
         }
     }
+    
+    // MARK - ResultType
+    var resultType: JWTCodingResultType? {
+        didSet {
+            self.reloadData()
+            self.reloadCollectionView()
+        }
+    }
+    
     // MARK - Cached vars
     var cachedResultArray : [[String:Any]]?
     var cachedErrorDictionary : [String : String]?
@@ -82,17 +67,33 @@ class DecriptedViewController: NSViewController {
     func reloadData() {
         self.cachedResultArray = nil
         self.cachedErrorDictionary = nil
-        let result = self.builder?.decode
-        if let error = self.builder?.jwtError {
-            self.cachedErrorDictionary = [
-                "Error" : error.localizedDescription
-            ]
+        if let resultType = self.resultType {
+            if let result = resultType.successResult.headerAndPayloadDictionary {
+                self.cachedResultArray = [
+                    ["header" : result[JWTCodingResultHeaders] ?? ""],
+                    ["payload": result[JWTCodingResultPayload] ?? ""]
+                ]
+            }
+            else {
+                let errorDescription = self.resultType?.errorResult?.error?.localizedDescription ?? "UnknownError! Report about it!"
+                self.cachedErrorDictionary = [
+                    "error" : errorDescription
+                ]
+            }
         }
-        else if let dictionary = result {
-            self.cachedResultArray = [
-                ["header" : dictionary["header"] ?? ""],
-                ["payload" : dictionary["payload"] ?? ""]
-            ]
+        else {
+            let result = self.builder?.decode
+            if let error = self.builder?.jwtError {
+                self.cachedErrorDictionary = [
+                    "Error" : error.localizedDescription
+                ]
+            }
+            else if let dictionary = result {
+                self.cachedResultArray = [
+                    ["header" : dictionary["header"] ?? ""],
+                    ["payload" : dictionary["payload"] ?? ""]
+                ]
+            }
         }
     }
     
@@ -122,6 +123,20 @@ class DecriptedViewController: NSViewController {
     }
 }
 
+extension DecriptedViewController {
+    func countOfItems() -> Int {
+        if self.cachedErrorDictionary != nil {
+            return 1
+        }
+        else if let array = self.cachedResultArray {
+            return array.count
+        }
+        else {
+            return 0
+        }
+    }
+}
+
 extension DecriptedViewController : NSCollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
         
@@ -139,7 +154,7 @@ extension DecriptedViewController : NSCollectionViewDataSource {
         return 1
     }
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.builder == nil ? 0 : (self.cachedErrorDictionary != nil ? 1 : 2);
+        return self.countOfItems()
     }
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         let item = collectionView.makeItem(withIdentifier: self.collectionViewItemIdentifier, for: indexPath)

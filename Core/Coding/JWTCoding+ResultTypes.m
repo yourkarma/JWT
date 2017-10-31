@@ -69,6 +69,13 @@ NSString *JWTCodingResultPayload = @"payload";
     }
     return self;
 }
+
+- (instancetype)initWithHeadersAndPayload:(NSDictionary *)headersAndPayloadDictionary {
+    NSDictionary *headers = headersAndPayloadDictionary[JWTCodingResultHeaders];
+    NSDictionary *payload = headersAndPayloadDictionary[JWTCodingResultPayload];
+    return [self initWithHeaders:headers withPayload:payload];
+}
+
 - (instancetype)initWithClaimsSet:(JWTClaimsSet *)claimsSet {
     if (self = [super init]) {
         self.claimsSet = claimsSet;

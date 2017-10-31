@@ -264,6 +264,8 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
     CFErrorRef errorRef = NULL;
 
     CFTypeRef resultRef = NULL;
+    
+    // inout
     NSData *resultData = nil;
 
 
@@ -304,17 +306,12 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
         }
     }
 
-    // release
-    if (transform != NULL) {
-        CFRelease(transform);
-    }
-
-    if (errorRef != NULL) {
-        CFRelease(errorRef);
-    }
-
     if (resultRef != NULL) {
         CFRelease(resultRef);
+    }
+    
+    if (errorRef != NULL) {
+        CFRelease(errorRef);
     }
 
     return resultData;
@@ -345,8 +342,20 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
     // verification. false result is kCFBooleanFalse
     BOOL result = [self executeTransform:transform withInput:plainData withDigestType:kSecDigestSHA2 withDigestLength:@(signedHashBytesSize) withFalseResult:kCFBooleanFalse] != nil;
 
+    if (transform != NULL) {
+        // TODO: WTF?
+        // somehow it stops there :/
+        // Is it a race condition with removeSecKeyForTag?
+        // don't know :(
+        CFRelease(transform);
+    }
+    
     if (errorRef != NULL) {
         CFRelease(errorRef);
+    }
+    
+    if (hashBytes != NULL) {
+        free(hashBytes);
     }
 
     return result;
@@ -394,8 +403,16 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
     // it will release error.
     resultData = [self executeTransform:transform withInput:plainData withDigestType:kSecDigestSHA2 withDigestLength:@(signedHashBytesSize) withFalseResult:NULL];
 
+    if (transform != NULL) {
+        CFRelease(transform);
+    }
+    
     if (errorRef != NULL) {
         CFRelease(errorRef);
+    }
+    
+    if (hashBytes != NULL) {
+        free(hashBytes);
     }
 
     return resultData;
