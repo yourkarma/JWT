@@ -12,4 +12,5 @@
 
 - (void)updateWithText:(NSString *)text;
 - (void)updateWithTextColor:(NSColor *)color;
++ (NSFont *)defaultFont;
 @end

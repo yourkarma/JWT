@@ -16,10 +16,6 @@
 @property (strong, nonatomic, readwrite) NSDictionary *cachedErrorDictionary;
 @property (assign, nonatomic, readwrite) NSInteger countOfRows;
 
-@property (copy, nonatomic, readonly) NSString *errorText;
-@property (copy, nonatomic, readonly) NSString *headerText;
-@property (copy, nonatomic, readonly) NSString *payloadText;
-
 @property (strong, nonatomic, readwrite) JWTTokenTextTypeDescription *tokenDescription;
 @end
 
@@ -72,9 +68,11 @@
     if (self.resultType) {
         if (self.resultType.successResult) {
             NSDictionary *result = self.resultType.successResult.headerAndPayloadDictionary;
+            NSDictionary *claims = [JWTClaimsSetSerializer dictionaryWithClaimsSet:self.resultType.successResult.claimsSet];
             self.cachedResultArray = @[
                                        @{@"header" : result[JWTCodingResultHeaders] ?: @""},
-                                       @{@"payload" : result[JWTCodingResultPayload] ?: @""}
+                                       @{@"payload" : result[JWTCodingResultPayload] ?: @""},
+                                       @{@"claimsSet" : claims ?: @""}
                                        ];
         }
         else {
@@ -110,18 +108,6 @@
     else {
         return 0;
     }
-}
-
-- (NSString *)errorText {
-    return self.cachedErrorDictionary ? [self jsonStringWithObject:self.cachedErrorDictionary] : nil;
-}
-
-- (NSString *)headerText {
-    return self.cachedResultArray ? [self jsonStringWithObject:self.cachedResultArray[0]] : nil;
-}
-
-- (NSString *)payloadText {
-    return self.cachedResultArray ? [self jsonStringWithObject:self.cachedResultArray[1]] : nil;
 }
 
 - (NSString *)collectionViewItemIdentifier {
@@ -174,7 +160,8 @@
         color = [self.tokenDescription tokenTextColorForType:JWTTokenTextTypeHeader];
     }
     else if (self.cachedResultArray) {
-        color = [self.tokenDescription tokenTextColorForType: path.item == 0 ? JWTTokenTextTypeHeader : JWTTokenTextTypePayload];
+        JWTTokenTextType type = MAX(JWTTokenTextTypeDefault, MIN(path.item + 1, JWTTokenTextTypeSignature));
+        color = [self.tokenDescription tokenTextColorForType:type];
     }
     return color;
 }
@@ -193,7 +180,7 @@
     NSString *stringToDisplay = [self textForItemAtIndexPath:indexPath];
     CGFloat width = collectionView.frame.size.width;//[[collectionView enclosingScrollView] bounds].size.width;
     
-    NSRect estimatedSize = [stringToDisplay boundingRectWithSize:CGSizeMake(width, 10000) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:/*@{NSForegroundColorAttributeName : [NSFont boldSystemFontOfSize:14]}*/nil];
+    NSRect estimatedSize = [stringToDisplay boundingRectWithSize:CGSizeMake(width, 10000) options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:@{/*NSForegroundColorAttributeName : nil,*/ NSFontAttributeName : JWTDecriptedCollectionViewItem.defaultFont }];
     
     NSInteger height = estimatedSize.size.height;
     
