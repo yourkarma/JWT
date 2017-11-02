@@ -445,6 +445,8 @@
         }
     }
     
+    // TODO: claimsSet could be removed.
+    // The claimsSet verification should be computed from payload dictionary.
     // claimsSet verification.
     JWTCodingResultType *result = nil;
     if (error) {
@@ -462,7 +464,28 @@
     if (decodedDictionary) {
         NSDictionary *headers = decodedDictionary[JWTCodingResultHeaders];
         NSDictionary *payload = decodedDictionary[JWTCodingResultPayload];
-        result = [[JWTCodingResultType alloc] initWithSuccessResult:[[JWTCodingResultTypeSuccess alloc] initWithHeaders:headers withPayload:payload]];
+        JWTClaimsSet *claimsSetResult = nil;
+        
+        // extract claims from payload.
+        BOOL shouldExtractClaimsSet = YES; // add option later.
+        BOOL extractClaimsSet = claimsSet != nil || shouldExtractClaimsSet;
+        if (claimsSet || shouldExtractClaimsSet) {
+            NSArray *claimsSetKeys = [JWTClaimsSetSerializer claimsSetKeys];
+            NSSet *availableClaimsKeys = [payload keysOfEntriesPassingTest:^BOOL(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+                return [claimsSetKeys containsObject:key];
+            }];
+            NSDictionary *availableClaimsDictionary = [payload dictionaryWithValuesForKeys:availableClaimsKeys.allObjects];
+            BOOL claimsExists = availableClaimsKeys.count != 0;
+            if (claimsExists) {
+                JWTClaimsSet *extractedClaims = [JWTClaimsSetSerializer claimsSetWithDictionary:availableClaimsDictionary];
+                NSMutableDictionary *mutablePayload = [payload mutableCopy];
+                [mutablePayload removeObjectsForKeys:claimsSetKeys];
+                payload = [mutablePayload copy];
+                claimsSetResult = extractedClaims;
+            }
+        }
+        
+        result = [[JWTCodingResultType alloc] initWithSuccessResult:[[[JWTCodingResultTypeSuccess alloc] initWithHeaders:headers withPayload:payload] initWithClaimsSet:claimsSetResult]];
     }
     else {
         NSLog(@"%@ something went wrong! result is nil!", self.debugDescription);
