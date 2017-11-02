@@ -38,4 +38,14 @@
 - (BOOL)verifyHash:(NSData *)hash signature:(NSData *)signature key:(NSData *)key error:(NSError *__autoreleasing *)error {
     return NO;
 }
+
+- (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
+    return nil;
+}
+
+
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey {
+    return NO;
+}
+
 @end

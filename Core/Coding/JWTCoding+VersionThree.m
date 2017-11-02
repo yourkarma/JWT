@@ -38,7 +38,7 @@
 
 #pragma mark - Fluent
 @property (copy, nonatomic, readwrite) JWTCodingBuilder *(^chain)(JWTAlgorithmDataHolderChain *chain);
-@property (copy, nonatomic, readwrite) JWTCodingBuilder *(^constructChain)(JWTAlgorithmDataHolderChain *(^block)());
+@property (copy, nonatomic, readwrite) JWTCodingBuilder *(^constructChain)(JWTAlgorithmDataHolderChain *(^block)(void));
 @property (copy, nonatomic, readwrite) JWTCodingBuilder *(^modifyChain)(JWTAlgorithmDataHolderChain *(^block)(JWTAlgorithmDataHolderChain * chain));
 @property (copy, nonatomic, readwrite) JWTCodingBuilder *(^options)(NSNumber *options);
 @property (copy, nonatomic, readwrite) JWTCodingBuilder *(^addHolder)(id<JWTAlgorithmDataHolderProtocol> holder);
@@ -71,7 +71,7 @@
         return [weakSelf chain:chain];
     };
     
-    self.constructChain = ^(JWTAlgorithmDataHolderChain *(^block)()) {
+    self.constructChain = ^(JWTAlgorithmDataHolderChain *(^block)(void)) {
         if (block) {
             JWTAlgorithmDataHolderChain *chain = block();
             return [weakSelf chain:chain];
@@ -109,7 +109,7 @@
 #pragma mark - Getters
 // Chain always exists
 - (JWTAlgorithmDataHolderChain *)internalChain {
-    return _internalChain ?: (_internalChain = [JWTAlgorithmDataHolderChain new], _internalChain);
+    return _internalChain ?: (_internalChain = [JWTAlgorithmDataHolderChain new]);
 }
 #pragma mark - Create
 - (instancetype)initWithChain:(JWTAlgorithmDataHolderChain *)chain {
@@ -469,7 +469,7 @@
         // extract claims from payload.
         BOOL shouldExtractClaimsSet = YES; // add option later.
         BOOL extractClaimsSet = claimsSet != nil || shouldExtractClaimsSet;
-        if (claimsSet || shouldExtractClaimsSet) {
+        if (claimsSet || extractClaimsSet) {
             NSArray *claimsSetKeys = [JWTClaimsSetSerializer claimsSetKeys];
             NSSet *availableClaimsKeys = [payload keysOfEntriesPassingTest:^BOOL(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
                 return [claimsSetKeys containsObject:key];

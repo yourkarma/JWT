@@ -13,6 +13,7 @@
 #import "JWTAlgorithmHSBase.h"
 #import "JWTAlgorithmRSBase.h"
 #import "JWTBase64Coder.h"
+#import "JWTCryptoKey.h"
 
 @interface JWTAlgorithmBaseDataHolder()
 // not needed by algorithm adoption.
@@ -234,8 +235,8 @@
 - (NSDictionary *)debugInformation {
     NSDictionary *add = @{@"privateKeyCertificatePassphrase" : self.internalPrivateKeyCertificatePassphrase ?: @"unknown",
                           @"keyExtractorType" : self.internalKeyExtractorType ?: @"unknown",
-                          @"signKey" : self.internalSignKey ?: @"unknown",
-                          @"verifyKey" : self.internalVerifyKey ?: @"unknown"
+                          @"signKey" : [self.internalSignKey debugDescription] ?: @"unknown",
+                          @"verifyKey" : [self.internalVerifyKey debugDescription] ?: @"unknown"
                           };
     NSMutableDictionary *result = [[super debugInformation] mutableCopy];
     [result addEntriesFromDictionary:add];

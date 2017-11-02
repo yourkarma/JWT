@@ -28,7 +28,7 @@ NSString *JWTErrorDomain = @"io.jwt";
         @(JWTDecodingHeaderError): @"Error decoding the JWT Header segment.",
         @(JWTDecodingPayloadError): @"Error decoding the JWT Payload segment.",
         @(JWTDecodingHoldersChainEmptyError) : @"Error decoding the JWT algorithm and data holders chain is empty!"
-    }, userDescriptionsAndCodes);
+    });
 }
 
 + (NSDictionary *)errorDescriptionsAndCodes {
@@ -50,7 +50,7 @@ NSString *JWTErrorDomain = @"io.jwt";
         @(JWTDecodingHeaderError): @"JWTDecodingHeaderError",
         @(JWTDecodingPayloadError): @"JWTDecodingPayloadError",
         @(JWTDecodingHoldersChainEmptyError) :@"JWTDecodingHoldersChainEmptyError"
-    }, errorDescriptionsAndCodes);
+    });
 }
 
 + (NSString *)userDescriptionForCode:(JWTError)code {

@@ -44,7 +44,7 @@ NSString *const JWTAlgorithmNameNone = @"none";
 
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey
 {
-    return [self verifySignedInput:input withSignature:signature verificationKeyData:verificationKey];
+    return [self verifySignedInput:input withSignature:signature verificationKeyData:[verificationKey dataUsingEncoding:NSUTF8StringEncoding]];
 }
 
 - (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData

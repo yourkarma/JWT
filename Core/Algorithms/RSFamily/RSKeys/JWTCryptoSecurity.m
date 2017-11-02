@@ -36,7 +36,7 @@
     static NSDictionary *sizesAndTypes = nil;
     return sizesAndTypes ?: (sizesAndTypes = @{
         [self typeUInt8] : @(1) // or 8?
-    }, sizesAndTypes);
+    });
 }
 - (NSInteger)size {
     return [[self.class sizesAndTypes][self.type] integerValue];
@@ -364,8 +364,7 @@ typedef NS_ENUM(NSInteger, JWTPublicHeaderStrippingError) {
         @(JWTPublicHeaderStrippingError_Invalid_ASN1_Structure) : @"Provided key doesn't have a valid ASN.1 structure (first byte should be 0x30 == SEQUENCE)",
         @(JWTPublicHeaderStrippingError_Invalid_X509_Header) : @"Provided key doesn't have a valid X509 header",
         @(JWTPublicHeaderStrippingError_Invalid_Byte_At_Index) : @"Invalid byte at index (index - 1) ((bytes[index - 1])) for public key header. Access as error.userInfo[Parameters][index] or error.userInfo[Parameters][byte]"
-    },
-     publicHeaderStrippingMessagesAndCodes);
+    });
 }
 + (NSString *)stringForPublicHeaderStrippingErrorCode:(NSInteger)code {
     return [self publicHeaderStrippingMessagesAndCodes][@(code)] ?: @"Unknown Public Header Stripping Error";
