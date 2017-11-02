@@ -65,7 +65,7 @@
 @property (copy, nonatomic, readwrite) JWTBuilder *(^options)(NSNumber *options);
 @property (copy, nonatomic, readwrite) JWTBuilder *(^whitelist)(NSArray *whitelist);
 @property (copy, nonatomic, readwrite) JWTBuilder * (^addDataHolder)(JWTAlgorithmBaseDataHolder *dataHolder);
-@property (copy, nonatomic, readwrite) JWTBuilder * (^constructDataHolder)(id<JWTAlgorithmDataHolderProtocol> (^block)());
+@property (copy, nonatomic, readwrite) JWTBuilder * (^constructDataHolder)(id<JWTAlgorithmDataHolderProtocol> (^block)(void));
 @end
 
 @implementation JWTBuilder
@@ -214,7 +214,7 @@
             return [weakSelf addDataHolder:holder];
         };
         
-        self.constructDataHolder = ^(id<JWTAlgorithmDataHolderProtocol> (^block)()) {
+        self.constructDataHolder = ^(id<JWTAlgorithmDataHolderProtocol> (^block)(void)) {
             if (block) {
                 return [weakSelf addDataHolder:block()];
             }

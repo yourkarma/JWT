@@ -195,7 +195,7 @@
 		[JWTClaimJWTID name] : [JWTClaimJWTID new],
 		[JWTClaimType name] : [JWTClaimType new],
         [JWTClaimScope name] : [JWTClaimScope new]
-	}, dictionary);
+	});
 }
 
 + (instancetype)claimByName:(NSString *)name {    

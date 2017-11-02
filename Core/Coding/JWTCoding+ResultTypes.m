@@ -23,7 +23,7 @@ NSString *JWTCodingResultPayload = @"payload";
 @protocol JWTMutableCodingResultTypeSuccessDecodedProtocol <JWTCodingResultTypeSuccessDecodedProtocol>
 @property (copy, nonatomic, readwrite) NSDictionary *headers;
 @property (copy, nonatomic, readwrite) NSDictionary *payload;
-@property (nonatomic, readwrite) JWTClaimsSet *claimsSet;
+@property (copy, nonatomic, readwrite) JWTClaimsSet *claimsSet;
 @end
 
 // Protected?

@@ -21,7 +21,7 @@
     return NSStringFromSelector(_cmd);
 }
 - (id<JWTCryptoKeyProtocol>)keyFromData:(NSData *)data parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing *)error {
-#pragma message "Not Implemented"
+//#pragma message "Not Implemented"
     if (error) {
         *error = [NSError errorWithDomain:@"io.jwt.crypto.rsa" code:-100 userInfo:@{
                                                                                     NSLocalizedDescriptionKey : @"Method not implemented"
@@ -104,8 +104,7 @@
 }
 + (NSDictionary *)typesAndExtractors {
     static NSDictionary *dictionary = nil;
-    return dictionary ?: (dictionary = [[NSDictionary alloc] initWithObjects:[self availableExtractors] forKeys:[[self availableExtractors] valueForKey:@"type"]],
-                          dictionary);
+    return dictionary ?: (dictionary = [[NSDictionary alloc] initWithObjects:[self availableExtractors] forKeys:[[self availableExtractors] valueForKey:@"type"]]);
 }
 + (instancetype)createWithType:(NSString *)type {
 	return [self typesAndExtractors][type];

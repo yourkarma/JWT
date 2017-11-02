@@ -115,7 +115,7 @@
 
 - (instancetype)checkedWithError:(NSError *__autoreleasing*)error {
     BOOL checked = self.key != NULL;
-    if (error) {
+    if (error && !checked) {
         *error = [NSError errorWithDomain:@"org.opensource.jwt.security.key" code:-200 userInfo:@{NSLocalizedDescriptionKey : @"Security key not retrieved! something went wrong!"}];
     }
     return self;
