@@ -87,12 +87,16 @@
     NSError *error = nil;
     NSDictionary *result = [self.model.decoder decodeToken:string skipSignatureVerification:YES error:&error necessaryDataObject:self];
     
+    NSLog(@"1. CODER: %@ -> %@",self.model.decoder, self.model.decoder.resultType);
+    
     NSString *decodedTokenAsJSON = [self.model.tokenSerialization stringFromDecodedToken:result];
-    BOOL signatureVerified = [self.model.decoder decodeToken:string skipSignatureVerification:NO error:&error necessaryDataObject:self]!=nil;
+    BOOL signatureVerified = [self.model.decoder decodeToken:string skipSignatureVerification:NO error:&error necessaryDataObject:self] != nil;
     [self signatureReactOnVerifiedToken:signatureVerified];
     
+    NSLog(@"2. CODER: %@ -> %@",self.model.decoder, self.model.decoder.resultType);
+    
     // will be udpated.
-    JWTCodingResultType *resultType = error ? [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:error]] : [[JWTCodingResultType alloc] initWithSuccessResult:[[JWTCodingResultTypeSuccess alloc] initWithHeaders:result[JWTCodingResultHeaders] withPayload:result[JWTCodingResultPayload]]];
+    JWTCodingResultType *resultType = error ? [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:error]] : self.model.decoder.resultType;
     self.decriptedViewController.resultType = resultType;
     // not used.
     [self.decodedTextView replaceCharactersInRange:range withString:decodedTokenAsJSON];
@@ -183,7 +187,7 @@
     // Do any additional setup after loading the view.
 }
 - (void)defaultDataSetup {
-    ViewController__DataSeed *dataSeed = [ViewController__DataSeed RS256];
+    ViewController__DataSeed *dataSeed = [ViewController__DataSeed HS256];
     [self defaultDataSetupWithToken:dataSeed.token secret:dataSeed.secret algorithmName:dataSeed.algorithmName];
 }
 

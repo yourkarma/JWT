@@ -25,8 +25,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //    self.textView.font = [NSFont boldSystemFontOfSize:14];
+    self.textView.font = [self.class defaultFont];
     // Do view setup here.
 }
 
++ (NSFont *)defaultFont {
+    return [NSFont boldSystemFontOfSize:14];
+}
 @end

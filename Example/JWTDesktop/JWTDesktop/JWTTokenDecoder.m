@@ -14,18 +14,18 @@
 @end
 
 @interface JWTTokenDecoder (Subclass)
-- (NSDictionary *)_decodeToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification error:(NSError *__autoreleasing *)error necessaryDataObject:(id<JWTTokenDecoderNecessaryDataObject__Protocol>)object;
+- (JWTCodingResultType *)_decodeToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification error:(NSError *__autoreleasing *)error necessaryDataObject:(id<JWTTokenDecoderNecessaryDataObject__Protocol>)object;
 @end
 
 @implementation JWTTokenDecoder (Subclass)
-- (NSDictionary *)_decodeToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification error:(NSError *__autoreleasing *)error necessaryDataObject:(id<JWTTokenDecoderNecessaryDataObject__Protocol>)object {
+- (JWTCodingResultType *)_decodeToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification error:(NSError *__autoreleasing *)error necessaryDataObject:(id<JWTTokenDecoderNecessaryDataObject__Protocol>)object {
     return nil;
 }
 @end
 
 @interface JWTTokenDecoder__V2: JWTTokenDecoder @end
 @implementation JWTTokenDecoder__V2
-- (NSDictionary *)_decodeToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification error:(NSError *__autoreleasing *)error necessaryDataObject:(id<JWTTokenDecoderNecessaryDataObject__Protocol>)object {
+- (JWTCodingResultType *)_decodeToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification error:(NSError *__autoreleasing *)error necessaryDataObject:(id<JWTTokenDecoderNecessaryDataObject__Protocol>)object {
     NSLog(@"JWT ENCODED TOKEN: %@", token);
     NSString *algorithmName = [object chosenAlgorithmName];
     NSLog(@"JWT Algorithm NAME: %@", algorithmName);
@@ -49,13 +49,15 @@
     NSLog(@"JWT ERROR: %@", builder.jwtError);
     NSLog(@"JWT DICTIONARY: %@", decoded);
     self.builder = builder;
-    return decoded;
+    NSError *theError = builder.jwtError;
+    JWTCodingResultType *resultType = theError ? [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:theError]] : nil;
+    return resultType;
 }
 @end
 
 @interface JWTTokenDecoder__V3: JWTTokenDecoder @end
 @implementation JWTTokenDecoder__V3
-- (NSDictionary *)_decodeToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification error:(NSError *__autoreleasing *)error necessaryDataObject:(id<JWTTokenDecoderNecessaryDataObject__Protocol>)object {
+- (JWTCodingResultType *)_decodeToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification error:(NSError *__autoreleasing *)error necessaryDataObject:(id<JWTTokenDecoderNecessaryDataObject__Protocol>)object {
     NSLog(@"JWT ENCODED TOKEN: %@", token);
     NSString *algorithmName = [object chosenAlgorithmName];
     NSLog(@"JWT Algorithm NAME: %@", algorithmName);
@@ -106,7 +108,7 @@
     // it happens in case of base64 data corruption. (url encoded vs not url uncoded)
     NSLog(@"JWT ERROR: %@ -> %@", result.errorResult, result.errorResult.error);
     NSLog(@"JWT RESULT: %@ -> %@", result.successResult, result.successResult.headerAndPayloadDictionary);
-    return result.successResult.headerAndPayloadDictionary;
+    return result;
 }
 @end
 
@@ -118,6 +120,8 @@
     if (!object) {
         return nil;
     }
-    return [self.theDecoder _decodeToken:token skipSignatureVerification:skipVerification error:error necessaryDataObject:object];
+    // cheating!
+    self.resultType = [self.theDecoder _decodeToken:token skipSignatureVerification:skipVerification error:error necessaryDataObject:object];
+    return self.resultType.successResult.headerAndPayloadDictionary;
 }
 @end
