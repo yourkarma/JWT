@@ -11,13 +11,13 @@ import JWT
 //import JW
 
 class DecriptedViewController: NSViewController {
-    // MARK - Outlets
+    // MARK: - Outlets
     @IBOutlet weak var collectionView: NSCollectionView!
 
-    // MARK - CollectionView Convenients
+    // MARK: - CollectionView Convenients
     var collectionViewItemIdentifier : String = NSStringFromClass(DecriptedCollectionViewItem.self)
 
-    // MARK - Builder
+    // MARK: - Builder
     var builder : JWTBuilder? {
         didSet {
             self.reloadData()
@@ -25,7 +25,7 @@ class DecriptedViewController: NSViewController {
         }
     }
     
-    // MARK - ResultType
+    // MARK: - ResultType
     var resultType: JWTCodingResultType? {
         didSet {
             self.reloadData()
@@ -33,16 +33,16 @@ class DecriptedViewController: NSViewController {
         }
     }
     
-    // MARK - Cached vars
+    // MARK: - Cached vars
     var cachedResultArray : [[String:Any]]?
     var cachedErrorDictionary : [String : String]?
 
-    // MARK - Texts vars
+    // MARK: - Texts vars
     var errorText: String { return String.json(cachedErrorDictionary) }
     var headerText: String { return String.json(cachedResultArray?[0]) }
     var payloadText: String { return String.json(cachedResultArray?[1]) }
     
-    // MARK - Setup
+    // MARK: - Setup
     func setupUIElements() {
         self.collectionView.delegate = self;
         self.collectionView.dataSource = self;
@@ -57,7 +57,7 @@ class DecriptedViewController: NSViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(DecriptedViewController.reload), name: NSNotification.Name.NSWindowDidResize, object: nil)
     }
     
-    // MARK - Reload
+    // MARK: - Reload
     func reload() {
         reloadCollectionView()
     }
@@ -97,7 +97,7 @@ class DecriptedViewController: NSViewController {
         }
     }
     
-    // MARK - Collection Helpers.
+    // MARK: - Collection Helpers.
     func textForItem(indexPath: IndexPath) -> String {
         var text : String = ""
         
