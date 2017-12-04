@@ -110,7 +110,9 @@
         OSStatus copyItemStatus = SecItemCopyMatching((__bridge CFDictionaryRef)[self dictionaryByCombiningDictionaries:@[attributes, commonAttributes, copyAttributes]], &key);
         if (key == NULL) {
             // copy item error
-            *error = [NSError errorWithDomain:@"org.opensource.jwt" code:copyItemStatus userInfo:@{NSLocalizedDescriptionKey: @"error"}];
+            if (error) {
+                *error = [NSError errorWithDomain:@"org.opensource.jwt" code:copyItemStatus userInfo:@{NSLocalizedDescriptionKey: @"error"}];
+            }
         }
         return (SecKeyRef)key;
     }
