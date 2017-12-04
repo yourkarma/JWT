@@ -21,11 +21,10 @@ extension String {
         guard let data = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted) else {
             return ""
         }
-        
-        guard let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) else {
+
+        guard let string = String(data: data, encoding: .utf8) else {
             return ""
         }
-        
-        return string as String
+        return string
     }
 }
