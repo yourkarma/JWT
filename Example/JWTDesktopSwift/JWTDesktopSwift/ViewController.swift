@@ -45,7 +45,7 @@ extension ViewController {
         
         let textStorage = self.encodedTextView.textStorage!;
         let string = textStorage.string;
-        let range = NSMakeRange(0, string.characters.count);
+        let range = NSMakeRange(0, string.count);
         if let attributedString = self.model.appearance.encodedAttributedString(text: string, tokenSerialization: self.model.serialization) {
             self.encodedTextView.undoManager?.beginUndoGrouping()
             textStorage.replaceCharacters(in: range, with: attributedString)
@@ -230,7 +230,7 @@ class ViewController: NSViewController {
         // token
         var range = NSRange()
         range.location = 0
-        range.length = token.characters.count
+        range.length = token.count
         self.encodedTextView.insertText(token, replacementRange: range)
 
     }
