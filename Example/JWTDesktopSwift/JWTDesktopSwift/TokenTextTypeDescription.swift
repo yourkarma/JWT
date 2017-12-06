@@ -86,7 +86,7 @@ class TokenTextAppearance {
     }
 
     func encodedAttributedString(text: String, tokenSerialization: TokenTextSerialization) -> NSAttributedString? {
-        let parts = (text as NSString).components(separatedBy: ".")
+        let parts = text.components(separatedBy: ".")
         // next step, determine text color!
         // add missing dots.
         // restore them like this:
