@@ -257,9 +257,18 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 
 #if TARGET_OS_MAC && !TARGET_OS_IPHONE
 @interface JWTAlgorithmRSBaseMac : JWTAlgorithmRSBase
+- (BOOL)checkKeyConsistency:(SecKeyRef)key;
 @end
 
 @implementation JWTAlgorithmRSBaseMac
+
+- (BOOL)checkKeyConsistency:(SecKeyRef)key {
+    size_t keyLength = SecKeyGetBlockSize(key);
+    size_t hashBytesSize = self.ccSHANumberDigestLength;
+    Byte bitsPerByte = /*???*/sizeof(Byte) * CHAR_BIT;
+    return keyLength == hashBytesSize * bitsPerByte;
+}
+
 - (NSData *)executeTransform:(SecTransformRef)transform withInput:(NSData *)input withDigestType:(CFStringRef)type withDigestLength:(NSNumber *)length withFalseResult:(CFTypeRef)falseResultRef {
     CFErrorRef errorRef = NULL;
 
@@ -323,10 +332,22 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 
     size_t hashBytesSize = self.ccSHANumberDigestLength;
     uint8_t* hashBytes = malloc(hashBytesSize);
+    Byte bitsPerByte = /*???*/sizeof(Byte) * CHAR_BIT;
+//    NSNumber *plainDataLength = @((CC_LONG)[plainData length]);
+    
+    if (![self checkKeyConsistency:publicKey]) {
+        // error in log!
+        NSLog(@"the size of key(%@) should be related to SHA length in bits(%@)", @(signedHashBytesSize), @(hashBytesSize * bitsPerByte));
+        return NO;
+    }
+    
     if (![self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes]) {
-        return false;
+        return NO;
     }
 
+//    NSString *formattedString = [NSString stringWithFormat:@"%@: %@ \n %@: %@ \n %@: %@", @"hashBytesSize", @(hashBytesSize), @"plainDataLength", plainDataLength, @"signedHashBytesSize", @(signedHashBytesSize)];
+//
+//    NSLog(@"%@ %@", self.debugDescription, formattedString);
     // verify for iOS
 //    OSStatus status = SecKeyRawVerify(publicKey,
 //                                      self.secPaddingPKCS1SHANumber,
@@ -335,7 +356,7 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 //                                      signedHashBytes,
 //                                      signedHashBytesSize);
 //    return status == errSecSuccess;
-
+    
     CFErrorRef errorRef = NULL;
     SecTransformRef transform = SecVerifyTransformCreate(publicKey, (__bridge CFDataRef)signature, &errorRef);
 
@@ -375,6 +396,7 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
      self.secPaddingPKCS1SHANumber = kSecPaddingPKCS1SHA256
      self.ccSHANumberDigestLength  = CC_SHA256_DIGEST_LENGTH
      */
+
     unsigned char *str = [self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes];
 
     if (!str) {

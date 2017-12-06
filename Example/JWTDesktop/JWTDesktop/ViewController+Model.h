@@ -35,7 +35,9 @@
 @end
 
 @interface ViewController__DataSeed (Create)
++ (instancetype)defaultDataSeed;
 + (instancetype)HS256;
 + (instancetype)RS256;
 + (instancetype)HS256__WithoutClaimsSet;
++ (instancetype)RS256__Corrupted;
 @end
