@@ -78,7 +78,7 @@ class JWTTokenDecoder__V3: TokenDecoder {
         
         var holder: JWTAlgorithmDataHolderProtocol? = nil
         switch algorithm {
-        case _ as JWTAlgorithmRSBase:
+        case is JWTAlgorithmRSBase:
             var key: JWTCryptoKeyProtocol?
             do {
                 key = try JWTCryptoKeyPublic(pemEncoded: secret, parameters: nil)
@@ -93,7 +93,7 @@ class JWTTokenDecoder__V3: TokenDecoder {
             // Aware of last part.
             // DataHolder MUST have a secretData ( empty data is perfect, if you use verifyKey )
             holder = JWTAlgorithmRSFamilyDataHolder().verifyKey(key)?.algorithmName(algorithmName)?.secretData(Data())
-        case _ as JWTAlgorithmHSBase:
+        case is JWTAlgorithmHSBase:
             let aHolder = JWTAlgorithmHSFamilyDataHolder()
             if let theSecretData = secretData, isBase64EncodedSecret {
                 _ = aHolder.secretData(theSecretData)
@@ -102,7 +102,7 @@ class JWTTokenDecoder__V3: TokenDecoder {
                 _ = aHolder.secret(secret)
             }
             holder = aHolder.algorithmName(algorithmName)
-        case _ as JWTAlgorithmNone:
+        case is JWTAlgorithmNone:
             holder = JWTAlgorithmNoneDataHolder()
         default: break
         }
