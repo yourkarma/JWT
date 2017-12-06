@@ -109,8 +109,8 @@ class JWTTokenDecoder__V3: TokenDecoder {
 
         let builder = JWTDecodingBuilder.decodeMessage(token).addHolder(holder)?.options(skipVerification as NSNumber)
         let result = builder?.result
-        print("JWT ERROR: \(String(describing: result?.errorResult?.debugDescription)) -> \(result?.errorResult?.error?.localizedDescription)")
-        print("JWT RESULT: \(String(describing: result?.successResult?.debugDescription)) -> \(result?.successResult?.headerAndPayloadDictionary?.debugDescription)")
+        print("JWT ERROR: \(String(describing: result?.errorResult?.debugDescription)) -> \(String(describing: result?.errorResult?.error?.localizedDescription))")
+        print("JWT RESULT: \(String(describing: result?.successResult?.debugDescription)) -> \(String(describing: result?.successResult?.headerAndPayloadDictionary?.debugDescription))")
         return result?.successResult?.headerAndPayloadDictionary
     }
 }
