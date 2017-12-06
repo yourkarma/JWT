@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 /**
  @discussion JWT is a general interface for decoding and encoding.
- Now it is to complex and fat to support.
+ Now it is too complex and fat to support.
  Possible solution: split interface into several pieces.
  
  JWT_1_0 -> JWT with plain old functions.
