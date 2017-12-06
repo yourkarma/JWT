@@ -10,7 +10,7 @@
 #import "JWTAlgorithm.h"
 @interface JWTAlgorithmFactory : NSObject
 
-+ (NSArray *)algorithms;
++ (NSArray<id<JWTAlgorithm>> *)algorithms;
 + (id<JWTAlgorithm>)algorithmByName:(NSString *)name;
 
 @end

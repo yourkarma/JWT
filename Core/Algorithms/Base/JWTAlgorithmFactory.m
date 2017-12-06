@@ -18,7 +18,7 @@ NSString *const JWTAlgorithmNameES512 = @"ES512";
 
 @implementation JWTAlgorithmFactory
 
-+ (NSArray *)algorithms {
++ (NSArray<id<JWTAlgorithm>> *)algorithms {
     return @[
             [JWTAlgorithmNone new],
             [JWTAlgorithmHSBase algorithm256],
