@@ -11,7 +11,7 @@ import JWT
 import SnapKit
 
 
-// MARK - Supply JWT Methods
+// MARK: - Supply JWT Methods
 extension ViewController: TokenDecoderNecessaryDataObject__Protocol {
     var chosenAlgorithmName: String {
         return self.algorithmPopUpButton.selectedItem?.title ?? ""
@@ -40,7 +40,7 @@ extension ViewController: TokenDecoderNecessaryDataObject__Protocol {
 
 // Refresh UI
 extension ViewController {
-    //    #pragma mark - Refresh UI
+    // MARK: - Refresh UI
     func refreshUI() {
         
         let textStorage = self.encodedTextView.textStorage!;
@@ -79,7 +79,7 @@ extension ViewController {
     }
 }
 
-// MARK - Actions
+// MARK: - Actions
 extension ViewController {
     func popUpButtonValueChanged(sender : AnyClass) {
         self.refreshUI()
@@ -112,7 +112,7 @@ extension ViewController: NSTextViewDelegate {
     }
 }
 
-// MARK - EncodingTextViewDelegate
+// MARK: - EncodingTextViewDelegate
 //extension ViewController : NSTextViewDelegate {
 //    func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
 //        if (textView == self.encodedTextView) {
@@ -135,7 +135,7 @@ class ViewController: NSViewController {
         super.init(coder: coder)
     }
     
-    // Properties - Outlets
+    // MARK: - Properties - Outlets
     @IBOutlet weak var algorithmLabel : NSTextField!
     @IBOutlet weak var algorithmPopUpButton : NSPopUpButton!
     
@@ -149,10 +149,10 @@ class ViewController: NSViewController {
     
     @IBOutlet weak var signatureStatusLabel : NSTextField!
     
-    // Model
+    // MARK: - Model
     var model: Model!
     
-    // MARK - Setup
+    // MARK: - Setup
     func setupModel() {
         self.model = Model()
     }
@@ -187,8 +187,7 @@ class ViewController: NSViewController {
         self.signatureStatusLabel.drawsBackground = true
         self.refreshSignature()
     }
-    
-    
+
     func setupEncodingDecodingViews() {
         self.encodedTextView.delegate = self;
     }
