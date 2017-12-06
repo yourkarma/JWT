@@ -8,6 +8,9 @@
 * [ ] I have run the tests and they pass
 * [ ] I have run the lint and it passes (`pod lib lint`)
 
+Before merge, please, assure that your commits are grouped.
+Please, don't make several PRs with single commit, group PRs into one if possible.
+
 This merge request fixes / refers to the following issues: ...
 
 ### Pull Request Description
