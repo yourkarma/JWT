@@ -93,7 +93,7 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
             }
         }
         else {
-            result = [self signData:hash withKey:keyItem.key];
+            result = [self signData:hash key:keyItem.key];
         }
     }
     else {
@@ -106,7 +106,7 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
         if (identity && trust) {
             SecKeyRef privateKey;
             SecIdentityCopyPrivateKey(identity, &privateKey);
-            result = [self signData:hash withKey:privateKey];
+            result = [self signData:hash key:privateKey];
             
             if (privateKey) {
                 CFRelease(privateKey);
@@ -145,7 +145,7 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
             return verified;
         }
         else {
-            verified = [self verifyData:hash witSignature:signature withKey:keyItem.key];
+            verified = [self verifyData:hash signature:signature key:keyItem.key];
         }
         
         NSError *removeError = nil;
@@ -162,7 +162,7 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
         // TODO: special error handling here.
         // add error handling later?
         if (publicKey != NULL) {
-            BOOL verified = [self verifyData:hash witSignature:signature withKey:publicKey];
+            BOOL verified = [self verifyData:hash signature:signature key:publicKey];
             CFRelease(publicKey);
             return verified;
         }
@@ -185,11 +185,11 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 }
 
 #pragma mark - Private ( Override-part depends on platform )
-- (BOOL)verifyData:(NSData *)plainData witSignature:(NSData *)signature withKey:(SecKeyRef) publicKey {
+- (BOOL)verifyData:(NSData *)plainData signature:(NSData *)signature key:(SecKeyRef) publicKey {
     return NO;
 }
 
-- (NSData *)signData:(NSData *)plainData withKey:(SecKeyRef)privateKey {
+- (NSData *)signData:(NSData *)plainData key:(SecKeyRef)privateKey {
     return nil;
 }
 @end
