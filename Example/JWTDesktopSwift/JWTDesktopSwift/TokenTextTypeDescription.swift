@@ -50,12 +50,12 @@ class TokenTextSerialization {
         var result: String? = nil
         switch type {
         case .Header:
-            result = parts.safeObject(index: 0)
+            result = parts.first
         case .Payload:
             result = parts.safeObject(index: 1)
         case .Signature:
             if (parts.count > 2) {
-                result = (Array(parts[2..<parts.count]) as NSArray).componentsJoined(by: ".")
+                result = parts[2..<parts.count].joined(separator: ".")
             }
         default: result = nil
         }
