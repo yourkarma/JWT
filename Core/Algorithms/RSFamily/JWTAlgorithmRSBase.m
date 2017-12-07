@@ -13,6 +13,51 @@
 #import "JWTCryptoKey.h"
 #import "JWTAlgorithmFactory.h"
 #import <CommonCrypto/CommonCrypto.h>
+NSString *const JWTAlgorithmRSFamilyErrorDomain = @"io.jwt.jwa.rs";
+
+@implementation JWTAlgorithmRSFamilyErrorDescription
++ (NSDictionary *)codesAndUserDescriptions {
+    static NSDictionary *dictionary = nil;
+    return dictionary ?: (dictionary = @{
+                                         @(JWTAlgorithmRSFamilyErrorIncorrectHashComputation) : @"RS algorithm incorrect hash computation!",
+                                         @(JWTAlgorithmRSFamilyErrorIncorrectKeySize) : @"RS algorithm incorrect key size. Apple have not sent any response about it.",
+                                         @(JWTAlgorithmRSFamilyErrorInternalSecurityAPI) : @"RS algorithm internal security framework error.",
+                                         @(JWTAlgorithmRSFamilyErrorUnexpected) : @"RS algorithm unexpected error!"
+                                         });
+}
++ (NSDictionary *)codesAndDescriptions {
+    static NSDictionary *dictionary = nil;
+    return dictionary ?: (dictionary = @{
+                                         @(JWTAlgorithmRSFamilyErrorIncorrectHashComputation) : @"JWTAlgorithmRSFamilyErrorIncorrectHashComputation",
+                                         @(JWTAlgorithmRSFamilyErrorIncorrectKeySize) : @"JWTAlgorithmRSFamilyErrorIncorrectKeySize",
+                                         @(JWTAlgorithmRSFamilyErrorInternalSecurityAPI) : @"JWTAlgorithmRSFamilyErrorInternalSecurityAPI",
+                                         @(JWTAlgorithmRSFamilyErrorUnexpected) : @"JWTAlgorithmRSFamilyErrorUnexpected"
+                                         });
+}
++ (NSString *)userDescriptionForCode:(JWTAlgorithmRSFamilyError)code {
+    NSString *resultString = [self codesAndUserDescriptions][@(code)];
+    return resultString ?: [self codesAndUserDescriptions][@(JWTAlgorithmRSFamilyErrorUnexpected)];
+}
++ (NSString *)errorDescriptionForCode:(JWTAlgorithmRSFamilyError)code {
+    NSString *resultString = [self codesAndDescriptions][@(code)];
+    return resultString ?: [self codesAndDescriptions][@(JWTAlgorithmRSFamilyErrorUnexpected)];
+}
++ (NSError *)errorWithCode:(NSInteger)code userDescription:(NSString *)userDescription errorDescription:(NSString *)errorDescription {
+    return [NSError errorWithDomain:JWTAlgorithmRSFamilyErrorDomain code:code userInfo:@{NSLocalizedDescriptionKey: userDescription, @"errorDescription": errorDescription}];
+}
++ (NSError *)errorWithCode:(NSInteger)code userDescription:(NSString *)userDescription errorDescription:(NSString *)errorDescription externalErrorDescription:(NSString *)externalErrorDescription {
+    return [NSError errorWithDomain:JWTAlgorithmRSFamilyErrorDomain code:code userInfo:@{NSLocalizedDescriptionKey: userDescription, @"errorDescription": errorDescription, @"externalErrorDescription": externalErrorDescription}];
+}
++ (NSError *)errorWithCode:(JWTAlgorithmRSFamilyError)code {
+    return [self errorWithCode:code userDescription:[self userDescriptionForCode:code] errorDescription:[self errorDescriptionForCode:code]];
+}
+
++ (NSError *)errorWithExternalError:(NSError *)error {
+    NSString *externalErrorDescription = [@{@"externalError": error} description];
+    return [self errorWithCode:JWTAlgorithmRSFamilyErrorInternalSecurityAPI userDescription:[self userDescriptionForCode:JWTAlgorithmRSFamilyErrorInternalSecurityAPI] errorDescription:[self errorDescriptionForCode:JWTAlgorithmRSFamilyErrorInternalSecurityAPI] externalErrorDescription:externalErrorDescription];
+}
+@end
+
 /*
 *    * Possible inheritence *
 *
@@ -93,7 +138,11 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
             }
         }
         else {
-            result = [self signData:hash key:keyItem.key];
+            NSError *signError = nil;
+            result = [self signData:hash key:keyItem.key error:&signError];
+            if (signError && error) {
+                *error = signError;
+            }
         }
     }
     else {
@@ -106,7 +155,12 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
         if (identity && trust) {
             SecKeyRef privateKey;
             SecIdentityCopyPrivateKey(identity, &privateKey);
-            result = [self signData:hash key:privateKey];
+            
+            NSError *signError = nil;
+            result = [self signData:hash key:privateKey error:&signError];
+            if (signError && error) {
+                *error = signError;
+            }
             
             if (privateKey) {
                 CFRelease(privateKey);
@@ -145,7 +199,11 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
             return verified;
         }
         else {
-            verified = [self verifyData:hash signature:signature key:keyItem.key];
+            NSError *verifyError = nil;
+            verified = [self verifyData:hash signature:signature key:keyItem.key error:&verifyError];
+            if (verifyError && error) {
+                *error = verifyError;
+            }
         }
         
         NSError *removeError = nil;
@@ -162,7 +220,11 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
         // TODO: special error handling here.
         // add error handling later?
         if (publicKey != NULL) {
-            BOOL verified = [self verifyData:hash signature:signature key:publicKey];
+            NSError *verifyError = nil;
+            BOOL verified = [self verifyData:hash signature:signature key:publicKey error:&verifyError];
+            if (verifyError && error) {
+                *error = verifyError;
+            }
             CFRelease(publicKey);
             return verified;
         }
@@ -185,11 +247,11 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 }
 
 #pragma mark - Private ( Override-part depends on platform )
-- (BOOL)verifyData:(NSData *)plainData signature:(NSData *)signature key:(SecKeyRef) publicKey {
+- (BOOL)verifyData:(NSData *)plainData signature:(NSData *)signature key:(SecKeyRef)publicKey error:(NSError *__autoreleasing*)error {
     return NO;
 }
 
-- (NSData *)signData:(NSData *)plainData key:(SecKeyRef)privateKey {
+- (NSData *)signData:(NSData *)plainData key:(SecKeyRef)privateKey error:(NSError *__autoreleasing*)error {
     return nil;
 }
 @end
@@ -197,13 +259,16 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 #if TARGET_OS_MAC && TARGET_OS_IPHONE
 @interface JWTAlgorithmRSBaseIOS : JWTAlgorithmRSBase @end
 @implementation JWTAlgorithmRSBaseIOS
-- (BOOL)verifyData:(NSData *)plainData witSignature:(NSData *)signature withKey:(SecKeyRef) publicKey {
+- (BOOL)verifyData:(NSData *)plainData signature:(NSData *)signature key:(SecKeyRef)publicKey error:(NSError *__autoreleasing *)error {
     size_t signedHashBytesSize = SecKeyGetBlockSize(publicKey);
     const void* signedHashBytes = [signature bytes];
 
     size_t hashBytesSize = self.ccSHANumberDigestLength;
     uint8_t* hashBytes = malloc(hashBytesSize);
     if (![self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes]) {
+        if (error) {
+            *error = [JWTAlgorithmRSFamilyErrorDescription errorWithCode:JWTAlgorithmRSFamilyErrorIncorrectHashComputation];
+        }
         return false;
     }
 
@@ -217,7 +282,7 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
     return status == errSecSuccess;
 }
 
-- (NSData *)signData:(NSData *)plainData withKey:(SecKeyRef)privateKey {
+- (NSData *)signData:(NSData *)plainData key:(SecKeyRef)privateKey error:(NSError *__autoreleasing *)error {
     size_t signedHashBytesSize = SecKeyGetBlockSize(privateKey);
     uint8_t* signedHashBytes = malloc(signedHashBytesSize);
     memset(signedHashBytes, 0x0, signedHashBytesSize);
@@ -229,6 +294,9 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
     unsigned char *str = [self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes];
 
     if (!str) {
+        if (error) {
+            *error = [JWTAlgorithmRSFamilyErrorDescription errorWithCode:JWTAlgorithmRSFamilyErrorIncorrectHashComputation];
+        }
         return nil;
     }
 
@@ -325,7 +393,7 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 
     return resultData;
 }
-- (BOOL)verifyData:(NSData *)plainData witSignature:(NSData *)signature withKey:(SecKeyRef) publicKey {
+- (BOOL)verifyData:(NSData *)plainData signature:(NSData *)signature key:(SecKeyRef)publicKey error:(NSError *__autoreleasing *)error {
 
     size_t signedHashBytesSize = SecKeyGetBlockSize(publicKey);
     //const void* signedHashBytes = [signature bytes];
@@ -337,11 +405,18 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
     
     if (![self checkKeyConsistency:publicKey]) {
         // error in log!
+        // bug?
         NSLog(@"the size of key(%@) should be related to SHA length in bits(%@)", @(signedHashBytesSize), @(hashBytesSize * bitsPerByte));
+        if (error) {
+            *error = [JWTAlgorithmRSFamilyErrorDescription errorWithCode:JWTAlgorithmRSFamilyErrorIncorrectKeySize];
+        }
         return NO;
     }
     
     if (![self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes]) {
+        if (error) {
+            *error = [JWTAlgorithmRSFamilyErrorDescription errorWithCode:JWTAlgorithmRSFamilyErrorIncorrectHashComputation];
+        }
         return NO;
     }
 
@@ -382,7 +457,7 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
     return result;
 }
 
-- (NSData *)signData:(NSData *)plainData withKey:(SecKeyRef)privateKey {
+- (NSData *)signData:(NSData *)plainData key:(SecKeyRef)privateKey error:(NSError *__autoreleasing *)error {
     size_t signedHashBytesSize = SecKeyGetBlockSize(privateKey);
     //uint8_t* signedHashBytes = malloc(signedHashBytesSize);
     //memset(signedHashBytes, 0x0, signedHashBytesSize);
@@ -400,6 +475,9 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
     unsigned char *str = [self CC_SHANumberWithData:[plainData bytes] withLength:(CC_LONG)[plainData length] withHashBytes:hashBytes];
 
     if (!str) {
+        if (error) {
+            *error = [JWTAlgorithmRSFamilyErrorDescription errorWithCode:JWTAlgorithmRSFamilyErrorIncorrectHashComputation];
+        }
         return nil;
     }
 
@@ -407,22 +485,9 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 
     SecTransformRef transform = SecSignTransformCreate(privateKey, &errorRef);
 
-    /** iOS
-    SecKeyRawSign(privateKey,
-                  self.secPaddingPKCS1SHANumber,
-                  hashBytes,
-                  hashBytesSize,
-                  signedHashBytes,
-                  &signedHashBytesSize);
-
-    NSData* signedHash = [NSData dataWithBytes:signedHashBytes
-                                        length:(NSUInteger)signedHashBytesSize];
-
-     */
-
     NSData *resultData = nil;
+    
     // signing: false result is NULL.
-    // it will release error.
     resultData = [self executeTransform:transform withInput:plainData withDigestType:kSecDigestSHA2 withDigestLength:@(signedHashBytesSize) withFalseResult:NULL];
 
     if (transform != NULL) {
