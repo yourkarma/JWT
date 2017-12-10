@@ -187,7 +187,7 @@
     // Do any additional setup after loading the view.
 }
 - (void)defaultDataSetup {
-    ViewController__DataSeed *dataSeed = [ViewController__DataSeed HS256];
+    ViewController__DataSeed *dataSeed = [ViewController__DataSeed defaultDataSeed];
     [self defaultDataSetupWithToken:dataSeed.token secret:dataSeed.secret algorithmName:dataSeed.algorithmName];
 }
 

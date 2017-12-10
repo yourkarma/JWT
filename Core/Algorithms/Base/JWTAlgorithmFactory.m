@@ -12,9 +12,7 @@
 #import "JWTAlgorithmNone.h"
 
 // not implemented.
-NSString *const JWTAlgorithmNameES256 = @"ES256";
-NSString *const JWTAlgorithmNameES384 = @"ES384";
-NSString *const JWTAlgorithmNameES512 = @"ES512";
+// ES still not implemented. Look at implementation and readme in future releases.
 
 @implementation JWTAlgorithmFactory
 

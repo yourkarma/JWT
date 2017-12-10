@@ -8,6 +8,19 @@
 
 #import <Foundation/Foundation.h>
 #import "JWTRSAlgorithm.h"
+extern NSString *const JWTAlgorithmRSFamilyErrorDomain;
+typedef NS_ENUM(NSInteger, JWTAlgorithmRSFamilyError) {
+    JWTAlgorithmRSFamilyErrorIncorrectHashComputation = -100,
+    JWTAlgorithmRSFamilyErrorIncorrectKeySize,
+    JWTAlgorithmRSFamilyErrorInternalSecurityAPI,
+    JWTAlgorithmRSFamilyErrorUnexpected = -20
+};
+
+@interface JWTAlgorithmRSFamilyErrorDescription : NSObject
++ (NSError *)errorWithCode:(JWTAlgorithmRSFamilyError)code;
++ (NSError *)errorWithExternalError:(NSError *)error;
+@end
+
 extern NSString *const JWTAlgorithmNameRS256;
 extern NSString *const JWTAlgorithmNameRS384;
 extern NSString *const JWTAlgorithmNameRS512;
