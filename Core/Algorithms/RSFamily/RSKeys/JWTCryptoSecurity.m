@@ -146,7 +146,7 @@
     OSStatus status = SecItemDelete((__bridge CFDictionaryRef)removeAttributes);
     if (status != errSecSuccess) {
         if (error) {
-            *error = [JWTErrorDescription errorWithCode:status];
+            *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:status userInfo:nil];
         }
         return NO;
     }
