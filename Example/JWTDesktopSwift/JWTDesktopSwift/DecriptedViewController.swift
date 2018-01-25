@@ -15,7 +15,7 @@ class DecriptedViewController: NSViewController {
     @IBOutlet weak var collectionView: NSCollectionView!
 
     // MARK: - CollectionView Convenients
-    var collectionViewItemIdentifier : String = NSStringFromClass(DecriptedCollectionViewItem.self)
+    let collectionViewItemIdentifier = NSUserInterfaceItemIdentifier(NSStringFromClass(DecriptedCollectionViewItem.self))
 
     // MARK: - Builder
     var builder : JWTBuilder? {
@@ -34,8 +34,8 @@ class DecriptedViewController: NSViewController {
     }
     
     // MARK: - Cached vars
-    var cachedResultArray : [[String:Any]]?
-    var cachedErrorDictionary : [String : String]?
+    var cachedResultArray : [[String: Any]]?
+    var cachedErrorDictionary : [String: String]?
 
     // MARK: - Texts vars
     var errorText: String { return String.json(cachedErrorDictionary) }
@@ -44,21 +44,21 @@ class DecriptedViewController: NSViewController {
     
     // MARK: - Setup
     func setupUIElements() {
-        self.collectionView.delegate = self;
-        self.collectionView.dataSource = self;
-        self.collectionView.minItemSize = NSZeroSize;
-        self.collectionView.maxItemSize = NSZeroSize;
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
+        self.collectionView.minItemSize = NSZeroSize
+        self.collectionView.maxItemSize = NSZeroSize
         self.collectionView.register(DecriptedCollectionViewItem.self, forItemWithIdentifier: self.collectionViewItemIdentifier)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupUIElements()
-        NotificationCenter.default.addObserver(self, selector: #selector(DecriptedViewController.reload), name: NSNotification.Name.NSWindowDidResize, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DecriptedViewController.reload), name: NSWindow.didResizeNotification, object: nil)
     }
     
     // MARK: - Reload
-    func reload() {
+    @objc func reload() {
         reloadCollectionView()
     }
     func reloadCollectionView() {
@@ -142,7 +142,7 @@ extension DecriptedViewController : NSCollectionViewDelegateFlowLayout {
         
         let stringToDisplay = self.textForItem(indexPath: indexPath)
         let width = collectionView.frame.size.width
-        let estimatedSize = (stringToDisplay as NSString).boundingRect(with: CGSize(width:width, height: 10000), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: nil)
+        let estimatedSize = (stringToDisplay as NSString).boundingRect(with: CGSize(width:width, height: 10000), options: [NSString.DrawingOptions.usesLineFragmentOrigin, NSString.DrawingOptions.usesFontLeading], attributes: nil)
         let height = estimatedSize.size.height
         let size = CGSize(width:width, height:height)
         return size

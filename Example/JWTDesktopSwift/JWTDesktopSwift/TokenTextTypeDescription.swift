@@ -28,20 +28,20 @@ enum TokenTextType : Int {
         return color
     }
     
-    var encodedTextAttributes: [String : Any] {
+    var encodedTextAttributes: [NSAttributedStringKey: Any] {
         return encodedTextAttributes(type: self)
     }
     
-    func encodedTextAttributes(type: TokenTextType) -> [String: Any] {
+    func encodedTextAttributes(type: TokenTextType) -> [NSAttributedStringKey: Any] {
         var attributes = self.defaultEncodedTextAttributes()
-        attributes[NSForegroundColorAttributeName] = type.color
+        attributes[NSAttributedStringKey.foregroundColor] = type.color
         return attributes
     }
     
-    func defaultEncodedTextAttributes() -> [String:Any] {
+    func defaultEncodedTextAttributes() -> [NSAttributedStringKey: Any] {
         return [
-            NSFontAttributeName : NSFont.boldSystemFont(ofSize: 22)
-            ] as [String: Any]
+            NSAttributedStringKey.font : NSFont.boldSystemFont(ofSize: 22)
+            ]
     }
 }
 

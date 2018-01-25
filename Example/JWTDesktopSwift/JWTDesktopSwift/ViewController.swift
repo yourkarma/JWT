@@ -81,11 +81,11 @@ extension ViewController {
 
 // MARK: - Actions
 extension ViewController {
-    func popUpButtonValueChanged(sender : AnyClass) {
+    @objc func popUpButtonValueChanged(sender : AnyClass) {
         self.refreshUI()
     }
     
-    func checkBoxState(sender : AnyClass) {
+    @objc func checkBoxState(sender : AnyClass) {
         self.refreshUI()
     }
     func signatureReactOnVerifiedToken(verified: Bool) {
@@ -97,7 +97,7 @@ extension ViewController {
 
 extension ViewController: NSTextFieldDelegate {
     override func controlTextDidChange(_ obj: Notification) {
-        if (obj.name == NSNotification.Name.NSControlTextDidChange) {
+        if (obj.name == NSControl.textDidChangeNotification) {
             let textField = obj.object as! NSTextField
             if textField == self.secretTextField {
                 self.refreshUI()
@@ -127,7 +127,7 @@ extension ViewController: NSTextViewDelegate {
 //}
 
 class ViewController: NSViewController {
-    override init?(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    override init(nibName nibNameOrNil: NSNib.Name?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
