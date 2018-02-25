@@ -14,6 +14,8 @@
 @end
 
 @interface JWTBase64Coder : NSObject
++ (instancetype)withBase64String;
++ (instancetype)withPlainString;
 + (NSString *)base64UrlEncodedStringWithData:(NSData *)data;
 + (NSData *)dataWithBase64UrlEncodedString:(NSString *)urlEncodedString;
 @end

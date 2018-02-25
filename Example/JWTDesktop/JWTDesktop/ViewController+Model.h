@@ -39,5 +39,6 @@
 + (instancetype)HS256;
 + (instancetype)RS256;
 + (instancetype)HS256__WithoutClaimsSet;
++ (instancetype)HS256__LongSecret__32;
 + (instancetype)RS256__Corrupted;
 @end

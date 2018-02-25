@@ -80,9 +80,19 @@
 @end
 
 @interface JWTAlgorithmNoneDataHolder : JWTAlgorithmBaseDataHolder @end
+/*
+ Default stringCoder is [JWTBase64Coder withPlainString].
+ You could set secretData by secret setter ( holder.secret(secretString) ) in plain format e.g. "secret".
+ */
 @interface JWTAlgorithmHSFamilyDataHolder : JWTAlgorithmBaseDataHolder <JWTAlgorithmDataHolderCreateProtocol>
 @end
+
 @protocol JWTCryptoKeyProtocol;
+
+/*
+ Default stringCoder is [JWTBase64Coder withBase64String].
+ You could set secretData by secret setter ( holder.secret(secretString) ) in base64 format e.g. put pem file content in it (ugly string with equal sign at the end for example).
+ */
 @interface JWTAlgorithmRSFamilyDataHolder : JWTAlgorithmBaseDataHolder <JWTAlgorithmDataHolderCreateProtocol>
 #pragma mark - Getters
 /**

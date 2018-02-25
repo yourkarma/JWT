@@ -247,6 +247,10 @@
 @implementation JWTAlgorithmRSFamilyDataHolder
 
 #pragma mark - Initialization
+- (instancetype)init {
+    return [super init].stringCoder([JWTBase64Coder withBase64String]);
+}
+
 + (instancetype)createWithAlgorithm256 {
     return [[self alloc] initWithAlgorithmName:JWTAlgorithmNameRS256];
 }
