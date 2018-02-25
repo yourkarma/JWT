@@ -69,7 +69,7 @@
 + (instancetype)defaultDataSeed {
     return
 //    [self RS256];
-    [self RS256__Corrupted];
+    [self HS256__LongSecret__32];
 }
 
 + (instancetype)RS256 {
@@ -88,6 +88,13 @@
 + (instancetype)HS256__WithoutClaimsSet {
     NSString *token = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvaG9oIjoiMTIzNDU2Nzg5MCIsImhhaGEiOiJKb2huIERvZSIsIm9oaGhoaCI6dHJ1ZX0.5V2Jk3Nnaj1czth5x7ssXgy12K_Oe1Lew1yfgQokpqE";
     NSString *secret = @"secret";
+    NSString *algorithmName = JWTAlgorithmNameHS256;
+    return [[self alloc] initWithAlgorithName:(NSString *)algorithmName secret:(NSString *)secret token:(NSString *)token];
+}
+
++ (instancetype)HS256__LongSecret__32 {
+    NSString *token = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.RbAcmsAGL1QWvoT1DUrAF-3Wwxvj8VvPHYFNEcUNog8";
+    NSString *secret = @"qwertyuiopasdfghjklzxcvbnm123456";
     NSString *algorithmName = JWTAlgorithmNameHS256;
     return [[self alloc] initWithAlgorithName:(NSString *)algorithmName secret:(NSString *)secret token:(NSString *)token];
 }
