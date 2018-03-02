@@ -4,7 +4,6 @@
 [![Pod Version](http://img.shields.io/cocoapods/v/JWT.svg?style=flat)](http://cocoadocs.org/docsets/JWT)
 [![Pod Platform](http://img.shields.io/cocoapods/p/JWT.svg?style=flat)](http://cocoadocs.org/docsets/JWT)
 [![Reference Status](https://www.versioneye.com/objective-c/jwt/reference_badge.svg?style=flat)](https://www.versioneye.com/objective-c/jwt/references)
-
 # JWT
 
 A [JSON Web Token][] implementation in Objective-C.
@@ -487,3 +486,7 @@ Additional algorithms can be added by implementing the `JWTAlgorithm` protocol.
 ## Before pull request
 
 Please, read [Contribution notes](https://github.com/yourkarma/JWT/blob/master/.github/CONTRIBUTING.md) before make pull request.
+
+## Powered by
+
+[![JetBrains](https://www.jetbrains.com/apple-touch-icon-180x180.png)](https://www.jetbrains.com)
