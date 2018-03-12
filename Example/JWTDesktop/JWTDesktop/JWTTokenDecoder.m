@@ -71,7 +71,7 @@
         return nil;
     }
     id<JWTAlgorithmDataHolderProtocol> holder = nil;
-    if ([algorithm isKindOfClass:[JWTAlgorithmRSBase class]]) {
+    if ([algorithm isKindOfClass:[JWTAlgorithmRSBase class]] || [algorithm.name hasPrefix:@"RS"]) {
         NSError *keyError = nil;
         id<JWTCryptoKeyProtocol>key = [[JWTCryptoKeyPublic alloc] initWithPemEncoded:secret parameters:nil error:&keyError];
         theError = keyError;
