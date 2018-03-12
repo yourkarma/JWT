@@ -53,6 +53,8 @@
 		0A135F7C1E93E67A00A1D777 /* JWTDeprecations.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A135F4E1E93E67A00A1D777 /* JWTDeprecations.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A135F7D1E93E67A00A1D777 /* JWTErrorDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A135F4F1E93E67A00A1D777 /* JWTErrorDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A135F7E1E93E67A00A1D777 /* JWTErrorDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A135F501E93E67A00A1D777 /* JWTErrorDescription.m */; };
+		0A6246FB205727550094B3A9 /* JWTAlgorithmAsymmetricBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A6246F9205727540094B3A9 /* JWTAlgorithmAsymmetricBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0A6246FC205727550094B3A9 /* JWTAlgorithmAsymmetricBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6246FA205727540094B3A9 /* JWTAlgorithmAsymmetricBase.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -139,6 +141,8 @@
 		0A135F4E1E93E67A00A1D777 /* JWTDeprecations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTDeprecations.h; sourceTree = "<group>"; };
 		0A135F4F1E93E67A00A1D777 /* JWTErrorDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTErrorDescription.h; sourceTree = "<group>"; };
 		0A135F501E93E67A00A1D777 /* JWTErrorDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTErrorDescription.m; sourceTree = "<group>"; };
+		0A6246F9205727540094B3A9 /* JWTAlgorithmAsymmetricBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithmAsymmetricBase.h; sourceTree = "<group>"; };
+		0A6246FA205727540094B3A9 /* JWTAlgorithmAsymmetricBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmAsymmetricBase.m; sourceTree = "<group>"; };
 		A1951DB91758990700AF73D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A1951DCA1758990700AF73D9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -238,6 +242,8 @@
 		0A135F1E1E93E67A00A1D777 /* ESFamily */ = {
 			isa = PBXGroup;
 			children = (
+				0A6246F9205727540094B3A9 /* JWTAlgorithmAsymmetricBase.h */,
+				0A6246FA205727540094B3A9 /* JWTAlgorithmAsymmetricBase.m */,
 				0A135F1F1E93E67A00A1D777 /* JWTAlgorithmESBase.h */,
 				0A135F201E93E67A00A1D777 /* JWTAlgorithmESBase.m */,
 			);
@@ -416,6 +422,7 @@
 				0A135F5C1E93E67A00A1D777 /* JWTAlgorithmHSBase.h in Headers */,
 				0A135F6B1E93E67A00A1D777 /* JWTClaimsSetSerializer.h in Headers */,
 				0A135F601E93E67A00A1D777 /* JWTRSAlgorithm.h in Headers */,
+				0A6246FB205727550094B3A9 /* JWTAlgorithmAsymmetricBase.h in Headers */,
 				0A135F691E93E67A00A1D777 /* JWTClaimsSet.h in Headers */,
 				0A135F631E93E67A00A1D777 /* JWTCryptoKeyExtractor.h in Headers */,
 				0A135F7D1E93E67A00A1D777 /* JWTErrorDescription.h in Headers */,
@@ -554,7 +561,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastTestingUpgradeCheck = 0610;
-				LastUpgradeCheck = 0910;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = JWTIO;
 				TargetAttributes = {
 					045146671D5E2A78007B1D7A = {
@@ -696,6 +703,7 @@
 				0A135F741E93E67A00A1D777 /* JWTCoding+VersionThree.m in Sources */,
 				0A135F701E93E67A00A1D777 /* JWTCoding+ResultTypes.m in Sources */,
 				0A135F571E93E67A00A1D777 /* JWTAlgorithmESBase.m in Sources */,
+				0A6246FC205727550094B3A9 /* JWTAlgorithmAsymmetricBase.m in Sources */,
 				0A135F721E93E67A00A1D777 /* JWTCoding+VersionOne.m in Sources */,
 				0A135F591E93E67A00A1D777 /* JWTAlgorithmDataHolder.m in Sources */,
 				0A135F681E93E67A00A1D777 /* JWTClaim.m in Sources */,
@@ -1095,7 +1103,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1134,7 +1142,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
