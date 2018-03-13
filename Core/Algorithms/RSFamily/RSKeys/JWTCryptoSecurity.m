@@ -60,8 +60,8 @@
 //    __OSX_AVAILABLE_STARTING(__MAC_10_12, __IPHONE_10_0);
     return (__bridge NSString *)kSecAttrKeyTypeEC;
 }
-+ (SecKeyRef)addKeyWithData:(NSData *)data asPublic:(BOOL)public tag:(NSString *)tag type:(NSString *)type error:(NSError *__autoreleasing*)error; {
-    NSString *keyClass = (__bridge NSString *)(public ? kSecAttrKeyClassPublic : kSecAttrKeyClassPrivate);
++ (SecKeyRef)addKeyWithData:(NSData *)data asPublic:(BOOL)thePublic tag:(NSString *)tag type:(NSString *)type error:(NSError *__autoreleasing*)error; {
+    NSString *keyClass = (__bridge NSString *)(thePublic ? kSecAttrKeyClassPublic : kSecAttrKeyClassPrivate);
     NSInteger sizeInBits = data.length * [JWTMemoryLayout createWithType:[JWTMemoryLayout typeUInt8]].size;
     NSDictionary *attributes = @{
         (__bridge NSString*)kSecAttrKeyType : type,
@@ -505,5 +505,30 @@ typedef NS_ENUM(NSInteger, JWTPublicHeaderStrippingError) {
     NSData *resultData = [[NSData alloc] initWithBytes:strippedBytes length:countOfStrippedBytes];
     //    return data
     return resultData;
+}
++ (NSData *)dataByExtractingKeyFromANS1:(NSData *)data error:(NSError *__autoreleasing *)error {
+    if (data == nil) {
+        return nil;
+    }
+    // look for 03 42 00 04
+    
+    int8_t bytesToSearchFor[] = {0x03, 0x42, 0x00, 0x04};
+    int count = sizeof(bytesToSearchFor) / sizeof(bytesToSearchFor[0]);
+    NSData *dataToSearchFor = [NSData dataWithBytes:bytesToSearchFor length:count];
+    NSRange fullRange = NSMakeRange(0, data.length);
+    NSRange foundRange = [data rangeOfData:dataToSearchFor options:0 range:fullRange];
+    
+    NSData *foundData = nil;
+    if (foundRange.location != NSNotFound && foundRange.length != 0) {
+        // try to extract tail of data.
+        // but we should also preserve 0x04.
+        // so, one byte less.
+        NSInteger tailPosition = foundRange.location + foundRange.length - 1;
+        NSInteger length = data.length - tailPosition;
+        if (tailPosition >= 0 && length >= 0) {
+            foundData = [NSData dataWithBytes:((char *)data.bytes) + tailPosition length:length];
+        }
+    }
+    return foundData;
 }
 @end
