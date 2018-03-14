@@ -22,6 +22,10 @@
 - (instancetype)initWithPemAtURL:(NSURL *)url parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error;
 @end
 
+@protocol JWTCryptoKey__Raw__Generator__Protocol
+- (instancetype)initWithSecKeyRef:(SecKeyRef)key;
+@end
+
 @interface JWTCryptoKeyBuilder : NSObject
 @property (assign, nonatomic, readonly) NSString *keyType;
 - (instancetype)keyTypeRSA;
@@ -43,12 +47,12 @@
 + (NSString *)parametersKeyBuilder;
 @end
 
-@interface JWTCryptoKeyPublic : JWTCryptoKey <JWTCryptoKey__Generator__Protocol>
+@interface JWTCryptoKeyPublic : JWTCryptoKey <JWTCryptoKey__Generator__Protocol, JWTCryptoKey__Raw__Generator__Protocol>
 - (instancetype)initWithCertificateData:(NSData *)certificateData parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error; //NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithCertificateBase64String:(NSString *)certificateString parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error;
 @end
 
-@interface JWTCryptoKeyPrivate : JWTCryptoKey <JWTCryptoKey__Generator__Protocol>
+@interface JWTCryptoKeyPrivate : JWTCryptoKey <JWTCryptoKey__Generator__Protocol, JWTCryptoKey__Raw__Generator__Protocol>
 - (instancetype)initWithP12Data:(NSData *)p12Data withPassphrase:(NSString *)passphrase parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error; //NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithP12AtURL:(NSURL *)url withPassphrase:(NSString *)passphrase parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error;
 @end

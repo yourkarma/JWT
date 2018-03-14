@@ -77,10 +77,20 @@
     return result ?: [JWTCryptoSecurity keyTypeRSA];
 }
 @end
-@interface JWTCryptoKey (Generator) <JWTCryptoKey__Generator__Protocol>
+@interface JWTCryptoKey (Generator) <JWTCryptoKey__Generator__Protocol, JWTCryptoKey__Raw__Generator__Protocol>
 @end
 
 @implementation JWTCryptoKey (Generator)
+- (instancetype)initWithSecKeyRef:(SecKeyRef)key {
+    self = [super init];
+    if (key != NULL) {
+        self.key = key;
+    }
+    else {
+        return nil;
+    }
+    return self;
+}
 - (instancetype)initWithData:(NSData *)data parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
     // add check that everything is fine.
     return [super init];
@@ -144,7 +154,7 @@
         JWTCryptoKeyBuilder *builder = [self extractedBuilderWithParameters:parameters];
         NSData *keyData = data;
         if (builder.withKeyTypeRSA) {
-        keyData = [JWTCryptoSecurity dataByRemovingPublicKeyHeader:data error:&removingHeaderError];
+            keyData = [JWTCryptoSecurity dataByRemovingPublicKeyHeader:data error:&removingHeaderError];
             if (!keyData || removingHeaderError) {
                 if (error && removingHeaderError != nil) {
                     *error = removingHeaderError;
@@ -154,8 +164,39 @@
         }
         
         if (builder.withKeyTypeEC) {
+            NSError *theError = nil;
+            keyData = [JWTCryptoSecurity dataByExtractingKeyFromANS1:data error:&theError];
+            if (!keyData || theError) {
+                if (error && theError != nil) {
+                    *error = theError;
+                }
+                return nil;
+            }
             // unknown here.
-            // process keyData before passing it to JWTCryptoSecurity+addKey... method. 
+            // process keyData before passing it to JWTCryptoSecurity+addKey... method.
+//            keyData = [JWTCryptoSecurity dataByRemovingPublicKeyHeader:data error:&removingHeaderError];
+//            if (!keyData || removingHeaderError) {
+//                if (error && removingHeaderError != nil) {
+//                    *error = removingHeaderError;
+//                }
+//                return nil;
+//            }
+//            NSData *theData = [data copy];
+//            while (theData != nil && theData.length > 0) {
+//                NSError *theError = nil;
+//                self.key = [JWTCryptoSecurity addKeyWithData:theData asPublic:YES tag:self.tag type:[self extractedSecKeyTypeWithParameters:parameters] error:&theError];
+//                NSLog(@"theData: %@", theData);
+//                NSLog(@"theError: %@", theError);
+//                if (!theError && self.key) {
+//                    NSLog(@"Found!");
+//                    NSLog(@"theData: %@", theData);
+//                    NSLog(@"theKey: %@", self.key);
+//                    break;
+//                }
+//                NSUInteger length = theData.length - 1;
+//                NSRange range = NSMakeRange(1, length);
+//                theData = [NSData dataWithBytes:((char *)theData.bytes) + range.location length:range.length];
+//            }
         }
 
         NSError *addKeyError = nil;
@@ -163,7 +204,7 @@
         self.key = [JWTCryptoSecurity addKeyWithData:keyData asPublic:YES tag:self.tag type:[self extractedSecKeyTypeWithParameters:parameters] error:&addKeyError];
         if (!self.key || addKeyError) {
             if (error && addKeyError != nil) {
-                *error = removingHeaderError;
+                *error = addKeyError;
             }
             [self cleanup];
             return nil;
@@ -203,7 +244,31 @@
             // or put it in superclass?
             return nil;
         }
-        self.key = [JWTCryptoSecurity addKeyWithData:data asPublic:NO tag:self.tag type:[self extractedSecKeyTypeWithParameters:parameters] error:&addKeyError];
+        
+        NSData *theData = [data copy];
+        JWTCryptoKeyBuilder *builder = [self extractedBuilderWithParameters:parameters];
+        if (builder.withKeyTypeEC) {
+            // cheat and shit!
+            // ahaha. try to find correct key here.
+            // possible soultion - dataByExtracting in cryptoKeySecurity.
+            while (/* DISABLES CODE */ (0) && theData != nil && theData.length > 0) {
+                NSError *theError = nil;
+                self.key = [JWTCryptoSecurity addKeyWithData:theData asPublic:NO tag:self.tag type:[self extractedSecKeyTypeWithParameters:parameters] error:&theError];
+                NSLog(@"theData: %@", theData);
+                NSLog(@"theError: %@", theError);
+                if (!theError && self.key) {
+                    NSLog(@"Found!");
+                    NSLog(@"theData: %@", theData);
+                    NSLog(@"theKey: %@", self.key);
+                    break;
+                }
+                NSUInteger length = theData.length - 1;
+                NSRange range = NSMakeRange(1, length);
+                theData = [NSData dataWithBytes:((char *)theData.bytes) + range.location length:range.length];
+            }
+        }
+        
+        self.key = [JWTCryptoSecurity addKeyWithData:theData asPublic:NO tag:self.tag type:[self extractedSecKeyTypeWithParameters:parameters] error:&addKeyError];
         if (!self.key || addKeyError) {
             if (error && addKeyError) {
                 *error = addKeyError;
