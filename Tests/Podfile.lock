@@ -1,6 +1,6 @@
 PODS:
   - Base64 (1.1.2)
-  - JWT (3.0.0-beta.8):
+  - JWT (3.0.0-beta.9):
     - Base64 (~> 1.1.2)
   - Kiwi (2.4.0)
 
@@ -8,9 +8,14 @@ DEPENDENCIES:
   - JWT (from `../`)
   - Kiwi
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Base64
+    - Kiwi
+
 EXTERNAL SOURCES:
   JWT:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
@@ -19,4 +24,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: c75c7cf114c84da4136ca88e1af74b58b1b83616
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3
