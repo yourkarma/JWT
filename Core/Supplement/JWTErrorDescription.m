@@ -27,7 +27,8 @@ NSString *JWTErrorDomain = @"io.jwt";
         @(JWTBlacklistedAlgorithmError): @"Algorithm in blacklist? Try to check whitelist parameter",
         @(JWTDecodingHeaderError): @"Error decoding the JWT Header segment.",
         @(JWTDecodingPayloadError): @"Error decoding the JWT Payload segment.",
-        @(JWTDecodingHoldersChainEmptyError) : @"Error decoding the JWT algorithm and data holders chain is empty!"
+        @(JWTDecodingHoldersChainEmptyError): @"Error decoding the JWT algorithm and data holders chain is empty!",
+        @(JWTUnexpectedError): @"Unexpected Error"
     });
 }
 
@@ -49,7 +50,8 @@ NSString *JWTErrorDomain = @"io.jwt";
         @(JWTBlacklistedAlgorithmError): @"JWTBlacklistedAlgorithmError",
         @(JWTDecodingHeaderError): @"JWTDecodingHeaderError",
         @(JWTDecodingPayloadError): @"JWTDecodingPayloadError",
-        @(JWTDecodingHoldersChainEmptyError) :@"JWTDecodingHoldersChainEmptyError"
+        @(JWTDecodingHoldersChainEmptyError): @"JWTDecodingHoldersChainEmptyError",
+        @(JWTUnexpectedError): @"JWTUnexpectedError"
     });
 }
 

@@ -7,6 +7,8 @@
 //
 
 #import "JWTCryptoSecurity.h"
+#import "JWTErrorDescription.h"
+
 @interface JWTMemoryLayout : NSObject
 + (NSString *)typeUInt8;
 + (NSString *)typeCUnsignedChar;
@@ -127,18 +129,28 @@
     return NULL;
 }
 
-+ (void)removeKeyByTag:(NSString *)tag error:(NSError *__autoreleasing*)error; {
++ (BOOL)removeKeyByTag:(NSString *)tag error:(NSError *__autoreleasing*)error; {
     NSData *tagData = [tag dataUsingEncoding:NSUTF8StringEncoding];
     if (tagData == nil) {
-        // tell that nothing to remove.        
-        return;
+        // tell that nothing to remove.
+        if (error) {
+            *error = [JWTErrorDescription errorWithCode:JWTUnexpectedError];
+        }
+        return NO;
     }
     NSDictionary *removeAttributes = @{
             (__bridge NSString*)kSecClass: (__bridge NSString*)kSecClassKey,
             (__bridge NSString*)kSecAttrKeyType: (__bridge NSString*)kSecAttrKeyTypeRSA,
-            (__bridge NSString*)kSecAttrApplicationTag: tagData,
+            (__bridge NSString*)kSecAttrApplicationTag: tagData
     };
-    SecItemDelete((__bridge CFDictionaryRef)removeAttributes);
+    OSStatus status = SecItemDelete((__bridge CFDictionaryRef)removeAttributes);
+    if (status != errSecSuccess) {
+        if (error) {
+            *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:status userInfo:nil];
+        }
+        return NO;
+    }
+    return YES;
 }
 @end
 
