@@ -58,8 +58,9 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
         }
     });
     context(@"first", ^{
-        it(@"Empty test", ^{
+        pending(@"Empty test", ^{
             // for beforeAll invocation
+            
         });
         pending(@"Should decode well", ^{
             JWTCryptoKeyBuilder *builderForEC = [JWTCryptoKeyBuilder new].keyTypeEC;
