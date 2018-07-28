@@ -165,7 +165,7 @@
         
         if (builder.withKeyTypeEC) {
             NSError *theError = nil;
-            keyData = [JWTCryptoSecurity dataByExtractingKeyFromANS1:data error:&theError];
+            //  keyData = [JWTCryptoSecurity dataByExtractingKeyFromANS1:data error:&theError];
             if (!keyData || theError) {
                 if (error && theError != nil) {
                     *error = theError;
@@ -294,7 +294,16 @@
     // cleanup if needed.
     SecIdentityRef identity = nil;
     SecTrustRef trust = nil;
-    [JWTCryptoSecurity extractIdentityAndTrustFromPKCS12:(__bridge CFDataRef)p12Data password:(__bridge CFStringRef)passphrase identity:&identity trust:&trust];
+    {
+        CFErrorRef extractError = NULL;
+        [JWTCryptoSecurity extractIdentityAndTrustFromPKCS12:(__bridge CFDataRef)p12Data password:(__bridge CFStringRef)passphrase identity:&identity trust:&trust error:&extractError];
+        if (extractError != nil) {
+            if (error) {
+                *error = (NSError *)CFBridgingRelease(extractError);
+                return nil;
+            }
+        }
+    }
     BOOL identityAndTrust = identity && trust;
 
     if (identityAndTrust) {
