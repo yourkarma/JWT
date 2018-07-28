@@ -82,85 +82,88 @@ class KeyParameters
 	end
 end
 
-def fix_options(the_options)
-	options = the_options
-	options[:result_directory] ||= '../Tests/Resources/Certs/'
-	if options[:test]
-		options[:algorithm_type] ||= KeyParameters::TYPES.first
-		options[:key_length] ||= KeyParameters::SIZES.first
-		options[:generated_key_name] ||= 'generated'
-		options[:private_key_name] ||= 'private'
-		options[:public_key_name] ||= 'public'
+class MainWork
+	class << self
+		def work(arguments)
+			the_work = new
+			the_work.work(the_work.parse_options(arguments))
+		end
 	end
-	options
+	def fix_options(the_options)
+		options = the_options
+		options[:result_directory] ||= '../Tests/Resources/Certs/'
+		if options[:test]
+			options[:algorithm_type] ||= KeyParameters::TYPES.first
+			options[:key_length] ||= KeyParameters::SIZES.first
+			options[:generated_key_name] ||= 'generated'
+			options[:private_key_name] ||= 'private'
+			options[:public_key_name] ||= 'public'
+		end
+		options
+	end
+	def work(options = {})
+		options = fix_options(options)
+
+		if options[:inspection]
+			puts "options are: #{options}"
+		end
+
+		ShellExecutor.setup options[:dry_run]
+
+		key_parameters = KeyParameters.new(options[:algorithm_type], options[:key_length])
+		[
+			key_parameters.generate_key(options[:generated_key_name]),
+			key_parameters.output_private_key(options[:generated_key_name], options[:private_key_name]),
+			key_parameters.output_public_key(options[:generated_key_name], options[:public_key_name])
+		].map do |command|
+			key_parameters.suppress_prompt command
+		end
+		.each do |command|
+			ShellExecutor.run_command_line command
+		end
+	end
+	def help_message(options)
+		# %x[rdoc $0]
+		# not ok
+		puts <<-__HELP__
+
+		#{options.help}
+
+		this script will help you generate keys.
+
+		First, it takes arguments:
+		[needed] <-f DIRECTORY>: directory where you will gather files
+		[not needed] <-r DIRECTORY>: directory where files will be placed
+
+
+		---------------
+		Usage:
+		---------------
+		#{$0} -t ../Tests/Resources/Certs/
+
+		__HELP__
+	end
+	def parse_options(arguments)
+		options = {}
+		OptionParser.new do |opts|
+			opts.banner = "Usage: #{$0} [options]"
+			opts.on('-o', '--output_directory DIRECTORY', 'Output Directory') {|v| options[:output_directory] = v}
+			opts.on('-t', '--test', 'Test option') {|v| options[:test] = v}
+			opts.on('-l', '--length LENGTH', 'Key length') {|v| options[:key_length] = v}
+			opts.on('-a', '--algorithm ALGORITHM', 'Algorithm type') {|v| options[:algorithm_type] = v}
+			opts.on('-g', '--generated_key_name NAME', 'Generated key name') {|v| options[:generated_key_name] = v}
+			opts.on('-r', '--private_key_name NAME', 'Private Key Name') {|v| options[:private_key_name] = v}
+			opts.on('-u', '--public_key_name NAME', 'Public Key Name') {|v| options[:public_key_name] = v}
+			# opts.on('-l', '--log_level LEVEL', 'Logger level of warning') {|v| options[:log_level] = v}
+			# opts.on('-o', '--output_log OUTPUT', 'Logger output stream') {|v| options[:output_stream] = v}
+			opts.on('-d', '--dry_run', 'Dry run to see all options') {|v| options[:dry_run] = v}
+			opts.on('-i', '--inspection', 'Inspection of all items, like tests'){|v| options[:inspection] = v}
+
+			# help
+			opts.on('-h', '--help', 'Help option') { help_message(opts); exit()}
+		end.parse!(arguments)
+		options
+	end
 end
 
-def MainWork(options = {})
-	options = fix_options(options)
-
-	if options[:inspection]
-		puts "options are: #{options}"
-	end
-
-	ShellExecutor.setup options[:dry_run]
-
-	key_parameters = KeyParameters.new(options[:algorithm_type], options[:key_length])
-	[
-		key_parameters.generate_key(options[:generated_key_name]),
-		key_parameters.output_private_key(options[:generated_key_name], options[:private_key_name]),
-		key_parameters.output_public_key(options[:generated_key_name], options[:public_key_name])
-	].map do |command|
-		key_parameters.suppress_prompt command
-	end
-	.each do |command|
-		ShellExecutor.run_command_line command
-	end
-end
-
-# ------------------- Beginning ----------------- #
-def HelpMessage(options)
-
-	# %x[rdoc $0]
-	# not ok
-	puts <<-__HELP__
-
-	#{options.help}
-
-	this script will help you generate keys.
-
-	First, it takes arguments:
-	[needed] <-f DIRECTORY>: directory where you will gather files
-	[not needed] <-r DIRECTORY>: directory where files will be placed
-
-
-	---------------
-	Usage:
-	---------------
-	#{$0} -t ../Tests/Resources/Certs/
-
-	__HELP__
-
-end
-
-options = {}
-
-
-OptionParser.new do |opts|
-	opts.banner = "Usage: #{$0} [options]"
-	opts.on('-o', '--output_directory DIRECTORY', 'Output Directory') {|v| options[:output_directory] = v}
-	opts.on('-t', '--test', 'Test option') {|v| options[:test] = v}
-	opts.on('-l', '--length LENGTH', 'Key length') {|v| options[:key_length] = v}
-	opts.on('-a', '--algorithm ALGORITHM', 'Algorithm type') {|v| options[:algorithm_type] = v}
-	opts.on('-g', '--generated_key_name NAME', 'Generated key name') {|v| options[:generated_key_name] = v}
-	opts.on('-r', '--private_key_name NAME', 'Private Key Name') {|v| options[:private_key_name] = v}
-	opts.on('-u', '--public_key_name NAME', 'Public Key Name') {|v| options[:public_key_name] = v}
-	# opts.on('-l', '--log_level LEVEL', 'Logger level of warning') {|v| options[:log_level] = v}
-	# opts.on('-o', '--output_log OUTPUT', 'Logger output stream') {|v| options[:output_stream] = v}
-	opts.on('-d', '--dry_run', 'Dry run to see all options') {|v| options[:dry_run] = v}
-	opts.on('-i', '--inspection', 'Inspection of all items, like tests'){|v| options[:inspection] = v}
-
-	# help
-	opts.on('-h', '--help', 'Help option') { HelpMessage(opts); exit()}
-end.parse!
-
-MainWork(options)
+MainWork.work(ARGV)
