@@ -13,9 +13,17 @@
 #import "JWTAlgorithmFactory.h"
 #import <Availability.h>
 
-#define Check_That_IOS_IS_GREATER_THAN_10 (TARGET_OS_MAC && TARGET_OS_IPHONE && (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0))
-#define Check_That_MACOS_IS_GREATER_THAN_10 (TARGET_OS_MAC && !TARGET_OS_IPHONE && (__MAC_OS_X_VERSION_MAX_ALLOWED >= __MAC_10_12))
-#define Check_That_Security_API_IS_AVAILABLE (Check_That_IOS_IS_GREATER_THAN_10 || Check_That_MACOS_IS_GREATER_THAN_10)
+#ifndef IPHONE_VERSION_GREATER_THAN_10
+#define IPHONE_VERSION_GREATER_THAN_10 (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000)
+#endif
+
+#ifndef MAC_OS_VERSION_GREATER_THAN_10_12
+#define MAC_OS_VERSION_GREATER_THAN_10_12 (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 101200)
+#endif
+
+#ifndef MODERN_API_IS_AVAILABLE
+#define MODERN_API_IS_AVAILABLE ((IPHONE_VERSION_GREATER_THAN_10) || (MAC_OS_VERSION_GREATER_THAN_10_12))
+#endif
 
 typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmType) {
     JWTAlgorithmAsymmetricBase__AlgorithmType__RS,
@@ -119,8 +127,10 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmNumber) {
 
 #import <Security/Security.h>
 
-#if Check_That_Security_API_IS_AVAILABLE
-@interface JWTAlgorithmAsymmetricBase__After10 : JWTAlgorithmAsymmetricBase
+#if MODERN_API_IS_AVAILABLE
+    __OSX_AVAILABLE(10.12) __IOS_AVAILABLE(10.0) __TVOS_AVAILABLE(10.0) __WATCHOS_AVAILABLE(3.0);
+@interface JWTAlgorithmAsymmetricBase__After10
+: JWTAlgorithmAsymmetricBase
 @property (assign, nonatomic, readonly) SecKeyAlgorithm algorithm;
 @end
 @implementation JWTAlgorithmAsymmetricBase__After10
@@ -349,7 +359,7 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmNumber) {
 //#endif
 // (TARGET_OS_IPHONE && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_10_0) ||
 @interface JWTAlgorithmAsymmetricBase__FamilyMember :
-#if Check_That_Security_API_IS_AVAILABLE
+#if MODERN_API_IS_AVAILABLE
 JWTAlgorithmAsymmetricBase__After10
 #else
 JWTAlgorithmAsymmetricBase__Prior10
