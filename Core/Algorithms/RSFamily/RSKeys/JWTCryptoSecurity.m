@@ -144,6 +144,9 @@
 
 @implementation JWTCryptoSecurity (Certificates)
 + (OSStatus)extractIdentityAndTrustFromPKCS12:(CFDataRef)inPKCS12Data password:(CFStringRef)password identity:(SecIdentityRef *)outIdentity trust:(SecTrustRef *)outTrust {
+    return [self extractIdentityAndTrustFromPKCS12:inPKCS12Data password:password identity:outIdentity trust:outTrust error:NULL];
+}
++ (OSStatus)extractIdentityAndTrustFromPKCS12:(CFDataRef)inPKCS12Data password:(CFStringRef)password identity:(SecIdentityRef *)outIdentity trust:(SecTrustRef *)outTrust error:(CFErrorRef *)error {
 
     OSStatus securityError = errSecSuccess;
 
@@ -163,8 +166,7 @@
     securityError = SecPKCS12Import(inPKCS12Data,
                                     optionsDictionary,
                                     &items);                    // 2
-
-
+    
     //
     if (securityError == 0) {                                   // 3
         CFDictionaryRef myIdentityAndTrust = CFArrayGetValueAtIndex (items, 0);
@@ -178,6 +180,18 @@
 
         CFRetain(tempTrust);
         *outTrust = (SecTrustRef)tempTrust;
+    }
+    else {
+        if (error) {
+            if (@available(iOS 11.3, *)) {
+                __auto_type message = (__bridge NSString *)SecCopyErrorMessageString(securityError, NULL) ?: @"Unknown error message";
+                *error = (__bridge CFErrorRef)[NSError errorWithDomain:NSOSStatusErrorDomain code:securityError userInfo:@{NSLocalizedDescriptionKey : message}];
+            } else {
+                // Fallback on earlier versions
+                // unable to get message?
+                *error = (__bridge CFErrorRef)[NSError errorWithDomain:NSOSStatusErrorDomain code:securityError userInfo:nil];
+            }
+        }
     }
 
     if (optionsDictionary)                                      // 4
