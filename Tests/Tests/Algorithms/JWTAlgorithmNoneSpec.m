@@ -11,14 +11,18 @@
 
 #import "JWTAlgorithmNone.h"
 
-static NSString *dataAlgorithmKey = @"algorithm";
-static NSString *algorithmBehavior = @"algorithmNoneBehaviour";
+static __auto_type dataAlgorithmKey = @"algorithm";
+static __auto_type algorithmBehavior = @"algorithmNoneBehaviour";
 
 SHARED_EXAMPLES_BEGIN(JWTAlgorithmNoneSpecExamples)
 
 sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
     __block JWTAlgorithmNone *algorithm;
-    
+    __block NSString *payload = @"payload";
+    __block NSString *secret = @"secret";
+    __block NSString *signedPayload = @"eyJhbGciOiJub25lIn0.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ";
+    __block NSString *signedPayloadBase64 = @"";
+    __block NSString *signature = @"signed";
     beforeEach(^{
         algorithm = data[dataAlgorithmKey];
     });
@@ -28,67 +32,47 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
     });
     
     it(@"should not encode payload and return emptry signature instead", ^{
-        NSData *encodedPayload = [algorithm encodePayload:@"payload" withSecret:@"secret"];
-        [[[encodedPayload base64Encoding] should] equal:@""];
+        __auto_type encodedPayload = [algorithm encodePayload:payload withSecret:secret];
+        [[[encodedPayload base64Encoding] should] equal:signedPayloadBase64];
     });
     
     it(@"should not encode payload data and return emptry signature instead", ^{
-        NSData *payloadData = [NSData dataWithBase64String:[@"payload" base64String]];
-        NSData *secretData = [NSData dataWithBase64String:[@"secret" base64String]];
+        __auto_type payloadData = [NSData dataWithBase64String:[payload base64String]];
+        __auto_type secretData = [NSData dataWithBase64String:[secret base64String]];
         
-        NSData *encodedPayload = [algorithm encodePayloadData:payloadData withSecret:secretData];
-        [[[encodedPayload base64Encoding] should] equal:@""];
+        __auto_type encodedPayload = [algorithm encodePayloadData:payloadData withSecret:secretData];
+        [[[encodedPayload base64Encoding] should] equal:signedPayloadBase64];
     });
     
     it(@"should not verify JWT with a secret provided", ^{
-        NSString *secret = @"secret";
-        NSString *signingInput = @"eyJhbGciOiJub25lIn0.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ";
-        NSString *signature = nil;
-        
-        [[theValue([algorithm verifySignedInput:signingInput withSignature:signature verificationKey:secret]) should] beFalse];
+        [[theValue([algorithm verifySignedInput:signedPayload withSignature:nil verificationKey:secret]) should] beFalse];
     });
     
     it(@"should not verify JWT with a signature provided", ^{
-        NSString *secret = nil;
-        NSString *signingInput = @"eyJhbGciOiJub25lIn0.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ";
-        NSString *signature = @"signed";
         
-        [[theValue([algorithm verifySignedInput:signingInput withSignature:signature verificationKey:secret]) should] beFalse];
+        [[theValue([algorithm verifySignedInput:signedPayload withSignature:signature verificationKey:nil]) should] beFalse];
     });
     
     it(@"should verify JWT with no signature and no secret provided", ^{
-        NSString *secret = nil;
-        NSString *signingInput = @"eyJhbGciOiJub25lIn0.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ";
-        NSString *signature = nil;
+        __auto_type signingInput = @"eyJhbGciOiJub25lIn0.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ";
         
-        [[theValue([algorithm verifySignedInput:signingInput withSignature:signature verificationKey:secret]) should] beTrue];
+        [[theValue([algorithm verifySignedInput:signingInput withSignature:nil verificationKey:nil]) should] beTrue];
     });
     
     it(@"should not verify JWT with a secret data provided", ^{
-        NSString *secret = @"secret";
-        NSData *secretData = [NSData dataWithBase64String:[secret base64String]];
-        NSString *signingInput = @"eyJhbGciOiJub25lIn0.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ";
-        NSString *signature = nil;
-        
-        [[theValue([algorithm verifySignedInput:signingInput withSignature:signature verificationKeyData:secretData]) should] beFalse];
+        __auto_type secretData = [NSData dataWithBase64String:[secret base64String]];
+        [[theValue([algorithm verifySignedInput:signedPayload withSignature:nil verificationKeyData:secretData]) should] beFalse];
     });
     
     it(@"should not verify JWT with a signature data provided", ^{
-        NSString *secret = nil;
-        NSData *secretData = [NSData dataWithBase64String:[secret base64String]];
-        NSString *signingInput = @"eyJhbGciOiJub25lIn0.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ";
-        NSString *signature = @"signed";
+        __auto_type secretData = [NSData dataWithBase64String:nil];
         
-        [[theValue([algorithm verifySignedInput:signingInput withSignature:signature verificationKeyData:secretData]) should] beFalse];
+        [[theValue([algorithm verifySignedInput:signedPayload withSignature:signature verificationKeyData:secretData]) should] beFalse];
     });
     
     it(@"should verify JWT with no signature and no secret data provided", ^{
-        NSString *secret = nil;
-        NSData *secretData = [NSData dataWithBase64String:[secret base64String]];
-        NSString *signingInput = @"eyJhbGciOiJub25lIn0.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ";
-        NSString *signature = nil;
-        
-        [[theValue([algorithm verifySignedInput:signingInput withSignature:signature verificationKeyData:secretData]) should] beTrue];
+        __auto_type secretData = [NSData dataWithBase64String:nil];
+        [[theValue([algorithm verifySignedInput:signedPayload withSignature:nil verificationKeyData:secretData]) should] beTrue];
     });
 });
 

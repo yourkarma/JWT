@@ -23,7 +23,7 @@
 @end
 
 @implementation JWTAlgorithmHSTestsHelper
-- (NSDictionary <NSString *, JWTAlgorithmHSTestsHelper *(^)(void)>*)configurations {
+- (NSDictionary <NSString *, void(^)(void)>*)configurations {
     __weak __auto_type weakSelf = self;
     return @{
              JWTAlgorithmNameHS256 : ^{

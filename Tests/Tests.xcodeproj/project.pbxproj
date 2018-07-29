@@ -16,16 +16,10 @@
 		044FEE9A1E52434E00352625 /* rs256-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEA1E4DD77D0036CC3A /* rs256-public.pem */; };
 		044FEE9B1E52434E00352625 /* rs256-wrong-private.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEB1E4DD77D0036CC3A /* rs256-wrong-private.p12 */; };
 		044FEE9C1E52434E00352625 /* rs256-wrong-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEC1E4DD77D0036CC3A /* rs256-wrong-private.pem */; };
-		045147741D5E310E007B1D7A /* JWTAlgorithmHS256Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147661D5E310E007B1D7A /* JWTAlgorithmHS256Spec.m */; };
-		045147751D5E310E007B1D7A /* JWTAlgorithmHS384Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147671D5E310E007B1D7A /* JWTAlgorithmHS384Spec.m */; };
-		045147761D5E310E007B1D7A /* JWTAlgorithmHS512Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147681D5E310E007B1D7A /* JWTAlgorithmHS512Spec.m */; };
 		045147771D5E310E007B1D7A /* JWTAlgorithmNoneSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147691D5E310E007B1D7A /* JWTAlgorithmNoneSpec.m */; };
 		045147781D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0451476A1D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m */; };
 		0451477D1D5E310E007B1D7A /* JWTClaimsSerializerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147701D5E310E007B1D7A /* JWTClaimsSerializerSpec.m */; };
 		0451477F1D5E310E007B1D7A /* JWTSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147731D5E310E007B1D7A /* JWTSpec.m */; };
-		045147841D5E312A007B1D7A /* JWTAlgorithmHS256Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147661D5E310E007B1D7A /* JWTAlgorithmHS256Spec.m */; };
-		045147851D5E312A007B1D7A /* JWTAlgorithmHS384Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147671D5E310E007B1D7A /* JWTAlgorithmHS384Spec.m */; };
-		045147861D5E312A007B1D7A /* JWTAlgorithmHS512Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147681D5E310E007B1D7A /* JWTAlgorithmHS512Spec.m */; };
 		045147871D5E312A007B1D7A /* JWTAlgorithmNoneSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147691D5E310E007B1D7A /* JWTAlgorithmNoneSpec.m */; };
 		045147881D5E312A007B1D7A /* JWTAlgorithmRS256Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0451476A1D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m */; };
 		0451478D1D5E312A007B1D7A /* JWTClaimsSerializerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147701D5E310E007B1D7A /* JWTClaimsSerializerSpec.m */; };
@@ -40,6 +34,7 @@
 		0A5B450E210DB9EF0027A234 /* Certificates.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A5B450D210DB9EF0027A234 /* Certificates.xcassets */; };
 		0A5B4510210DBDDB0027A234 /* JWTAlgorithmAsymmetricTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B450F210DBDDB0027A234 /* JWTAlgorithmAsymmetricTests.m */; };
 		0A5B4512210DC0860027A234 /* JWTAlgorithmHSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4511210DC0860027A234 /* JWTAlgorithmHSTests.m */; };
+		0A5B4514210DCB7A0027A234 /* JWTAlgorithmNoneTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4513210DCB7A0027A234 /* JWTAlgorithmNoneTests.m */; };
 		0A80CF8D2109113D00D5499C /* ec256-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF862109113D00D5499C /* ec256-private.pem */; };
 		0A80CF8E2109113D00D5499C /* ec256-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF872109113D00D5499C /* ec256-public.pem */; };
 		0A80CF8F2109113D00D5499C /* ec256.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF882109113D00D5499C /* ec256.cer */; };
@@ -65,9 +60,6 @@
 		045147381D5E2FF0007B1D7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		045147401D5E3004007B1D7A /* macOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		045147441D5E3004007B1D7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		045147661D5E310E007B1D7A /* JWTAlgorithmHS256Spec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmHS256Spec.m; sourceTree = "<group>"; };
-		045147671D5E310E007B1D7A /* JWTAlgorithmHS384Spec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmHS384Spec.m; sourceTree = "<group>"; };
-		045147681D5E310E007B1D7A /* JWTAlgorithmHS512Spec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmHS512Spec.m; sourceTree = "<group>"; };
 		045147691D5E310E007B1D7A /* JWTAlgorithmNoneSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmNoneSpec.m; sourceTree = "<group>"; };
 		0451476A1D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmRS256Tests.m; sourceTree = "<group>"; };
 		045147701D5E310E007B1D7A /* JWTClaimsSerializerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSerializerSpec.m; sourceTree = "<group>"; };
@@ -82,6 +74,7 @@
 		0A5B450D210DB9EF0027A234 /* Certificates.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Certificates.xcassets; sourceTree = "<group>"; };
 		0A5B450F210DBDDB0027A234 /* JWTAlgorithmAsymmetricTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmAsymmetricTests.m; sourceTree = "<group>"; };
 		0A5B4511210DC0860027A234 /* JWTAlgorithmHSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmHSTests.m; sourceTree = "<group>"; };
+		0A5B4513210DCB7A0027A234 /* JWTAlgorithmNoneTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmNoneTests.m; sourceTree = "<group>"; };
 		0A80CF862109113D00D5499C /* ec256-private.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec256-private.pem"; sourceTree = "<group>"; };
 		0A80CF872109113D00D5499C /* ec256-public.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec256-public.pem"; sourceTree = "<group>"; };
 		0A80CF882109113D00D5499C /* ec256.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ec256.cer; sourceTree = "<group>"; };
@@ -168,15 +161,13 @@
 		045147651D5E310E007B1D7A /* Algorithms */ = {
 			isa = PBXGroup;
 			children = (
-				045147661D5E310E007B1D7A /* JWTAlgorithmHS256Spec.m */,
-				045147671D5E310E007B1D7A /* JWTAlgorithmHS384Spec.m */,
-				045147681D5E310E007B1D7A /* JWTAlgorithmHS512Spec.m */,
 				045147691D5E310E007B1D7A /* JWTAlgorithmNoneSpec.m */,
 				0451476A1D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m */,
 				044FE5D71E5461F000C9356D /* JWTAlgorithmES256Spec.m */,
 				0A80CF952109162B00D5499C /* JWTAlgorithmES256Tests.m */,
 				0A5B450F210DBDDB0027A234 /* JWTAlgorithmAsymmetricTests.m */,
 				0A5B4511210DC0860027A234 /* JWTAlgorithmHSTests.m */,
+				0A5B4513210DCB7A0027A234 /* JWTAlgorithmNoneTests.m */,
 			);
 			path = Algorithms;
 			sourceTree = "<group>";
@@ -415,17 +406,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				045147761D5E310E007B1D7A /* JWTAlgorithmHS512Spec.m in Sources */,
 				045147771D5E310E007B1D7A /* JWTAlgorithmNoneSpec.m in Sources */,
 				044FE5D81E5461F000C9356D /* JWTAlgorithmES256Spec.m in Sources */,
 				0451477F1D5E310E007B1D7A /* JWTSpec.m in Sources */,
 				045147781D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m in Sources */,
-				045147751D5E310E007B1D7A /* JWTAlgorithmHS384Spec.m in Sources */,
 				0A80CF962109162B00D5499C /* JWTAlgorithmES256Tests.m in Sources */,
 				0451477D1D5E310E007B1D7A /* JWTClaimsSerializerSpec.m in Sources */,
-				045147741D5E310E007B1D7A /* JWTAlgorithmHS256Spec.m in Sources */,
 				0A5B4510210DBDDB0027A234 /* JWTAlgorithmAsymmetricTests.m in Sources */,
 				0A5B4512210DC0860027A234 /* JWTAlgorithmHSTests.m in Sources */,
+				0A5B4514210DCB7A0027A234 /* JWTAlgorithmNoneTests.m in Sources */,
 				0A2581FD1F4C77DF005563E9 /* JWTIssuesSpec.m in Sources */,
 				04A5A58A1DF14FE300FBDF4C /* JWTMarkdownSpec.m in Sources */,
 			);
@@ -435,10 +424,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				045147841D5E312A007B1D7A /* JWTAlgorithmHS256Spec.m in Sources */,
 				0A80CF97210916E200D5499C /* JWTAlgorithmES256Tests.m in Sources */,
-				045147851D5E312A007B1D7A /* JWTAlgorithmHS384Spec.m in Sources */,
-				045147861D5E312A007B1D7A /* JWTAlgorithmHS512Spec.m in Sources */,
 				045147871D5E312A007B1D7A /* JWTAlgorithmNoneSpec.m in Sources */,
 				045147881D5E312A007B1D7A /* JWTAlgorithmRS256Tests.m in Sources */,
 				0451478D1D5E312A007B1D7A /* JWTClaimsSerializerSpec.m in Sources */,
