@@ -13,17 +13,72 @@
 #import "JWTAlgorithmFactory.h"
 #import <Availability.h>
 
-#ifndef IPHONE_VERSION_GREATER_THAN_10
-#define IPHONE_VERSION_GREATER_THAN_10 (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000)
+#ifndef IPHONE_SDK_VERSION_GREATER_THAN_10
+#define IPHONE_SDK_VERSION_GREATER_THAN_10 (__IPHONE_OS_VERSION_MAX_ALLOWED && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000)
 #endif
 
-#ifndef MAC_OS_VERSION_GREATER_THAN_10_12
-#define MAC_OS_VERSION_GREATER_THAN_10_12 (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 101200)
+#ifndef MAC_OS_SDK_VERSION_GREATER_THAN_10_12
+#define MAC_OS_SDK_VERSION_GREATER_THAN_10_12 (__MAC_OS_X_VERSION_MAX_ALLOWED && __MAC_OS_X_VERSION_MAX_ALLOWED >= 101200)
 #endif
 
-#ifndef MODERN_API_IS_AVAILABLE
-#define MODERN_API_IS_AVAILABLE ((IPHONE_VERSION_GREATER_THAN_10) || (MAC_OS_VERSION_GREATER_THAN_10_12))
+// Abilities
+#ifndef JWT_CRYPTO_MODERN_API_IS_ALLOWED
+#define JWT_CRYPTO_MODERN_API_IS_ALLOWED ((IPHONE_SDK_VERSION_GREATER_THAN_10) || (MAC_OS_SDK_VERSION_GREATER_THAN_10_12))
 #endif
+
+// #ifndef IPHONE_OS_VERSION_GREATER_THAN_10
+// #define IPHONE_OS_VERSION_GREATER_THAN_10 (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED >= 100000)
+// #endif
+
+// #ifndef MAC_OS_VERSION_GREATER_THAN_10
+// #define MAC_OS_VERSION_GREATER_THAN_10 (defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && __MAC_OS_X_VERSION_MIN_REQUIRED >= 101200)
+// #endif
+
+// // Requirements
+// #ifndef JWT_CRYPTO_MODERN_API_IS_REQUIRED
+// #define JWT_CRYPTO_MODERN_API_IS_REQUIRED ((IPHONE_OS_VERSION_GREATER_THAN_10) || (MAC_OS_VERSION_GREATER_THAN_10))
+// #endif
+
+// TODO:
+// Rewrite errors presentation.
+NSString *const JWTAlgorithmAsymmetricFamilyErrorDomain = @"io.jwt.jwa.asymmetric";
+
+@implementation JWTAlgorithmAsymmetricFamilyErrorDescription
+// Subclass
++ (NSString *)errorDomain {
+    return JWTAlgorithmAsymmetricFamilyErrorDomain;
+}
++ (NSInteger)defaultErrorCode {
+    return JWTAlgorithmAsymmetricFamilyErrorUnexpected;
+}
++ (NSInteger)externalErrorCode {
+    return JWTAlgorithmAsymmetricFamilyErrorInternalSecurityAPI;
+}
++ (NSDictionary *)codesAndUserDescriptions {
+    static NSDictionary *dictionary = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dictionary = @{
+                       @(JWTAlgorithmAsymmetricFamilyErrorAlgorithmIsNotSupported) : @"Algorithm is not supported!",
+                       @(JWTAlgorithmAsymmetricFamilyErrorInternalSecurityAPI) : @"algorithm internal security framework error!",
+                       @(JWTAlgorithmAsymmetricFamilyErrorUnexpected) : @"Asymmetric algorithm unexpected error!"
+                       };
+    });
+    return dictionary;
+}
++ (NSDictionary *)codesAndDescriptions {
+    static NSDictionary *dictionary = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dictionary = @{
+                       @(JWTAlgorithmAsymmetricFamilyErrorAlgorithmIsNotSupported) : @"JWTAlgorithmAsymmetricFamilyErrorAlgorithmIsNotSupported",
+                       @(JWTAlgorithmAsymmetricFamilyErrorInternalSecurityAPI) : @"JWTAlgorithmAsymmetricFamilyErrorInternalSecurityAPI",
+                       @(JWTAlgorithmAsymmetricFamilyErrorUnexpected) : @"JWTAlgorithmAsymmetricFamilyErrorUnexpected"
+                       };
+    });
+    return dictionary;
+}
+@end
 
 typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmType) {
     JWTAlgorithmAsymmetricBase__AlgorithmType__RS,
@@ -127,58 +182,65 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmNumber) {
 
 #import <Security/Security.h>
 
-#if MODERN_API_IS_AVAILABLE
-    __OSX_AVAILABLE(10.12) __IOS_AVAILABLE(10.0) __TVOS_AVAILABLE(10.0) __WATCHOS_AVAILABLE(3.0);
+#if JWT_CRYPTO_MODERN_API_IS_ALLOWED
+#ifdef NS_AVAILABLE
+NS_AVAILABLE(10_12, 10_0)
+#endif
 @interface JWTAlgorithmAsymmetricBase__After10
 : JWTAlgorithmAsymmetricBase
 @property (assign, nonatomic, readonly) SecKeyAlgorithm algorithm;
 @end
 @implementation JWTAlgorithmAsymmetricBase__After10
 - (SecKeyAlgorithm)chooseAlgorithmByType:(NSNumber *)type number:(NSNumber *)number {
-    SecKeyAlgorithm result = NULL;
-    switch ((JWTAlgorithmAsymmetricBase__AlgorithmType)type.integerValue) {
-        case JWTAlgorithmAsymmetricBase__AlgorithmType__RS: {
-            switch ((JWTAlgorithmAsymmetricBase__AlgorithmNumber)number.integerValue) {
-                case JWTAlgorithmAsymmetricBase__AlgorithmNumber__256: {
-                    result = kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA256;
-                    break;
-                }
-                case JWTAlgorithmAsymmetricBase__AlgorithmNumber__384: {
-                    result = kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA384;
-                    break;
-                }
-                case JWTAlgorithmAsymmetricBase__AlgorithmNumber__512: {
-                    result = kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA512;
-                    break;
-                }
-                default:
-                    break;
-            }
-            break;
-        }
-        case JWTAlgorithmAsymmetricBase__AlgorithmType__ES: {
-            switch ((JWTAlgorithmAsymmetricBase__AlgorithmNumber)number.integerValue) {
-                case JWTAlgorithmAsymmetricBase__AlgorithmNumber__256: {
-                    result = kSecKeyAlgorithmECDSASignatureMessageX962SHA256;
-                    break;
-                }
-                case JWTAlgorithmAsymmetricBase__AlgorithmNumber__384: {
-                    result = kSecKeyAlgorithmECDSASignatureMessageX962SHA384;
-                    break;
-                }
-                case JWTAlgorithmAsymmetricBase__AlgorithmNumber__512: {
-                    result = kSecKeyAlgorithmECDSASignatureMessageX962SHA512;
-                    break;
-                }
-                default:
-                    break;
-            }
-            break;
-        }
-        default:
-            break;
+    if (SecKeyIsAlgorithmSupported == NULL) {
+        return NULL;
     }
-    return result;
+    else {
+        SecKeyAlgorithm result = NULL;
+        switch ((JWTAlgorithmAsymmetricBase__AlgorithmType)type.integerValue) {
+            case JWTAlgorithmAsymmetricBase__AlgorithmType__RS: {
+                switch ((JWTAlgorithmAsymmetricBase__AlgorithmNumber)number.integerValue) {
+                    case JWTAlgorithmAsymmetricBase__AlgorithmNumber__256: {
+                        result = kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA256;
+                        break;
+                    }
+                    case JWTAlgorithmAsymmetricBase__AlgorithmNumber__384: {
+                        result = kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA384;
+                        break;
+                    }
+                    case JWTAlgorithmAsymmetricBase__AlgorithmNumber__512: {
+                        result = kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA512;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+                break;
+            }
+            case JWTAlgorithmAsymmetricBase__AlgorithmType__ES: {
+                switch ((JWTAlgorithmAsymmetricBase__AlgorithmNumber)number.integerValue) {
+                    case JWTAlgorithmAsymmetricBase__AlgorithmNumber__256: {
+                        result = kSecKeyAlgorithmECDSASignatureMessageX962SHA256;
+                        break;
+                    }
+                    case JWTAlgorithmAsymmetricBase__AlgorithmNumber__384: {
+                        result = kSecKeyAlgorithmECDSASignatureMessageX962SHA384;
+                        break;
+                    }
+                    case JWTAlgorithmAsymmetricBase__AlgorithmNumber__512: {
+                        result = kSecKeyAlgorithmECDSASignatureMessageX962SHA512;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+                break;
+            }
+            default:
+                break;
+        }
+        return result;
+    }
 }
 
 - (SecKeyAlgorithm)algorithm {
@@ -188,24 +250,36 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmNumber) {
 
 @implementation JWTAlgorithmAsymmetricBase__After10 (SignAndVerify)
 - (NSData *)signData:(NSData *)plainData key:(SecKeyRef)privateKey error:(NSError *__autoreleasing *)error {
-    CFErrorRef theError = NULL;
-    NSData *result = (__bridge NSData *)SecKeyCreateSignature(privateKey, self.algorithm, (__bridge CFDataRef)plainData, &theError);
-    if (theError) {
+    if (SecKeyIsAlgorithmSupported == NULL) {
         if (error) {
+            *error = [JWTAlgorithmAsymmetricFamilyErrorDescription errorWithCode:JWTAlgorithmAsymmetricFamilyErrorAlgorithmIsNotSupported];
+        }
+        return nil;
+    }
+    else {
+        CFErrorRef theError = NULL;
+        NSData *result = (__bridge NSData *)SecKeyCreateSignature(privateKey, self.algorithm, (__bridge CFDataRef)plainData, &theError);
+        if (error && theError) {
             *error = (__bridge NSError *)(theError);
         }
+        return result;
     }
-    return result;
 }
 - (BOOL)verifyData:(NSData *)plainData signature:(NSData *)signature key:(SecKeyRef)publicKey error:(NSError *__autoreleasing *)error {
-    CFErrorRef theError = NULL;
-    BOOL result = SecKeyVerifySignature(publicKey, self.algorithm, (__bridge CFDataRef)plainData, (__bridge CFDataRef)signature, &theError);
-    if (theError) {
+    if (SecKeyIsAlgorithmSupported == NULL) {
         if (error) {
+            *error = [JWTAlgorithmAsymmetricFamilyErrorDescription errorWithCode:JWTAlgorithmAsymmetricFamilyErrorAlgorithmIsNotSupported];
+        }
+        return NO;
+    }
+    else {
+        CFErrorRef theError = NULL;
+        BOOL result = SecKeyVerifySignature(publicKey, self.algorithm, (__bridge CFDataRef)plainData, (__bridge CFDataRef)signature, &theError);
+        if (error && theError) {
             *error = (__bridge NSError *)(theError);
         }
+        return result;
     }
-    return result;
 }
 @end
 
@@ -228,7 +302,7 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmNumber) {
     if (self.signKey || self.keyExtractor) {
         NSError *extractKeyError = nil;
         id <JWTCryptoKeyProtocol> keyItem = self.signKey ?: [self.keyExtractor keyFromData:key parameters:[self signKeyExtractorParameters] error:&extractKeyError];
-        
+
         if (extractKeyError || keyItem == nil) {
             // tell about error
             if (extractKeyError && error) {
@@ -251,29 +325,29 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmNumber) {
     else {
         SecIdentityRef identity = nil;
         SecTrustRef trust = nil;
-        
+
         //        [JWTCryptoSecurity extractIdentityAndTrustFromPKCS12:inPKCS12Data password:keyPassword identity:outIdentity trust:outTrust];
         [JWTCryptoSecurity extractIdentityAndTrustFromPKCS12:(__bridge CFDataRef)(key) password: (__bridge CFStringRef)(self.privateKeyCertificatePassphrase) identity:&identity trust:&trust];
-        
+
         if (identity && trust) {
             SecKeyRef privateKey;
             SecIdentityCopyPrivateKey(identity, &privateKey);
-            
+
             NSError *signError = nil;
             result = [self signData:hash key:privateKey error:&signError];
             if (signError && error) {
                 *error = signError;
             }
-            
+
             if (privateKey) {
                 CFRelease(privateKey);
             }
         }
-        
+
         if (identity) {
             CFRelease(identity);
         }
-        
+
         if (trust) {
             CFRelease(trust);
         }
@@ -285,7 +359,7 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmNumber) {
         NSError *extractKeyError = nil;
         id<JWTCryptoKeyProtocol> keyItem = self.verifyKey ?: [self.keyExtractor keyFromData:key parameters:[self verifyKeyExtractorParameters] error:&extractKeyError];
         BOOL verified = NO;
-        
+
         if (extractKeyError || keyItem == nil) {
             // error while getting key.
             // cleanup.
@@ -308,14 +382,14 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmNumber) {
                 *error = verifyError;
             }
         }
-        
+
         NSError *removeError = nil;
         [JWTCryptoSecurity removeKeyByTag:keyItem.tag error:&removeError];
-        
+
         if (error && removeError) {
             *error = removeError;
         }
-        
+
         return verified;
     }
     else {
@@ -359,7 +433,7 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmNumber) {
 //#endif
 // (TARGET_OS_IPHONE && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_10_0) ||
 @interface JWTAlgorithmAsymmetricBase__FamilyMember :
-#if MODERN_API_IS_AVAILABLE
+#if JWT_CRYPTO_MODERN_API_IS_ALLOWED
 JWTAlgorithmAsymmetricBase__After10
 #else
 JWTAlgorithmAsymmetricBase__Prior10

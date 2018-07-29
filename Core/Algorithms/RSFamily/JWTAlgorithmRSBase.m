@@ -13,48 +13,46 @@
 #import "JWTCryptoKey.h"
 #import "JWTAlgorithmFactory.h"
 #import <CommonCrypto/CommonCrypto.h>
+
+#import "JWTAlgorithmErrorDescription+Subclass.h"
 NSString *const JWTAlgorithmRSFamilyErrorDomain = @"io.jwt.jwa.rs";
 
 @implementation JWTAlgorithmRSFamilyErrorDescription
+#pragma mark - Subclass
++ (NSString *)errorDomain {
+    return JWTAlgorithmRSFamilyErrorDomain;
+}
++ (NSInteger)defaultErrorCode {
+    return JWTAlgorithmRSFamilyErrorUnexpected;
+}
++ (NSInteger)externalErrorCode {
+    return JWTAlgorithmRSFamilyErrorInternalSecurityAPI;
+}
 + (NSDictionary *)codesAndUserDescriptions {
     static NSDictionary *dictionary = nil;
-    return dictionary ?: (dictionary = @{
-                                         @(JWTAlgorithmRSFamilyErrorIncorrectHashComputation) : @"RS algorithm incorrect hash computation!",
-                                         @(JWTAlgorithmRSFamilyErrorIncorrectKeySize) : @"RS algorithm incorrect key size. Apple have not sent any response about it.",
-                                         @(JWTAlgorithmRSFamilyErrorInternalSecurityAPI) : @"RS algorithm internal security framework error.",
-                                         @(JWTAlgorithmRSFamilyErrorUnexpected) : @"RS algorithm unexpected error!"
-                                         });
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dictionary = @{
+                       @(JWTAlgorithmRSFamilyErrorIncorrectHashComputation) : @"RS algorithm incorrect hash computation!",
+                       @(JWTAlgorithmRSFamilyErrorIncorrectKeySize) : @"RS algorithm incorrect key size. Apple have not sent any response about it.",
+                       @(JWTAlgorithmRSFamilyErrorInternalSecurityAPI) : @"RS algorithm internal security framework error.",
+                       @(JWTAlgorithmRSFamilyErrorUnexpected) : @"RS algorithm unexpected error!"
+                       };
+    });
+    return dictionary;
 }
 + (NSDictionary *)codesAndDescriptions {
     static NSDictionary *dictionary = nil;
-    return dictionary ?: (dictionary = @{
-                                         @(JWTAlgorithmRSFamilyErrorIncorrectHashComputation) : @"JWTAlgorithmRSFamilyErrorIncorrectHashComputation",
-                                         @(JWTAlgorithmRSFamilyErrorIncorrectKeySize) : @"JWTAlgorithmRSFamilyErrorIncorrectKeySize",
-                                         @(JWTAlgorithmRSFamilyErrorInternalSecurityAPI) : @"JWTAlgorithmRSFamilyErrorInternalSecurityAPI",
-                                         @(JWTAlgorithmRSFamilyErrorUnexpected) : @"JWTAlgorithmRSFamilyErrorUnexpected"
-                                         });
-}
-+ (NSString *)userDescriptionForCode:(JWTAlgorithmRSFamilyError)code {
-    NSString *resultString = [self codesAndUserDescriptions][@(code)];
-    return resultString ?: [self codesAndUserDescriptions][@(JWTAlgorithmRSFamilyErrorUnexpected)];
-}
-+ (NSString *)errorDescriptionForCode:(JWTAlgorithmRSFamilyError)code {
-    NSString *resultString = [self codesAndDescriptions][@(code)];
-    return resultString ?: [self codesAndDescriptions][@(JWTAlgorithmRSFamilyErrorUnexpected)];
-}
-+ (NSError *)errorWithCode:(NSInteger)code userDescription:(NSString *)userDescription errorDescription:(NSString *)errorDescription {
-    return [NSError errorWithDomain:JWTAlgorithmRSFamilyErrorDomain code:code userInfo:@{NSLocalizedDescriptionKey: userDescription, @"errorDescription": errorDescription}];
-}
-+ (NSError *)errorWithCode:(NSInteger)code userDescription:(NSString *)userDescription errorDescription:(NSString *)errorDescription externalErrorDescription:(NSString *)externalErrorDescription {
-    return [NSError errorWithDomain:JWTAlgorithmRSFamilyErrorDomain code:code userInfo:@{NSLocalizedDescriptionKey: userDescription, @"errorDescription": errorDescription, @"externalErrorDescription": externalErrorDescription}];
-}
-+ (NSError *)errorWithCode:(JWTAlgorithmRSFamilyError)code {
-    return [self errorWithCode:code userDescription:[self userDescriptionForCode:code] errorDescription:[self errorDescriptionForCode:code]];
-}
-
-+ (NSError *)errorWithExternalError:(NSError *)error {
-    NSString *externalErrorDescription = [@{@"externalError": error} description];
-    return [self errorWithCode:JWTAlgorithmRSFamilyErrorInternalSecurityAPI userDescription:[self userDescriptionForCode:JWTAlgorithmRSFamilyErrorInternalSecurityAPI] errorDescription:[self errorDescriptionForCode:JWTAlgorithmRSFamilyErrorInternalSecurityAPI] externalErrorDescription:externalErrorDescription];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dictionary = @{
+                       @(JWTAlgorithmRSFamilyErrorIncorrectHashComputation) : @"JWTAlgorithmRSFamilyErrorIncorrectHashComputation",
+                       @(JWTAlgorithmRSFamilyErrorIncorrectKeySize) : @"JWTAlgorithmRSFamilyErrorIncorrectKeySize",
+                       @(JWTAlgorithmRSFamilyErrorInternalSecurityAPI) : @"JWTAlgorithmRSFamilyErrorInternalSecurityAPI",
+                       @(JWTAlgorithmRSFamilyErrorUnexpected) : @"JWTAlgorithmRSFamilyErrorUnexpected"
+                       };
+    });
+    return dictionary;
 }
 @end
 

@@ -8,18 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "JWTRSAlgorithm.h"
+#import "JWTAlgorithmErrorDescription.h"
 extern NSString *const JWTAlgorithmRSFamilyErrorDomain;
 typedef NS_ENUM(NSInteger, JWTAlgorithmRSFamilyError) {
     JWTAlgorithmRSFamilyErrorIncorrectHashComputation = -100,
     JWTAlgorithmRSFamilyErrorIncorrectKeySize,
-    JWTAlgorithmRSFamilyErrorInternalSecurityAPI,
+    JWTAlgorithmRSFamilyErrorInternalSecurityAPI = -98,
     JWTAlgorithmRSFamilyErrorUnexpected = -20
 };
 
-@interface JWTAlgorithmRSFamilyErrorDescription : NSObject
-+ (NSError *)errorWithCode:(JWTAlgorithmRSFamilyError)code;
-+ (NSError *)errorWithExternalError:(NSError *)error;
-@end
+// Deprecated.
+@interface JWTAlgorithmRSFamilyErrorDescription : JWTAlgorithmErrorDescription @end
 
 extern NSString *const JWTAlgorithmNameRS256;
 extern NSString *const JWTAlgorithmNameRS384;
