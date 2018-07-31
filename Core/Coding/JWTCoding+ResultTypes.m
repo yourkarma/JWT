@@ -13,6 +13,15 @@ NSString *JWTCodingResultPayload = @"payload";
 
 @implementation JWT (ResultTypes) @end
 
+@implementation JWTCodingResultComponents
++ (NSString *)Headers {
+    return JWTCodingResultHeaders;
+}
++ (NSString *)Payload {
+    return JWTCodingResultPayload;
+}
+@end
+
 // Protected?
 @protocol JWTMutableCodingResultTypeSuccessEncodedProtocol <JWTCodingResultTypeSuccessEncodedProtocol>
 @property (copy, nonatomic, readwrite) NSString *encoded;
@@ -44,8 +53,8 @@ NSString *JWTCodingResultPayload = @"payload";
 - (NSDictionary *)headerAndPayloadDictionary {
     if (self.headers && self.payload) {
         return @{
-                 JWTCodingResultHeaders: self.headers,
-                 JWTCodingResultPayload: self.payload
+                 JWTCodingResultComponents.Headers: self.headers,
+                 JWTCodingResultComponents.Payload: self.payload
         };
     }
     return nil;
@@ -71,8 +80,8 @@ NSString *JWTCodingResultPayload = @"payload";
 }
 
 - (instancetype)initWithHeadersAndPayload:(NSDictionary *)headersAndPayloadDictionary {
-    NSDictionary *headers = headersAndPayloadDictionary[JWTCodingResultHeaders];
-    NSDictionary *payload = headersAndPayloadDictionary[JWTCodingResultPayload];
+    NSDictionary *headers = headersAndPayloadDictionary[JWTCodingResultComponents.Headers];
+    NSDictionary *payload = headersAndPayloadDictionary[JWTCodingResultComponents.Payload];
     return [self initWithHeaders:headers withPayload:payload];
 }
 

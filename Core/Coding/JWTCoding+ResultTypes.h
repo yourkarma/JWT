@@ -9,8 +9,13 @@
 #import <JWT/JWTCoding.h>
 @class JWTClaimsSet;
 
-extern NSString *JWTCodingResultHeaders;
-extern NSString *JWTCodingResultPayload;
+extern NSString *JWTCodingResultHeaders __deprecated;
+extern NSString *JWTCodingResultPayload __deprecated;
+
+@interface JWTCodingResultComponents : NSObject
+@property (copy, nonatomic, readwrite, class) NSString *Headers;
+@property (copy, nonatomic, readwrite, class) NSString *Payload;
+@end
 
 @interface JWT (ResultTypes) @end
 
