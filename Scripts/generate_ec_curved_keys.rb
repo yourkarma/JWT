@@ -38,6 +38,9 @@ class KeysGenerator
 			# remove extension
 			Pathname.new(name).basename
 		end
+		def to_plain_text(name)
+			self.only_name(name).sub_ext('.txt')
+		end
 		def to_p12(name)
 			# remove extension
 			# add .p12
@@ -48,10 +51,10 @@ class KeysGenerator
 			# add .csr
 			self.only_name(name).sub_ext('.csr')
 		end
-		def to_certificate(name)
+		def to_certificate(name, format = '.cer')
 			# remove extension
 			# add .cer
-			self.only_name(name).sub_ext('.cer')
+			self.only_name(name).sub_ext(format)
 		end
 		def to_pem(name)
 			# remove extension
@@ -89,6 +92,32 @@ class KeysGenerator
 	end
 
 	module Generating
+		def default_subject
+			{
+				"C": "GB",
+				"ST": "London",
+				"L": "London",
+				"O": "Global Security",
+				"OU": "IT Department",
+				"CN": "example.com"
+			}
+		end
+
+		def key_and_value_or_empty(key, value, delimiter, empty = -> (v){ v.nil? || v.empty?})
+			the_empty = empty #empty || -> (v){ v.nil? || v.empty?}
+			{key => value}.reject{|k,v| the_empty.call(v)}.collect{|k,v| "#{k}#{delimiter}#{v}"}.join('')
+		end
+
+		def subject_value_from_subject(subject = {})
+			value = subject.collect{|k,v| "/#{k}=#{v}"}.join('')
+			value
+		end
+
+		def subject_key_and_value_from_subject(subject = {})
+			value = subject_value_from_subject(subject)
+			{'-subj': value}.reject{|k,v| v.empty?}.collect{|k,v| "#{k} \"#{v}\""}.join('')
+		end
+
 		def tool
 			%q(openssl)
 		end
@@ -116,8 +145,9 @@ class KeysGenerator
 		end
 
 		# with prompt?
-		def output_certificate_request(private_key_pem, certificate_request)
-			%Q(#{tool} req -new -key #{private_key_pem} -out #{certificate_request})
+		def output_certificate_request(private_key_pem, certificate_request, subject = {})
+			subject_key_value = subject_key_and_value_from_subject(subject)
+			%Q(#{tool} req -new -key #{private_key_pem} -out #{certificate_request} #{subject_key_value})
 			# openssl req -new -key private_1.pem -out cert_1.csr
 		end
 
@@ -125,12 +155,17 @@ class KeysGenerator
 			%Q(#{tool} x509 -req -in #{certificate_request} -signkey #{private_key_pem} -out #{certificate})
 			# openssl x509 -req -in cert_1.csr -signkey private_1.pem -out cert_1.cer
 		end
-		def output_p12(certificate, private_key_pem, p12_name)
+		def output_p12(certificate, private_key_pem, p12_name, password_file)
 			# replace name's extension by p12
 			# private_key_pem.pem
 			# certificate.crt or certificate.cer
 			# p12_name.p12
-			%Q(#{tool} pkcs12 -export -in #{certificate} -inkey #{private_key_pem} -out #{p12_name})
+			password_file_content = %Q("$(cat #{password_file})")
+			the_password_key_value = key_and_value_or_empty('-passout pass:', password_file_content, '')
+			%Q(#{tool} pkcs12 -export -in #{certificate} -inkey #{private_key_pem} -out #{p12_name} #{the_password_key_value})
+		end
+		def output_password(file, password = 'password')
+			%Q(echo "#{password}" > #{file})
 		end
 	end
 
@@ -141,22 +176,24 @@ class KeysGenerator
 	def generated_by_curve
 		# curve name only?
 		curve_name = self.curve_name
-		generated(curve_name, "#{curve_name}-private", "#{curve_name}-public", "#{curve_name}", "#{curve_name}", "#{curve_name}")
+		generated(curve_name, "#{curve_name}-private", "#{curve_name}-public", "#{curve_name}", "#{curve_name}", "#{curve_name}", "#{curve_name}")
 	end
 
-	def generated(curve_name, private_key_pem, public_key_pem, certificate_request, certificate, p12)
+	def generated(curve_name, private_key_pem, public_key_pem, certificate_request, certificate, p12, p12_password)
 		the_private_key_pem ||= FileFormats.to_pem private_key_pem
 		the_public_key_pem ||= FileFormats.to_pem public_key_pem
 		the_certificate_request ||= FileFormats.to_certificate_request certificate_request
-		the_certificate ||= FileFormats.to_certificate certificate
+		the_certificate ||= FileFormats.to_certificate certificate, '.pem'
 		the_p12 ||= FileFormats.to_p12 p12
+		the_p12_password ||= FileFormats.to_plain_text p12_password
 
 		[
 			self.class.generate_key(curve_name, the_private_key_pem),
 			self.class.export_public_key(the_private_key_pem, the_public_key_pem),
-			self.class.output_certificate_request(the_private_key_pem, the_certificate_request),
+			self.class.output_certificate_request(the_private_key_pem, the_certificate_request, self.class.default_subject),
 			self.class.output_certificate(the_certificate_request, the_private_key_pem, the_certificate),
-			self.class.output_p12(the_certificate, the_private_key_pem, the_p12)
+			self.class.output_password(the_p12_password),
+			self.class.output_p12(the_certificate, the_private_key_pem, the_p12, the_p12_password)
 		]
 	end
 end
