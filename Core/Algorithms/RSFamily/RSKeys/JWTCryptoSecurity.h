@@ -24,14 +24,15 @@
 + (SecKeyRef)publicKeyFromCertificate:(NSData *)certificateData;
 @end
 
+// Use JWTCryptoSecurity+Extraction.h instead.
 @interface JWTCryptoSecurity (Pem)
-+ (NSString *)certificateFromPemFileContent:(NSString *)content;
-+ (NSString *)keyFromPemFileContent:(NSString *)content;
-+ (NSArray *)itemsFromPemFileContent:(NSString *)content byRegex:(NSRegularExpression *)expression;
-+ (NSString *)certificateFromPemFileWithName:(NSString *)name;
-+ (NSString *)keyFromPemFileWithName:(NSString *)name;
-+ (NSArray *)itemsFromPemFileWithName:(NSString *)name byRegex:(NSRegularExpression *)expression;
-+ (NSString *)stringByRemovingPemHeadersFromString:(NSString *)string;
++ (NSString *)certificateFromPemFileContent:(NSString *)content __deprecated;
++ (NSString *)keyFromPemFileContent:(NSString *)content __deprecated;
++ (NSArray *)itemsFromPemFileContent:(NSString *)content byRegex:(NSRegularExpression *)expression __deprecated;
++ (NSString *)certificateFromPemFileWithName:(NSString *)name __deprecated;
++ (NSString *)keyFromPemFileWithName:(NSString *)name __deprecated;
++ (NSArray *)itemsFromPemFileWithName:(NSString *)name byRegex:(NSRegularExpression *)expression __deprecated;
++ (NSString *)stringByRemovingPemHeadersFromString:(NSString *)string __deprecated;
 @end
 
 @interface JWTCryptoSecurity (PublicKey)

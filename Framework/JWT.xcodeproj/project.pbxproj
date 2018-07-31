@@ -57,6 +57,8 @@
 		0A5B4508210DA19B0027A234 /* JWTAlgorithmErrorDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4506210DA19B0027A234 /* JWTAlgorithmErrorDescription.m */; };
 		0A5B450B210DA66F0027A234 /* JWTAlgorithmErrorDescription+Subclass.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A5B4509210DA66F0027A234 /* JWTAlgorithmErrorDescription+Subclass.h */; };
 		0A5B450C210DA66F0027A234 /* JWTAlgorithmErrorDescription+Subclass.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B450A210DA66F0027A234 /* JWTAlgorithmErrorDescription+Subclass.m */; };
+		0A5B452A2110AC810027A234 /* JWTCryptoSecurity+Extraction.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A5B45282110AC810027A234 /* JWTCryptoSecurity+Extraction.h */; };
+		0A5B452B2110AC810027A234 /* JWTCryptoSecurity+Extraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B45292110AC810027A234 /* JWTCryptoSecurity+Extraction.m */; };
 		0A6246FB205727550094B3A9 /* JWTAlgorithmAsymmetricBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A6246F9205727540094B3A9 /* JWTAlgorithmAsymmetricBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A6246FC205727550094B3A9 /* JWTAlgorithmAsymmetricBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6246FA205727540094B3A9 /* JWTAlgorithmAsymmetricBase.m */; };
 /* End PBXBuildFile section */
@@ -149,6 +151,8 @@
 		0A5B4506210DA19B0027A234 /* JWTAlgorithmErrorDescription.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmErrorDescription.m; sourceTree = "<group>"; };
 		0A5B4509210DA66F0027A234 /* JWTAlgorithmErrorDescription+Subclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JWTAlgorithmErrorDescription+Subclass.h"; sourceTree = "<group>"; };
 		0A5B450A210DA66F0027A234 /* JWTAlgorithmErrorDescription+Subclass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "JWTAlgorithmErrorDescription+Subclass.m"; sourceTree = "<group>"; };
+		0A5B45282110AC810027A234 /* JWTCryptoSecurity+Extraction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JWTCryptoSecurity+Extraction.h"; sourceTree = "<group>"; };
+		0A5B45292110AC810027A234 /* JWTCryptoSecurity+Extraction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "JWTCryptoSecurity+Extraction.m"; sourceTree = "<group>"; };
 		0A6246F9205727540094B3A9 /* JWTAlgorithmAsymmetricBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithmAsymmetricBase.h; sourceTree = "<group>"; };
 		0A6246FA205727540094B3A9 /* JWTAlgorithmAsymmetricBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmAsymmetricBase.m; sourceTree = "<group>"; };
 		A1951DB91758990700AF73D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -302,6 +306,8 @@
 				0A135F311E93E67A00A1D777 /* JWTCryptoKeyExtractor.m */,
 				0A135F321E93E67A00A1D777 /* JWTCryptoSecurity.h */,
 				0A135F331E93E67A00A1D777 /* JWTCryptoSecurity.m */,
+				0A5B45282110AC810027A234 /* JWTCryptoSecurity+Extraction.h */,
+				0A5B45292110AC810027A234 /* JWTCryptoSecurity+Extraction.m */,
 			);
 			path = RSKeys;
 			sourceTree = "<group>";
@@ -453,6 +459,7 @@
 				0A5B4507210DA19B0027A234 /* JWTAlgorithmErrorDescription.h in Headers */,
 				0A135F711E93E67A00A1D777 /* JWTCoding+VersionOne.h in Headers */,
 				0A135F6F1E93E67A00A1D777 /* JWTCoding+ResultTypes.h in Headers */,
+				0A5B452A2110AC810027A234 /* JWTCryptoSecurity+Extraction.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -723,6 +730,7 @@
 				0A135F721E93E67A00A1D777 /* JWTCoding+VersionOne.m in Sources */,
 				0A135F591E93E67A00A1D777 /* JWTAlgorithmDataHolder.m in Sources */,
 				0A135F681E93E67A00A1D777 /* JWTClaim.m in Sources */,
+				0A5B452B2110AC810027A234 /* JWTCryptoSecurity+Extraction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
