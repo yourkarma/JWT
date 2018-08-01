@@ -27,7 +27,8 @@ NSString *JWTErrorDomain = @"io.jwt";
         @(JWTBlacklistedAlgorithmError): @"Algorithm in blacklist? Try to check whitelist parameter",
         @(JWTDecodingHeaderError): @"Error decoding the JWT Header segment.",
         @(JWTDecodingPayloadError): @"Error decoding the JWT Payload segment.",
-        @(JWTDecodingHoldersChainEmptyError) : @"Error decoding the JWT algorithm and data holders chain is empty!"
+        @(JWTDecodingHoldersChainEmptyError) : @"Error decoding the JWT algorithm and data holders chain is empty!",
+        @(JWTHolderSecretDataNotSetError) : @"Error encoding/decoding .secretData not set when using sign/verify keys. Bug. Workaround is simple. Set secretData: { holder.secretData([NSData data]); }"
     });
 }
 
@@ -49,7 +50,8 @@ NSString *JWTErrorDomain = @"io.jwt";
         @(JWTBlacklistedAlgorithmError): @"JWTBlacklistedAlgorithmError",
         @(JWTDecodingHeaderError): @"JWTDecodingHeaderError",
         @(JWTDecodingPayloadError): @"JWTDecodingPayloadError",
-        @(JWTDecodingHoldersChainEmptyError) :@"JWTDecodingHoldersChainEmptyError"
+        @(JWTDecodingHoldersChainEmptyError) :@"JWTDecodingHoldersChainEmptyError",
+        @(JWTHolderSecretDataNotSetError) : @"JWTHolderSecretDataNotSetError"
     });
 }
 

@@ -234,6 +234,18 @@
     for (id <JWTAlgorithmDataHolderProtocol>holder in holders) {
         id <JWTAlgorithm>algorithm = holder.internalAlgorithm;
         NSData *secretData = holder.internalSecretData;
+        
+        // BUG:
+        // Read about it in
+        if ([holder isKindOfClass:JWTAlgorithmRSFamilyDataHolder.class]) {
+            JWTAlgorithmRSFamilyDataHolder *theHolder = (JWTAlgorithmRSFamilyDataHolder *)holder;
+            BOOL bugExists = (theHolder.signKey != nil || theHolder.verifyKey != nil ) && secretData == nil;
+            if (bugExists) {
+                return [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:[JWTErrorDescription errorWithCode:JWTHolderSecretDataNotSetError]]];
+                return nil;
+            }
+        }
+        
         encodedMessage = [self encodeWithAlgorithm:algorithm withHeaders:headers withPayload:payload withSecretData:secretData withError:&error];
         if (encodedMessage && (error == nil)) {
             break;

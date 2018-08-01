@@ -26,7 +26,8 @@ typedef NS_ENUM(NSInteger, JWTError) {
     JWTBlacklistedAlgorithmError,
     JWTDecodingHeaderError,
     JWTDecodingPayloadError,
-    JWTDecodingHoldersChainEmptyError
+    JWTDecodingHoldersChainEmptyError,
+    JWTHolderSecretDataNotSetError
 };
 
 @interface JWTErrorDescription : NSObject
