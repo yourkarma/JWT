@@ -10,6 +10,9 @@
 
 @implementation JWTCryptoSecurityComponent
 - (instancetype)initWithContent:(NSString *)content type:(NSString *)type {
+    if (type == nil || content == nil) {
+        return nil;
+    }
     if (self = [super init]) {
         self.content = content;
         self.type = type;
@@ -31,35 +34,47 @@
 
 @implementation JWTCryptoSecurityComponents (Extraction)
 + (NSString *)determineTypeByPemHeaderType:(NSString *)headerType {
-    if ([headerType rangeOfString:@"CERTIFICATE" options:NSCaseInsensitiveSearch]) {
+    __auto_type validateBlock = ^(NSString *headerType, NSString *string) {
+        return [headerType rangeOfString:string options:NSCaseInsensitiveSearch].location != NSNotFound;
+    };
+    if (validateBlock(headerType, @"CERTIFICATE")) {
         return self.Certificate;
     }
-    if ([headerType rangeOfString:@"PUBLIC" options:NSCaseInsensitiveSearch]) {
+    if (validateBlock(headerType, @"PUBLIC")) {
         return self.PublicKey;
     }
-    if ([headerType rangeOfString:@"PRIVATE" options:NSCaseInsensitiveSearch]) {
+    if (validateBlock(headerType, @"PRIVATE")) {
         return self.PrivateKey;
     }
+    return nil;
 }
 
 + (NSRegularExpression *)pemEntryRegularExpression {
     __auto_type expression = [[NSRegularExpression alloc] initWithPattern:@"-----BEGIN(?<Begin>[\\w\\s])+-----(?<Content>.+?)-----END(?<End>[\\w\\s])+-----" options:NSRegularExpressionDotMatchesLineSeparators error:nil];
+    return expression;
 }
 + (JWTCryptoSecurityComponent *)componentFromTextResult:(NSTextCheckingResult *)textResult inContent:(NSString *)content {
-    __auto_type beginRange = [textResult rangeWithName:@"Begin"];
-    __auto_type contentRange = [textResult rangeWithName:@"Content"];
+    if (textResult.numberOfRanges > 2) {
+    __auto_type beginRange = [textResult rangeAtIndex:0];
+    __auto_type contentRange = [textResult rangeAtIndex:1];
     // cleanup string.
     __auto_type beginString = [content substringWithRange:beginRange];
     __auto_type contentString = [content substringWithRange:contentRange];
     __auto_type resultType = [self determineTypeByPemHeaderType:beginString];
     __auto_type resultContent = [contentString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+        return [[JWTCryptoSecurityComponent alloc] initWithContent:resultContent type:resultType];
+    }
+    else {
+        return nil;
+    }
 }
 + (NSArray *)parsedComponentsInContent:(NSString *)content {
     __auto_type expression = [self pemEntryRegularExpression];
     __auto_type results = [expression matchesInString:content options:0 range:NSMakeRange(0, content.length)];
     __auto_type components = (NSArray <JWTCryptoSecurityComponent *>*)@[];
     for (NSTextCheckingResult *result in results) {
-        components = [components arrayByAddingObjectsFromArray:[self componentFromTextResult:result inContent:content]];
+        id object = [self componentFromTextResult:result inContent:content];
+        components = [components arrayByAddingObject:object];
     }
     return components;
 }
@@ -81,6 +96,6 @@
     return [self componentsFromFileContent:content];
 }
 + (NSArray *)componentsFromFileContent:(NSString *)content {
-    [JWTCryptoSecurityComponents parsedComponentsInContent:content];
+    return [JWTCryptoSecurityComponents parsedComponentsInContent:content];
 }
 @end
