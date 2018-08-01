@@ -131,7 +131,7 @@ sharedExamplesFor(algorithmBehavior, ^(NSDictionary *data) {
             {
                 // private pem encoded
                 __auto_type key = privatePemEncodedKey;
-                id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor privateKeyWithPEMBase64].type).privateKeyCertificatePassphrase(valid_privateKeyCertificatePassphrase).algorithm(algorithm).secret(privatePemEncodedString);
+                id<JWTAlgorithmDataHolderProtocol> dataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor privateKeyWithPEMBase64].type).algorithm(algorithm).secret(privatePemEncodedString);
 
                 mutableKeyExtractingDataHolders[key] = dataHolder;
 
