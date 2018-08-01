@@ -228,7 +228,7 @@
 - (instancetype)initWithCertificateBase64String:(NSString *)certificate parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
     // cleanup certificate if needed.
     // call initWithCertificateData:(NSData *)certificateData
-    NSData *certificateData = nil;
+    NSData *certificateData = [JWTBase64Coder dataWithBase64UrlEncodedString:certificate];
     return [self initWithCertificateData:certificateData parameters:parameters error:error];
 }
 @end

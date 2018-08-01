@@ -50,18 +50,18 @@
 }
 
 + (NSRegularExpression *)pemEntryRegularExpression {
-    __auto_type expression = [[NSRegularExpression alloc] initWithPattern:@"-----BEGIN(?<Begin>[\\w\\s])+-----(?<Content>.+?)-----END(?<End>[\\w\\s])+-----" options:NSRegularExpressionDotMatchesLineSeparators error:nil];
+    __auto_type expression = [[NSRegularExpression alloc] initWithPattern:@"-----BEGIN(?<Begin>[\\w\\s]+)-----(?<Content>.+?)-----END(?<End>[\\w\\s]+)-----" options:NSRegularExpressionDotMatchesLineSeparators error:nil];
     return expression;
 }
 + (JWTCryptoSecurityComponent *)componentFromTextResult:(NSTextCheckingResult *)textResult inContent:(NSString *)content {
     if (textResult.numberOfRanges > 2) {
-    __auto_type beginRange = [textResult rangeAtIndex:0];
-    __auto_type contentRange = [textResult rangeAtIndex:1];
-    // cleanup string.
-    __auto_type beginString = [content substringWithRange:beginRange];
-    __auto_type contentString = [content substringWithRange:contentRange];
-    __auto_type resultType = [self determineTypeByPemHeaderType:beginString];
-    __auto_type resultContent = [contentString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+        __auto_type beginRange = [textResult rangeAtIndex:1];
+        __auto_type contentRange = [textResult rangeAtIndex:2];
+        // cleanup string.
+        __auto_type beginString = [content substringWithRange:beginRange];
+        __auto_type contentString = [content substringWithRange:contentRange];
+        __auto_type resultType = [self determineTypeByPemHeaderType:beginString];
+        __auto_type resultContent = [contentString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
         return [[JWTCryptoSecurityComponent alloc] initWithContent:resultContent type:resultType];
     }
     else {
