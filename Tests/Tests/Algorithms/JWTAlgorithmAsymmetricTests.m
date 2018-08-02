@@ -7,7 +7,6 @@
 
 #import <XCTest/XCTest.h>
 #import <JWT/JWT.h>
-#import <JWT/JWTCryptoSecurity+Extraction.h>
 
 @interface JWTAlgorithmAsymmetricTestsHelperAssetAccessor : NSObject
 //+ (instancetype)wrong;

@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		044FE5D81E5461F000C9356D /* JWTAlgorithmES256Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 044FE5D71E5461F000C9356D /* JWTAlgorithmES256Spec.m */; };
-		044FE5D91E54633100C9356D /* JWTAlgorithmES256Spec.m in Sources */ = {isa = PBXBuildFile; fileRef = 044FE5D71E5461F000C9356D /* JWTAlgorithmES256Spec.m */; };
 		044FEE8A1E52434300352625 /* rs256-wrong-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 044FEE891E52434300352625 /* rs256-wrong-public.pem */; };
 		044FEE8B1E52434A00352625 /* rs256-wrong-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 044FEE891E52434300352625 /* rs256-wrong-public.pem */; };
 		044FEE981E52434E00352625 /* rs256-private.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE71E4DD77D0036CC3A /* rs256-private.p12 */; };
@@ -16,10 +14,6 @@
 		044FEE9A1E52434E00352625 /* rs256-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEA1E4DD77D0036CC3A /* rs256-public.pem */; };
 		044FEE9B1E52434E00352625 /* rs256-wrong-private.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEB1E4DD77D0036CC3A /* rs256-wrong-private.p12 */; };
 		044FEE9C1E52434E00352625 /* rs256-wrong-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEC1E4DD77D0036CC3A /* rs256-wrong-private.pem */; };
-		045147781D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0451476A1D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m */; };
-		0451477F1D5E310E007B1D7A /* JWTSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147731D5E310E007B1D7A /* JWTSpec.m */; };
-		045147881D5E312A007B1D7A /* JWTAlgorithmRS256Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0451476A1D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m */; };
-		0451478F1D5E312A007B1D7A /* JWTSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 045147731D5E310E007B1D7A /* JWTSpec.m */; };
 		04857DF91E4DD77D0036CC3A /* rs256-private.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE71E4DD77D0036CC3A /* rs256-private.p12 */; };
 		04857DFA1E4DD77D0036CC3A /* rs256-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE81E4DD77D0036CC3A /* rs256-private.pem */; };
 		04857DFC1E4DD77D0036CC3A /* rs256-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEA1E4DD77D0036CC3A /* rs256-public.pem */; };
@@ -39,27 +33,69 @@
 		0A80CF902109113D00D5499C /* ec256.csr in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF892109113D00D5499C /* ec256.csr */; };
 		0A80CF912109113D00D5499C /* ec256.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF8A2109113D00D5499C /* ec256.p12 */; };
 		0A80CF94210912D300D5499C /* ec256-cer.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF93210912D300D5499C /* ec256-cer.pem */; };
-		0A80CF962109162B00D5499C /* JWTAlgorithmES256Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A80CF952109162B00D5499C /* JWTAlgorithmES256Tests.m */; };
-		0A80CF97210916E200D5499C /* JWTAlgorithmES256Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A80CF952109162B00D5499C /* JWTAlgorithmES256Tests.m */; };
 		0A80CF98210917D800D5499C /* ec256-cer.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF93210912D300D5499C /* ec256-cer.pem */; };
 		0A80CF99210917D800D5499C /* ec256-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF862109113D00D5499C /* ec256-private.pem */; };
 		0A80CF9A210917D800D5499C /* ec256-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF872109113D00D5499C /* ec256-public.pem */; };
 		0A80CF9B210917D800D5499C /* ec256.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF882109113D00D5499C /* ec256.cer */; };
 		0A80CF9C210917D800D5499C /* ec256.csr in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF892109113D00D5499C /* ec256.csr */; };
 		0A80CF9D210917D800D5499C /* ec256.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF8A2109113D00D5499C /* ec256.p12 */; };
-		266295C3B6ECE08039A16D33 /* libPods-macOS_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA3357EF30AB81C42D84520 /* libPods-macOS_Tests.a */; };
-		C7EE20EA1A0314172C1619E0 /* libPods-iOS_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE336FA6028E75B72C080FB /* libPods-iOS_Tests.a */; };
+		0AD2D62D21130F9D00104C72 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD2D61B21130F6100104C72 /* JWT.framework */; };
+		0AD2D62E21130FC900104C72 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD2D61B21130F6100104C72 /* JWT.framework */; };
+		0AD2D6522113141D00104C72 /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD2D64B2113141D00104C72 /* MF_Base64Additions.m */; };
+		0AD2D6532113167D00104C72 /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD2D64B2113141D00104C72 /* MF_Base64Additions.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		0AD2D61A21130F6100104C72 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 04DEBCA31DBCDB8600C1DF52;
+			remoteInfo = JWT;
+		};
+		0AD2D61C21130F6100104C72 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 045146681D5E2A78007B1D7A;
+			remoteInfo = "JWT-iOS-Static";
+		};
+		0AD2D61E21130F6100104C72 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 045146761D5E2AA1007B1D7A;
+			remoteInfo = "JWT-iOS";
+		};
+		0AD2D62021130F6100104C72 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 045146901D5E2AC3007B1D7A;
+			remoteInfo = "JWT-macOS";
+		};
+		0AD2D62221130F6100104C72 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 045146831D5E2AAF007B1D7A;
+			remoteInfo = "JWT-iOS-Swift";
+		};
+		0AD2D62421130F6100104C72 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0451469D1D5E2AD2007B1D7A;
+			remoteInfo = "JWT-macOS-Swift";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		044FE5D71E5461F000C9356D /* JWTAlgorithmES256Spec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmES256Spec.m; sourceTree = "<group>"; };
 		044FEE891E52434300352625 /* rs256-wrong-public.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "rs256-wrong-public.pem"; sourceTree = "<group>"; };
 		045147331D5E2FF0007B1D7A /* iOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		045147381D5E2FF0007B1D7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		045147401D5E3004007B1D7A /* macOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		045147441D5E3004007B1D7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0451476A1D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmRS256Tests.m; sourceTree = "<group>"; };
-		045147731D5E310E007B1D7A /* JWTSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTSpec.m; sourceTree = "<group>"; };
 		04857DE71E4DD77D0036CC3A /* rs256-private.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "rs256-private.p12"; sourceTree = "<group>"; };
 		04857DE81E4DD77D0036CC3A /* rs256-private.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "rs256-private.pem"; sourceTree = "<group>"; };
 		04857DEA1E4DD77D0036CC3A /* rs256-public.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "rs256-public.pem"; sourceTree = "<group>"; };
@@ -79,13 +115,9 @@
 		0A80CF892109113D00D5499C /* ec256.csr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ec256.csr; sourceTree = "<group>"; };
 		0A80CF8A2109113D00D5499C /* ec256.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = ec256.p12; sourceTree = "<group>"; };
 		0A80CF93210912D300D5499C /* ec256-cer.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec256-cer.pem"; sourceTree = "<group>"; };
-		0A80CF952109162B00D5499C /* JWTAlgorithmES256Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmES256Tests.m; sourceTree = "<group>"; };
-		3FCCA63374729ECF2D825059 /* Pods-macOS_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-macOS_Tests/Pods-macOS_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		5ADC34F8889C3EDF8BB83D24 /* Pods-macOS_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-macOS_Tests/Pods-macOS_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		66440C9134BC0B535139C516 /* Pods-iOS_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS_Tests/Pods-iOS_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		8DE336FA6028E75B72C080FB /* libPods-iOS_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iOS_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DB41CCB0D32B2EA0DE384FDA /* Pods-iOS_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS_Tests/Pods-iOS_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		FBA3357EF30AB81C42D84520 /* libPods-macOS_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-macOS_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AD2D61121130F6100104C72 /* JWT.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JWT.xcodeproj; path = ../Framework/JWT.xcodeproj; sourceTree = "<group>"; };
+		0AD2D64A2113141D00104C72 /* MF_Base64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MF_Base64Additions.h; sourceTree = "<group>"; };
+		0AD2D64B2113141D00104C72 /* MF_Base64Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MF_Base64Additions.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,7 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7EE20EA1A0314172C1619E0 /* libPods-iOS_Tests.a in Frameworks */,
+				0AD2D62D21130F9D00104C72 /* JWT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,7 +133,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				266295C3B6ECE08039A16D33 /* libPods-macOS_Tests.a in Frameworks */,
+				0AD2D62E21130FC900104C72 /* JWT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,13 +143,14 @@
 		045147281D5E2F93007B1D7A = {
 			isa = PBXGroup;
 			children = (
+				0AD2D63E2113141D00104C72 /* Base64 */,
+				0AD2D61121130F6100104C72 /* JWT.xcodeproj */,
 				04857DD91E4DD77D0036CC3A /* Resources */,
 				045147641D5E310E007B1D7A /* Tests */,
 				045147351D5E2FF0007B1D7A /* iOS_Tests */,
 				045147411D5E3004007B1D7A /* macOS_Tests */,
 				045147341D5E2FF0007B1D7A /* Products */,
-				4A479C165E45310B4EAAC725 /* Pods */,
-				3204B5F7E2A42D7544EAB749 /* Frameworks */,
+				0AD2D62C21130F9D00104C72 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -159,9 +192,6 @@
 		045147651D5E310E007B1D7A /* Algorithms */ = {
 			isa = PBXGroup;
 			children = (
-				0451476A1D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m */,
-				044FE5D71E5461F000C9356D /* JWTAlgorithmES256Spec.m */,
-				0A80CF952109162B00D5499C /* JWTAlgorithmES256Tests.m */,
 				0A5B450F210DBDDB0027A234 /* JWTAlgorithmAsymmetricTests.m */,
 				0A5B4511210DC0860027A234 /* JWTAlgorithmHSTests.m */,
 				0A5B4513210DCB7A0027A234 /* JWTAlgorithmNoneTests.m */,
@@ -180,7 +210,6 @@
 		045147721D5E310E007B1D7A /* JWT */ = {
 			isa = PBXGroup;
 			children = (
-				045147731D5E310E007B1D7A /* JWTSpec.m */,
 				0A5B4515210DD81E0027A234 /* JWTTests.m */,
 				0A5B4517210DD82E0027A234 /* JWTReadmeTests.m */,
 				0A5B4519210DD83B0027A234 /* JWTIssuesTests.m */,
@@ -224,24 +253,34 @@
 			path = ec;
 			sourceTree = "<group>";
 		};
-		3204B5F7E2A42D7544EAB749 /* Frameworks */ = {
+		0AD2D61221130F6100104C72 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8DE336FA6028E75B72C080FB /* libPods-iOS_Tests.a */,
-				FBA3357EF30AB81C42D84520 /* libPods-macOS_Tests.a */,
+				0AD2D61B21130F6100104C72 /* JWT.framework */,
+				0AD2D61D21130F6100104C72 /* libJWT.a */,
+				0AD2D61F21130F6100104C72 /* JWT.framework */,
+				0AD2D62121130F6100104C72 /* JWT.framework */,
+				0AD2D62321130F6100104C72 /* JWTSwift.framework */,
+				0AD2D62521130F6100104C72 /* JWTSwift.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0AD2D62C21130F9D00104C72 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		4A479C165E45310B4EAAC725 /* Pods */ = {
+		0AD2D63E2113141D00104C72 /* Base64 */ = {
 			isa = PBXGroup;
 			children = (
-				66440C9134BC0B535139C516 /* Pods-iOS_Tests.debug.xcconfig */,
-				DB41CCB0D32B2EA0DE384FDA /* Pods-iOS_Tests.release.xcconfig */,
-				5ADC34F8889C3EDF8BB83D24 /* Pods-macOS_Tests.debug.xcconfig */,
-				3FCCA63374729ECF2D825059 /* Pods-macOS_Tests.release.xcconfig */,
+				0AD2D64A2113141D00104C72 /* MF_Base64Additions.h */,
+				0AD2D64B2113141D00104C72 /* MF_Base64Additions.m */,
 			);
-			name = Pods;
+			name = Base64;
+			path = ../Dependencies/Base64/Base64;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,7 +290,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 045147391D5E2FF0007B1D7A /* Build configuration list for PBXNativeTarget "iOS_Tests" */;
 			buildPhases = (
-				EEEB01A0AFDD384B65228E3F /* [CP] Check Pods Manifest.lock */,
 				0451472F1D5E2FF0007B1D7A /* Sources */,
 				045147301D5E2FF0007B1D7A /* Frameworks */,
 				045147311D5E2FF0007B1D7A /* Resources */,
@@ -269,7 +307,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 045147451D5E3004007B1D7A /* Build configuration list for PBXNativeTarget "macOS_Tests" */;
 			buildPhases = (
-				82B0D4724435B970FA3447D9 /* [CP] Check Pods Manifest.lock */,
 				0451473C1D5E3004007B1D7A /* Sources */,
 				0451473D1D5E3004007B1D7A /* Frameworks */,
 				0451473E1D5E3004007B1D7A /* Resources */,
@@ -310,6 +347,12 @@
 			mainGroup = 045147281D5E2F93007B1D7A;
 			productRefGroup = 045147341D5E2FF0007B1D7A /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 0AD2D61221130F6100104C72 /* Products */;
+					ProjectRef = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				045147321D5E2FF0007B1D7A /* iOS_Tests */,
@@ -317,6 +360,51 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		0AD2D61B21130F6100104C72 /* JWT.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = JWT.framework;
+			remoteRef = 0AD2D61A21130F6100104C72 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0AD2D61D21130F6100104C72 /* libJWT.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libJWT.a;
+			remoteRef = 0AD2D61C21130F6100104C72 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0AD2D61F21130F6100104C72 /* JWT.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = JWT.framework;
+			remoteRef = 0AD2D61E21130F6100104C72 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0AD2D62121130F6100104C72 /* JWT.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = JWT.framework;
+			remoteRef = 0AD2D62021130F6100104C72 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0AD2D62321130F6100104C72 /* JWTSwift.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = JWTSwift.framework;
+			remoteRef = 0AD2D62221130F6100104C72 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0AD2D62521130F6100104C72 /* JWTSwift.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = JWTSwift.framework;
+			remoteRef = 0AD2D62421130F6100104C72 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		045147311D5E2FF0007B1D7A /* Resources */ = {
@@ -360,55 +448,13 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		82B0D4724435B970FA3447D9 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-macOS_Tests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EEEB01A0AFDD384B65228E3F /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-iOS_Tests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		0451472F1D5E2FF0007B1D7A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				044FE5D81E5461F000C9356D /* JWTAlgorithmES256Spec.m in Sources */,
-				0451477F1D5E310E007B1D7A /* JWTSpec.m in Sources */,
-				045147781D5E310E007B1D7A /* JWTAlgorithmRS256Tests.m in Sources */,
-				0A80CF962109162B00D5499C /* JWTAlgorithmES256Tests.m in Sources */,
 				0A5B4518210DD82E0027A234 /* JWTReadmeTests.m in Sources */,
+				0AD2D6522113141D00104C72 /* MF_Base64Additions.m in Sources */,
 				0A5B4516210DD81E0027A234 /* JWTTests.m in Sources */,
 				0A5B4510210DBDDB0027A234 /* JWTAlgorithmAsymmetricTests.m in Sources */,
 				0A5B451A210DD83B0027A234 /* JWTIssuesTests.m in Sources */,
@@ -422,10 +468,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A80CF97210916E200D5499C /* JWTAlgorithmES256Tests.m in Sources */,
-				045147881D5E312A007B1D7A /* JWTAlgorithmRS256Tests.m in Sources */,
-				044FE5D91E54633100C9356D /* JWTAlgorithmES256Spec.m in Sources */,
-				0451478F1D5E312A007B1D7A /* JWTSpec.m in Sources */,
+				0AD2D6532113167D00104C72 /* MF_Base64Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -502,7 +545,6 @@
 		};
 		0451473A1D5E2FF0007B1D7A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 66440C9134BC0B535139C516 /* Pods-iOS_Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -552,7 +594,6 @@
 		};
 		0451473B1D5E2FF0007B1D7A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DB41CCB0D32B2EA0DE384FDA /* Pods-iOS_Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -596,7 +637,6 @@
 		};
 		045147461D5E3004007B1D7A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5ADC34F8889C3EDF8BB83D24 /* Pods-macOS_Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -646,7 +686,6 @@
 		};
 		045147471D5E3004007B1D7A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3FCCA63374729ECF2D825059 /* Pods-macOS_Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;

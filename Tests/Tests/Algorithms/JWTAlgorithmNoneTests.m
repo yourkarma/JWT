@@ -6,7 +6,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import <Base64/MF_Base64Additions.h>
+#import "MF_Base64Additions.h"
 #import <JWT/JWT.h>
 
 @interface JWTAlgorithmTestsHelper__None : NSObject

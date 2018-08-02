@@ -14,10 +14,10 @@ end
 
 target :'iOS_Tests' do
   platform :ios, '6.1'
-  import_pods
+  # import_pods
 end
 
 target :'macOS_Tests' do
   platform :osx, '10.8'
-  import_pods
+  # import_pods
 end
