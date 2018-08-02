@@ -57,10 +57,12 @@
 		0A5B4508210DA19B0027A234 /* JWTAlgorithmErrorDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4506210DA19B0027A234 /* JWTAlgorithmErrorDescription.m */; };
 		0A5B450B210DA66F0027A234 /* JWTAlgorithmErrorDescription+Subclass.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A5B4509210DA66F0027A234 /* JWTAlgorithmErrorDescription+Subclass.h */; };
 		0A5B450C210DA66F0027A234 /* JWTAlgorithmErrorDescription+Subclass.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B450A210DA66F0027A234 /* JWTAlgorithmErrorDescription+Subclass.m */; };
-		0A5B452A2110AC810027A234 /* JWTCryptoSecurity+Extraction.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A5B45282110AC810027A234 /* JWTCryptoSecurity+Extraction.h */; };
+		0A5B452A2110AC810027A234 /* JWTCryptoSecurity+Extraction.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A5B45282110AC810027A234 /* JWTCryptoSecurity+Extraction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A5B452B2110AC810027A234 /* JWTCryptoSecurity+Extraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B45292110AC810027A234 /* JWTCryptoSecurity+Extraction.m */; };
 		0A6246FB205727550094B3A9 /* JWTAlgorithmAsymmetricBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A6246F9205727540094B3A9 /* JWTAlgorithmAsymmetricBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A6246FC205727550094B3A9 /* JWTAlgorithmAsymmetricBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6246FA205727540094B3A9 /* JWTAlgorithmAsymmetricBase.m */; };
+		0AD2D66A2113173D00104C72 /* MF_Base64Additions.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AD2D6602113173D00104C72 /* MF_Base64Additions.h */; };
+		0AD2D66B2113173D00104C72 /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD2D6612113173D00104C72 /* MF_Base64Additions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -155,6 +157,8 @@
 		0A5B45292110AC810027A234 /* JWTCryptoSecurity+Extraction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "JWTCryptoSecurity+Extraction.m"; sourceTree = "<group>"; };
 		0A6246F9205727540094B3A9 /* JWTAlgorithmAsymmetricBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithmAsymmetricBase.h; sourceTree = "<group>"; };
 		0A6246FA205727540094B3A9 /* JWTAlgorithmAsymmetricBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmAsymmetricBase.m; sourceTree = "<group>"; };
+		0AD2D6602113173D00104C72 /* MF_Base64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MF_Base64Additions.h; sourceTree = "<group>"; };
+		0AD2D6612113173D00104C72 /* MF_Base64Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MF_Base64Additions.m; sourceTree = "<group>"; };
 		A1951DB91758990700AF73D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A1951DCA1758990700AF73D9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -364,9 +368,20 @@
 			path = Supplement;
 			sourceTree = "<group>";
 		};
+		0AD2D6542113173D00104C72 /* Base64 */ = {
+			isa = PBXGroup;
+			children = (
+				0AD2D6602113173D00104C72 /* MF_Base64Additions.h */,
+				0AD2D6612113173D00104C72 /* MF_Base64Additions.m */,
+			);
+			name = Base64;
+			path = ../Dependencies/Base64/Base64;
+			sourceTree = "<group>";
+		};
 		A1951DAD1758990700AF73D9 = {
 			isa = PBXGroup;
 			children = (
+				0AD2D6542113173D00104C72 /* Base64 */,
 				0A135F161E93E67A00A1D777 /* Core */,
 				04DEBCD51DBCE64100C1DF52 /* Supplement */,
 				A1951DB81758990700AF73D9 /* Frameworks */,
@@ -431,6 +446,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AD2D66A2113173D00104C72 /* MF_Base64Additions.h in Headers */,
 				0A135F791E93E67A00A1D777 /* JWT.h in Headers */,
 				0A135F751E93E67A00A1D777 /* JWTCoding+VersionTwo.h in Headers */,
 				0A135F511E93E67A00A1D777 /* JWTAlgorithm.h in Headers */,
@@ -725,6 +741,7 @@
 				0A135F781E93E67A00A1D777 /* JWTCoding.m in Sources */,
 				0A135F741E93E67A00A1D777 /* JWTCoding+VersionThree.m in Sources */,
 				0A135F701E93E67A00A1D777 /* JWTCoding+ResultTypes.m in Sources */,
+				0AD2D66B2113173D00104C72 /* MF_Base64Additions.m in Sources */,
 				0A135F571E93E67A00A1D777 /* JWTAlgorithmESBase.m in Sources */,
 				0A6246FC205727550094B3A9 /* JWTAlgorithmAsymmetricBase.m in Sources */,
 				0A135F721E93E67A00A1D777 /* JWTCoding+VersionOne.m in Sources */,
