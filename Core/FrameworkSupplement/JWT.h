@@ -52,3 +52,4 @@ FOUNDATION_EXPORT const unsigned char JWTVersionString[];
 #import <JWT/JWTCryptoKey.h>
 #import <JWT/JWTCryptoKeyExtractor.h>
 #import <JWT/JWTCryptoSecurity.h>
+#import <JWT/JWTCryptoSecurity+Extraction.h>
