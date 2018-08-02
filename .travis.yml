@@ -7,11 +7,11 @@ before_install:
     #- if brew outdated | grep -qx xctool; then brew upgrade xctool; fi
     # install
     # - rvm use 2.2.2 --install --binary --fuzzy
-    - gem install cocoapods --no-rdoc --no-ri --no-document --quiet
+    # - gem install cocoapods --no-rdoc --no-ri --no-document --quiet
     - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
-    - pod --version
-    - pod setup --silent > /dev/null
-    - pod repo update --silent
+    # - pod --version
+    # - pod setup --silent > /dev/null
+    # - pod repo update --silent
     - xcpretty --version
     - xcodebuild -version
     - xcodebuild -showsdks
