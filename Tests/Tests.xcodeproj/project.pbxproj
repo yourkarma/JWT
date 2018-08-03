@@ -61,13 +61,6 @@
 			remoteGlobalIDString = 04DEBCA21DBCDB8600C1DF52;
 			remoteInfo = JWT;
 		};
-		0ABF60882114982C00222F2D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 04DEBCA21DBCDB8600C1DF52;
-			remoteInfo = JWT;
-		};
 		0AD2D61A21130F6100104C72 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
@@ -109,6 +102,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 0451469D1D5E2AD2007B1D7A;
 			remoteInfo = "JWT-macOS-Swift";
+		};
+		0AD47CA521149B9800D2C056 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 04DEBCA21DBCDB8600C1DF52;
+			remoteInfo = JWT;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -319,7 +319,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				0ABF60892114982C00222F2D /* PBXTargetDependency */,
+				0AD47CA621149B9800D2C056 /* PBXTargetDependency */,
 			);
 			name = iOS_Tests;
 			productName = iOS_Tests;
@@ -512,10 +512,10 @@
 			name = JWT;
 			targetProxy = 0ABF60862114982600222F2D /* PBXContainerItemProxy */;
 		};
-		0ABF60892114982C00222F2D /* PBXTargetDependency */ = {
+		0AD47CA621149B9800D2C056 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = JWT;
-			targetProxy = 0ABF60882114982C00222F2D /* PBXContainerItemProxy */;
+			targetProxy = 0AD47CA521149B9800D2C056 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -606,7 +606,9 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
@@ -633,6 +635,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.jwt.iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -655,7 +658,9 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
@@ -675,6 +680,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.jwt.iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
