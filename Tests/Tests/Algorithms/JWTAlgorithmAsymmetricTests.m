@@ -428,7 +428,10 @@
         __auto_type algorithmNames = @[
                                        JWTAlgorithmNameRS256,
                                        JWTAlgorithmNameRS384,
-                                       JWTAlgorithmNameRS512
+                                       JWTAlgorithmNameRS512,
+                                       JWTAlgorithmNameES256,
+                                       JWTAlgorithmNameES384,
+                                       JWTAlgorithmNameES512
                                        ];
         for (NSString *name in algorithmNames) {
             __auto_type helper = [[JWTAlgorithmAsymmetricTestsHelper new] configuredByName:name];
