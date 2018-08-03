@@ -39,13 +39,35 @@
 		0A80CF9B210917D800D5499C /* ec256.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF882109113D00D5499C /* ec256.cer */; };
 		0A80CF9C210917D800D5499C /* ec256.csr in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF892109113D00D5499C /* ec256.csr */; };
 		0A80CF9D210917D800D5499C /* ec256.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF8A2109113D00D5499C /* ec256.p12 */; };
+		0ABF607F211497B200222F2D /* Certificates.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A5B450D210DB9EF0027A234 /* Certificates.xcassets */; };
 		0AD2D62D21130F9D00104C72 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD2D61B21130F6100104C72 /* JWT.framework */; };
 		0AD2D62E21130FC900104C72 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD2D61B21130F6100104C72 /* JWT.framework */; };
 		0AD2D6522113141D00104C72 /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD2D64B2113141D00104C72 /* MF_Base64Additions.m */; };
 		0AD2D6532113167D00104C72 /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD2D64B2113141D00104C72 /* MF_Base64Additions.m */; };
+		0AD2D66C2114900B00104C72 /* JWTAlgorithmAsymmetricTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B450F210DBDDB0027A234 /* JWTAlgorithmAsymmetricTests.m */; };
+		0AD2D66D2114901200104C72 /* JWTAlgorithmHSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4511210DC0860027A234 /* JWTAlgorithmHSTests.m */; };
+		0AD2D66E2114901200104C72 /* JWTAlgorithmNoneTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4513210DCB7A0027A234 /* JWTAlgorithmNoneTests.m */; };
+		0AD2D66F2114914C00104C72 /* JWTClaimsSerializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B451B210DDFBB0027A234 /* JWTClaimsSerializerTests.m */; };
+		0AD2D6702114914F00104C72 /* JWTReadmeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4517210DD82E0027A234 /* JWTReadmeTests.m */; };
+		0AD2D6712114915200104C72 /* JWTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4515210DD81E0027A234 /* JWTTests.m */; };
+		0AD2D6722114915500104C72 /* JWTIssuesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4519210DD83B0027A234 /* JWTIssuesTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0ABF60862114982600222F2D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 04DEBCA21DBCDB8600C1DF52;
+			remoteInfo = JWT;
+		};
+		0ABF60882114982C00222F2D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 04DEBCA21DBCDB8600C1DF52;
+			remoteInfo = JWT;
+		};
 		0AD2D61A21130F6100104C72 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
@@ -297,6 +319,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				0ABF60892114982C00222F2D /* PBXTargetDependency */,
 			);
 			name = iOS_Tests;
 			productName = iOS_Tests;
@@ -314,6 +337,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				0ABF60872114982600222F2D /* PBXTargetDependency */,
 			);
 			name = macOS_Tests;
 			productName = macOS_Tests;
@@ -436,6 +460,7 @@
 				044FEE9B1E52434E00352625 /* rs256-wrong-private.p12 in Resources */,
 				044FEE9C1E52434E00352625 /* rs256-wrong-private.pem in Resources */,
 				0A80CF9B210917D800D5499C /* ec256.cer in Resources */,
+				0ABF607F211497B200222F2D /* Certificates.xcassets in Resources */,
 				0A80CF9C210917D800D5499C /* ec256.csr in Resources */,
 				044FEE991E52434E00352625 /* rs256-private.pem in Resources */,
 				044FEE981E52434E00352625 /* rs256-private.p12 in Resources */,
@@ -469,10 +494,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				0AD2D6532113167D00104C72 /* MF_Base64Additions.m in Sources */,
+				0AD2D66E2114901200104C72 /* JWTAlgorithmNoneTests.m in Sources */,
+				0AD2D6712114915200104C72 /* JWTTests.m in Sources */,
+				0AD2D66D2114901200104C72 /* JWTAlgorithmHSTests.m in Sources */,
+				0AD2D66F2114914C00104C72 /* JWTClaimsSerializerTests.m in Sources */,
+				0AD2D66C2114900B00104C72 /* JWTAlgorithmAsymmetricTests.m in Sources */,
+				0AD2D6702114914F00104C72 /* JWTReadmeTests.m in Sources */,
+				0AD2D6722114915500104C72 /* JWTIssuesTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0ABF60872114982600222F2D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = JWT;
+			targetProxy = 0ABF60862114982600222F2D /* PBXContainerItemProxy */;
+		};
+		0ABF60892114982C00222F2D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = JWT;
+			targetProxy = 0ABF60882114982C00222F2D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		0451472D1D5E2F93007B1D7A /* Debug */ = {
