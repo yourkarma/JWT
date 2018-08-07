@@ -7,7 +7,6 @@
 //
 
 #import "JWTCryptoSecurity+Extraction.h"
-
 @implementation JWTCryptoSecurityComponent
 - (instancetype)initWithContent:(NSString *)content type:(NSString *)type {
     if (type == nil || content == nil) {
@@ -25,11 +24,32 @@
 @property (copy, nonatomic, readwrite) NSArray <JWTCryptoSecurityComponent *>*components;
 @end
 
+@implementation JWTCryptoSecurityComponents
++ (NSString *)Certificate { return NSStringFromSelector(_cmd).uppercaseString; }
++ (NSString *)PrivateKey { return @"Private".uppercaseString; }
++ (NSString *)PublicKey { return @"Public".uppercaseString; }
++ (NSString *)Key { return NSStringFromSelector(_cmd).uppercaseString; }
++ (NSArray *)components:(NSArray *)components ofType:(NSString *)type {
+    return [components filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type contains %@", type]];
+}
+
+- (instancetype)initWithComponents:(NSArray *)components {
+    if (self = [self init]) {
+        self.components = components;
+    }
+    return self;
+}
+
+- (NSArray *)componentsOfType:(NSString *)type {
+    return [self.class components:self.components ofType:type];
+}
+@end
+
 @interface JWTCryptoSecurityComponents (Extraction)
 + (NSString *)determineTypeByPemHeaderType:(NSString *)headerType;
 + (NSRegularExpression *)pemEntryRegularExpression;
 + (JWTCryptoSecurityComponent *)componentFromTextResult:(NSTextCheckingResult *)textResult inContent:(NSString *)content;
-+ (NSArray *)parsedComponentsInContent:(NSString *)content;
++ (instancetype)parsedComponentsInContent:(NSString *)content;
 @end
 
 @implementation JWTCryptoSecurityComponents (Extraction)
@@ -46,6 +66,9 @@
     if (validateBlock(headerType, @"PRIVATE")) {
         return self.PrivateKey;
     }
+    if (validateBlock(headerType, @"KEY")) {
+        return self.Key;
+    }
     return nil;
 }
 
@@ -60,7 +83,7 @@
         // cleanup string.
         __auto_type beginString = [content substringWithRange:beginRange];
         __auto_type contentString = [content substringWithRange:contentRange];
-        __auto_type resultType = [self determineTypeByPemHeaderType:beginString];
+        __auto_type resultType = [beginString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];//[self determineTypeByPemHeaderType:beginString]; // we need full string to parse attributes "Private/Public" "EC/RSA" "KEY/CERTIFICATE" etc.
         __auto_type resultContent = [contentString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
         return [[JWTCryptoSecurityComponent alloc] initWithContent:resultContent type:resultType];
     }
@@ -68,7 +91,7 @@
         return nil;
     }
 }
-+ (NSArray *)parsedComponentsInContent:(NSString *)content {
++ (instancetype)parsedComponentsInContent:(NSString *)content {
     __auto_type expression = [self pemEntryRegularExpression];
     __auto_type results = [expression matchesInString:content options:0 range:NSMakeRange(0, content.length)];
     __auto_type components = (NSArray <JWTCryptoSecurityComponent *>*)@[];
@@ -76,26 +99,17 @@
         id object = [self componentFromTextResult:result inContent:content];
         components = [components arrayByAddingObject:object];
     }
-    return components;
-}
-@end
-
-@implementation JWTCryptoSecurityComponents
-+ (NSString *)Certificate { return NSStringFromSelector(_cmd); }
-+ (NSString *)PrivateKey { return NSStringFromSelector(_cmd); }
-+ (NSString *)PublicKey { return NSStringFromSelector(_cmd); }
-+ (NSArray *)components:(NSArray *)components ofType:(NSString *)type {
-    return [components filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@", type]];
+    return [[self alloc] initWithComponents:components];
 }
 @end
 
 @implementation JWTCryptoSecurity (Extraction)
-+ (NSArray *)componentsFromFile:(NSURL *)url {
++ (JWTCryptoSecurityComponents *)componentsFromFile:(NSURL *)url {
     NSError *error = nil;
     __auto_type content = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
     return [self componentsFromFileContent:content];
 }
-+ (NSArray *)componentsFromFileContent:(NSString *)content {
++ (JWTCryptoSecurityComponents *)componentsFromFileContent:(NSString *)content {
     return [JWTCryptoSecurityComponents parsedComponentsInContent:content];
 }
 @end

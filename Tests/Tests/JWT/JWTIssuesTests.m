@@ -14,7 +14,8 @@
 @implementation JWTIssuesTests
 - (void)testIssues {
     [XCTContext runActivityNamed:@"RS256 key should be read correctly from file" block:^(id<XCTActivity> _Nonnull activity) {
-        id key = [JWTCryptoSecurity keyFromPemFileWithName:@"rs256-public"];
+        NSURL *url = [[NSBundle bundleForClass:self.class] URLForResource:@"rs256-public" withExtension:@"pem"];
+        id key = ((JWTCryptoSecurityComponent *)[[JWTCryptoSecurity componentsFromFile:url] componentsOfType:JWTCryptoSecurityComponents.Key].firstObject).content;//[JWTCryptoSecurity keyFromPemFileWithName:@"rs256-public"];
         NSLog(@"%@ key: %@", self.debugDescription, key);
     }];
     [XCTContext runActivityNamed:@"RS256 signature verification crashes application #141" block:^(id<XCTActivity> _Nonnull activity) {

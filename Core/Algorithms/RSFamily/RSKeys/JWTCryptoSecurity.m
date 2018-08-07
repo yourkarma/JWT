@@ -183,6 +183,8 @@
     }
     else {
         if (error) {
+            // appropriate for Xcode 9 and higher.
+            // rewrite it later?
             if (@available(iOS 11.3, *)) {
                 __auto_type message = (__bridge NSString *)SecCopyErrorMessageString(securityError, NULL) ?: @"Unknown error message";
                 *error = (__bridge CFErrorRef)[NSError errorWithDomain:NSOSStatusErrorDomain code:securityError userInfo:@{NSLocalizedDescriptionKey : message}];
@@ -218,65 +220,6 @@
         return publicKey;
     }
     return NULL;
-}
-@end
-
-@implementation JWTCryptoSecurity (Pem)
-+ (NSString *)certificateFromPemFileContent:(NSString *)content {
-    NSRegularExpression *expression = [[NSRegularExpression alloc] initWithPattern:@"-----BEGIN CERTIFICATE-----(.+?)-----END CERTIFICATE-----" options:NSRegularExpressionDotMatchesLineSeparators error:nil];
-    return [self itemsFromPemFileContent:content byRegex:expression].firstObject;
-}
-+ (NSString *)keyFromPemFileContent:(NSString *)content {
-    NSRegularExpression *expression = [[NSRegularExpression alloc] initWithPattern:@"-----BEGIN(?:[\\w\\s])+KEY-----(.+?)-----END(?:[\\w\\s])+KEY-----" options:NSRegularExpressionDotMatchesLineSeparators error:nil];
-    return [self itemsFromPemFileContent:content byRegex:expression].firstObject;
-}
-+ (NSArray *)itemsFromPemFileContent:(NSString *)content byRegex:(NSRegularExpression *)expression {
-    NSArray *matches = [expression matchesInString:content options:0 range:NSMakeRange(0, content.length)];
-    NSTextCheckingResult *result = matches.firstObject;
-    NSArray *resultArray = @[];
-    
-    if (result) {
-        for (NSUInteger i = 1; i < result.numberOfRanges; ++i) {
-            NSString *extractedString = [content substringWithRange:[result rangeAtIndex:i]];
-            resultArray = [resultArray arrayByAddingObject:extractedString];
-        }
-        
-        // here we should remove all new line separators from all lines.
-        NSArray *strippedItems = @[];
-        for (NSString *item in resultArray) {
-            NSString *clean = [item stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-            strippedItems = [strippedItems arrayByAddingObject:clean];
-        }
-        resultArray = strippedItems;
-    }
-    return resultArray;
-}
-+ (NSString *)certificateFromPemFileWithName:(NSString *)name {
-    NSRegularExpression *expression = [[NSRegularExpression alloc] initWithPattern:@"-----BEGIN CERTIFICATE-----(.+?)-----END CERTIFICATE-----" options:NSRegularExpressionDotMatchesLineSeparators error:nil];
-    return [self itemsFromPemFileWithName:name byRegex:expression].firstObject;
-}
-+ (NSString *)keyFromPemFileWithName:(NSString *)name {
-    NSRegularExpression *expression = [[NSRegularExpression alloc] initWithPattern:@"-----BEGIN(?:[\\w\\s]|)+KEY-----(.+?)-----END(?:[\\w\\s])+KEY-----" options:NSRegularExpressionDotMatchesLineSeparators error:nil];
-    return [self itemsFromPemFileWithName:name byRegex:expression].firstObject;
-}
-+ (NSArray *)itemsFromPemFileWithName:(NSString *)name byRegex:(NSRegularExpression *)expression {
-    NSURL *fileURL = [[NSBundle bundleForClass:self.class] URLForResource:name withExtension:@"pem"];
-    NSError *error = nil;
-    NSString *fileContent = [NSString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
-    
-    if (error) {
-        NSLog(@"%@ error: %@", self.debugDescription, error);
-        return nil;
-    }
-    
-    return [self itemsFromPemFileContent:fileContent byRegex:expression];
-}
-+ (NSString *)stringByRemovingPemHeadersFromString:(NSString *)string {
-    NSArray *lines = [string componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-    NSArray *linesWithoutHeaders = [lines filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *_Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return !([evaluatedObject hasPrefix:@"-----BEGIN"] || [evaluatedObject hasPrefix:@"-----END"]);
-    }]];
-    return [linesWithoutHeaders componentsJoinedByString:@""];
 }
 @end
 

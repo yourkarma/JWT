@@ -276,7 +276,7 @@
     {
         __auto_type key = JWTAlgorithmAsymmetricTests__ExtractionKeys.PublicKeyFromCertificate;
         __auto_type theKey = helper.accessor.certificateBase64;
-        __auto_type secret = ((JWTCryptoSecurityComponent *)[JWTCryptoSecurity componentsFromFileContent:theKey].firstObject).content;
+        __auto_type secret = ((JWTCryptoSecurityComponent *)[[JWTCryptoSecurity componentsFromFileContent:theKey] componentsOfType:JWTCryptoSecurityComponents.Certificate].firstObject).content;
         id<JWTAlgorithmDataHolderProtocol> holder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor publicKeyWithCertificate].type).algorithm(helper.algorithm).secret(secret);
         if (holder) {
             holders[key] = holder;
@@ -287,7 +287,7 @@
         // do we need certificate passphrase here?
         __auto_type key = JWTAlgorithmAsymmetricTests__ExtractionKeys.PrivateKeyFromPem;
         __auto_type theKey = helper.accessor.privateKeyBase64;
-        __auto_type secret = ((JWTCryptoSecurityComponent *)[JWTCryptoSecurity componentsFromFileContent:theKey].firstObject).content;
+        __auto_type secret = ((JWTCryptoSecurityComponent *)[[JWTCryptoSecurity componentsFromFileContent:theKey] componentsOfType:JWTCryptoSecurityComponents.Key].firstObject).content;
         id<JWTAlgorithmDataHolderProtocol> holder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor privateKeyWithPEMBase64].type).algorithm(helper.algorithm).secret(secret);
         __auto_type builder = [JWTEncodingBuilder encodePayload:helper.payloadDictionary].addHolder(holder);
         __auto_type result = builder.result;
@@ -299,7 +299,7 @@
     {
         __auto_type key = JWTAlgorithmAsymmetricTests__ExtractionKeys.PublicKeyFromPem;
         __auto_type theKey = helper.accessor.publicKeyBase64;
-        __auto_type secret = ((JWTCryptoSecurityComponent *)[JWTCryptoSecurity componentsFromFileContent:theKey].firstObject).content;
+        __auto_type secret = ((JWTCryptoSecurityComponent *)[[JWTCryptoSecurity componentsFromFileContent:theKey] componentsOfType:JWTCryptoSecurityComponents.Key].firstObject).content;
         id<JWTAlgorithmDataHolderProtocol> holder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor publicKeyWithPEMBase64].type).algorithm(helper.algorithm).secret(secret);
         if (holder) {
             holders[key] = holder;
@@ -342,8 +342,8 @@
     
     {
         __auto_type key = JWTAlgorithmAsymmetricTests__ExtractionKeys.PublicKeyFromCertificate;
-        __auto_type theKey = helper.accessor.certificateBase64;
-        __auto_type secret = ((JWTCryptoSecurityComponent *)[JWTCryptoSecurity componentsFromFileContent:theKey].firstObject).content;
+        __auto_type certificate = helper.accessor.certificateBase64;
+        __auto_type secret = ((JWTCryptoSecurityComponent *)[[JWTCryptoSecurity componentsFromFileContent:certificate] componentsOfType:JWTCryptoSecurityComponents.Certificate].firstObject).content;
         __auto_type publicKey = ({
             NSError *error = nil;
             __auto_type result = [[JWTCryptoKeyPublic alloc] initWithCertificateBase64String:secret parameters:parameters error:&error];
@@ -360,7 +360,7 @@
     {
         __auto_type key = JWTAlgorithmAsymmetricTests__ExtractionKeys.PrivateKeyFromPem;
         __auto_type theKey = helper.accessor.privateKeyBase64;
-        __auto_type secret = ((JWTCryptoSecurityComponent *)[JWTCryptoSecurity componentsFromFileContent:theKey].firstObject).content;
+        __auto_type secret = ((JWTCryptoSecurityComponent *)[[JWTCryptoSecurity componentsFromFileContent:theKey] componentsOfType:JWTCryptoSecurityComponents.Key].firstObject).content;
         __auto_type privateKey = ({
             NSError *error = nil;
             __auto_type result = [[JWTCryptoKeyPrivate alloc] initWithBase64String:secret parameters:parameters error:&error];
@@ -377,7 +377,7 @@
     {
         __auto_type key = JWTAlgorithmAsymmetricTests__ExtractionKeys.PublicKeyFromPem;
         __auto_type theKey = helper.accessor.publicKeyBase64;
-        __auto_type secret = ((JWTCryptoSecurityComponent *)[JWTCryptoSecurity componentsFromFileContent:theKey].firstObject).content;
+        __auto_type secret = ((JWTCryptoSecurityComponent *)[[JWTCryptoSecurity componentsFromFileContent:theKey] componentsOfType:JWTCryptoSecurityComponents.Key].firstObject).content;
         __auto_type publicKey = ({
             NSError *error = nil;
             __auto_type result = [[JWTCryptoKeyPublic alloc] initWithBase64String:secret parameters:parameters error:&error];
