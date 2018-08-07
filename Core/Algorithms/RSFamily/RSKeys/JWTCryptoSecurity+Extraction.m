@@ -7,7 +7,6 @@
 //
 
 #import "JWTCryptoSecurity+Extraction.h"
-
 @implementation JWTCryptoSecurityComponent
 - (instancetype)initWithContent:(NSString *)content type:(NSString *)type {
     if (type == nil || content == nil) {
@@ -26,12 +25,12 @@
 @end
 
 @implementation JWTCryptoSecurityComponents
-+ (NSString *)Certificate { return NSStringFromSelector(_cmd); }
-+ (NSString *)PrivateKey { return NSStringFromSelector(_cmd); }
-+ (NSString *)PublicKey { return NSStringFromSelector(_cmd); }
-+ (NSString *)Key { return NSStringFromSelector(_cmd); }
++ (NSString *)Certificate { return NSStringFromSelector(_cmd).uppercaseString; }
++ (NSString *)PrivateKey { return @"Private".uppercaseString; }
++ (NSString *)PublicKey { return @"Public".uppercaseString; }
++ (NSString *)Key { return NSStringFromSelector(_cmd).uppercaseString; }
 + (NSArray *)components:(NSArray *)components ofType:(NSString *)type {
-    return [components filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type == %@", type]];
+    return [components filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type contains %@", type]];
 }
 
 - (instancetype)initWithComponents:(NSArray *)components {
@@ -84,7 +83,7 @@
         // cleanup string.
         __auto_type beginString = [content substringWithRange:beginRange];
         __auto_type contentString = [content substringWithRange:contentRange];
-        __auto_type resultType = [self determineTypeByPemHeaderType:beginString];
+        __auto_type resultType = [beginString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];//[self determineTypeByPemHeaderType:beginString]; // we need full string to parse attributes "Private/Public" "EC/RSA" "KEY/CERTIFICATE" etc.
         __auto_type resultContent = [contentString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
         return [[JWTCryptoSecurityComponent alloc] initWithContent:resultContent type:resultType];
     }

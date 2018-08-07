@@ -102,7 +102,7 @@
 - (instancetype)initWithPemEncoded:(NSString *)encoded parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
     //TODO: check correctness.
     //maybe use clean initWithBase64String and remove ?: encoded tail.
-    NSString *clean = [[JWTCryptoSecurity componentsFromFileContent:encoded] componentsOfType:JWTCryptoSecurityComponents.Key].firstObject ?: encoded;//[JWTCryptoSecurity stringByRemovingPemHeadersFromString:encoded];
+    NSString *clean = ((JWTCryptoSecurityComponent *)[[JWTCryptoSecurity componentsFromFileContent:encoded] componentsOfType:JWTCryptoSecurityComponents.Key].firstObject).content ?: encoded;//[JWTCryptoSecurity stringByRemovingPemHeadersFromString:encoded];
     return [self initWithBase64String:clean parameters:parameters error:error];
 }
 - (instancetype)initWithPemAtURL:(NSURL *)url parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
