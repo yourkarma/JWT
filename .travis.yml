@@ -1,6 +1,8 @@
 language: objective-c
-osx_image: xcode9.4
-#osx_image: xcode8.3
+matrix:
+    include:
+        - osx_image: xcode9.4
+        - osx_image: xcode8.3
 
 before_install:
     # - brew update
@@ -37,13 +39,14 @@ script:
     - echo "Build iOS Static library"
     - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Static' -sdk iphonesimulator PLATFORM_NAME=iphonesimulator -configuration Release | xcpretty -c
 
-    - echo "Build as dynamic framework (ObjectiveC), each platform (osx, ios)"
-    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-macOS' -configuration Release -sdk macosx | xcpretty -c
-    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS' -configuration Release -sdk iphonesimulator | xcpretty -c
+    # Unused.
+    # - echo "Build as dynamic framework (ObjectiveC), each platform (osx, ios)"
+    # - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-macOS' -configuration Release -sdk macosx | xcpretty -c
+    # - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS' -configuration Release -sdk iphonesimulator | xcpretty -c
 
-    - echo "Build as dynamic framework (Swift), each platform (osx, ios)"
-    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-macOS-Swift' -configuration Release -sdk macosx | xcpretty -c
-    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Swift' -configuration Release -sdk iphonesimulator | xcpretty -c
+    # - echo "Build as dynamic framework (Swift), each platform (osx, ios)"
+    # - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-macOS-Swift' -configuration Release -sdk macosx | xcpretty -c
+    # - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Swift' -configuration Release -sdk iphonesimulator | xcpretty -c
 
     # Carthage.
     - echo "Build dynamic universal for each platform (osx, ios)"
@@ -51,14 +54,16 @@ script:
     - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT' -configuration Release -sdk iphonesimulator | xcpretty -c
 
     # Tests.
-    - echo Run tests
-    - pod install --project-directory=Tests
-    # 32-bit tests
+    # - echo Run tests
+    # - pod install --project-directory=Tests
     - echo Run iOS Tests
+    # 32-bit tests
+    - echo 32-bit tests
     - xcodebuild test -workspace 'Tests/Tests.xcworkspace/' -scheme 'iOS_Tests' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 5,OS=latest' | xcpretty -c
     # 64-bit tests
+    - echo 64-bit tests
     - xcodebuild test -workspace 'Tests/Tests.xcworkspace/' -scheme 'iOS_Tests' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 5s,OS=latest' | xcpretty -c
     # mac OS tests
     # UNCOMMENT WHEN READY!
-    # - echo Run Mac OS Tests
+    - echo Run Mac OS Tests
     - xcodebuild test -workspace 'Tests/Tests.xcworkspace/' -scheme 'macOS_Tests' -sdk macosx | xcpretty -c
