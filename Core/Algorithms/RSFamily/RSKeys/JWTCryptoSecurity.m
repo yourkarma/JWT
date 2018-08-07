@@ -183,6 +183,8 @@
     }
     else {
         if (error) {
+            // appropriate for Xcode 9 and higher.
+            // rewrite it later?
             if (@available(iOS 11.3, *)) {
                 __auto_type message = (__bridge NSString *)SecCopyErrorMessageString(securityError, NULL) ?: @"Unknown error message";
                 *error = (__bridge CFErrorRef)[NSError errorWithDomain:NSOSStatusErrorDomain code:securityError userInfo:@{NSLocalizedDescriptionKey : message}];
