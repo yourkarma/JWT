@@ -19,10 +19,15 @@
 @property (copy, nonatomic, readonly, class) NSString *Certificate;
 @property (copy, nonatomic, readonly, class) NSString *PrivateKey;
 @property (copy, nonatomic, readonly, class) NSString *PublicKey;
+@property (copy, nonatomic, readonly, class) NSString *Key; // Public or Private
+
+@property (copy, nonatomic, readonly) NSArray *components;
+
 + (NSArray *)components:(NSArray *)components ofType:(NSString *)type;
+- (NSArray *)componentsOfType:(NSString *)type;
 @end
 
 @interface JWTCryptoSecurity (Extraction)
-+ (NSArray *)componentsFromFile:(NSURL *)url;
-+ (NSArray *)componentsFromFileContent:(NSString *)content;
++ (JWTCryptoSecurityComponents *)componentsFromFile:(NSURL *)url;
++ (JWTCryptoSecurityComponents *)componentsFromFileContent:(NSString *)content;
 @end

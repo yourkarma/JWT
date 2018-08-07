@@ -8,6 +8,7 @@
 
 #import "JWTCryptoKey.h"
 #import "JWTCryptoSecurity.h"
+#import "JWTCryptoSecurity+Extraction.h"
 #import "JWTBase64Coder.h"
 @interface JWTCryptoKeyBuilder()
 + (NSString *)keyTypeRSA;
@@ -101,7 +102,7 @@
 - (instancetype)initWithPemEncoded:(NSString *)encoded parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
     //TODO: check correctness.
     //maybe use clean initWithBase64String and remove ?: encoded tail.
-    NSString *clean = [JWTCryptoSecurity keyFromPemFileContent:encoded] ?: encoded;//[JWTCryptoSecurity stringByRemovingPemHeadersFromString:encoded];
+    NSString *clean = [[JWTCryptoSecurity componentsFromFileContent:encoded] componentsOfType:JWTCryptoSecurityComponents.Key].firstObject ?: encoded;//[JWTCryptoSecurity stringByRemovingPemHeadersFromString:encoded];
     return [self initWithBase64String:clean parameters:parameters error:error];
 }
 - (instancetype)initWithPemAtURL:(NSURL *)url parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
