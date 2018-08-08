@@ -201,7 +201,9 @@
     }
     else {
         if (error) {
-            *error = (__bridge CFErrorRef)[JWTCryptoSecurity securityErrorWithOSStatus:securityError];
+            NSError *resultError = [JWTCryptoSecurity securityErrorWithOSStatus:securityError];
+            CFErrorRef theError = (CFErrorRef)CFBridgingRetain(resultError);
+            *error = theError;
         }
     }
 
