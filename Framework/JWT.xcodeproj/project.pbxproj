@@ -53,6 +53,10 @@
 		0A135F7C1E93E67A00A1D777 /* JWTDeprecations.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A135F4E1E93E67A00A1D777 /* JWTDeprecations.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A135F7D1E93E67A00A1D777 /* JWTErrorDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A135F4F1E93E67A00A1D777 /* JWTErrorDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A135F7E1E93E67A00A1D777 /* JWTErrorDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A135F501E93E67A00A1D777 /* JWTErrorDescription.m */; };
+		0A40613E211AD8DF00D0842B /* JWTCryptoSecurity+ExternalRepresentation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A40613C211AD8DF00D0842B /* JWTCryptoSecurity+ExternalRepresentation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0A40613F211AD8DF00D0842B /* JWTCryptoSecurity+ExternalRepresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A40613D211AD8DF00D0842B /* JWTCryptoSecurity+ExternalRepresentation.m */; };
+		0A406142211AE0D800D0842B /* JWTCryptoSecurity+ErrorHandling.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A406140211AE0D800D0842B /* JWTCryptoSecurity+ErrorHandling.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0A406143211AE0D800D0842B /* JWTCryptoSecurity+ErrorHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A406141211AE0D800D0842B /* JWTCryptoSecurity+ErrorHandling.m */; };
 		0A5B4507210DA19B0027A234 /* JWTAlgorithmErrorDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A5B4505210DA19B0027A234 /* JWTAlgorithmErrorDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A5B4508210DA19B0027A234 /* JWTAlgorithmErrorDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4506210DA19B0027A234 /* JWTAlgorithmErrorDescription.m */; };
 		0A5B450B210DA66F0027A234 /* JWTAlgorithmErrorDescription+Subclass.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A5B4509210DA66F0027A234 /* JWTAlgorithmErrorDescription+Subclass.h */; };
@@ -149,6 +153,10 @@
 		0A135F4E1E93E67A00A1D777 /* JWTDeprecations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTDeprecations.h; sourceTree = "<group>"; };
 		0A135F4F1E93E67A00A1D777 /* JWTErrorDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTErrorDescription.h; sourceTree = "<group>"; };
 		0A135F501E93E67A00A1D777 /* JWTErrorDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTErrorDescription.m; sourceTree = "<group>"; };
+		0A40613C211AD8DF00D0842B /* JWTCryptoSecurity+ExternalRepresentation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JWTCryptoSecurity+ExternalRepresentation.h"; sourceTree = "<group>"; };
+		0A40613D211AD8DF00D0842B /* JWTCryptoSecurity+ExternalRepresentation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "JWTCryptoSecurity+ExternalRepresentation.m"; sourceTree = "<group>"; };
+		0A406140211AE0D800D0842B /* JWTCryptoSecurity+ErrorHandling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JWTCryptoSecurity+ErrorHandling.h"; sourceTree = "<group>"; };
+		0A406141211AE0D800D0842B /* JWTCryptoSecurity+ErrorHandling.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "JWTCryptoSecurity+ErrorHandling.m"; sourceTree = "<group>"; };
 		0A5B4505210DA19B0027A234 /* JWTAlgorithmErrorDescription.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JWTAlgorithmErrorDescription.h; sourceTree = "<group>"; };
 		0A5B4506210DA19B0027A234 /* JWTAlgorithmErrorDescription.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JWTAlgorithmErrorDescription.m; sourceTree = "<group>"; };
 		0A5B4509210DA66F0027A234 /* JWTAlgorithmErrorDescription+Subclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JWTAlgorithmErrorDescription+Subclass.h"; sourceTree = "<group>"; };
@@ -312,6 +320,10 @@
 				0A135F331E93E67A00A1D777 /* JWTCryptoSecurity.m */,
 				0A5B45282110AC810027A234 /* JWTCryptoSecurity+Extraction.h */,
 				0A5B45292110AC810027A234 /* JWTCryptoSecurity+Extraction.m */,
+				0A40613C211AD8DF00D0842B /* JWTCryptoSecurity+ExternalRepresentation.h */,
+				0A40613D211AD8DF00D0842B /* JWTCryptoSecurity+ExternalRepresentation.m */,
+				0A406140211AE0D800D0842B /* JWTCryptoSecurity+ErrorHandling.h */,
+				0A406141211AE0D800D0842B /* JWTCryptoSecurity+ErrorHandling.m */,
 			);
 			path = RSKeys;
 			sourceTree = "<group>";
@@ -469,11 +481,13 @@
 				0A135F5A1E93E67A00A1D777 /* JWTAlgorithmDataHolderChain.h in Headers */,
 				0A135F5E1E93E67A00A1D777 /* JWTAlgorithmRSBase.h in Headers */,
 				0A135F731E93E67A00A1D777 /* JWTCoding+VersionThree.h in Headers */,
+				0A40613E211AD8DF00D0842B /* JWTCryptoSecurity+ExternalRepresentation.h in Headers */,
 				0A5B450B210DA66F0027A234 /* JWTAlgorithmErrorDescription+Subclass.h in Headers */,
 				0A135F581E93E67A00A1D777 /* JWTAlgorithmDataHolder.h in Headers */,
 				0A135F7C1E93E67A00A1D777 /* JWTDeprecations.h in Headers */,
 				0A5B4507210DA19B0027A234 /* JWTAlgorithmErrorDescription.h in Headers */,
 				0A135F711E93E67A00A1D777 /* JWTCoding+VersionOne.h in Headers */,
+				0A406142211AE0D800D0842B /* JWTCryptoSecurity+ErrorHandling.h in Headers */,
 				0A135F6F1E93E67A00A1D777 /* JWTCoding+ResultTypes.h in Headers */,
 				0A5B452A2110AC810027A234 /* JWTCryptoSecurity+Extraction.h in Headers */,
 			);
@@ -726,6 +740,7 @@
 				0A135F6E1E93E67A00A1D777 /* JWTClaimsSetVerifier.m in Sources */,
 				0A5B4508210DA19B0027A234 /* JWTAlgorithmErrorDescription.m in Sources */,
 				0A135F7B1E93E67A00A1D777 /* JWTBase64Coder.m in Sources */,
+				0A40613F211AD8DF00D0842B /* JWTCryptoSecurity+ExternalRepresentation.m in Sources */,
 				0A135F6C1E93E67A00A1D777 /* JWTClaimsSetSerializer.m in Sources */,
 				0A135F621E93E67A00A1D777 /* JWTCryptoKey.m in Sources */,
 				0A135F531E93E67A00A1D777 /* JWTAlgorithmFactory.m in Sources */,
@@ -737,6 +752,7 @@
 				0A135F6A1E93E67A00A1D777 /* JWTClaimsSet.m in Sources */,
 				0A135F551E93E67A00A1D777 /* JWTAlgorithmNone.m in Sources */,
 				0A135F7E1E93E67A00A1D777 /* JWTErrorDescription.m in Sources */,
+				0A406143211AE0D800D0842B /* JWTCryptoSecurity+ErrorHandling.m in Sources */,
 				0A135F761E93E67A00A1D777 /* JWTCoding+VersionTwo.m in Sources */,
 				0A135F781E93E67A00A1D777 /* JWTCoding.m in Sources */,
 				0A135F741E93E67A00A1D777 /* JWTCoding+VersionThree.m in Sources */,

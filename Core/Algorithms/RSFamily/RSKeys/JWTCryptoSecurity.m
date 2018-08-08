@@ -7,6 +7,7 @@
 //
 
 #import "JWTCryptoSecurity.h"
+#import "JWTCryptoSecurity+ErrorHandling.h"
 @interface JWTMemoryLayout : NSObject
 + (NSString *)typeUInt8;
 + (NSString *)typeCUnsignedChar;
@@ -42,69 +43,70 @@
     return [[self.class sizesAndTypes][self.type] integerValue];
 }
 @end
-@implementation JWTCryptoSecurity
-+ (NSDictionary *)dictionaryByCombiningDictionaries:(NSArray *)dictionaries {
-    NSMutableDictionary *result = [@{} mutableCopy];
-    for (NSDictionary *dictionary in dictionaries) {
-        [result addEntriesFromDictionary:dictionary];
-    }
-    return [result copy];
-}
-+ (NSString *)keyTypeRSA {
+
+@implementation JWTCryptoSecurityKeysTypes
++ (NSString *)RSA {
     return (__bridge NSString *)kSecAttrKeyTypeRSA;
 }
-+ (NSString *)keyTypeEC {
-//    extern const CFStringRef kSecAttrKeyTypeEC
-//    __OSX_AVAILABLE_STARTING(__MAC_10_9, __IPHONE_4_0);
-//    extern const CFStringRef kSecAttrKeyTypeECSECPrimeRandom
-//    __OSX_AVAILABLE_STARTING(__MAC_10_12, __IPHONE_10_0);
++ (NSString *)EC {
+    //    extern const CFStringRef kSecAttrKeyTypeEC
+    //    __OSX_AVAILABLE_STARTING(__MAC_10_9, __IPHONE_4_0);
+    //    extern const CFStringRef kSecAttrKeyTypeECSECPrimeRandom
+    //    __OSX_AVAILABLE_STARTING(__MAC_10_12, __IPHONE_10_0);
     return (__bridge NSString *)kSecAttrKeyTypeEC;
 }
+@end
+
+@interface JWTCryptoSecurity ()
++ (NSDictionary *)dictionaryByCombiningDictionaries:(NSArray *)dictionaries;
+@end
+
+@implementation JWTCryptoSecurity (KeysManipulation)
 + (SecKeyRef)addKeyWithData:(NSData *)data asPublic:(BOOL)thePublic tag:(NSString *)tag type:(NSString *)type error:(NSError *__autoreleasing*)error; {
     NSString *keyClass = (__bridge NSString *)(thePublic ? kSecAttrKeyClassPublic : kSecAttrKeyClassPrivate);
     NSInteger sizeInBits = data.length * [JWTMemoryLayout createWithType:[JWTMemoryLayout typeUInt8]].size;
     NSDictionary *attributes = @{
-        (__bridge NSString*)kSecAttrKeyType : type,
-        (__bridge NSString*)kSecAttrKeyClass : keyClass,
-        (__bridge NSString*)kSecAttrKeySizeInBits : @(sizeInBits)
-    };
+                                 (__bridge NSString*)kSecAttrKeyType : type,
+                                 (__bridge NSString*)kSecAttrKeyClass : keyClass,
+                                 (__bridge NSString*)kSecAttrKeySizeInBits : @(sizeInBits)
+                                 };
     
     if (SecKeyCreateWithData != NULL) {
         CFErrorRef createError = NULL;
         SecKeyRef key = SecKeyCreateWithData((__bridge CFDataRef)data, (__bridge CFDictionaryRef)attributes, &createError);
-        if (error && createError != nil) {
+        if (error && createError != NULL) {
             *error = (__bridge NSError*)createError;
         }
         return key;
     }
     // oh... not avaialbe API :/
     else {
-
+        
         CFTypeRef result = NULL;
         NSData *tagData = [tag dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *commonAttributes = @{
-            (__bridge NSString*)kSecClass: (__bridge NSString*)kSecClassKey,
-            (__bridge NSString*)kSecAttrApplicationTag: tagData,
-            (__bridge NSString*)kSecAttrAccessible: (__bridge NSString*)kSecAttrAccessibleWhenUnlocked
-        };
-
-
+                                           (__bridge NSString*)kSecClass: (__bridge NSString*)kSecClassKey,
+                                           (__bridge NSString*)kSecAttrApplicationTag: tagData,
+                                           (__bridge NSString*)kSecAttrAccessible: (__bridge NSString*)kSecAttrAccessibleWhenUnlocked
+                                           };
+        
+        
         NSDictionary *addItemAttributes = @{
-           (__bridge NSString*)kSecValueData: data,
-           (__bridge NSString*)kSecReturnPersistentRef: @(YES),
-        };
-
+                                            (__bridge NSString*)kSecValueData: data,
+                                            (__bridge NSString*)kSecReturnPersistentRef: @(YES),
+                                            };
+        
         OSStatus addItemStatus = SecItemAdd((__bridge CFDictionaryRef)[self dictionaryByCombiningDictionaries:@[attributes, commonAttributes, addItemAttributes]], &result);
         if (addItemStatus != errSecSuccess && addItemStatus != errSecDuplicateItem) {
             // add item error
             // not duplicate and not added to keychain.
             return NULL;
         }
-
+        
         NSDictionary *copyAttributes = @{
-                (__bridge NSString*)kSecReturnRef: @(YES),
-        };
-
+                                         (__bridge NSString*)kSecReturnRef: @(YES),
+                                         };
+        
         CFTypeRef key = NULL;
         // TODO: Add error handling later.
         OSStatus copyItemStatus = SecItemCopyMatching((__bridge CFDictionaryRef)[self dictionaryByCombiningDictionaries:@[attributes, commonAttributes, copyAttributes]], &key);
@@ -116,7 +118,7 @@
         }
         return (SecKeyRef)key;
     }
-
+    
     return NULL;
 }
 + (SecKeyRef)addKeyWithData:(NSData *)data asPublic:(BOOL)public tag:(NSString *)tag error:(NSError *__autoreleasing*)error; {
@@ -130,15 +132,31 @@
 + (void)removeKeyByTag:(NSString *)tag error:(NSError *__autoreleasing*)error; {
     NSData *tagData = [tag dataUsingEncoding:NSUTF8StringEncoding];
     if (tagData == nil) {
-        // tell that nothing to remove.        
+        // tell that nothing to remove.
         return;
     }
     NSDictionary *removeAttributes = @{
-            (__bridge NSString*)kSecClass: (__bridge NSString*)kSecClassKey,
-            (__bridge NSString*)kSecAttrKeyType: (__bridge NSString*)kSecAttrKeyTypeRSA,
-            (__bridge NSString*)kSecAttrApplicationTag: tagData,
-    };
+                                       (__bridge NSString*)kSecClass: (__bridge NSString*)kSecClassKey,
+                                       (__bridge NSString*)kSecAttrKeyType: (__bridge NSString*)kSecAttrKeyTypeRSA,
+                                       (__bridge NSString*)kSecAttrApplicationTag: tagData,
+                                       };
     SecItemDelete((__bridge CFDictionaryRef)removeAttributes);
+}
+@end
+
+@implementation JWTCryptoSecurity
++ (NSDictionary *)dictionaryByCombiningDictionaries:(NSArray *)dictionaries {
+    NSMutableDictionary *result = [@{} mutableCopy];
+    for (NSDictionary *dictionary in dictionaries) {
+        [result addEntriesFromDictionary:dictionary];
+    }
+    return [result copy];
+}
++ (NSString *)keyTypeRSA {
+    return JWTCryptoSecurityKeysTypes.RSA;
+}
++ (NSString *)keyTypeEC {
+    return JWTCryptoSecurityKeysTypes.RSA;
 }
 @end
 
@@ -183,25 +201,18 @@
     }
     else {
         if (error) {
-            // appropriate for Xcode 9 and higher.
-            // rewrite it later?
-            if (@available(iOS 11.3, *)) {
-                __auto_type message = (__bridge NSString *)SecCopyErrorMessageString(securityError, NULL) ?: @"Unknown error message";
-                *error = (__bridge CFErrorRef)[NSError errorWithDomain:NSOSStatusErrorDomain code:securityError userInfo:@{NSLocalizedDescriptionKey : message}];
-            } else {
-                // Fallback on earlier versions
-                // unable to get message?
-                *error = (__bridge CFErrorRef)[NSError errorWithDomain:NSOSStatusErrorDomain code:securityError userInfo:nil];
-            }
+            *error = (__bridge CFErrorRef)[JWTCryptoSecurity securityErrorWithOSStatus:securityError];
         }
     }
 
-    if (optionsDictionary)                                      // 4
+    if (optionsDictionary) {
         CFRelease(optionsDictionary);
-
-    if (items)
+    }
+    
+    if (items) {
         CFRelease(items);
-
+    }
+    
     return securityError;
 }
 

@@ -9,6 +9,7 @@
 #import "JWTCryptoKey.h"
 #import "JWTCryptoSecurity.h"
 #import "JWTCryptoSecurity+Extraction.h"
+#import "JWTCryptoSecurity+ExternalRepresentation.h"
 #import "JWTBase64Coder.h"
 @interface JWTCryptoKeyBuilder()
 + (NSString *)keyTypeRSA;
@@ -130,6 +131,14 @@
         *error = [NSError errorWithDomain:@"org.opensource.jwt.security.key" code:-200 userInfo:@{NSLocalizedDescriptionKey : @"Security key not retrieved! something went wrong!"}];
     }
     return self;
+}
+@end
+
+@implementation JWTCryptoKey (ExternalRepresentation)
+- (NSString *)externalRepresentationForCoder:(JWTBase64Coder *)coder error:(NSError *__autoreleasing *)error {
+    NSData *data = [JWTCryptoSecurity externalRepresentationForKey:self.key error:error];
+    NSString *result = (NSString *)[coder ?: JWTBase64Coder.withBase64String stringWithData:data];
+    return result;
 }
 @end
 
@@ -310,7 +319,7 @@
     if (identityAndTrust) {
         self = [super init];
         SecKeyRef privateKey;
-        SecIdentityCopyPrivateKey(identity, &privateKey);
+        OSStatus status = SecIdentityCopyPrivateKey(identity, &privateKey);
         if (self) {
             self.key = privateKey;
         }
