@@ -258,7 +258,7 @@ NS_AVAILABLE(10_12, 10_0)
     }
     else {
         CFErrorRef theError = NULL;
-        NSData *result = (__bridge NSData *)SecKeyCreateSignature(privateKey, self.algorithm, (__bridge CFDataRef)plainData, &theError);
+        NSData *result = (NSData *)CFBridgingRelease(SecKeyCreateSignature(privateKey, self.algorithm, (__bridge CFDataRef)plainData, &theError));
         if (error && theError) {
             *error = (__bridge NSError *)(theError);
         }

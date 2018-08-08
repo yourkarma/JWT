@@ -47,6 +47,11 @@
 + (NSString *)parametersKeyBuilder;
 @end
 
+@class JWTBase64Coder;
+@interface JWTCryptoKey (ExternalRepresentation)
+- (NSString *)externalRepresentationForCoder:(JWTBase64Coder *)coder error:(NSError *__autoreleasing *)error;
+@end
+
 @interface JWTCryptoKeyPublic : JWTCryptoKey <JWTCryptoKey__Generator__Protocol, JWTCryptoKey__Raw__Generator__Protocol>
 - (instancetype)initWithCertificateData:(NSData *)certificateData parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error; //NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithCertificateBase64String:(NSString *)certificateString parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error;

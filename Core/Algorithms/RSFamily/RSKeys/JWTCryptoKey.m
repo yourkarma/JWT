@@ -9,6 +9,7 @@
 #import "JWTCryptoKey.h"
 #import "JWTCryptoSecurity.h"
 #import "JWTCryptoSecurity+Extraction.h"
+#import "JWTCryptoSecurity+ExternalRepresentation.h"
 #import "JWTBase64Coder.h"
 @interface JWTCryptoKeyBuilder()
 + (NSString *)keyTypeRSA;
@@ -130,6 +131,14 @@
         *error = [NSError errorWithDomain:@"org.opensource.jwt.security.key" code:-200 userInfo:@{NSLocalizedDescriptionKey : @"Security key not retrieved! something went wrong!"}];
     }
     return self;
+}
+@end
+
+@implementation JWTCryptoKey (ExternalRepresentation)
+- (NSString *)externalRepresentationForCoder:(JWTBase64Coder *)coder error:(NSError *__autoreleasing *)error {
+    NSData *data = [JWTCryptoSecurity externalRepresentationForKey:self.key error:error];
+    NSString *result = (NSString *)[coder ?: JWTBase64Coder.withBase64String stringWithData:data];
+    return result;
 }
 @end
 
@@ -305,30 +314,35 @@
             }
         }
     }
+    
     BOOL identityAndTrust = identity && trust;
-
-    if (identityAndTrust) {
-        self = [super init];
-        SecKeyRef privateKey;
-        SecIdentityCopyPrivateKey(identity, &privateKey);
-        if (self) {
-            self.key = privateKey;
-        }
-    }
-
-    if (identity) {
-        CFRelease(identity);
-    }
-
+    
+    // we don't need trust anymore.
     if (trust) {
         CFRelease(trust);
     }
-
-    if (!identityAndTrust) {
-        //error: no identity and trust.
-        return nil;
+    
+    SecKeyRef privateKey = NULL;
+    if (identityAndTrust) {
+        OSStatus status = SecIdentityCopyPrivateKey(identity, &privateKey);
+        NSError *theError = [JWTCryptoSecurity securityErrorWithOSStatus:status];
+        if (theError) {
+            if (error) {
+                *error = theError;
+            }
+        }
     }
-
+    
+    if (identity) {
+        CFRelease(identity);
+    }
+    
+    if (privateKey != NULL) {
+        if (self = [super init]) {
+            self.key = privateKey;
+        }
+    }
+    
     return self;
 }
 @end

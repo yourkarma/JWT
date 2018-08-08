@@ -18,5 +18,5 @@
 #define __available_in_release_version(version) __deprecated_msg("will be introduced in release version: " STR(version))
 
 #define __jwt_technical_debt(debt) __deprecated_msg("Don't forget to inspect it later." STR(debt))
-
+#define __deprecated_with_replacement(msg) __deprecated_msg("Use " STR(msg))
 #endif /* JWTDeprecations_h */
