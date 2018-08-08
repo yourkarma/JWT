@@ -314,45 +314,35 @@
             }
         }
     }
+    
     BOOL identityAndTrust = identity && trust;
-
+    
+    // we don't need trust anymore.
+    if (trust) {
+        CFRelease(trust);
+    }
+    
+    SecKeyRef privateKey = NULL;
     if (identityAndTrust) {
-        SecKeyRef privateKey;
         OSStatus status = SecIdentityCopyPrivateKey(identity, &privateKey);
         NSError *theError = [JWTCryptoSecurity securityErrorWithOSStatus:status];
         if (theError) {
             if (error) {
                 *error = theError;
             }
-            if (identity) {
-                CFRelease(identity);
-            }
-            
-            if (trust) {
-                CFRelease(trust);
-            }
-            return nil;
-        }
-        
-        self = [super init];
-        if (self) {
-            self.key = privateKey;
         }
     }
-
+    
     if (identity) {
         CFRelease(identity);
     }
-
-    if (trust) {
-        CFRelease(trust);
+    
+    if (privateKey != NULL) {
+        if (self = [super init]) {
+            self.key = privateKey;
+        }
     }
-
-    if (!identityAndTrust) {
-        //error: no identity and trust.
-        return nil;
-    }
-
+    
     return self;
 }
 @end
