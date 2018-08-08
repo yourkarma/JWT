@@ -122,7 +122,7 @@
     return NULL;
 }
 + (SecKeyRef)addKeyWithData:(NSData *)data asPublic:(BOOL)public tag:(NSString *)tag error:(NSError *__autoreleasing*)error; {
-    return [self addKeyWithData:data asPublic:public tag:tag type:[self keyTypeRSA] error:error];
+    return [self addKeyWithData:data asPublic:public tag:tag type:JWTCryptoSecurityKeysTypes.RSA error:error];
 }
 
 + (SecKeyRef)keyByTag:(NSString *)tag error:(NSError *__autoreleasing*)error; {
@@ -201,7 +201,9 @@
     }
     else {
         if (error) {
-            *error = (__bridge CFErrorRef)[JWTCryptoSecurity securityErrorWithOSStatus:securityError];
+            NSError *resultError = [JWTCryptoSecurity securityErrorWithOSStatus:securityError];
+            CFErrorRef theError = (CFErrorRef)CFBridgingRetain(resultError);
+            *error = theError;
         }
     }
 

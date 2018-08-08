@@ -118,116 +118,68 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
 }
 
 #pragma mark - JWTAlgorithm
+- (NSDictionary *)verifyKeyExtractorParameters {
+    return @{[JWTCryptoKey parametersKeyBuilder] : [JWTCryptoKeyBuilder new].keyTypeRSA};
+}
+- (NSDictionary *)signKeyExtractorParameters {
+    NSMutableDictionary *mutableDictionary = [[self verifyKeyExtractorParameters] mutableCopy];
+    mutableDictionary[[JWTCryptoKeyExtractor parametersKeyCertificatePassphrase]] = self.privateKeyCertificatePassphrase ?: [NSNull null];
+    return [mutableDictionary copy];
+}
+
+- (void)removeKeyItem:(id<JWTCryptoKeyProtocol>)item error:(NSError *__autoreleasing *)error {
+    NSError *theError = nil;
+    [JWTCryptoSecurity removeKeyByTag:item.tag error:&theError];
+    if (theError && error) {
+        *error = theError;
+    }
+}
+
 - (NSData *)signHash:(NSData *)hash key:(NSData *)key error:(NSError *__autoreleasing *)error {
-    NSData *result = nil;
-    if (self.signKey || self.keyExtractor) {
-        NSError *extractKeyError = nil;
-        id <JWTCryptoKeyProtocol> keyItem = self.signKey ?: [self.keyExtractor keyFromData:key parameters:@{ [JWTCryptoKeyExtractor parametersKeyCertificatePassphrase] : self.privateKeyCertificatePassphrase ?: [NSNull null] } error:&extractKeyError];
-        
-        if (extractKeyError || keyItem == nil) {
-            // tell about error
-            if (extractKeyError && error) {
-                *error = extractKeyError;
-            }
-            NSError *removeError = nil;
-            [JWTCryptoSecurity removeKeyByTag:keyItem.tag error:&removeError];
-            if (removeError && error) {                
-                *error = removeError;
-            }
+    id<JWTCryptoKeyExtractorProtocol> theExtractor = self.keyExtractor ?: [JWTCryptoKeyExtractor privateKeyInP12];
+    NSError *extractKeyError = nil;
+    id <JWTCryptoKeyProtocol> keyItem = self.signKey ?: [theExtractor keyFromData:key parameters:[self signKeyExtractorParameters] error:&extractKeyError];
+    
+    if (extractKeyError || keyItem == nil) {
+        // tell about error
+        if (extractKeyError && error) {
+            *error = extractKeyError;
         }
-        else {
-            NSError *signError = nil;
-            result = [self signData:hash key:keyItem.key error:&signError];
-            if (signError && error) {
-                *error = signError;
-            }
-        }
+        NSError *removeError = nil;
+        [self removeKeyItem:keyItem error:&removeError];
+        return nil;
     }
     else {
-        SecIdentityRef identity = nil;
-        SecTrustRef trust = nil;
-        
-//        [JWTCryptoSecurity extractIdentityAndTrustFromPKCS12:inPKCS12Data password:keyPassword identity:outIdentity trust:outTrust];
-        [JWTCryptoSecurity extractIdentityAndTrustFromPKCS12:(__bridge CFDataRef)(key) password: (__bridge CFStringRef)(self.privateKeyCertificatePassphrase) identity:&identity trust:&trust];
-        
-        if (identity && trust) {
-            SecKeyRef privateKey;
-            SecIdentityCopyPrivateKey(identity, &privateKey);
-            
-            NSError *signError = nil;
-            result = [self signData:hash key:privateKey error:&signError];
-            if (signError && error) {
-                *error = signError;
-            }
-            
-            if (privateKey) {
-                CFRelease(privateKey);
-            }
+        NSError *signError = nil;
+        NSData *result = [self signData:hash key:keyItem.key error:&signError];
+        if (signError && error) {
+            *error = signError;
         }
-        
-        if (identity) {
-            CFRelease(identity);
-        }
-        
-        if (trust) {
-            CFRelease(trust);
-        }
+        return result;
     }
-    return result;
 }
 - (BOOL)verifyHash:(NSData *)hash signature:(NSData *)signature key:(NSData *)key error:(NSError *__autoreleasing *)error {
-    if (self.verifyKey || self.keyExtractor) {
-        NSError *extractKeyError = nil;
-        id<JWTCryptoKeyProtocol> keyItem = self.verifyKey?: [self.keyExtractor keyFromData:key parameters:nil error:&extractKeyError];
-        BOOL verified = NO;
-        
-        if (extractKeyError || keyItem == nil) {
-            // error while getting key.
-            // cleanup.
-            // tell about error
-            if (extractKeyError && error) {
-                *error = extractKeyError;
-            }
-            NSError *removeError = nil;
-            [JWTCryptoSecurity removeKeyByTag:keyItem.tag error:&removeError];
-            if (removeError && error) {
-                //???
-                *error = removeError;
-            }
-            return verified;
+    id<JWTCryptoKeyExtractorProtocol> theExtractor = self.keyExtractor ?: [JWTCryptoKeyExtractor publicKeyWithCertificate];
+    NSError *extractKeyError = nil;
+    id<JWTCryptoKeyProtocol> keyItem = self.verifyKey ?: [theExtractor keyFromData:key parameters:[self verifyKeyExtractorParameters] error:&extractKeyError];
+    if (extractKeyError || keyItem == nil) {
+        if (extractKeyError && error) {
+            *error = extractKeyError;
         }
-        else {
-            NSError *verifyError = nil;
-            verified = [self verifyData:hash signature:signature key:keyItem.key error:&verifyError];
-            if (verifyError && error) {
-                *error = verifyError;
-            }
-        }
-        
         NSError *removeError = nil;
-        [JWTCryptoSecurity removeKeyByTag:keyItem.tag error:&removeError];
-        
-        if (error && removeError) {
-            *error = removeError;
-        }
-        
-        return verified;
+        [self removeKeyItem:keyItem error:&removeError];
+        return NO;
     }
     else {
-        SecKeyRef publicKey = [JWTCryptoSecurity publicKeyFromCertificate:key];
-        // TODO: special error handling here.
-        // add error handling later?
-        if (publicKey != NULL) {
-            NSError *verifyError = nil;
-            BOOL verified = [self verifyData:hash signature:signature key:publicKey error:&verifyError];
-            if (verifyError && error) {
-                *error = verifyError;
-            }
-            CFRelease(publicKey);
-            return verified;
+        NSError *verifyError = nil;
+        BOOL verified = [self verifyData:hash signature:signature key:keyItem.key error:&verifyError];
+        if (verifyError && error) {
+            *error = verifyError;
         }
+        NSError *removeError = nil;
+        [self removeKeyItem:keyItem error:&removeError];
+        return verified;
     }
-    return NO;
 }
 
 - (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {

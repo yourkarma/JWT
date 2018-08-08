@@ -250,9 +250,9 @@
 @implementation JWTAlgorithmAsymmetricTests
 
 - (void)showExternalRepresentation:(SecKeyRef)key name:(NSString *)name type:(NSString *)type {
-    CFErrorRef error = NULL;
-    __auto_type presentation = SecKeyCopyExternalRepresentation(key, &error);
-    __auto_type data = (NSData *)CFBridgingRelease(presentation);
+    NSError *error = nil;
+    __auto_type presentation = [JWTCryptoSecurity externalRepresentationForKey:key error:&error];
+    __auto_type data = presentation;
     __auto_type string = [JWTBase64Coder base64UrlEncodedStringWithData:data];
     NSLog(@"name: %@ type: %@ presentation: %@", name, type, string);
 }
