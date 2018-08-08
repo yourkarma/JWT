@@ -319,8 +319,23 @@
     if (identityAndTrust) {
         SecKeyRef privateKey;
         OSStatus status = SecIdentityCopyPrivateKey(identity, &privateKey);
-        NSError *error = [JWTCryptoSecurity securityErrorWithOSStatus:status];
-        if (self = [super init] && error == nil) {
+        NSError *theError = [JWTCryptoSecurity securityErrorWithOSStatus:status];
+        if (theError) {
+            if (error) {
+                *error = theError;
+            }
+            if (identity) {
+                CFRelease(identity);
+            }
+            
+            if (trust) {
+                CFRelease(trust);
+            }
+            return nil;
+        }
+        
+        self = [super init];
+        if (self) {
             self.key = privateKey;
         }
     }
