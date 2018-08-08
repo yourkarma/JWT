@@ -10,6 +10,9 @@
 
 @implementation JWTCryptoSecurity (ErrorHandling)
 + (NSError *)securityErrorWithOSStatus:(OSStatus)status {
+    if (status == errSecSuccess) {
+        return nil;
+    }
     // appropriate for Xcode 9 and higher.
     // rewrite it later?
     if (@available(iOS 11.3, *)) {

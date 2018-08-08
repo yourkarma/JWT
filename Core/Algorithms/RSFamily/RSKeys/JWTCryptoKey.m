@@ -317,10 +317,10 @@
     BOOL identityAndTrust = identity && trust;
 
     if (identityAndTrust) {
-        self = [super init];
         SecKeyRef privateKey;
         OSStatus status = SecIdentityCopyPrivateKey(identity, &privateKey);
-        if (self) {
+        NSError *error = [JWTCryptoSecurity securityErrorWithOSStatus:status];
+        if (self = [super init] && error == nil) {
             self.key = privateKey;
         }
     }

@@ -113,7 +113,7 @@
         if (key == NULL) {
             // copy item error
             if (error) {
-                *error = [NSError errorWithDomain:@"org.opensource.jwt" code:copyItemStatus userInfo:@{NSLocalizedDescriptionKey: @"error"}];
+                *error = [JWTCryptoSecurity securityErrorWithOSStatus:copyItemStatus];
             }
         }
         return (SecKeyRef)key;
