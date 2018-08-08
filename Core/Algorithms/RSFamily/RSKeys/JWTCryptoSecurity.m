@@ -156,7 +156,7 @@
     return JWTCryptoSecurityKeysTypes.RSA;
 }
 + (NSString *)keyTypeEC {
-    return JWTCryptoSecurityKeysTypes.RSA;
+    return JWTCryptoSecurityKeysTypes.EC;
 }
 @end
 
