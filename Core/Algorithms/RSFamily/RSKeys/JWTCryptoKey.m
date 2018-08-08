@@ -72,11 +72,10 @@
 // Parameters are nil at that moment, could be used later for some purposes
 - (NSString *)extractedSecKeyTypeWithParameters:(NSDictionary *)parameters {
     JWTCryptoKeyBuilder *builder = [self extractedBuilderWithParameters:parameters];
-    NSString *result = nil;
     if (builder.withKeyTypeEC) {
-        result = [JWTCryptoSecurity keyTypeEC];
+        return JWTCryptoSecurityKeysTypes.EC;
     }
-    return result ?: [JWTCryptoSecurity keyTypeRSA];
+    return JWTCryptoSecurityKeysTypes.RSA;
 }
 @end
 @interface JWTCryptoKey (Generator) <JWTCryptoKey__Generator__Protocol, JWTCryptoKey__Raw__Generator__Protocol>

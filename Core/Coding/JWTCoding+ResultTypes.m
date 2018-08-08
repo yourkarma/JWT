@@ -15,10 +15,10 @@ NSString *JWTCodingResultPayload = @"payload";
 
 @implementation JWTCodingResultComponents
 + (NSString *)Headers {
-    return JWTCodingResultHeaders;
+    return @"header";
 }
 + (NSString *)Payload {
-    return JWTCodingResultPayload;
+    return @"payload";
 }
 @end
 
