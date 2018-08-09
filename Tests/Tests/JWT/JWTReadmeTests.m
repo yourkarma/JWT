@@ -14,6 +14,64 @@
 @implementation JWTReadmeTests
 
 - (void)testVersionThree {
+    [XCTContext runActivityNamed:@"API should work well with EC algorithms" block:^(id<XCTActivity>  _Nonnull activity) {
+        NSString *privatePemFilename = @"ec256-private";
+        NSString *publicPemFilename = @"ec256-public";
+        NSString *passphrase = @"password";
+        NSString *(^loadKey)(NSString *, NSBundle *) = ^NSString *(NSString *name, NSBundle *bundle){
+            NSURL *fileURL = [bundle URLForResource:name withExtension:@"pem"];
+            NSError *error = nil;
+            NSString *fileContent = [NSString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
+            if (error) {
+                NSLog(@"%@ error: %@", self.debugDescription, error);
+                return nil;
+            }
+            return fileContent;
+        };
+        NSBundle *bundle = [NSBundle bundleForClass:self.class];
+        NSString *publicPemKey = loadKey(publicPemFilename, bundle);
+        NSString *privatePemKey = loadKey(privatePemFilename, bundle);
+        
+        // sign and verify
+        {
+            NSString *algorithmName = @"ES256";
+            id <JWTAlgorithmDataHolderProtocol> signDataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor privateKeyWithPEMBase64].type).privateKeyCertificatePassphrase(passphrase).algorithmName(algorithmName).secret(privatePemKey);
+            
+            id <JWTAlgorithmDataHolderProtocol> verifyDataHolder = [JWTAlgorithmRSFamilyDataHolder new].keyExtractorType([JWTCryptoKeyExtractor publicKeyWithPEMBase64].type).algorithmName(algorithmName).secret(publicPemKey);
+            
+            NSDictionary *payloadDictionary = @{@"hello": @"world"};
+            
+            JWTCodingBuilder *signBuilder = [JWTEncodingBuilder encodePayload:payloadDictionary].addHolder(signDataHolder);
+            JWTCodingResultType *signResult = signBuilder.result;
+            NSString *token = nil;
+            if (signResult.successResult) {
+                // success
+                NSLog(@"%@ success: %@", self.debugDescription, signResult.successResult.encoded);
+                token = signResult.successResult.encoded;
+            }
+            else {
+                // error
+                NSLog(@"%@ error: %@", self.debugDescription, signResult.errorResult.error);
+            }
+            
+            // verify
+            if (token == nil) {
+                NSLog(@"something wrong");
+            }
+            
+            JWTCodingBuilder *verifyBuilder = [JWTDecodingBuilder decodeMessage:token].addHolder(verifyDataHolder);
+            JWTCodingResultType *verifyResult = verifyBuilder.result;
+            if (verifyResult.successResult) {
+                // success
+                NSLog(@"%@ success: %@", self.debugDescription, verifyResult.successResult.payload);
+                token = verifyResult.successResult.encoded;
+            }
+            else {
+                // error
+                NSLog(@"%@ error: %@", self.debugDescription, verifyResult.errorResult.error);
+            }
+        }
+    }];
     [XCTContext runActivityNamed:@"API should work well with Pem keys loading" block:^(id<XCTActivity> _Nonnull activity){
         NSString *privatePemFilename = @"rs256-private";
         NSString *publicPemFilename = @"rs256-public";
