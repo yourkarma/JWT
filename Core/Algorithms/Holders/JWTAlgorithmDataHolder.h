@@ -90,10 +90,15 @@
 @protocol JWTCryptoKeyProtocol;
 
 /*
+ JWTAlgorithmRSFamilyDataHolder actually is JWTAlgorithmAsymmetricTypeDataHolder.
+ It will be renamed later.
+ */
+@interface JWTAlgorithmRSFamilyDataHolder : JWTAlgorithmBaseDataHolder <JWTAlgorithmDataHolderCreateProtocol>
+/*
  Default stringCoder is [JWTBase64Coder withBase64String].
  You could set secretData by secret setter ( holder.secret(secretString) ) in base64 format e.g. put pem file content in it (ugly string with equal sign at the end for example).
  */
-@interface JWTAlgorithmRSFamilyDataHolder : JWTAlgorithmBaseDataHolder <JWTAlgorithmDataHolderCreateProtocol>
+
 #pragma mark - Getters
 /**
  The passphrase for the PKCS12 blob, which represents the certificate containing the private key for the RS algorithms.
