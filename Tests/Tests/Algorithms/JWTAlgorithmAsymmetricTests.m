@@ -435,6 +435,9 @@
                                        ];
         for (NSString *name in algorithmNames) {
             __auto_type helper = [[JWTAlgorithmAsymmetricTestsHelper new] configuredByName:name];
+            if (helper.algorithm == nil) {
+                continue;
+            }
             __auto_type dictionary = [self extractedKeysIntoSecretWithHelper:helper];
             [self verifyKeysWithTokensAndHolders:dictionary helper:helper];
         }
@@ -448,6 +451,9 @@
                                    ];
         for (NSString *name in algorithmsNames) {
             __auto_type helper = [[JWTAlgorithmAsymmetricTestsHelper new] configuredByName:name];
+            if (helper.algorithm == nil) {
+                continue;
+            }
             __auto_type dictionary = [self extractedKeysIntoSignAndVerifyKeysWithHelper:helper];
             [self verifyKeysWithTokensAndHolders:dictionary helper:helper];
         }

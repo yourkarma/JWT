@@ -11,7 +11,33 @@ A [JSON Web Token][] implementation in Objective-C.
 [JSON Web Token]: http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html
 
 # What's new in master and bleeding edge.
-Nothing here.
+
+* EC algorithms support.
+* Keys extraction from Pem files has been updated.
+
+## EC algorithms support.
+
+### Prerequisites.
+
+* Certificate and P12 for Public and Private keys accordingly.
+* Pem files with keys in *ANSI X9.63* format.
+
+### Example.
+
+```objective-c
+NSString *privateKeyString = @"<ANSI X9.63 formatted key>";
+NSString *publicKeyString = @"<ANSI X9.63 formatted key>";
+
+// Note: We should pass type of key. Default type is RSA.
+NSDictionary *parameters = @{JWTCryptoKey.parametersKeyBuilder : JWTCryptoKeyBuilder.new.keyTypeEC};
+
+id <JWTCryptoKeyProtocol> privateKey = [[JWTCryptoKeyPrivate alloc] initWithPemEncoded:privateKeyString parameters:parameters error:nil];
+id <JWTCryptoKeyProtocol> publicKey = [[JWTCryptoKeyPublic alloc] initWithPemEncoded:publicKeyString parameters:parameters error:nil];
+
+// Note: JWTAlgorithmRSFamilyDataHolder will be renamed to something more appropriate. It can holds any asymmetric keys pair (private and public).
+id <JWTAlgorithmDataHolderProtocol> holder = [JWTAlgorithmRSFamilyDataHolder new].signKey(privateKey).verifyKey(publicKey).algorithmName(JWTAlgorithmNameES256);
+```
+
 
 # What's new in Version 3.0
 
@@ -22,7 +48,7 @@ Nothing here.
 * Keys loaded from Pem files.
 
 ## Introduction to Algorithms data holders and chain.
-You have algorithm, secret data and unknown jwt token.
+You have an algorithm, a secret data and an unknown jwt token.
 Let's try to decode it.
 
 ```objective-c
