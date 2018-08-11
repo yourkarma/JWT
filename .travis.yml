@@ -35,10 +35,6 @@ script:
     - echo Check if the library described by the podspec can be built
     - pod lib lint --allow-warnings
 
-    # Build.
-    - echo "Build iOS Static library"
-    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Static' -sdk iphonesimulator PLATFORM_NAME=iphonesimulator -configuration Release | xcpretty -c
-
     # Unused.
     # - echo "Build as dynamic framework (ObjectiveC), each platform (osx, ios)"
     # - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-macOS' -configuration Release -sdk macosx | xcpretty -c
@@ -48,10 +44,20 @@ script:
     # - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-macOS-Swift' -configuration Release -sdk macosx | xcpretty -c
     # - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Swift' -configuration Release -sdk iphonesimulator | xcpretty -c
 
-    # Carthage.
+    # Framework.
     - echo "Build dynamic universal for each platform (osx, ios)"
     - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT' -configuration Release -sdk macosx | xcpretty -c
     - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT' -configuration Release -sdk iphonesimulator | xcpretty -c
+
+    # Static Library.
+    # We need to change order in case of xcodebuild bug.
+    # xcodebuild does not remove static library on -clean action.
+    # In this case
+    # static library after framework is ok.
+    # framework after static library is bad.
+    # beer and wine order, heh.
+    - echo "Build iOS Static library"
+    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Static' -sdk iphonesimulator PLATFORM_NAME=iphonesimulator -configuration Release | xcpretty -c
 
     # Tests.
     # - echo Run tests
