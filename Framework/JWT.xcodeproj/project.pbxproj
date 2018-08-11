@@ -69,23 +69,6 @@
 		0AD2D66B2113173D00104C72 /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD2D6612113173D00104C72 /* MF_Base64Additions.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		045147241D5E2CD2007B1D7A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A1951DAE1758990700AF73D9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 045146751D5E2AA1007B1D7A;
-			remoteInfo = JWT_iOS_Framework;
-		};
-		045147261D5E2CDE007B1D7A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A1951DAE1758990700AF73D9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0451468F1D5E2AC3007B1D7A;
-			remoteInfo = JWT_macOS_Framework;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		045146661D5E2A78007B1D7A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -100,10 +83,6 @@
 
 /* Begin PBXFileReference section */
 		045146681D5E2A78007B1D7A /* libJWT.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJWT.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		045146761D5E2AA1007B1D7A /* JWT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JWT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		045146831D5E2AAF007B1D7A /* JWTSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JWTSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		045146901D5E2AC3007B1D7A /* JWT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JWT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0451469D1D5E2AD2007B1D7A /* JWTSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JWTSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		04DEBCA31DBCDB8600C1DF52 /* JWT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JWT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		04DEBCD61DBCE64100C1DF52 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A135F141E93E5E100A1D777 /* Core.default.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Core.default.xcconfig; sourceTree = "<group>"; };
@@ -173,34 +152,6 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		045146651D5E2A78007B1D7A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		045146721D5E2AA1007B1D7A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0451467F1D5E2AAF007B1D7A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0451468C1D5E2AC3007B1D7A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		045146991D5E2AD2007B1D7A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -405,10 +356,6 @@
 			isa = PBXGroup;
 			children = (
 				045146681D5E2A78007B1D7A /* libJWT.a */,
-				045146761D5E2AA1007B1D7A /* JWT.framework */,
-				045146831D5E2AAF007B1D7A /* JWTSwift.framework */,
-				045146901D5E2AC3007B1D7A /* JWT.framework */,
-				0451469D1D5E2AD2007B1D7A /* JWTSwift.framework */,
 				04DEBCA31DBCDB8600C1DF52 /* JWT.framework */,
 			);
 			name = Products;
@@ -426,34 +373,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		045146731D5E2AA1007B1D7A /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		045146801D5E2AAF007B1D7A /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0451468D1D5E2AC3007B1D7A /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0451469A1D5E2AD2007B1D7A /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		04DEBCA01DBCDB8600C1DF52 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -513,80 +432,6 @@
 			productReference = 045146681D5E2A78007B1D7A /* libJWT.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		045146751D5E2AA1007B1D7A /* JWT-iOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0451467B1D5E2AA1007B1D7A /* Build configuration list for PBXNativeTarget "JWT-iOS" */;
-			buildPhases = (
-				045146711D5E2AA1007B1D7A /* Sources */,
-				045146721D5E2AA1007B1D7A /* Frameworks */,
-				045146731D5E2AA1007B1D7A /* Headers */,
-				045146741D5E2AA1007B1D7A /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "JWT-iOS";
-			productName = JWT_iOS_Framework;
-			productReference = 045146761D5E2AA1007B1D7A /* JWT.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		045146821D5E2AAF007B1D7A /* JWT-iOS-Swift */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 045146881D5E2AAF007B1D7A /* Build configuration list for PBXNativeTarget "JWT-iOS-Swift" */;
-			buildPhases = (
-				0451467E1D5E2AAF007B1D7A /* Sources */,
-				0451467F1D5E2AAF007B1D7A /* Frameworks */,
-				045146801D5E2AAF007B1D7A /* Headers */,
-				045146811D5E2AAF007B1D7A /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				045147251D5E2CD2007B1D7A /* PBXTargetDependency */,
-			);
-			name = "JWT-iOS-Swift";
-			productName = JWT_iOS_Swift;
-			productReference = 045146831D5E2AAF007B1D7A /* JWTSwift.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		0451468F1D5E2AC3007B1D7A /* JWT-macOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 045146951D5E2AC4007B1D7A /* Build configuration list for PBXNativeTarget "JWT-macOS" */;
-			buildPhases = (
-				0451468B1D5E2AC3007B1D7A /* Sources */,
-				0451468C1D5E2AC3007B1D7A /* Frameworks */,
-				0451468D1D5E2AC3007B1D7A /* Headers */,
-				0451468E1D5E2AC3007B1D7A /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "JWT-macOS";
-			productName = JWT_macOS_Framework;
-			productReference = 045146901D5E2AC3007B1D7A /* JWT.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		0451469C1D5E2AD2007B1D7A /* JWT-macOS-Swift */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 045146A21D5E2AD2007B1D7A /* Build configuration list for PBXNativeTarget "JWT-macOS-Swift" */;
-			buildPhases = (
-				045146981D5E2AD2007B1D7A /* Sources */,
-				045146991D5E2AD2007B1D7A /* Frameworks */,
-				0451469A1D5E2AD2007B1D7A /* Headers */,
-				0451469B1D5E2AD2007B1D7A /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				045147271D5E2CDE007B1D7A /* PBXTargetDependency */,
-			);
-			name = "JWT-macOS-Swift";
-			productName = JWT_macOS_Swift;
-			productReference = 0451469D1D5E2AD2007B1D7A /* JWTSwift.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 		04DEBCA21DBCDB8600C1DF52 /* JWT */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 04DEBCAA1DBCDB8700C1DF52 /* Build configuration list for PBXNativeTarget "JWT" */;
@@ -618,18 +463,6 @@
 					045146671D5E2A78007B1D7A = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
-					045146751D5E2AA1007B1D7A = {
-						CreatedOnToolsVersion = 7.3.1;
-					};
-					045146821D5E2AAF007B1D7A = {
-						CreatedOnToolsVersion = 7.3.1;
-					};
-					0451468F1D5E2AC3007B1D7A = {
-						CreatedOnToolsVersion = 7.3.1;
-					};
-					0451469C1D5E2AD2007B1D7A = {
-						CreatedOnToolsVersion = 7.3.1;
-					};
 					04DEBCA21DBCDB8600C1DF52 = {
 						CreatedOnToolsVersion = 8.0;
 						ProvisioningStyle = Automatic;
@@ -650,43 +483,11 @@
 			targets = (
 				04DEBCA21DBCDB8600C1DF52 /* JWT */,
 				045146671D5E2A78007B1D7A /* JWT-iOS-Static */,
-				045146751D5E2AA1007B1D7A /* JWT-iOS */,
-				0451468F1D5E2AC3007B1D7A /* JWT-macOS */,
-				045146821D5E2AAF007B1D7A /* JWT-iOS-Swift */,
-				0451469C1D5E2AD2007B1D7A /* JWT-macOS-Swift */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		045146741D5E2AA1007B1D7A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		045146811D5E2AAF007B1D7A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0451468E1D5E2AC3007B1D7A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0451469B1D5E2AD2007B1D7A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		04DEBCA11DBCDB8600C1DF52 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -698,34 +499,6 @@
 
 /* Begin PBXSourcesBuildPhase section */
 		045146641D5E2A78007B1D7A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		045146711D5E2AA1007B1D7A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0451467E1D5E2AAF007B1D7A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0451468B1D5E2AC3007B1D7A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		045146981D5E2AD2007B1D7A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -769,19 +542,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		045147251D5E2CD2007B1D7A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 045146751D5E2AA1007B1D7A /* JWT-iOS */;
-			targetProxy = 045147241D5E2CD2007B1D7A /* PBXContainerItemProxy */;
-		};
-		045147271D5E2CDE007B1D7A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0451468F1D5E2AC3007B1D7A /* JWT-macOS */;
-			targetProxy = 045147261D5E2CDE007B1D7A /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
 		0451466F1D5E2A78007B1D7A /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -801,7 +561,6 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MODULEMAP_FILE = Supplement/JWT.modulemap;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = JWT;
@@ -829,325 +588,10 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MODULEMAP_FILE = Supplement/JWT.modulemap;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = JWT;
 				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		0451467C1D5E2AA1007B1D7A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.jwt.ios;
-				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
-				PRODUCT_NAME = JWT;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		0451467D1D5E2AA1007B1D7A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = io.jwt.ios;
-				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
-				PRODUCT_NAME = JWT;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		045146891D5E2AAF007B1D7A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.jwt.ios.swift;
-				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
-				PRODUCT_NAME = JWTSwift;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		0451468A1D5E2AAF007B1D7A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = io.jwt.ios.swift;
-				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
-				PRODUCT_NAME = JWTSwift;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		045146961D5E2AC4007B1D7A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_VERSION = A;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.jwt.macos;
-				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
-				PRODUCT_NAME = JWT;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		045146971D5E2AC4007B1D7A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_VERSION = A;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = io.jwt.macos;
-				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
-				PRODUCT_NAME = JWT;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		045146A31D5E2AD2007B1D7A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_VERSION = A;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = io.jwt.macos.swift;
-				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
-				PRODUCT_NAME = JWTSwift;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		045146A41D5E2AD2007B1D7A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_VERSION = A;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = io.jwt.macos.swift;
-				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME)";
-				PRODUCT_NAME = JWTSwift;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -1329,42 +773,6 @@
 			buildConfigurations = (
 				0451466F1D5E2A78007B1D7A /* Debug */,
 				045146701D5E2A78007B1D7A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0451467B1D5E2AA1007B1D7A /* Build configuration list for PBXNativeTarget "JWT-iOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0451467C1D5E2AA1007B1D7A /* Debug */,
-				0451467D1D5E2AA1007B1D7A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		045146881D5E2AAF007B1D7A /* Build configuration list for PBXNativeTarget "JWT-iOS-Swift" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				045146891D5E2AAF007B1D7A /* Debug */,
-				0451468A1D5E2AAF007B1D7A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		045146951D5E2AC4007B1D7A /* Build configuration list for PBXNativeTarget "JWT-macOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				045146961D5E2AC4007B1D7A /* Debug */,
-				045146971D5E2AC4007B1D7A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		045146A21D5E2AD2007B1D7A /* Build configuration list for PBXNativeTarget "JWT-macOS-Swift" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				045146A31D5E2AD2007B1D7A /* Debug */,
-				045146A41D5E2AD2007B1D7A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
