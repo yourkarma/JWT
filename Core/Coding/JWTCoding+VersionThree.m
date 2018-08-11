@@ -466,7 +466,7 @@
     }
     
     if (claimsSet) {
-        BOOL claimsVerified = [JWTClaimsSetVerifier verifyClaimsSet:[JWTClaimsSetSerializer claimsSetWithDictionary:decodedDictionary[JWTCodingResultPayload]] withTrustedClaimsSet:claimsSet];
+        BOOL claimsVerified = [JWTClaimsSetVerifier verifyClaimsSet:[JWTClaimsSetSerializer claimsSetWithDictionary:decodedDictionary[JWTCodingResultComponents.Payload]] withTrustedClaimsSet:claimsSet];
         if (!claimsVerified){
             error = [JWTErrorDescription errorWithCode:JWTClaimsSetVerificationFailed];
             return [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:error]];
@@ -474,8 +474,8 @@
     }
     
     if (decodedDictionary) {
-        NSDictionary *headers = decodedDictionary[JWTCodingResultHeaders];
-        NSDictionary *payload = decodedDictionary[JWTCodingResultPayload];
+        NSDictionary *headers = decodedDictionary[JWTCodingResultComponents.Headers];
+        NSDictionary *payload = decodedDictionary[JWTCodingResultComponents.Payload];
         JWTClaimsSet *claimsSetResult = nil;
         
         // extract claims from payload.
@@ -641,8 +641,8 @@
     }
     
     NSDictionary *result = @{
-                             JWTCodingResultHeaders : header,
-                             JWTCodingResultPayload : payload
+                             JWTCodingResultComponents.Headers : header,
+                             JWTCodingResultComponents.Payload : payload
                              };
     
     return result;
