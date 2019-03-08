@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/yourkarma/JWT.svg?branch=master)](https://travis-ci.org/yourkarma/JWT)
 [![Pod Version](http://img.shields.io/cocoapods/v/JWT.svg?style=flat)](http://cocoadocs.org/docsets/JWT)
 [![Pod Platform](http://img.shields.io/cocoapods/p/JWT.svg?style=flat)](http://cocoadocs.org/docsets/JWT)
-[![Reference Status](https://www.versioneye.com/objective-c/jwt/reference_badge.svg?style=flat)](https://www.versioneye.com/objective-c/jwt/references)
+[![Gitter](https://badges.gitter.im/ObjectiveC-JWT/community.svg)](https://gitter.im/ObjectiveC-JWT/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 # JWT
 
 A [JSON Web Token][] implementation in Objective-C.
