@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricFamilyError) {
 // default.
 + (instancetype)withRS;
 + (instancetype)withES;
++ (instancetype)withPS API_AVAILABLE(macos(10.13), ios(11.0), watchos(4.0), tvos(11.0));
 - (instancetype)with256;
 - (instancetype)with384;
 - (instancetype)with512;
