@@ -47,10 +47,10 @@
 @property (copy, nonatomic, readwrite) NSData *rawKey;
 @end
 @interface JWTCryptoKey (Class)
-+ (NSString *)uniqueTag;
++ (NSString *)generateUniqueTag;
 @end
 @implementation JWTCryptoKey (Class)
-+ (NSString *)uniqueTag {
++ (NSString *)generateUniqueTag {
     return [[NSUUID UUID].UUIDString stringByReplacingOccurrencesOfString:@"-" withString:@""].lowercaseString;
 }
 @end
@@ -83,12 +83,11 @@
 
 @implementation JWTCryptoKey (Generator)
 - (instancetype)initWithSecKeyRef:(SecKeyRef)key {
-    self = [super init];
-    if (key != NULL) {
-        self.key = key;
-    }
-    else {
+    if (key == NULL) {
         return nil;
+    }
+    if (self = [super init]) {
+        self.key = key;
     }
     return self;
 }
@@ -127,7 +126,7 @@
 - (instancetype)checkedWithError:(NSError *__autoreleasing*)error {
     BOOL checked = self.key != NULL;
     if (error && !checked) {
-        *error = [NSError errorWithDomain:@"org.opensource.jwt.security.key" code:-200 userInfo:@{NSLocalizedDescriptionKey : @"Security key not retrieved! something went wrong!"}];
+        *error = [NSError errorWithDomain:@"org.opensource.jwt.security.key" code:-200 userInfo:@{NSLocalizedDescriptionKey : @"Security key isn't retrieved! Something went wrong!"}];
     }
     return self;
 }
@@ -149,9 +148,8 @@
 
 @implementation JWTCryptoKeyPublic
 - (instancetype)initWithData:(NSData *)data parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
-    self = [super initWithData:data parameters:parameters error:error];
-    if (self) {
-        self.tag = [self.class uniqueTag];
+    if (self = [super initWithData:data parameters:parameters error:error]) {
+        self.tag = [self.class generateUniqueTag];
 
         if (!data) {
             return nil;
@@ -244,9 +242,8 @@
 
 @implementation JWTCryptoKeyPrivate
 - (instancetype)initWithData:(NSData *)data parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing*)error {
-    self = [super initWithData:data parameters:parameters error:error];
-    if (self) {
-        self.tag = [self.class uniqueTag];
+    if (self = [super initWithData:data parameters:parameters error:error]) {
+        self.tag = [self.class generateUniqueTag];
         NSError *addKeyError = nil;
         if (!data) {
             // error: no data?

@@ -57,7 +57,8 @@ script:
     # framework after static library is bad.
     # beer and wine order, heh.
     - echo "Build iOS Static library"
-    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Static' -sdk iphonesimulator PLATFORM_NAME=iphonesimulator -configuration Release | xcpretty -c
+    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Static' -configuration Release -sdk macosx | xcpretty -c
+    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Static' -configuration Release -sdk iphonesimulator | xcpretty -c
 
     # Tests.
     # - echo Run tests
