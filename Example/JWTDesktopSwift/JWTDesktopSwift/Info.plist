@@ -28,5 +28,7 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>DEPLOYMENT_RUNTIME_SWIFT</key>
+	<string>$(DEPLOYMENT_RUNTIME_SWIFT)</string>
 </dict>
 </plist>

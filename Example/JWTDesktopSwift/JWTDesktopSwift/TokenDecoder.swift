@@ -76,9 +76,13 @@ class JWTTokenDecoder__V3: TokenDecoder {
             return nil
         }
         
+//        let a = Bundle.main.infoDictionary?["DEPLOYMENT_RUNTIME_SWIFT"]
+//
+//        print("deployment swift: \(a!)")
+        
         var holder: JWTAlgorithmDataHolderProtocol? = nil
         switch algorithm {
-        case is JWTAlgorithmRSBase:
+        case is JWTAlgorithmRSBase, is JWTAlgorithmAsymmetricBase:
             var key: JWTCryptoKeyProtocol?
             do {
                 key = try JWTCryptoKeyPublic(pemEncoded: secret, parameters: nil)
@@ -92,7 +96,7 @@ class JWTTokenDecoder__V3: TokenDecoder {
             // TODO: remove dependency.
             // Aware of last part.
             // DataHolder MUST have a secretData ( empty data is perfect, if you use verifyKey )
-            holder = JWTAlgorithmRSFamilyDataHolder().verifyKey(key)?.algorithmName(algorithmName)?.secretData(Data())
+            holder = JWTAlgorithmRSFamilyDataHolder().verifyKey(key).algorithmName(algorithmName).secretData(Data())
         case is JWTAlgorithmHSBase:
             let aHolder = JWTAlgorithmHSFamilyDataHolder()
             if let theSecretData = secretData, isBase64EncodedSecret {
