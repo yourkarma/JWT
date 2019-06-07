@@ -96,7 +96,7 @@ extension ViewController {
 }
 
 extension ViewController: NSTextFieldDelegate {
-    override func controlTextDidChange(_ obj: Notification) {
+    func controlTextDidChange(_ obj: Notification) {
         if (obj.name == NSControl.textDidChangeNotification) {
             let textField = obj.object as! NSTextField
             if textField == self.secretTextField {
