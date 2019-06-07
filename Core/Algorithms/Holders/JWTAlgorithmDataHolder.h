@@ -44,31 +44,15 @@
  */
 @property (copy, nonatomic, readonly) NSString *internalAlgorithmName;
 
-#pragma mark - Setters
-/**
- Sets jwtSecret and returns the JWTAlgorithmBaseDataHolder to allow for method chaining
- */
-@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^secret)(NSString *secret);
+@end
 
-/**
- Sets jwtSecretData and returns the JWTAlgorithmBaseDataHolder to allow for method chaining
- */
-@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^secretData)(NSData *secretData);
-
-/**
- Sets jwtAlgorithm and returns the JWTAlgorithmBaseDataHolder to allow for method chaining
- */
-@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^algorithm)(id<JWTAlgorithm>algorithm);
-
-/**
- Sets jwtAlgorithmName and returns the JWTAlgorithmBaseDataHolder to allow for method chaining. See list of names in appropriate headers.
- */
-@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^algorithmName)(NSString *algorithmName);
-
-/**
- Sets stringCoder and returns the JWTAlgorithmBaseDataHolder to allow for method chaining. See list of names in appropriate headers.
- */
-@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^stringCoder)(id<JWTStringCoder__Protocol> stringCoder);
+// Available in Swift and Objective-C.
+@interface JWTAlgorithmBaseDataHolder (Setters)
+- (instancetype)secretData:(NSData *)secretData;
+- (instancetype)secret:(NSString *)secret;
+- (instancetype)algorithm:(id<JWTAlgorithm>)algorithm;
+- (instancetype)algorithmName:(NSString *)algorithmName;
+- (instancetype)stringCoder:(id<JWTStringCoder__Protocol>)stringCoder;
 @end
 
 @protocol JWTAlgorithmDataHolderCreateProtocol <NSObject>
@@ -98,8 +82,9 @@
  Default stringCoder is [JWTBase64Coder withBase64String].
  You could set secretData by secret setter ( holder.secret(secretString) ) in base64 format e.g. put pem file content in it (ugly string with equal sign at the end for example).
  */
+@end
 
-#pragma mark - Getters
+@interface JWTAlgorithmRSFamilyDataHolder (Getters)
 /**
  The passphrase for the PKCS12 blob, which represents the certificate containing the private key for the RS algorithms.
  */
@@ -107,17 +92,12 @@
 @property (copy, nonatomic, readonly) NSString *internalKeyExtractorType;
 @property (strong, nonatomic, readonly) id<JWTCryptoKeyProtocol> internalSignKey;
 @property (strong, nonatomic, readonly) id<JWTCryptoKeyProtocol> internalVerifyKey;
-#pragma mark - Setters
-/**
- Sets jwtPrivateKeyCertificatePassphrase and returns the JWTAlgorithmRSFamilyDataHolder to allow for method chaining
- */
-@property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^privateKeyCertificatePassphrase)(NSString *privateKeyCertificatePassphrase);
-@property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^keyExtractorType)(NSString *keyExtractorType);
+@end
 
-// BUG:
-// If you set sign/verify keys, you should also set .secretData([NSData data]);
-// Yes, this is a bug.
-// Please, set it.
-@property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^signKey)(id<JWTCryptoKeyProtocol> signKey);
-@property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^verifyKey)(id<JWTCryptoKeyProtocol> verifyKey);
+// Available in Swift and Objective-C.
+@interface JWTAlgorithmRSFamilyDataHolder (Setters)
+- (instancetype)privateKeyCertificatePassphrase:(NSString *)passphrase;
+- (instancetype)keyExtractorType:(NSString *)type;
+- (instancetype)signKey:(id<JWTCryptoKeyProtocol>)key;
+- (instancetype)verifyKey:(id<JWTCryptoKeyProtocol>)key;
 @end

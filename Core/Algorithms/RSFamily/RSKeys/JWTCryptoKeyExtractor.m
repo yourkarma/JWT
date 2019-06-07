@@ -39,23 +39,22 @@
 + (NSString *)parametersKeyCertificatePassphrase {
     return NSStringFromSelector(_cmd);
 }
+
 - (instancetype)init {
     if (self = [super init]) {
         [self setupFluent];
     }
     return self;
 }
+
 #pragma mark - Fluent
-- (instancetype)configuredByKeyBuilder:(JWTCryptoKeyBuilder *)keyBuilder {
-    self.internalKeyBuilder = keyBuilder;
-    return self;
-}
 - (void)setupFluent {
     __weak typeof(self) weakSelf = self;
     self.keyBuilder = ^(JWTCryptoKeyBuilder *keyBuilder) {
         return [weakSelf configuredByKeyBuilder:keyBuilder];
     };
 }
+
 #pragma mark - <JWTCryptoKeyExtractorProtocol>
 - (id<JWTCryptoKeyProtocol>)keyFromData:(NSData *)data parameters:(NSDictionary *)parameters error:(NSError *__autoreleasing *)error {
 //#pragma message "Not Implemented"
@@ -73,6 +72,13 @@
                                                                            }];
     }
     return nil;
+}
+@end
+
+@implementation JWTCryptoKeyExtractor (Setters)
+- (instancetype)configuredByKeyBuilder:(JWTCryptoKeyBuilder *)keyBuilder {
+    self.internalKeyBuilder = keyBuilder;
+    return self;
 }
 @end
 

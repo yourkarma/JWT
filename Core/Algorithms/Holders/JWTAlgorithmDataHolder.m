@@ -58,18 +58,18 @@
 #pragma mark - Convertions
 - (NSData *)dataFromString:(NSString *)string {
     NSData *result = [self.internalStringCoder dataWithString:string];
-    
+
     if (result == nil) {
         // tell about it?!
         NSLog(@"%@ %@ something went wrong. Data is not base64encoded! %@", self.debugDescription, NSStringFromSelector(_cmd), string);
     }
-    
+
     return result;// ?: [string dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)stringFromData:(NSData *)data {
     NSString *result = [self.internalStringCoder stringWithData:data];
-    
+
     if (result == nil) {
         NSLog(@"%@ %@ something went wrong. String is not base64encoded", self.debugDescription, NSStringFromSelector(_cmd));
     }
@@ -83,45 +83,20 @@
 
 @implementation JWTAlgorithmBaseDataHolder (Fluent)
 #pragma mark - Fluent
-- (instancetype)secretData:(NSData *)secretData {
-    self.internalSecretData = secretData;
-    return self;
-}
-
-- (instancetype)secret:(NSString *)secret {
-    self.internalSecretData = [self dataFromString:secret];
-    return self;
-}
-
-- (instancetype)algorithm:(id<JWTAlgorithm>)algorithm {
-    self.internalAlgorithm = algorithm;
-    return self;
-}
-
-- (instancetype)algorithmName:(NSString *)algorithmName {
-    self.internalAlgorithm = [JWTAlgorithmFactory algorithmByName:algorithmName];
-    return self;
-}
-
-- (instancetype)stringCoder:(id<JWTStringCoder__Protocol>)stringCoder {
-    self.internalStringCoder = stringCoder;
-    return self;
-}
-
 - (void)setupFluent {
     __weak typeof(self) weakSelf = self;
     self.secret = ^(NSString *secret) {
         return [weakSelf secret:secret];
     };
-    
+
     self.secretData = ^(NSData *secretData) {
         return [weakSelf secretData:secretData];
     };
-    
+
     self.algorithm = ^(id<JWTAlgorithm> algorithm) {
         return [weakSelf algorithm:algorithm];
     };
-    
+
     self.algorithmName = ^(NSString *algorithmName) {
         return [weakSelf algorithmName:algorithmName];
     };
@@ -186,11 +161,38 @@
 }
 @end
 
-@interface JWTAlgorithmBaseDataHolder(Create)
+@implementation JWTAlgorithmBaseDataHolder (Setters)
+- (instancetype)secretData:(NSData *)secretData {
+    self.internalSecretData = secretData;
+    return self;
+}
+
+- (instancetype)secret:(NSString *)secret {
+    self.internalSecretData = [self dataFromString:secret];
+    return self;
+}
+
+- (instancetype)algorithm:(id<JWTAlgorithm>)algorithm {
+    self.internalAlgorithm = algorithm;
+    return self;
+}
+
+- (instancetype)algorithmName:(NSString *)algorithmName {
+    self.internalAlgorithm = [JWTAlgorithmFactory algorithmByName:algorithmName];
+    return self;
+}
+
+- (instancetype)stringCoder:(id<JWTStringCoder__Protocol>)stringCoder {
+    self.internalStringCoder = stringCoder;
+    return self;
+}
+@end
+
+@interface JWTAlgorithmBaseDataHolder (Create)
 - (instancetype)initWithAlgorithmName:(NSString *)name;
 @end
 
-@implementation JWTAlgorithmBaseDataHolder(Create)
+@implementation JWTAlgorithmBaseDataHolder (Create)
 - (instancetype)initWithAlgorithmName:(NSString *)name {
     return [self init].algorithmName(name);
 }
@@ -278,24 +280,6 @@
     return algorithm;
 }
 
-#pragma mark - Setters
-- (instancetype)privateKeyCertificatePassphrase:(NSString *)passphrase {
-    self.internalPrivateKeyCertificatePassphrase = passphrase;
-    return self;
-}
-- (instancetype)keyExtractorType:(NSString *)type {
-    self.internalKeyExtractorType = type;
-    return self;
-}
-- (instancetype)signKey:(id<JWTCryptoKeyProtocol>)key {
-    self.internalSignKey = key;
-    return self;
-}
-- (instancetype)verifyKey:(id<JWTCryptoKeyProtocol>)key {
-    self.internalVerifyKey = key;
-    return self;
-}
-
 #pragma mark - Copy
 - (id)copyWithZone:(NSZone *)zone {
     JWTAlgorithmRSFamilyDataHolder *holder = [super copyWithZone:zone];
@@ -323,5 +307,24 @@
     self.verifyKey = ^(id<JWTCryptoKeyProtocol> key){
         return [weakSelf verifyKey:key];
     };
+}
+@end
+
+@implementation JWTAlgorithmRSFamilyDataHolder (Setters)
+- (instancetype)privateKeyCertificatePassphrase:(NSString *)passphrase {
+    self.internalPrivateKeyCertificatePassphrase = passphrase;
+    return self;
+}
+- (instancetype)keyExtractorType:(NSString *)type {
+    self.internalKeyExtractorType = type;
+    return self;
+}
+- (instancetype)signKey:(id<JWTCryptoKeyProtocol>)key {
+    self.internalSignKey = key;
+    return self;
+}
+- (instancetype)verifyKey:(id<JWTCryptoKeyProtocol>)key {
+    self.internalVerifyKey = key;
+    return self;
 }
 @end
