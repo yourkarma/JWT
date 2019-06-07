@@ -234,7 +234,7 @@
         // Read about it in
         if ([holder isKindOfClass:JWTAlgorithmRSFamilyDataHolder.class]) {
             JWTAlgorithmRSFamilyDataHolder *theHolder = (JWTAlgorithmRSFamilyDataHolder *)holder;
-            BOOL bugExists = (theHolder.signKey != nil || theHolder.verifyKey != nil ) && secretData == nil;
+            BOOL bugExists = (theHolder.internalSignKey != nil || theHolder.internalVerifyKey != nil ) && secretData == nil;
             if (bugExists) {
                 return [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:[JWTErrorDescription errorWithCode:JWTHolderSecretDataNotSetError]]];
                 return nil;
