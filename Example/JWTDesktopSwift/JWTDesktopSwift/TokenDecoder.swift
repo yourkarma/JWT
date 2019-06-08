@@ -112,9 +112,19 @@ class JWTTokenDecoder__V3: TokenDecoder {
         }
 
         let builder = JWTDecodingBuilder.decodeMessage(token).addHolder(holder)?.options(skipVerification as NSNumber)
-        let result = builder?.result
-        print("JWT ERROR: \(String(describing: result?.errorResult?.debugDescription)) -> \(String(describing: result?.errorResult?.error?.localizedDescription))")
-        print("JWT RESULT: \(String(describing: result?.successResult?.debugDescription)) -> \(String(describing: result?.successResult?.headerAndPayloadDictionary?.debugDescription))")
-        return result?.successResult?.headerAndPayloadDictionary
+        guard let result = builder?.result else {
+            return nil
+        }
+        
+        if let success = result.successResult {
+            print("JWT RESULT: \(String(describing: success.debugDescription)) -> \(String(describing: success.headerAndPayloadDictionary?.debugDescription))")
+            return success.headerAndPayloadDictionary
+        }
+        else if let error = result.errorResult {
+            print("JWT ERROR: \(String(describing: error.debugDescription)) -> \(String(describing: error.error?.localizedDescription))")
+            throw error.error
+        }
+        
+        return nil
     }
 }

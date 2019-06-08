@@ -52,16 +52,20 @@ extension ViewController {
             self.encodedTextView.undoManager?.endUndoGrouping()
         }
         
+        // We should add an option to skip verification in decoding section.
+        // invalid signature doesn't mean that you can't decode JWT.
+        
         if let jwtVerified = try? self.model.decoder.decode(token: string, skipVerification: false, object: self) {
-            self.signatureReactOnVerifiedToken(verified: jwtVerified != nil)
+            self.signatureReactOnVerifiedToken(verified: !jwtVerified.isEmpty)
         }
         else {
             self.signatureReactOnVerifiedToken(verified: false)
         }
         
         var result: JWTCodingResultType? = nil
+        let shouldSkipVerification = self.signatureVerificationCheckButton.integerValue == 1
         do {
-            if let decoded = try self.model.decoder.decode(token: string, skipVerification: true, object: self) {
+            if let decoded = try self.model.decoder.decode(token: string, skipVerification: shouldSkipVerification, object: self) {
                 result = JWTCodingResultType(successResult: JWTCodingResultTypeSuccess(headersAndPayload: decoded))
             }
         }
@@ -143,6 +147,10 @@ class ViewController: NSViewController {
     @IBOutlet weak var secretTextField : NSTextField!
     @IBOutlet weak var secretIsBase64EncodedCheckButton : NSButton!
     
+    @IBOutlet weak var signatureLabel : NSTextField!
+    @IBOutlet weak var signatureVerificationCheckButton : NSButton!
+    
+    
     @IBOutlet weak var encodedTextView : NSTextView!
     @IBOutlet weak var decriptedView : NSView!
     var decriptedViewController : DecriptedViewController!
@@ -179,6 +187,15 @@ class ViewController: NSViewController {
         self.secretIsBase64EncodedCheckButton.integerValue = 0
         self.secretIsBase64EncodedCheckButton.target = self
         self.secretIsBase64EncodedCheckButton.action = #selector(ViewController.checkBoxState(sender:))
+        
+        // signatureLabel
+        self.signatureLabel.stringValue = "Signature"
+        
+        // signatureVerificationCheckButton
+        self.signatureVerificationCheckButton.title = "Skip signature verification"
+        self.signatureVerificationCheckButton.integerValue = 0
+        self.signatureVerificationCheckButton.target = self
+        self.signatureVerificationCheckButton.action = #selector(ViewController.checkBoxState(sender:))
     }
     
     func setupBottom() {
@@ -235,7 +252,7 @@ class ViewController: NSViewController {
     }
     
     func defaultDataSetup() {
-        let seed = DataSeedType.rs256.dataSeed
+        let seed = DataSeedType.hs256.dataSeed//rs256.dataSeed
         self.defaultDataSetup(algorithmName: seed.algorithmName, secret: seed.secret, token: seed.token)
     }
     
