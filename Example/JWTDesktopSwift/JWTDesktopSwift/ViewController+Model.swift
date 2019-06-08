@@ -8,10 +8,10 @@
 
 import Foundation
 import JWT
+import JWTDesktopSwiftToolkit
 
 extension ViewController {
     class Model {
-        var serialization = TokenTextSerialization()
         var appearance = TokenTextAppearance()
         var decoder = TokenDecoder()
         var signatureValidation = SignatureValidationType.Unknown

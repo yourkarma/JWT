@@ -8,21 +8,21 @@
 
 import Foundation
 import JWT
-protocol TokenDecoderNecessaryDataObject__Protocol {
+public protocol TokenDecoderNecessaryDataObject__Protocol {
     var chosenAlgorithmName: String {get}
     var chosenSecret: String? {get}
     var chosenSecretData: Data? {get}
     var isBase64EncodedSecret: Bool {get}
 }
 
-class TokenDecoder {
+public class TokenDecoder {
     private lazy var theDecoder: TokenDecoder = {
         return JWTTokenDecoder__V3()
     }()
     var builder: JWTBuilder?
     var resultType: JWTCodingResultType?
     
-    func decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol?) throws -> [AnyHashable : Any]?  {
+    public func decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol?) throws -> [AnyHashable : Any]?  {
         guard let theObject = object else {
             return nil
         }
@@ -33,6 +33,8 @@ class TokenDecoder {
     func _decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol) throws -> [AnyHashable : Any]?  {
         return nil
     }
+    
+    public init() {}
 }
 
 class JWTTokenDecoder__V2: TokenDecoder {

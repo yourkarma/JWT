@@ -1,6 +1,10 @@
 source 'https://github.com/CocoaPods/Specs.git'
 #use_frameworks!
 
+def toolkit_name
+  'JWTDesktopSwiftToolkit'
+end
+
 def target_name
   'JWTDesktopSwift'
 end
@@ -15,11 +19,20 @@ def handmade
   # pod 'Masonry'
 end
 
-target target_name do
-  use_frameworks!
-  handmade
+def all
+  [toolkit_name, target_name]
 end
 
+def install_all
+  all.each do |t|
+    target t do
+      use_frameworks!
+      handmade
+    end
+  end
+end
+
+install_all
 # target test_name do
 #   handmade
 # end

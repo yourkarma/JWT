@@ -7,7 +7,7 @@
 //
 
 import Foundation
-extension String {
+public extension String {
     static func json(_ object: Any?) -> String {
         guard let jsonObject = object else {
             return ""

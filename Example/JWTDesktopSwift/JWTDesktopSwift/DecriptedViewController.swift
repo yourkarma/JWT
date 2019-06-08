@@ -8,6 +8,7 @@
 
 import Cocoa
 import JWT
+import JWTDesktopSwiftToolkit
 //import JW
 
 class DecriptedViewController: NSViewController {

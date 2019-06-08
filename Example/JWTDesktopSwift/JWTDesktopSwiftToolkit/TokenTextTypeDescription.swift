@@ -8,12 +8,12 @@
 
 import Cocoa
 
-enum TokenTextType : Int {
+public enum TokenTextType : Int {
     case Default = 0
     case Header
     case Payload
     case Signature
-    var color : NSColor {
+    public var color : NSColor {
         var color = NSColor.black
         switch self {
         case .Default:
@@ -45,46 +45,30 @@ enum TokenTextType : Int {
     }
 }
 
-class TokenTextSerialization {
+public class TokenTextSerialization {
     func textPart(parts: [String], type: TokenTextType) -> String? {
-        var result: String? = nil
         switch type {
         case .Header:
-            result = parts.first
+            return parts.first
         case .Payload:
-            result = parts.safeObject(index: 1)
+            return parts.safeObject(index: 1)
         case .Signature:
             if (parts.count > 2) {
-                result = parts[2..<parts.count].joined(separator: ".")
+                return parts[2..<parts.count].joined(separator: ".")
             }
-        default: result = nil
-        }
-        return result
-    }
-}
-
-class TokenTextAppearance {
-    func attributesJoinedBy(_ attributes: [NSAttributedString], by: NSAttributedString) -> NSAttributedString? {
-        var array = attributes
-//        return attributes.reduce(NSAttributedString(string: ""), { (result, string) -> NSAttributedString in
-//            let mutableResult = NSMutableAttributedString(attributedString: result)
-//            mutableResult.append(by)
-//            mutableResult.append(string)
-//            return mutableResult
-//        })
-        
-        if let first = array.first {
-            array.removeFirst()
-            return array.reduce(first, { (result, string) -> NSAttributedString in
-                let mutableResult = NSMutableAttributedString(attributedString: result)
-                mutableResult.append(by)
-                mutableResult.append(string)
-                return mutableResult
-            })
+        case .Default:
+            return nil
         }
         return nil
     }
+    public init() {}
+}
 
+public class TokenTextAppearance {
+    let serialization = TokenTextSerialization()
+    public func encodedAttributedString(text: String) -> NSAttributedString? {
+        return self.encodedAttributedString(text: text, tokenSerialization: self.serialization)
+    }
     func encodedAttributedString(text: String, tokenSerialization: TokenTextSerialization) -> NSAttributedString? {
         let parts = text.components(separatedBy: ".")
         // next step, determine text color!
@@ -109,5 +93,29 @@ class TokenTextAppearance {
         let dot = NSAttributedString(string: ".", attributes: attributes)
         let result = self.attributesJoinedBy(resultParts, by: dot)
         return result
+    }
+    public init() {}
+}
+
+extension TokenTextAppearance {
+    func attributesJoinedBy(_ attributes: [NSAttributedString], by: NSAttributedString) -> NSAttributedString? {
+        var array = attributes
+        //        return attributes.reduce(NSAttributedString(string: ""), { (result, string) -> NSAttributedString in
+        //            let mutableResult = NSMutableAttributedString(attributedString: result)
+        //            mutableResult.append(by)
+        //            mutableResult.append(string)
+        //            return mutableResult
+        //        })
+        
+        if let first = array.first {
+            array.removeFirst()
+            return array.reduce(first, { (result, string) -> NSAttributedString in
+                let mutableResult = NSMutableAttributedString(attributedString: result)
+                mutableResult.append(by)
+                mutableResult.append(string)
+                return mutableResult
+            })
+        }
+        return nil
     }
 }
