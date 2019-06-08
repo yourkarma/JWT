@@ -40,16 +40,25 @@ extension ViewController: TokenDecoderNecessaryDataObject__Protocol {
 
 // Refresh UI
 extension ViewController {
+    // MARK: - Encoded Text View
+    func encodedTextAttributes(_ enumerate: (NSRange, [NSAttributedString.Key : Any]) -> ()) {
+        let textStorage = self.encodedTextView.textStorage!
+        let string = textStorage.string
+        let range = NSMakeRange(0, string.count)
+        if let attributedString = self.model.appearance.encodedAttributedString(text: string, tokenSerialization: self.model.serialization) {
+            attributedString.enumerateAttributes(in: range, options: []) { (attributes, range, bool) in
+                enumerate(range, attributes)
+            }
+        }
+    }
+    
     // MARK: - Refresh UI
     func refreshUI() {
         
         let textStorage = self.encodedTextView.textStorage!;
-        let string = textStorage.string;
-        let range = NSMakeRange(0, string.count);
-        if let attributedString = self.model.appearance.encodedAttributedString(text: string, tokenSerialization: self.model.serialization) {
-            self.encodedTextView.undoManager?.beginUndoGrouping()
-            textStorage.replaceCharacters(in: range, with: attributedString)
-            self.encodedTextView.undoManager?.endUndoGrouping()
+        let string = textStorage.string
+        self.encodedTextAttributes { (range, attributes) in
+            textStorage.setAttributes(attributes, range: range)
         }
         
         // We should add an option to skip verification in decoding section.
@@ -114,6 +123,28 @@ extension ViewController: NSTextViewDelegate {
     func textDidChange(_ notification: Notification) {
         self.refreshUI()
     }
+//    func textViewDidChangeTypingAttributes(_ notification: Notification) {
+//        self.updateEncodedTextAttributes()
+//    }
+//    func textView(_ textView: NSTextView, shouldChangeTypingAttributes oldTypingAttributes: [String : Any] = [:], toAttributes newTypingAttributes: [NSAttributedString.Key : Any] = [:]) -> [NSAttributedString.Key : Any] {
+//        return newTypingAttributes
+//    }
+    
+//    func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
+//        if (textView == self.encodedTextView) {
+////            if let textStore = textView.textStorage {
+////                textView.undoManager?.beginUndoGrouping()
+////                textStore.replaceCharacters(in: affectedCharRange, with: replacementString!)
+////                self.encodedTextAttributes { (range, attributes) in
+////                    textStore.setAttributes(attributes, range: range)
+////                }
+////                textView.undoManager?.endUndoGrouping()
+////            }
+////            self.refreshUI()
+//            return true
+//        }
+//        return false
+//    }
 }
 
 // MARK: - EncodingTextViewDelegate
@@ -229,12 +260,11 @@ class ViewController: NSViewController {
         self.setupDecriptedViews()
         
         self.defaultDataSetup()
-        self.refreshUI()
     }
     
     func defaultDataSetup(algorithmName: String, secret: String, token: String) {
         // algorithm HS256
-        if let index = self.model.availableAlgorithmsNames.index(where: {
+        if let index = self.model.availableAlgorithmsNames.firstIndex(where: {
             $0 == algorithmName
         }) {
             self.algorithmPopUpButton.selectItem(at: index)
