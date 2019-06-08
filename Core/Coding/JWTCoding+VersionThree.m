@@ -16,6 +16,9 @@
 #import "JWTClaimsSetSerializer.h"
 #import "JWTClaimsSetVerifier.h"
 
+#import "JWTAlgorithmDataHolder+FluentStyle.h"
+#import "JWTCodingBuilder+FluentStyle.h"
+
 @implementation JWT (VersionThree)
 + (JWTEncodingBuilder *)encodeWithHolders:(NSArray *)holders {
     return [JWTEncodingBuilder createWithHolders:holders];
@@ -45,10 +48,8 @@
 @property (copy, nonatomic, readwrite) JWTCodingBuilder *(^constructHolder)(id<JWTAlgorithmDataHolderProtocol>(^block)(id<JWTAlgorithmDataHolderProtocol> holder));
 
 @end
+
 @interface JWTCodingBuilder (Fluent_Setup)
-- (instancetype)chain:(JWTAlgorithmDataHolderChain *)chain;
-- (instancetype)options:(NSNumber *)options;
-- (instancetype)addHolder:(id<JWTAlgorithmDataHolderProtocol>)holder;
 - (void)setupFluent;
 @end
 
@@ -152,14 +153,7 @@
 @property (copy, nonatomic, readwrite) JWTEncodingBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
 @end
 
-@interface JWTEncodingBuilder (Fluent_Setup)
-- (instancetype)payload:(NSDictionary *)payload;
-- (instancetype)headers:(NSDictionary *)headers;
-- (instancetype)claimsSet:(JWTClaimsSet *)claimsSet;
-@end
-
-@implementation JWTEncodingBuilder (Fluent_Setup)
-
+@implementation JWTEncodingBuilder (Setters)
 - (instancetype)payload:(NSDictionary *)payload {
     self.internalPayload = payload;
     return self;
@@ -173,7 +167,9 @@
     self.internalClaimsSet = claimsSet;
     return self;
 }
+@end
 
+@implementation JWTEncodingBuilder (Fluent_Setup)
 - (void)setupFluent {
     [super setupFluent];
     __weak typeof(self) weakSelf = self;
@@ -187,7 +183,6 @@
         return [weakSelf claimsSet:claimsSet];
     };
 }
-
 @end
 
 @implementation JWTEncodingBuilder
@@ -239,7 +234,7 @@
         // Read about it in
         if ([holder isKindOfClass:JWTAlgorithmRSFamilyDataHolder.class]) {
             JWTAlgorithmRSFamilyDataHolder *theHolder = (JWTAlgorithmRSFamilyDataHolder *)holder;
-            BOOL bugExists = (theHolder.signKey != nil || theHolder.verifyKey != nil ) && secretData == nil;
+            BOOL bugExists = (theHolder.internalSignKey != nil || theHolder.internalVerifyKey != nil ) && secretData == nil;
             if (bugExists) {
                 return [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:[JWTErrorDescription errorWithCode:JWTHolderSecretDataNotSetError]]];
                 return nil;
@@ -396,11 +391,7 @@
 
 @end
 
-@interface JWTDecodingBuilder (Fluent_Setup)
-- (instancetype)message:(NSString *)message;
-- (instancetype)claimsSet:(JWTClaimsSet *)claimsSet;
-@end
-@implementation JWTDecodingBuilder (Fluent_Setup)
+@implementation JWTDecodingBuilder (Setters)
 - (instancetype)message:(NSString *)message {
     self.internalMessage = message;
     return self;
@@ -409,6 +400,9 @@
     self.internalClaimsSet = claimsSet;
     return self;
 }
+@end
+
+@implementation JWTDecodingBuilder (Fluent_Setup)
 - (void)setupFluent {
     [super setupFluent];
     __weak typeof(self) weakSelf = self;

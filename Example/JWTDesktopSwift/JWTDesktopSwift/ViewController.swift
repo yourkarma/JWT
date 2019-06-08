@@ -40,28 +40,41 @@ extension ViewController: TokenDecoderNecessaryDataObject__Protocol {
 
 // Refresh UI
 extension ViewController {
+    // MARK: - Encoded Text View
+    func encodedTextAttributes(_ enumerate: (NSRange, [NSAttributedString.Key : Any]) -> ()) {
+        let textStorage = self.encodedTextView.textStorage!
+        let string = textStorage.string
+        let range = NSMakeRange(0, string.count)
+        if let attributedString = self.model.appearance.encodedAttributedString(text: string, tokenSerialization: self.model.serialization) {
+            attributedString.enumerateAttributes(in: range, options: []) { (attributes, range, bool) in
+                enumerate(range, attributes)
+            }
+        }
+    }
+    
     // MARK: - Refresh UI
     func refreshUI() {
         
         let textStorage = self.encodedTextView.textStorage!;
-        let string = textStorage.string;
-        let range = NSMakeRange(0, string.count);
-        if let attributedString = self.model.appearance.encodedAttributedString(text: string, tokenSerialization: self.model.serialization) {
-            self.encodedTextView.undoManager?.beginUndoGrouping()
-            textStorage.replaceCharacters(in: range, with: attributedString)
-            self.encodedTextView.undoManager?.endUndoGrouping()
+        let string = textStorage.string
+        self.encodedTextAttributes { (range, attributes) in
+            textStorage.setAttributes(attributes, range: range)
         }
         
+        // We should add an option to skip verification in decoding section.
+        // invalid signature doesn't mean that you can't decode JWT.
+        
         if let jwtVerified = try? self.model.decoder.decode(token: string, skipVerification: false, object: self) {
-            self.signatureReactOnVerifiedToken(verified: jwtVerified != nil)
+            self.signatureReactOnVerifiedToken(verified: !jwtVerified.isEmpty)
         }
         else {
             self.signatureReactOnVerifiedToken(verified: false)
         }
         
         var result: JWTCodingResultType? = nil
+        let shouldSkipVerification = self.signatureVerificationCheckButton.integerValue == 1
         do {
-            if let decoded = try self.model.decoder.decode(token: string, skipVerification: true, object: self) {
+            if let decoded = try self.model.decoder.decode(token: string, skipVerification: shouldSkipVerification, object: self) {
                 result = JWTCodingResultType(successResult: JWTCodingResultTypeSuccess(headersAndPayload: decoded))
             }
         }
@@ -96,7 +109,7 @@ extension ViewController {
 }
 
 extension ViewController: NSTextFieldDelegate {
-    override func controlTextDidChange(_ obj: Notification) {
+    func controlTextDidChange(_ obj: Notification) {
         if (obj.name == NSControl.textDidChangeNotification) {
             let textField = obj.object as! NSTextField
             if textField == self.secretTextField {
@@ -110,6 +123,28 @@ extension ViewController: NSTextViewDelegate {
     func textDidChange(_ notification: Notification) {
         self.refreshUI()
     }
+//    func textViewDidChangeTypingAttributes(_ notification: Notification) {
+//        self.updateEncodedTextAttributes()
+//    }
+//    func textView(_ textView: NSTextView, shouldChangeTypingAttributes oldTypingAttributes: [String : Any] = [:], toAttributes newTypingAttributes: [NSAttributedString.Key : Any] = [:]) -> [NSAttributedString.Key : Any] {
+//        return newTypingAttributes
+//    }
+    
+//    func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
+//        if (textView == self.encodedTextView) {
+////            if let textStore = textView.textStorage {
+////                textView.undoManager?.beginUndoGrouping()
+////                textStore.replaceCharacters(in: affectedCharRange, with: replacementString!)
+////                self.encodedTextAttributes { (range, attributes) in
+////                    textStore.setAttributes(attributes, range: range)
+////                }
+////                textView.undoManager?.endUndoGrouping()
+////            }
+////            self.refreshUI()
+//            return true
+//        }
+//        return false
+//    }
 }
 
 // MARK: - EncodingTextViewDelegate
@@ -142,6 +177,10 @@ class ViewController: NSViewController {
     @IBOutlet weak var secretLabel : NSTextField!
     @IBOutlet weak var secretTextField : NSTextField!
     @IBOutlet weak var secretIsBase64EncodedCheckButton : NSButton!
+    
+    @IBOutlet weak var signatureLabel : NSTextField!
+    @IBOutlet weak var signatureVerificationCheckButton : NSButton!
+    
     
     @IBOutlet weak var encodedTextView : NSTextView!
     @IBOutlet weak var decriptedView : NSView!
@@ -179,6 +218,15 @@ class ViewController: NSViewController {
         self.secretIsBase64EncodedCheckButton.integerValue = 0
         self.secretIsBase64EncodedCheckButton.target = self
         self.secretIsBase64EncodedCheckButton.action = #selector(ViewController.checkBoxState(sender:))
+        
+        // signatureLabel
+        self.signatureLabel.stringValue = "Signature"
+        
+        // signatureVerificationCheckButton
+        self.signatureVerificationCheckButton.title = "Skip signature verification"
+        self.signatureVerificationCheckButton.integerValue = 0
+        self.signatureVerificationCheckButton.target = self
+        self.signatureVerificationCheckButton.action = #selector(ViewController.checkBoxState(sender:))
     }
     
     func setupBottom() {
@@ -212,12 +260,11 @@ class ViewController: NSViewController {
         self.setupDecriptedViews()
         
         self.defaultDataSetup()
-        self.refreshUI()
     }
     
     func defaultDataSetup(algorithmName: String, secret: String, token: String) {
         // algorithm HS256
-        if let index = self.model.availableAlgorithmsNames.index(where: {
+        if let index = self.model.availableAlgorithmsNames.firstIndex(where: {
             $0 == algorithmName
         }) {
             self.algorithmPopUpButton.selectItem(at: index)
@@ -235,7 +282,7 @@ class ViewController: NSViewController {
     }
     
     func defaultDataSetup() {
-        let seed = DataSeedType.rs256.dataSeed
+        let seed = DataSeedType.hs256.dataSeed//rs256.dataSeed
         self.defaultDataSetup(algorithmName: seed.algorithmName, secret: seed.secret, token: seed.token)
     }
     

@@ -76,9 +76,13 @@ class JWTTokenDecoder__V3: TokenDecoder {
             return nil
         }
         
+//        let a = Bundle.main.infoDictionary?["DEPLOYMENT_RUNTIME_SWIFT"]
+//
+//        print("deployment swift: \(a!)")
+        
         var holder: JWTAlgorithmDataHolderProtocol? = nil
         switch algorithm {
-        case is JWTAlgorithmRSBase:
+        case is JWTAlgorithmRSBase, is JWTAlgorithmAsymmetricBase:
             var key: JWTCryptoKeyProtocol?
             do {
                 key = try JWTCryptoKeyPublic(pemEncoded: secret, parameters: nil)
@@ -92,7 +96,7 @@ class JWTTokenDecoder__V3: TokenDecoder {
             // TODO: remove dependency.
             // Aware of last part.
             // DataHolder MUST have a secretData ( empty data is perfect, if you use verifyKey )
-            holder = JWTAlgorithmRSFamilyDataHolder().verifyKey(key)?.algorithmName(algorithmName)?.secretData(Data())
+            holder = JWTAlgorithmRSFamilyDataHolder().verifyKey(key).algorithmName(algorithmName).secretData(Data())
         case is JWTAlgorithmHSBase:
             let aHolder = JWTAlgorithmHSFamilyDataHolder()
             if let theSecretData = secretData, isBase64EncodedSecret {
@@ -108,9 +112,19 @@ class JWTTokenDecoder__V3: TokenDecoder {
         }
 
         let builder = JWTDecodingBuilder.decodeMessage(token).addHolder(holder)?.options(skipVerification as NSNumber)
-        let result = builder?.result
-        print("JWT ERROR: \(String(describing: result?.errorResult?.debugDescription)) -> \(String(describing: result?.errorResult?.error?.localizedDescription))")
-        print("JWT RESULT: \(String(describing: result?.successResult?.debugDescription)) -> \(String(describing: result?.successResult?.headerAndPayloadDictionary?.debugDescription))")
-        return result?.successResult?.headerAndPayloadDictionary
+        guard let result = builder?.result else {
+            return nil
+        }
+        
+        if let success = result.successResult {
+            print("JWT RESULT: \(String(describing: success.debugDescription)) -> \(String(describing: success.headerAndPayloadDictionary?.debugDescription))")
+            return success.headerAndPayloadDictionary
+        }
+        else if let error = result.errorResult {
+            print("JWT ERROR: \(String(describing: error.debugDescription)) -> \(String(describing: error.error?.localizedDescription))")
+            throw error.error
+        }
+        
+        return nil
     }
 }

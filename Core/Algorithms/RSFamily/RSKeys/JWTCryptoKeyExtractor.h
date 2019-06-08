@@ -19,13 +19,15 @@
 
 @interface JWTCryptoKeyExtractor : NSObject <JWTCryptoKeyExtractorProtocol>
 @property (copy, nonatomic, readonly) NSString *type;
-+ (NSString *)type;
-+ (NSString *)parametersKeyCertificatePassphrase;
+@property (copy, nonatomic, readonly, class) NSString *type;
+@property (copy, nonatomic, readonly, class) NSString *parametersKeyCertificatePassphrase;
 
-#pragma mark - Fluent
+#pragma mark - Getters
 @property (strong, nonatomic, readonly) JWTCryptoKeyBuilder *internalKeyBuilder;
+@end
+
+@interface JWTCryptoKeyExtractor (Setters)
 - (instancetype)configuredByKeyBuilder:(JWTCryptoKeyBuilder *)keyBuilder;
-@property (copy, nonatomic, readonly) JWTCryptoKeyExtractor * (^keyBuilder)(JWTCryptoKeyBuilder *keyBuilder);
 @end
 
 @interface JWTCryptoKeyExtractor (ClassCluster)

@@ -68,14 +68,14 @@ class DecriptedViewController: NSViewController {
         self.cachedResultArray = nil
         self.cachedErrorDictionary = nil
         if let resultType = self.resultType {
-            if let result = resultType.successResult.headerAndPayloadDictionary {
+            if let result = resultType.successResult?.headerAndPayloadDictionary {
                 self.cachedResultArray = [
-                    ["header" : result[JWTCodingResultHeaders] ?? ""],
-                    ["payload": result[JWTCodingResultPayload] ?? ""]
+                    ["header" : result[JWTCodingResultComponents.headers!] ?? ""],
+                    ["payload": result[JWTCodingResultComponents.payload!] ?? ""]
                 ]
             }
             else {
-                let errorDescription = self.resultType?.errorResult?.error?.localizedDescription ?? "UnknownError! Report about it!"
+                let errorDescription = resultType.errorResult?.error?.localizedDescription ?? "UnknownError! Report about it!"
                 self.cachedErrorDictionary = [
                     "error" : errorDescription
                 ]
