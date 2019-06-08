@@ -7,14 +7,13 @@
 //
 
 #import "JWTCryptoKeyExtractor.h"
+#import "JWTDeprecations.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 // Fluent ( Objective-C exclusive ).
-#if !DEPLOYMENT_RUNTIME_SWIFT
 @interface JWTCryptoKeyExtractor (FluentStyle)
-@property (copy, nonatomic, readonly) JWTCryptoKeyExtractor * (^keyBuilder)(JWTCryptoKeyBuilder *keyBuilder);
+@property (copy, nonatomic, readonly) JWTCryptoKeyExtractor * (^keyBuilder)(JWTCryptoKeyBuilder *keyBuilder) JWT_FLUENT_STYLE_FOR_SWIFT_UNAVAILABLE;
 @end
-#endif
 
 NS_ASSUME_NONNULL_END
