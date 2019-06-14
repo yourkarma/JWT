@@ -1,12 +1,12 @@
 source 'https://github.com/CocoaPods/Specs.git'
 #use_frameworks!
 
-def toolkit_name
-  'JWTDesktopSwiftToolkit'
-end
+# def toolkit_name
+#   'JWTDesktopSwiftToolkit'
+# end
 
 def target_name
-  'JWTDesktopSwift'
+  'JWTSwiftUI'
 end
 
 def test_name
@@ -15,12 +15,10 @@ end
 
 def handmade
   pod 'JWT', path: '../../'
-  pod 'SnapKit' #, '~> 3.0'
-  # pod 'Masonry'
 end
 
 def all
-  [toolkit_name, target_name]
+  [target_name]
 end
 
 def install_all

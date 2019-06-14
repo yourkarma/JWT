@@ -8,6 +8,7 @@
 
 import Cocoa
 import JWT
+import JWTDesktopSwiftToolkit
 import SnapKit
 
 
@@ -45,7 +46,7 @@ extension ViewController {
         let textStorage = self.encodedTextView.textStorage!
         let string = textStorage.string
         let range = NSMakeRange(0, string.count)
-        if let attributedString = self.model.appearance.encodedAttributedString(text: string, tokenSerialization: self.model.serialization) {
+        if let attributedString = self.model.appearance.encodedAttributedString(text: string) {
             attributedString.enumerateAttributes(in: range, options: []) { (attributes, range, bool) in
                 enumerate(range, attributes)
             }

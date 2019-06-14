@@ -8,11 +8,11 @@
 
 import Cocoa
 
-enum SignatureValidationType : Int {
+public enum SignatureValidationType : Int {
     case Unknown
     case Valid
     case Invalid
-    var color : NSColor {
+    public var color : NSColor {
         switch self {
         case .Unknown:
             return NSColor.darkGray
@@ -22,7 +22,7 @@ enum SignatureValidationType : Int {
             return NSColor.red
         }
     }
-    var title : String {
+    public var title : String {
         switch self {
         case .Unknown:
             return "Signature Unknown"
