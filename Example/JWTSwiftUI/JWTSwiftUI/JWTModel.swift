@@ -20,18 +20,18 @@ class JWTModel : BindableObject {
         }
     }
     var decodedData = Storage.DecodedData()
-    
+
     var decoder = TokenDecoder()
     var appearance = TokenTextAppearance()
     public init(data: Storage) {
         self.data = data
         // update data right after init or in stored property setter?
-        
+
         // we need somehow look after values of storage.
         self.computeDecoding()
     }
-    
-    func computeDecoding() {
+
+    func getObject() -> TokenDecoder.TokenDecoderObject {
         let settings = self.data.settings
         let encodedData = self.data.encodedData
         let algorithmName = encodedData.algorithmName
@@ -39,19 +39,27 @@ class JWTModel : BindableObject {
         let secretData: Data? = self.data.getSecretData()
         let isBase64EncodedSecret = settings.isBase64
         let shouldSkipSignatureVerification = settings.skipSignatureVerification
-        
-        let object = TokenDecoder.TokenDecoderObject(algorithmName: algorithmName, secret: secret, secretData: secretData, isBase64EncodedSecret: isBase64EncodedSecret, shouldSkipSignatureVerification: shouldSkipSignatureVerification)
-        
+
+        return TokenDecoder.TokenDecoderObject(algorithmName: algorithmName, secret: secret, secretData: secretData, isBase64EncodedSecret: isBase64EncodedSecret, shouldSkipSignatureVerification: shouldSkipSignatureVerification)
+    }
+
+    func computeEncoding() {
+        // let object = self.getObject()
+    }
+
+    func computeDecoding() {
+        let object = self.getObject()
+        let token = self.data.encodedData.token
         // and we should also populate data after decoding.
         // check it in another JWT project.
         // where you should update data.
         var forSignatureObject = object
         forSignatureObject.shouldSkipSignatureVerification = false
-        
-        self.decodedData.verified = (try? self.decoder.decode(token: encodedData.token, object: forSignatureObject) != nil) == .none ? SignatureValidationType.invalid : SignatureValidationType.valid
-        
+
+        self.decodedData.verified = (try? self.decoder.decode(token: token, object: forSignatureObject) != nil) == .none ? SignatureValidationType.invalid : SignatureValidationType.valid
+
         do {
-            if let decoded = try self.decoder.decode(token: encodedData.token, object: object) {
+            if let decoded = try self.decoder.decode(token: token, object: object) {
                 self.decodedData.result = .success(decoded as! [String : Any])
             }
         }
@@ -185,7 +193,7 @@ extension JWTModel.Storage {
         let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
         return self.create(algorithmName: algorithmName, secret: secret, token: token)
     }
-    
+
     static func RS256() -> Self {
         let algorithmName = JWTAlgorithmNameRS256
         let secret = "-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoPryo3IisfK3a028bwgso/CW5kB84mk6Y7rO76FxJRTWnOAla0Uf0OpIID7go4Qck66yT4/uPpiOQIR0oW0plTekkDP75EG3d/2mtzhiCtELV4F1r9b/InCN5dYYK8USNkKXgjbeVyatdUvCtokz10/ibNZ9qikgKf58qXnn2anGvpE6ded5FOUEukOjr7KSAfD0KDNYWgZcG7HZBxn/3N7ND9D0ATu2vxlJsNGOkH6WL1EmObo/QygBXzuZm5o0N0W15EXpWVbl4Ye7xqPnvc1i2DTKxNUcyhXfDbLw1ee2d9T/WU5895Ko2bQ/O/zPwUSobM3m+fPMW8kp5914kwIDAQAB-----END PUBLIC KEY-----"
