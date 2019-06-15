@@ -15,7 +15,6 @@
 		04A74B831DA00F4F0030DDE6 /* DecriptedCollectionViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04A74B811DA00F4F0030DDE6 /* DecriptedCollectionViewItem.xib */; };
 		04A74B841DA00F4F0030DDE6 /* DecriptedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04A74B821DA00F4F0030DDE6 /* DecriptedViewController.xib */; };
 		04A74B881DA0195B0030DDE6 /* DecriptedCollectionViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A74B871DA0195B0030DDE6 /* DecriptedCollectionViewItem.swift */; };
-		05F13726507A575178D61D4D /* Pods_JWTDesktopSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B32DE64BB64CE88006691979 /* Pods_JWTDesktopSwift.framework */; };
 		0A21AC8A22ABCE4600431DA3 /* JWTDesktopSwiftToolkit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A21AC8122ABCE4500431DA3 /* JWTDesktopSwiftToolkit.framework */; };
 		0A21AC9122ABCE4600431DA3 /* JWTDesktopSwiftToolkitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A21AC9022ABCE4600431DA3 /* JWTDesktopSwiftToolkitTests.swift */; };
 		0A21AC9322ABCE4600431DA3 /* JWTDesktopSwiftToolkit.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A21AC8322ABCE4500431DA3 /* JWTDesktopSwiftToolkit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -26,8 +25,10 @@
 		0A21ACA122ABCE5B00431DA3 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC1A7DB1FA7C0BA004A1F90 /* String+Extension.swift */; };
 		0A21ACA222ABCE5B00431DA3 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BC7011FA7B320000BDAB4 /* Array+Extension.swift */; };
 		0A21ACA322ABCE5B00431DA3 /* SignatureValidationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BC6F91FA7AF7E000BDAB4 /* SignatureValidationType.swift */; };
+		0A2D860722B53DAD00BB4760 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A2D860422B53DA700BB4760 /* JWT.framework */; };
+		0A2D860822B53DAD00BB4760 /* JWT.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A2D860422B53DA700BB4760 /* JWT.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0A2D860D22B53E5C00BB4760 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A2D860422B53DA700BB4760 /* JWT.framework */; };
 		0A5BC6FE1FA7B214000BDAB4 /* ViewController+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5BC6FD1FA7B214000BDAB4 /* ViewController+Model.swift */; };
-		EBB01F91806524076C9DF6C8 /* Pods_JWTDesktopSwiftToolkit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC4173138C0C17063481C1E9 /* Pods_JWTDesktopSwiftToolkit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,27 @@
 			remoteGlobalIDString = 0A21AC8022ABCE4500431DA3;
 			remoteInfo = JWTDesktopSwiftToolkit;
 		};
+		0A2D860322B53DA700BB4760 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0A2D85FE22B53DA700BB4760 /* JWT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 04DEBCA31DBCDB8600C1DF52;
+			remoteInfo = JWT;
+		};
+		0A2D860522B53DA700BB4760 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0A2D85FE22B53DA700BB4760 /* JWT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 045146681D5E2A78007B1D7A;
+			remoteInfo = "JWT-iOS-Static";
+		};
+		0A2D860922B53DAD00BB4760 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0A2D85FE22B53DA700BB4760 /* JWT.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 04DEBCA21DBCDB8600C1DF52;
+			remoteInfo = JWT;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -61,6 +83,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				0A2D860822B53DAD00BB4760 /* JWT.framework in Embed Frameworks */,
 				0A21AC9722ABCE4600431DA3 /* JWTDesktopSwiftToolkit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -86,17 +109,12 @@
 		0A21AC8922ABCE4600431DA3 /* JWTDesktopSwiftToolkitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JWTDesktopSwiftToolkitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A21AC9022ABCE4600431DA3 /* JWTDesktopSwiftToolkitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTDesktopSwiftToolkitTests.swift; sourceTree = "<group>"; };
 		0A21AC9222ABCE4600431DA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A2D85FE22B53DA700BB4760 /* JWT.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JWT.xcodeproj; path = ../../Framework/JWT.xcodeproj; sourceTree = "<group>"; };
 		0A5BC6F91FA7AF7E000BDAB4 /* SignatureValidationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignatureValidationType.swift; sourceTree = "<group>"; };
 		0A5BC6FD1FA7B214000BDAB4 /* ViewController+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Model.swift"; sourceTree = "<group>"; };
 		0A5BC6FF1FA7B24A000BDAB4 /* TokenDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenDecoder.swift; sourceTree = "<group>"; };
 		0A5BC7011FA7B320000BDAB4 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		0AC1A7DB1FA7C0BA004A1F90 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
-		164DB99BBCCDAB8B2E975D8A /* Pods-JWTDesktopSwiftToolkit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTDesktopSwiftToolkit.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWTDesktopSwiftToolkit/Pods-JWTDesktopSwiftToolkit.release.xcconfig"; sourceTree = "<group>"; };
-		59DE9D5BDE3236224F0F4A16 /* Pods-JWTDesktopSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTDesktopSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JWTDesktopSwift/Pods-JWTDesktopSwift.debug.xcconfig"; sourceTree = "<group>"; };
-		5DB702E25DCDB88A93B2C388 /* Pods-JWTDesktopSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTDesktopSwift.release.xcconfig"; path = "Pods/Target Support Files/Pods-JWTDesktopSwift/Pods-JWTDesktopSwift.release.xcconfig"; sourceTree = "<group>"; };
-		B32DE64BB64CE88006691979 /* Pods_JWTDesktopSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JWTDesktopSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CC4173138C0C17063481C1E9 /* Pods_JWTDesktopSwiftToolkit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JWTDesktopSwiftToolkit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E5667DA4934D26A3EC25A96F /* Pods-JWTDesktopSwiftToolkit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTDesktopSwiftToolkit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JWTDesktopSwiftToolkit/Pods-JWTDesktopSwiftToolkit.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,8 +122,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A2D860722B53DAD00BB4760 /* JWT.framework in Frameworks */,
 				0A21AC9622ABCE4600431DA3 /* JWTDesktopSwiftToolkit.framework in Frameworks */,
-				05F13726507A575178D61D4D /* Pods_JWTDesktopSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,7 +131,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EBB01F91806524076C9DF6C8 /* Pods_JWTDesktopSwiftToolkit.framework in Frameworks */,
+				0A2D860D22B53E5C00BB4760 /* JWT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,12 +149,12 @@
 		04A74B641DA00D830030DDE6 = {
 			isa = PBXGroup;
 			children = (
+				0A2D85FE22B53DA700BB4760 /* JWT.xcodeproj */,
 				04A74B6F1DA00D830030DDE6 /* JWTDesktopSwift */,
 				0A21AC8222ABCE4500431DA3 /* JWTDesktopSwiftToolkit */,
 				0A21AC8F22ABCE4600431DA3 /* JWTDesktopSwiftToolkitTests */,
 				04A74B6E1DA00D830030DDE6 /* Products */,
-				5A5901632A43C901BAB84875 /* Pods */,
-				787E29405FC2114A4622B394 /* Frameworks */,
+				0A2D860C22B53E5C00BB4760 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -190,22 +208,18 @@
 			path = JWTDesktopSwiftToolkitTests;
 			sourceTree = "<group>";
 		};
-		5A5901632A43C901BAB84875 /* Pods */ = {
+		0A2D85FF22B53DA700BB4760 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				59DE9D5BDE3236224F0F4A16 /* Pods-JWTDesktopSwift.debug.xcconfig */,
-				5DB702E25DCDB88A93B2C388 /* Pods-JWTDesktopSwift.release.xcconfig */,
-				E5667DA4934D26A3EC25A96F /* Pods-JWTDesktopSwiftToolkit.debug.xcconfig */,
-				164DB99BBCCDAB8B2E975D8A /* Pods-JWTDesktopSwiftToolkit.release.xcconfig */,
+				0A2D860422B53DA700BB4760 /* JWT.framework */,
+				0A2D860622B53DA700BB4760 /* libJWT.a */,
 			);
-			name = Pods;
+			name = Products;
 			sourceTree = "<group>";
 		};
-		787E29405FC2114A4622B394 /* Frameworks */ = {
+		0A2D860C22B53E5C00BB4760 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B32DE64BB64CE88006691979 /* Pods_JWTDesktopSwift.framework */,
-				CC4173138C0C17063481C1E9 /* Pods_JWTDesktopSwiftToolkit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -228,17 +242,16 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 04A74B7C1DA00D840030DDE6 /* Build configuration list for PBXNativeTarget "JWTDesktopSwift" */;
 			buildPhases = (
-				E775B9E8218E40E41AFAA894 /* [CP] Check Pods Manifest.lock */,
 				04A74B691DA00D830030DDE6 /* Sources */,
 				04A74B6A1DA00D830030DDE6 /* Frameworks */,
 				04A74B6B1DA00D830030DDE6 /* Resources */,
-				D87B59047BF196F770AF9976 /* [CP] Embed Pods Frameworks */,
 				0A21AC9D22ABCE4600431DA3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				0A21AC9522ABCE4600431DA3 /* PBXTargetDependency */,
+				0A2D860A22B53DAD00BB4760 /* PBXTargetDependency */,
 			);
 			name = JWTDesktopSwift;
 			productName = JWTDesktopSwift;
@@ -249,7 +262,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0A21AC9C22ABCE4600431DA3 /* Build configuration list for PBXNativeTarget "JWTDesktopSwiftToolkit" */;
 			buildPhases = (
-				BCAE127B1AAD027F423B557A /* [CP] Check Pods Manifest.lock */,
 				0A21AC7C22ABCE4500431DA3 /* Headers */,
 				0A21AC7D22ABCE4500431DA3 /* Sources */,
 				0A21AC7E22ABCE4500431DA3 /* Frameworks */,
@@ -321,6 +333,12 @@
 			mainGroup = 04A74B641DA00D830030DDE6;
 			productRefGroup = 04A74B6E1DA00D830030DDE6 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 0A2D85FF22B53DA700BB4760 /* Products */;
+					ProjectRef = 0A2D85FE22B53DA700BB4760 /* JWT.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				04A74B6C1DA00D830030DDE6 /* JWTDesktopSwift */,
@@ -329,6 +347,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		0A2D860422B53DA700BB4760 /* JWT.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = JWT.framework;
+			remoteRef = 0A2D860322B53DA700BB4760 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0A2D860622B53DA700BB4760 /* libJWT.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libJWT.a;
+			remoteRef = 0A2D860522B53DA700BB4760 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		04A74B6B1DA00D830030DDE6 /* Resources */ = {
@@ -357,71 +392,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		BCAE127B1AAD027F423B557A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-JWTDesktopSwiftToolkit-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D87B59047BF196F770AF9976 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JWTDesktopSwift/Pods-JWTDesktopSwift-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Base64/Base64.framework",
-				"${BUILT_PRODUCTS_DIR}/JWT/JWT.framework",
-				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Base64.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JWT.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JWTDesktopSwift/Pods-JWTDesktopSwift-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E775B9E8218E40E41AFAA894 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-JWTDesktopSwift-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		04A74B691DA00D830030DDE6 /* Sources */ = {
@@ -473,6 +443,11 @@
 			isa = PBXTargetDependency;
 			target = 0A21AC8022ABCE4500431DA3 /* JWTDesktopSwiftToolkit */;
 			targetProxy = 0A21AC9422ABCE4600431DA3 /* PBXContainerItemProxy */;
+		};
+		0A2D860A22B53DAD00BB4760 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = JWT;
+			targetProxy = 0A2D860922B53DAD00BB4760 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -600,7 +575,6 @@
 		};
 		04A74B7D1DA00D840030DDE6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 59DE9D5BDE3236224F0F4A16 /* Pods-JWTDesktopSwift.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -615,7 +589,6 @@
 		};
 		04A74B7E1DA00D840030DDE6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5DB702E25DCDB88A93B2C388 /* Pods-JWTDesktopSwift.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -630,7 +603,6 @@
 		};
 		0A21AC9822ABCE4600431DA3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E5667DA4934D26A3EC25A96F /* Pods-JWTDesktopSwiftToolkit.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -662,7 +634,6 @@
 		};
 		0A21AC9922ABCE4600431DA3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 164DB99BBCCDAB8B2E975D8A /* Pods-JWTDesktopSwiftToolkit.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

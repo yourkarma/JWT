@@ -10,7 +10,6 @@
 #import <JWT/JWT.h>
 #import <JWT/JWTAlgorithmFactory.h>
 #import <JWT/JWTAlgorithmNone.h>
-#import <Masonry/Masonry.h>
 #import "JWTTokenTextTypeDescription.h"
 #import "SignatureValidationDescription.h"
 #import "JWTDecriptedViewController.h"
@@ -210,9 +209,16 @@
 - (void)viewWillAppear {
     [super viewWillAppear];
     NSView *view = self.decriptedView;
-    [self.decriptedViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(view);
-    }];
+    __auto_type decriptedView = self.decriptedViewController.view;
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    decriptedView.translatesAutoresizingMaskIntoConstraints = NO;
+    __auto_type constraints = @[
+                                [decriptedView.leftAnchor constraintEqualToAnchor:view.leftAnchor],
+                                [decriptedView.rightAnchor constraintEqualToAnchor:view.rightAnchor],
+                                [decriptedView.topAnchor constraintEqualToAnchor:view.topAnchor],
+                                [decriptedView.bottomAnchor constraintEqualToAnchor:view.bottomAnchor]
+                                ];
+    [NSLayoutConstraint activateConstraints:constraints];
 }
 
 #pragma mark - Actions
