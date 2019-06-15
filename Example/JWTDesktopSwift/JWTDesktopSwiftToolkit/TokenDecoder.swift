@@ -57,6 +57,9 @@ class JWTTokenDecoder__V2: TokenDecoder {
         
         guard let decoded = builder?.decode else {
             print("JWT ERROR \(String(describing: builder?.jwtError))")
+            if let error = builder?.jwtError {
+                throw error
+            }
             return nil
         }
         
