@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,8 +19,40 @@
 		0A76C87C22ABD2B100B8A43A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A76C87A22ABD2B100B8A43A /* LaunchScreen.storyboard */; };
 		0A76C88422ABD2F200B8A43A /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C88322ABD2F200B8A43A /* HeaderView.swift */; };
 		0A76C88822ABE51800B8A43A /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C88722ABE51800B8A43A /* BottomView.swift */; };
-		CD9F4866397B9BCD9B5436F1 /* Pods_JWTSwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 668E820E6E990704BAC3BD2C /* Pods_JWTSwiftUI.framework */; };
+		0AEEA8B922B5400E00B67217 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEEA8B522B5400800B67217 /* JWT.framework */; };
+		0AEEA8BA22B5400E00B67217 /* JWT.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEEA8B522B5400800B67217 /* JWT.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0AEEA8B422B5400800B67217 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AEEA8AF22B5400800B67217 /* JWT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 04DEBCA31DBCDB8600C1DF52;
+			remoteInfo = JWT;
+		};
+		0AEEA8B622B5400800B67217 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AEEA8AF22B5400800B67217 /* JWT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 045146681D5E2A78007B1D7A;
+			remoteInfo = "JWT-iOS-Static";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0AEEA8BB22B5400E00B67217 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				0AEEA8BA22B5400E00B67217 /* JWT.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0A3B6AA622B03ABE009F3B33 /* SignatureValidationType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureValidationType.swift; sourceTree = "<group>"; };
@@ -37,9 +69,7 @@
 		0A76C87D22ABD2B100B8A43A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A76C88322ABD2F200B8A43A /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		0A76C88722ABE51800B8A43A /* BottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView.swift; sourceTree = "<group>"; };
-		174B4F0FE015301635FA3EB0 /* Pods-JWTSwiftUI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTSwiftUI.debug.xcconfig"; path = "Target Support Files/Pods-JWTSwiftUI/Pods-JWTSwiftUI.debug.xcconfig"; sourceTree = "<group>"; };
-		40277B8B4D31A5A03374EDBA /* Pods-JWTSwiftUI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JWTSwiftUI.release.xcconfig"; path = "Target Support Files/Pods-JWTSwiftUI/Pods-JWTSwiftUI.release.xcconfig"; sourceTree = "<group>"; };
-		668E820E6E990704BAC3BD2C /* Pods_JWTSwiftUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JWTSwiftUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AEEA8AF22B5400800B67217 /* JWT.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JWT.xcodeproj; path = ../../Framework/JWT.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD9F4866397B9BCD9B5436F1 /* Pods_JWTSwiftUI.framework in Frameworks */,
+				0AEEA8B922B5400E00B67217 /* JWT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,10 +87,11 @@
 		0A76C86322ABD2AF00B8A43A = {
 			isa = PBXGroup;
 			children = (
+				0AEEA8AF22B5400800B67217 /* JWT.xcodeproj */,
 				0A76C86E22ABD2AF00B8A43A /* JWTSwiftUI */,
 				0A76C86D22ABD2AF00B8A43A /* Products */,
 				D6233C3378B88B8621FCBFA9 /* Pods */,
-				94E66ECC7D2F82CA444A4DF6 /* Frameworks */,
+				0AEEA8B822B5400E00B67217 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -100,10 +131,18 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		94E66ECC7D2F82CA444A4DF6 /* Frameworks */ = {
+		0AEEA8B022B5400800B67217 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				668E820E6E990704BAC3BD2C /* Pods_JWTSwiftUI.framework */,
+				0AEEA8B522B5400800B67217 /* JWT.framework */,
+				0AEEA8B722B5400800B67217 /* libJWT.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0AEEA8B822B5400E00B67217 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -111,8 +150,6 @@
 		D6233C3378B88B8621FCBFA9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				174B4F0FE015301635FA3EB0 /* Pods-JWTSwiftUI.debug.xcconfig */,
-				40277B8B4D31A5A03374EDBA /* Pods-JWTSwiftUI.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -124,11 +161,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0A76C88022ABD2B100B8A43A /* Build configuration list for PBXNativeTarget "JWTSwiftUI" */;
 			buildPhases = (
-				9CCAE8815D379132B4A006A3 /* [CP] Check Pods Manifest.lock */,
 				0A76C86822ABD2AF00B8A43A /* Sources */,
 				0A76C86922ABD2AF00B8A43A /* Frameworks */,
 				0A76C86A22ABD2AF00B8A43A /* Resources */,
-				31473328CFEA9CB78A18FCBB /* [CP] Embed Pods Frameworks */,
+				0AEEA8BB22B5400E00B67217 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -165,12 +201,35 @@
 			mainGroup = 0A76C86322ABD2AF00B8A43A;
 			productRefGroup = 0A76C86D22ABD2AF00B8A43A /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 0AEEA8B022B5400800B67217 /* Products */;
+					ProjectRef = 0AEEA8AF22B5400800B67217 /* JWT.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				0A76C86B22ABD2AF00B8A43A /* JWTSwiftUI */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		0AEEA8B522B5400800B67217 /* JWT.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = JWT.framework;
+			remoteRef = 0AEEA8B422B5400800B67217 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0AEEA8B722B5400800B67217 /* libJWT.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libJWT.a;
+			remoteRef = 0AEEA8B622B5400800B67217 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		0A76C86A22ABD2AF00B8A43A /* Resources */ = {
@@ -184,48 +243,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		31473328CFEA9CB78A18FCBB /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JWTSwiftUI/Pods-JWTSwiftUI-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JWTSwiftUI/Pods-JWTSwiftUI-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JWTSwiftUI/Pods-JWTSwiftUI-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9CCAE8815D379132B4A006A3 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-JWTSwiftUI-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0A76C86822ABD2AF00B8A43A /* Sources */ = {
@@ -374,7 +391,6 @@
 		};
 		0A76C88122ABD2B100B8A43A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 174B4F0FE015301635FA3EB0 /* Pods-JWTSwiftUI.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -394,7 +410,6 @@
 		};
 		0A76C88222ABD2B100B8A43A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 40277B8B4D31A5A03374EDBA /* Pods-JWTSwiftUI.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

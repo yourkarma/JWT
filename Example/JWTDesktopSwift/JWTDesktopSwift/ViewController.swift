@@ -9,7 +9,6 @@
 import Cocoa
 import JWT
 import JWTDesktopSwiftToolkit
-import SnapKit
 
 
 // MARK: - Supply JWT Methods
@@ -289,12 +288,21 @@ class ViewController: NSViewController {
     
     override func viewWillAppear() {
         super.viewWillAppear()
-        let view = self.decriptedView
+        guard let view = self.decriptedView else { return }
+        
         let subview = self.decriptedViewController.view
 
-        subview.snp.makeConstraints { (maker) in
-            maker.edges.equalTo((view?.snp.edges)!)
-        }
+        view.translatesAutoresizingMaskIntoConstraints = false
+        subview.translatesAutoresizingMaskIntoConstraints = false
+        
+        let constraints = [
+            subview.leftAnchor.constraint(equalTo: view.leftAnchor),
+            subview.rightAnchor.constraint(equalTo: view.rightAnchor),
+            subview.topAnchor.constraint(equalTo: view.topAnchor),
+            subview.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
     }
 }
 
