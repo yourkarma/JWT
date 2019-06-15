@@ -388,9 +388,9 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-JWTDesktopSwift/Pods-JWTDesktopSwift-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Base64-macOS10.12/Base64.framework",
-				"${BUILT_PRODUCTS_DIR}/JWT-macOS10.12/JWT.framework",
-				"${BUILT_PRODUCTS_DIR}/SnapKit-macOS10.12/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Base64/Base64.framework",
+				"${BUILT_PRODUCTS_DIR}/JWT/JWT.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
