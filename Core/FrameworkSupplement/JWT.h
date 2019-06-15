@@ -58,6 +58,7 @@ FOUNDATION_EXPORT const unsigned char JWTVersionString[];
 
 // Fluent ( Objective-C exclusive ).
 #if !DEPLOYMENT_RUNTIME_SWIFT
+#import <JWT/JWTBuilder+FluentStyle.h>
 #import <JWT/JWTCodingBuilder+FluentStyle.h>
 #import <JWT/JWTAlgorithmDataHolder+FluentStyle.h>
 #import <JWT/JWTCryptoKeyExtractor+FluentStyle.h>
