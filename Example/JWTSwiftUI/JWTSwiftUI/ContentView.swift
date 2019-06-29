@@ -43,8 +43,14 @@ struct ContentView : View {
             getBottomView()
         }
     }
+    var body3: some View {
+        NavigationView {
+            getBottomView()
+            getHeaderView()
+        }
+    }
     var body: some View {
-        body2
+        body3
     }
 }
 

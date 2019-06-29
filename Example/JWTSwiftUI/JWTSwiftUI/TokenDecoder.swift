@@ -111,10 +111,7 @@ fileprivate class JWTTokenDecoder__V3: TokenDecoder {
                 throw error
             }
             
-            // TODO: remove dependency.
-            // Aware of last part.
-            // DataHolder MUST have a secretData ( empty data is perfect, if you use verifyKey )
-            holder = JWTAlgorithmRSFamilyDataHolder().verifyKey(key).algorithmName(algorithmName).secretData(Data())
+            holder = JWTAlgorithmRSFamilyDataHolder().verifyKey(key).algorithmName(algorithmName)
         case is JWTAlgorithmHSBase:
             let aHolder = JWTAlgorithmHSFamilyDataHolder()
             if let theSecretData = secretData, isBase64EncodedSecret {
