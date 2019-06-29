@@ -8,11 +8,11 @@
 
 #import "JWTAlgorithmDataHolder+FluentStyle.h"
 
-#pragma clang diagnostics push
-#pragma clang diagnostics ignored "-Wobjc-property-implementation"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-property-implementation"
 @implementation JWTAlgorithmBaseDataHolder (FluentStyle)
 @end
 
 @implementation JWTAlgorithmRSFamilyDataHolder (FluentStyle)
 @end
-#pragma clang diagnostics pop
+#pragma clang diagnostic pop
