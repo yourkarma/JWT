@@ -232,14 +232,14 @@
         
         // BUG:
         // Read about it in
-        if ([holder isKindOfClass:JWTAlgorithmRSFamilyDataHolder.class]) {
-            JWTAlgorithmRSFamilyDataHolder *theHolder = (JWTAlgorithmRSFamilyDataHolder *)holder;
-            BOOL bugExists = (theHolder.internalSignKey != nil || theHolder.internalVerifyKey != nil ) && secretData == nil;
-            if (bugExists) {
-                return [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:[JWTErrorDescription errorWithCode:JWTHolderSecretDataNotSetError]]];
-                return nil;
-            }
-        }
+//        if ([holder isKindOfClass:JWTAlgorithmRSFamilyDataHolder.class]) {
+//            JWTAlgorithmRSFamilyDataHolder *theHolder = (JWTAlgorithmRSFamilyDataHolder *)holder;
+//            BOOL bugExists = (theHolder.internalSignKey != nil || theHolder.internalVerifyKey != nil ) && secretData == nil;
+//            if (bugExists) {
+//                return [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:[JWTErrorDescription errorWithCode:JWTHolderSecretDataNotSetError]]];
+//                return nil;
+//            }
+//        }
         
         encodedMessage = [self encodeWithAlgorithm:algorithm withHeaders:headers withPayload:payload withSecretData:secretData withError:&error];
         if (encodedMessage && (error == nil)) {
@@ -317,6 +317,9 @@
     // this happens somewhere outside.
 
     NSError *algorithmError = nil;
+    if ([theAlgorithm conformsToProtocol:@protocol(JWTRSAlgorithm)]) {
+        theSecretData = theSecretData ?: [NSData data];
+    }
     if (theSecretData && [theAlgorithm respondsToSelector:@selector(signHash:key:error:)]) {
           NSData *signedOutputData = [theAlgorithm signHash:[signingInput dataUsingEncoding:NSUTF8StringEncoding] key:theSecretData error:&algorithmError];
         signedOutput = [JWTBase64Coder base64UrlEncodedStringWithData:signedOutputData];
@@ -569,6 +572,7 @@
         id<JWTAlgorithm> algorithm = nil;
         if ([theAlgorithm conformsToProtocol:@protocol(JWTRSAlgorithm)]) {
             algorithm = [(id<JWTRSAlgorithm>)theAlgorithm copyWithZone:nil];
+            theSecretData = theSecretData ?: [NSData data];
         }
         else {
             algorithm = [JWTAlgorithmFactory algorithmByName:theAlgorithmName];
