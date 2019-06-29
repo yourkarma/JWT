@@ -6,7 +6,7 @@
 //  Copyright © 2018 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWT.h>
+#import "JWTCryptoSecurity.h"
 
 // content is Base64 string, all '\n' are removed.
 @interface JWTCryptoSecurityComponent : NSObject

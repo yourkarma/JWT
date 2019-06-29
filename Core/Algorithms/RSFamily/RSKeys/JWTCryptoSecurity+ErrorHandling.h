@@ -6,7 +6,7 @@
 //  Copyright © 2018 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWT.h>
+#import "JWTCryptoSecurity.h"
 #import <Security/Security.h>
 
 @interface JWTCryptoSecurity (ErrorHandling)

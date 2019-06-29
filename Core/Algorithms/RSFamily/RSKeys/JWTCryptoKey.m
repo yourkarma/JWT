@@ -10,6 +10,7 @@
 #import "JWTCryptoSecurity.h"
 #import "JWTCryptoSecurity+Extraction.h"
 #import "JWTCryptoSecurity+ExternalRepresentation.h"
+#import "JWTCryptoSecurity+ErrorHandling.h"
 #import "JWTBase64Coder.h"
 @interface JWTCryptoKeyBuilder()
 + (NSString *)keyTypeRSA;

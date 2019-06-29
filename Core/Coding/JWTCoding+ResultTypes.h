@@ -6,7 +6,7 @@
 //  Copyright © 2016 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTCoding.h>
+#import "JWTCoding.h"
 #import "JWTDeprecations.h"
 @class JWTClaimsSet;
 

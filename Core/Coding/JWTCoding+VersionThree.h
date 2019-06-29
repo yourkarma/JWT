@@ -6,7 +6,7 @@
 //  Copyright © 2016 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTCoding.h>
+#import "JWTCoding.h"
 
 // encode and decode options
 @protocol JWTAlgorithm;
