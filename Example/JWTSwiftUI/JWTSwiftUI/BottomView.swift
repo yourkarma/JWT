@@ -43,16 +43,11 @@ extension BottomView {
 extension BottomView {
     struct DecodedView : View {
         var a: [String] = []
-        var decodedInformation: [String: [String: Any]]
-        func information() -> [String: [String: CustomStringConvertible]?] {
-            decodedInformation.mapValues { (value) -> [String : CustomStringConvertible]? in
-                return value as? [String : CustomStringConvertible]
-            }
-        }
+        var decodedInformation: JWTModel.Storage.DecodedData.DecodedInfoType
         var body: some View {
             VStack {
-                ForEach(self.decodedInformation.keys.sorted().identified(by: \.self)) { value in
-                    Text("\(value): \(String(describing: self.information()[value]))").lineLimit(10).multilineTextAlignment(.center)
+                ForEach(self.decodedInformation.identified(by: \.0)) { value in
+                    Text("\(value.0): \(String(describing: value.1))").lineLimit(10).multilineTextAlignment(.center)
                 }
             }
         }
@@ -69,16 +64,46 @@ extension BottomView {
     }
 }
 
+struct QqView : View {
+//    @State var width: Length = 1
+    static var bigText = "This is a test of the emergency broadcast system. This is only a test. If this were a real emergency, then you'd be up the creek without a paddle. But it's not so you're safe for the time being."
+    @State var text: String = QqView.bigText
+    var body: some View {
+        GeometryReader {
+            geometry in
+//            ScrollView(isScrollEnabled: true, alwaysBounceHorizontal: false, alwaysBounceVertical: true, showsHorizontalIndicator: false, showsVerticalIndicator: true) {
+                VStack {
+//                    TextField(self.$text)
+                    
+                    TextField(self.$text)
+                        .background(Color.red)
+                        .lineLimit(nil)
+                        .frame(
+                            minWidth: geometry.size.width,
+                            idealWidth: geometry.size.width,
+                            maxWidth: geometry.size.width,
+                            minHeight: geometry.size.height,
+                            idealHeight: geometry.size.height,
+                            maxHeight: .infinity,
+                            alignment: .topLeading)
+                }
+                
+//            }
+        }
+    }
+}
+
 struct BottomView : View {
     @Binding var encodedData : JWTModel.Storage.EncodedData
     var decodedData : JWTModel.Storage.DecodedData
 //    @State var data2 : DynamicMember<JWTModel.Storage.JWT> =  DynamicMember(JWTModel(data: JWTModel.Storage.HS256()))
     var body: some View {
         VStack {
+//            QqView()
             EncryptedView(textValue: $encodedData.token)
             DecodedView(decodedInformation: decodedData.decodedInformation)
             SignatureView(validation: decodedData.verified)
-        }.padding().padding()
+        }
     }
 }
 

@@ -127,23 +127,24 @@ extension JWTModel.Storage {
 
 // MARK: decodedInformation
 extension JWTModel.Storage.DecodedData {
-    func decodedInfo() -> [String: [String : Any]] {
+    typealias DecodedInfoType = [(String, String)]
+    func decodedInfo() -> DecodedInfoType {
         if let error = self.error {
-            return [DecodedInformation.error.rawValue : ["error": error]]
+            return [(DecodedInformation.error.rawValue, String.json(["error": error]) )]
         }
         else if let headers = decoded[JWTCodingResultComponents.headers!] as? [String: Any], let payload = decoded[JWTCodingResultComponents.payload!] as? [String: Any] {
             return [
-                DecodedInformation.header.rawValue: headers,
-                DecodedInformation.payload.rawValue: payload
+                (DecodedInformation.header.rawValue, String.json(headers)),
+                (DecodedInformation.payload.rawValue, String.json(payload))
             ]
         }
         else {
             return [
-                DecodedInformation.unknown.rawValue: ["unknown": "unknown"]
+                (DecodedInformation.unknown.rawValue, String.json(["unknown": "unknown"]))
             ]
         }
     }
-    var decodedInformation: [String: [String : Any]] {
+    var decodedInformation: DecodedInfoType {
         return decodedInfo()
     }
 }
