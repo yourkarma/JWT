@@ -15,19 +15,27 @@ typedef NS_ENUM(NSInteger, JWTTokenTextType) {
     JWTTokenTextTypeDefault, // dot text color
     JWTTokenTextTypeHeader,
     JWTTokenTextTypePayload,
-    JWTTokenTextTypeSignature
+    JWTTokenTextTypeSignature,
+    JWTTokenTextTypeDot
 };
 
+@interface JWTTokenTextTypeAppearanceAttributes : NSObject
+@property (copy, nonatomic, readwrite) NSColor *color;
+@property (copy, nonatomic, readwrite) NSFont *font;
+@end
+
 @interface JWTTokenTextTypeDescription: NSObject
-- (NSColor *)tokenTextColorForType:(JWTTokenTextType)type;
+- (NSColor *)colorForType:(JWTTokenTextType)type;
+- (NSFont *)font;
 - (NSDictionary *)encodedTextAttributesForType:(JWTTokenTextType)type;
++ (NSArray <NSNumber *>*)typicalSchemeComponents;
 @end
 
 @interface JWTTokenTextTypeSerialization: NSObject
 - (NSString *)textPartFromTexts:(NSArray *)texts type:(JWTTokenTextType)type;
-- (NSString *)stringFromDecodedToken:(NSDictionary *)token;
 @end
 
 @interface JWTTokenTextTypeAppearance: NSObject
-- (NSAttributedString *)encodedAttributedTextForText:(NSString *)text serialization:(JWTTokenTextTypeSerialization *)serialization tokenDescription:(JWTTokenTextTypeDescription *)tokenDescription;
+- (NSArray <JWTTokenTextTypeAppearanceAttributes *>*)attributesForText:(NSString *)text;
+- (NSAttributedString *)attributedStringForText:(NSString *)text;
 @end

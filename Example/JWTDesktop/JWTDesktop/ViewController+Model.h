@@ -16,8 +16,6 @@
 @end
 
 @interface ViewController__Model : NSObject
-@property (strong, nonatomic, readwrite) JWTTokenTextTypeDescription *tokenDescription;
-@property (strong, nonatomic, readwrite) JWTTokenTextTypeSerialization *tokenSerialization;
 @property (strong, nonatomic, readwrite) JWTTokenTextTypeAppearance *tokenAppearance;
 @property (strong, nonatomic, readwrite) SignatureValidationDescription *signatureValidationDescription;
 @property (strong, nonatomic, readwrite) JWTTokenDecoder *decoder;

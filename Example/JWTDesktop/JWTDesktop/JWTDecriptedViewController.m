@@ -157,11 +157,11 @@
 - (NSColor *)colorWithIndexPath:(NSIndexPath *)path {
     NSColor *color = nil;
     if (self.cachedErrorDictionary) {
-        color = [self.tokenDescription tokenTextColorForType:JWTTokenTextTypeHeader];
+        color = [self.tokenDescription colorForType:JWTTokenTextTypeHeader];
     }
     else if (self.cachedResultArray) {
         JWTTokenTextType type = MAX(JWTTokenTextTypeDefault, MIN(path.item + 1, JWTTokenTextTypeSignature));
-        color = [self.tokenDescription tokenTextColorForType:type];
+        color = [self.tokenDescription colorForType:type];
     }
     return color;
 }

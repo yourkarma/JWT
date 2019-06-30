@@ -70,25 +70,48 @@
 
 @implementation ViewController
 
+//func encodedTextAttributes(_ enumerate: (NSRange, [NSAttributedString.Key : Any]) -> ()) {
+//    let textStorage = self.encodedTextView.textStorage!
+//    let string = textStorage.string
+//    let range = NSMakeRange(0, string.count)
+//    if let attributedString = self.model.appearance.encodedAttributedString(text: string) {
+//        attributedString.enumerateAttributes(in: range, options: []) { (attributes, range, bool) in
+//            enumerate(range, attributes)
+//        }
+//    }
+//}
+
+- (void)encodedTextAttributes:(void(^)(NSRange range, NSDictionary* dictionary))block {
+    if (!block) {
+        return;
+    }
+    __auto_type textStorage = self.encodedTextView.textStorage;
+    __auto_type string = textStorage.string;
+    __auto_type range = NSMakeRange(0, string.length);
+    __auto_type attributedString = [self.model.tokenAppearance attributedStringForText:string];
+    if (attributedString != nil) {
+        [attributedString enumerateAttributesInRange:range options:0 usingBlock:^(NSDictionary<NSAttributedStringKey,id> * _Nonnull attrs, NSRange range, BOOL * _Nonnull stop) {
+            block(range, attrs);
+        }];
+    }
+}
+
+
 #pragma mark - Refresh UI
 - (void)refreshUI {
     
     NSTextStorage *textStorage = self.encodedTextView.textStorage;
     NSString *string = textStorage.string;
-    NSAttributedString *attributedString = [self.model.tokenAppearance encodedAttributedTextForText:string serialization:self.model.tokenSerialization tokenDescription:self.model.tokenDescription];
-    NSRange range = NSMakeRange(0, string.length);
     
-//    [self.encodedTextView insertText:attributedString replacementRange:range];
-    [self.encodedTextView.undoManager beginUndoGrouping];
-    [textStorage replaceCharactersInRange:range withAttributedString:attributedString];
-    [self.encodedTextView.undoManager endUndoGrouping];
+    [self encodedTextAttributes:^(NSRange range, NSDictionary *dictionary) {
+        [textStorage setAttributes:dictionary range:range];
+    }];
     
     NSError *error = nil;
     NSDictionary *result = [self.model.decoder decodeToken:string skipSignatureVerification:YES error:&error necessaryDataObject:self];
     
     NSLog(@"1. CODER: %@ -> %@",self.model.decoder, self.model.decoder.resultType);
     
-    NSString *decodedTokenAsJSON = [self.model.tokenSerialization stringFromDecodedToken:result];
     BOOL signatureVerified = [self.model.decoder decodeToken:string skipSignatureVerification:NO error:&error necessaryDataObject:self] != nil;
     [self signatureReactOnVerifiedToken:signatureVerified];
     
@@ -97,8 +120,6 @@
     // will be udpated.
     JWTCodingResultType *resultType = error ? [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:error]] : self.model.decoder.resultType;
     self.decriptedViewController.resultType = resultType;
-    // not used.
-    [self.decodedTextView replaceCharactersInRange:range withString:decodedTokenAsJSON];
 }
 
 #pragma mark - Signature Customization

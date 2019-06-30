@@ -14,12 +14,6 @@
 @end
 
 @implementation ViewController__Model
-- (JWTTokenTextTypeDescription *)tokenDescription {
-    return _tokenDescription ?: (_tokenDescription = [JWTTokenTextTypeDescription new]);
-}
-- (JWTTokenTextTypeSerialization *)tokenSerialization {
-    return _tokenSerialization ?: (_tokenSerialization = [JWTTokenTextTypeSerialization new]);
-}
 - (JWTTokenTextTypeAppearance *)tokenAppearance {
     return _tokenAppearance ?: (_tokenAppearance = [JWTTokenTextTypeAppearance new]);
 }
