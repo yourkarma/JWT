@@ -55,11 +55,9 @@ struct ContentView : View {
         }
     }
     var body4: some View {
-        VStack {
-            NavigationView {
+        NavigationView {
+            VStack {
                 getBottomView()
-            }
-            NavigationView {
                 getHeaderView()
             }
         }
