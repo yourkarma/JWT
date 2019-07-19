@@ -11,12 +11,12 @@ import Combine
 import JWT
 
 class JWTModel : BindableObject {
-    var didChange = PassthroughSubject<Void, Never>()
+    var willChange = PassthroughSubject<Void, Never>()
     var data: Storage {
         didSet {
             // special hook, hah!
             self.computeDecoding()
-            didChange.send(())
+            willChange.send(())
         }
     }
     var decodedData = Storage.DecodedData()
