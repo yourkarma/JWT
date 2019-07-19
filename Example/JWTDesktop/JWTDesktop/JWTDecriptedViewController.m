@@ -70,8 +70,8 @@
             NSDictionary *result = self.resultType.successResult.headerAndPayloadDictionary;
             NSDictionary *claims = [JWTClaimsSetSerializer dictionaryWithClaimsSet:self.resultType.successResult.claimsSet];
             self.cachedResultArray = @[
-                                       @{@"header" : result[JWTCodingResultHeaders] ?: @""},
-                                       @{@"payload" : result[JWTCodingResultPayload] ?: @""},
+                                       @{@"header" : result[JWTCodingResultComponents.Headers] ?: @""},
+                                       @{@"payload" : result[JWTCodingResultComponents.Payload] ?: @""},
                                        @{@"claimsSet" : claims ?: @""}
                                        ];
         }
