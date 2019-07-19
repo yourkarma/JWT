@@ -80,7 +80,7 @@ struct HeaderView : View {
     @Binding var encodedData: JWTModel.Storage.EncodedData
     var storage: JWTModel.Storage
     var body: some View {
-        List {
+        Form {
             Section(header: Text("Algorithm")) {
                 AlgorithmView(chosenAlgorithm: $encodedData.algorithmName, values: $encodedData.value.availableAlgorithmsNames)
             }
@@ -90,7 +90,7 @@ struct HeaderView : View {
             Section(header: Text("Signature")) {
                 SignatureView(isToogled: $settings.skipSignatureVerification)
             }
-        }.listStyle(.grouped)
+        }
     }
 }
 

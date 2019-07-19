@@ -13,12 +13,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-//    var model = JWTModel(data: JWTModel.Storage.HS256())
+    var model = JWTModel(data: JWTModel.Storage.HS256())
     
     func createController() -> UIViewController {
         return UIHostingController(rootView:
-//            ContentView(model: model)
-            SomeView()
+            ContentView(model: model)
         )
     }
 
@@ -28,10 +27,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
         // Use a UIHostingController as window root view controller
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = self.createController()
-        self.window = window
-        window.makeKeyAndVisible()
+        if let windowScene = scene as? UIWindowScene {
+            let window = UIWindow(windowScene: windowScene)
+            window.rootViewController = self.createController()
+            self.window = window
+            window.makeKeyAndVisible()
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
