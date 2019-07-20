@@ -70,8 +70,8 @@
             NSDictionary *result = self.resultType.successResult.headerAndPayloadDictionary;
             NSDictionary *claims = [JWTClaimsSetSerializer dictionaryWithClaimsSet:self.resultType.successResult.claimsSet];
             self.cachedResultArray = @[
-                                       @{@"header" : result[JWTCodingResultHeaders] ?: @""},
-                                       @{@"payload" : result[JWTCodingResultPayload] ?: @""},
+                                       @{@"header" : result[JWTCodingResultComponents.Headers] ?: @""},
+                                       @{@"payload" : result[JWTCodingResultComponents.Payload] ?: @""},
                                        @{@"claimsSet" : claims ?: @""}
                                        ];
         }
@@ -157,11 +157,11 @@
 - (NSColor *)colorWithIndexPath:(NSIndexPath *)path {
     NSColor *color = nil;
     if (self.cachedErrorDictionary) {
-        color = [self.tokenDescription tokenTextColorForType:JWTTokenTextTypeHeader];
+        color = [self.tokenDescription colorForType:JWTTokenTextTypeHeader];
     }
     else if (self.cachedResultArray) {
         JWTTokenTextType type = MAX(JWTTokenTextTypeDefault, MIN(path.item + 1, JWTTokenTextTypeSignature));
-        color = [self.tokenDescription tokenTextColorForType:type];
+        color = [self.tokenDescription colorForType:type];
     }
     return color;
 }

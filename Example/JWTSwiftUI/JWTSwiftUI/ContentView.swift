@@ -17,24 +17,29 @@ struct ContentView : View {
         HeaderView(settings: $model.data.settings, encodedData: $model.data.encodedData, storage: model.data)
     }
     var headerBody: some View {
-        self.getHeaderView().tabItemLabel(
-            Text("Settings")
-        )
+        TabbedView {
+            self.getHeaderView().tabItem {
+                Text("Settings")
+            }
+            self.getHeaderView().tabItem {
+                Text("Settings")
+            }
+        }
     }
     var bottomBody: some View {
-        self.getBottomView().tabItemLabel(
+        self.getBottomView().tabItem {
             Text("Decoding")
-        )
+        }
     }
     
     var body1: some View {
         TabbedView {
-            getBottomView().tabItemLabel(
+            getBottomView().tabItem {
                 Text("Decoding")
-            )
-            getHeaderView().tabItemLabel(
+            }
+            getHeaderView().tabItem {
                 Text("Settings")
-            )
+            }
         }
     }
     var body2: some View {
@@ -43,8 +48,22 @@ struct ContentView : View {
             getBottomView()
         }
     }
+    var body3: some View {
+        NavigationView {
+            getBottomView()
+            getHeaderView()
+        }
+    }
+    var body4: some View {
+        NavigationView {
+            VStack {
+                getBottomView()
+                getHeaderView()
+            }
+        }
+    }
     var body: some View {
-        body2
+        body4
     }
 }
 

@@ -61,17 +61,17 @@ fileprivate class JWTTokenDecoder__V2: TokenDecoder {
         let builder = JWTBuilder.decodeMessage(token).algorithmName(algorithmName)!.options(skipVerification as NSNumber)
         if (algorithmName != JWTAlgorithmNameNone) {
             if let secretData = object.secretData, object.isBase64EncodedSecret {
-                _ = builder?.secretData(secretData)
+                _ = builder.secretData(secretData)
             }
             else {
-                _ = builder?.secret(object.secret)
+                _ = builder.secret(object.secret)
             }
         }
         
         self.builder = builder
         
-        guard let decoded = builder?.decode else {
-            print("JWT ERROR \(String(describing: builder?.jwtError))")
+        guard let decoded = builder.decode else {
+            print("JWT ERROR \(String(describing: builder.jwtError))")
             return nil
         }
         
@@ -111,10 +111,7 @@ fileprivate class JWTTokenDecoder__V3: TokenDecoder {
                 throw error
             }
             
-            // TODO: remove dependency.
-            // Aware of last part.
-            // DataHolder MUST have a secretData ( empty data is perfect, if you use verifyKey )
-            holder = JWTAlgorithmRSFamilyDataHolder().verifyKey(key).algorithmName(algorithmName).secretData(Data())
+            holder = JWTAlgorithmRSFamilyDataHolder().verifyKey(key).algorithmName(algorithmName)
         case is JWTAlgorithmHSBase:
             let aHolder = JWTAlgorithmHSFamilyDataHolder()
             if let theSecretData = secretData, isBase64EncodedSecret {
@@ -128,7 +125,7 @@ fileprivate class JWTTokenDecoder__V3: TokenDecoder {
             holder = JWTAlgorithmNoneDataHolder()
         default: break
         }
-
+        
         let builder = JWTDecodingBuilder.decodeMessage(token).addHolder(holder)?.options(skipVerification as NSNumber)
         guard let result = builder?.result else {
             return nil

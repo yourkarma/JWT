@@ -8,9 +8,9 @@
 
 #import "JWTCryptoKeyExtractor+FluentStyle.h"
 
-#pragma clang diagnostics push
-#pragma clang diagnostics ignored "-Wobjc-property-implementation"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-property-implementation"
 @implementation JWTCryptoKeyExtractor (FluentStyle)
 
 @end
-#pragma clang diagnostics pop
+#pragma clang diagnostic pop

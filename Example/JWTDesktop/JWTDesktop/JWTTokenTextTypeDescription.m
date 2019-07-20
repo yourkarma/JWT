@@ -8,38 +8,48 @@
 
 #import "JWTTokenTextTypeDescription.h"
 
+@interface JWTTokenTextTypeAppearanceAttributes ()
+@property (copy, nonatomic, readwrite) NSString *part;
+@end
+
+@implementation JWTTokenTextTypeAppearanceAttributes
+- (instancetype)initWithColor:(NSColor *)color font:(NSFont *)font {
+    if (self = [super init]) {
+        self.color = color;
+        self.font = font;
+    }
+    return self;
+}
+@end
+
 @interface JWTTokenTextTypeDescription ()
 @property (strong, nonatomic, readwrite) NSDictionary *textColors;
 @end
 @implementation JWTTokenTextTypeDescription
 
-- (NSDictionary *)tokenTextColors {
-    if (!_textColors) {
-        _textColors = @{
-                        @(JWTTokenTextTypeDefault) : [NSColor blackColor],
-                        @(JWTTokenTextTypeHeader) : [NSColor redColor],
-                        @(JWTTokenTextTypePayload) : [NSColor magentaColor],
-                        @(JWTTokenTextTypeSignature) : [NSColor colorWithRed:0 green:185/255.0f blue:241/255.0f alpha:1.0f]
-                        };
+- (NSColor *)colorForType:(JWTTokenTextType)type {
+    switch (type) {
+        case JWTTokenTextTypeDefault: return [NSColor blackColor];
+        case JWTTokenTextTypeHeader: return [NSColor redColor];
+        case JWTTokenTextTypePayload: return [NSColor magentaColor];
+        case JWTTokenTextTypeSignature: return [NSColor colorWithRed:0 green:185/255.0f blue:241/255.0f alpha:1.0f];
+        case JWTTokenTextTypeDot: return [NSColor blackColor];
+        default: return nil;
     }
-    return _textColors;
 }
 
-- (NSColor *)tokenTextColorForType:(JWTTokenTextType)type {
-    NSColor *defaultValue = [self tokenTextColors][@(JWTTokenTextTypeDefault)];
-    return [self tokenTextColors][@(type)] ?: defaultValue;
+- (NSFont *)font {
+    return [NSFont boldSystemFontOfSize:22];
 }
 
-- (NSDictionary *)encodedTextDefaultAttributes {
-    return @{
-             NSFontAttributeName : [NSFont boldSystemFontOfSize:22],
-             };
-}
-
-- (NSDictionary *)encodedTextAttributesForType:(JWTTokenTextType)type {
-    NSMutableDictionary *attributes = [[self encodedTextDefaultAttributes] mutableCopy];
-    attributes[NSForegroundColorAttributeName] = [self tokenTextColorForType:type];
-    return [attributes copy];
++ (NSArray <NSNumber *>*)typicalSchemeComponents {
+    return @[
+             @(JWTTokenTextTypeHeader),
+             @(JWTTokenTextTypeDot),
+             @(JWTTokenTextTypePayload),
+             @(JWTTokenTextTypeDot),
+             @(JWTTokenTextTypeSignature)
+             ];
 }
 @end
 
@@ -49,78 +59,76 @@
     NSString *result = nil;
     switch (type) {
         case JWTTokenTextTypeHeader: {
-            result = (NSString *)[NSArrayExtension extendedArray:texts objectAtIndex:0];
-            break;
+            return [NSArrayExtension extendedArray:texts objectAtIndex:0];
         }
         case JWTTokenTextTypePayload: {
-            result = (NSString *)[NSArrayExtension extendedArray:texts objectAtIndex:1];
-            break;
+            return [NSArrayExtension extendedArray:texts objectAtIndex:1];
         }
         case JWTTokenTextTypeSignature: {
             if (texts.count > 2) {
-                result = (NSString *)[[texts subarrayWithRange:NSMakeRange(2, texts.count - 2)] componentsJoinedByString:@"."];
-                break;
+                return [[texts subarrayWithRange:NSMakeRange(2, texts.count - 2)] componentsJoinedByString:@"."];
             }
-            break;
-        }
-        default: break;
+            return nil;
+        }            
+        case JWTTokenTextTypeDot: return @".";
+        
+        default: return nil;
     }
     return result;
-}
-
-- (NSString *)stringFromDecodedToken:(NSDictionary *)token {
-    NSError *error = nil;
-    NSData *data = nil;
-    NSString *resultString = nil;
-    
-    if (token) {
-        data = [NSJSONSerialization dataWithJSONObject:token options:NSJSONWritingPrettyPrinted error:&error];
-    }
-    
-    if (data && !error) {
-        resultString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    }
-    
-    return resultString ?: @"";
 }
 @end
 
+@interface JWTTokenTextTypeAppearance ()
+@property (strong, nonatomic, readwrite) JWTTokenTextTypeSerialization *serialization;
+@property (strong, nonatomic, readwrite) JWTTokenTextTypeDescription *tokenTypeDescription;
+@end
+
 @implementation JWTTokenTextTypeAppearance
-- (NSAttributedString *)array:(NSArray *)parts componentsJoinedByAttributedString:(NSAttributedString *)string {
-    
-    NSMutableAttributedString *result = [[NSArrayExtension extendedArray:parts objectAtIndex:0] mutableCopy];
-    
-    for (NSInteger index = 1; index < parts.count; ++index) {
-        NSAttributedString *part = parts[index];
-        [result appendAttributedString:string];
-        [result appendAttributedString:part];
+
+- (instancetype)init {
+    if (self = [super init]) {
+        self.serialization = [JWTTokenTextTypeSerialization new];
+        self.tokenTypeDescription = [JWTTokenTextTypeDescription new];
     }
-    
-    return result;
+    return self;
 }
 
-- (NSAttributedString *)encodedAttributedTextForText:(NSString *)text serialization:(JWTTokenTextTypeSerialization *)serialization tokenDescription:(JWTTokenTextTypeDescription *)tokenDescription {
-    NSArray *texts = [text componentsSeparatedByString:@"."];
-    // next step, determine text color!
-    // add missing dots.
-    // restore them like this:
-    // color text if you can
+- (NSArray<JWTTokenTextTypeAppearanceAttributes *> *)attributesForText:(NSString *)text {
+    __auto_type texts = [text componentsSeparatedByString:@"."];
     
-    NSArray *parts = @[];
-    for (JWTTokenTextType part = JWTTokenTextTypeHeader; part <= JWTTokenTextTypeSignature; ++part) {
-        id currentPart = [serialization textPartFromTexts:texts type:part];
-        if (currentPart) {
-            // colorize
-            NSDictionary *options = [tokenDescription encodedTextAttributesForType:part];
-            NSAttributedString *currentPartAttributedString = [[NSAttributedString alloc] initWithString:currentPart attributes:options];
-            parts = [parts arrayByAddingObject:currentPartAttributedString];
+    __auto_type result = [NSMutableArray array];
+    
+    for (NSNumber *component in JWTTokenTextTypeDescription.typicalSchemeComponents) {
+        __auto_type type = (JWTTokenTextType)component.integerValue;
+
+        __auto_type object = [self.serialization textPartFromTexts:texts type:type];
+        if (object) {
+            __auto_type color = [self.tokenTypeDescription colorForType:type];
+            __auto_type font = self.tokenTypeDescription.font;
+
+            __auto_type component = [[JWTTokenTextTypeAppearanceAttributes alloc] initWithColor:color font:font];
+            component.part = object;
+
+            [result addObject:component];
         }
     }
     
-    NSDictionary *options = [tokenDescription encodedTextAttributesForType:JWTTokenTextTypeDefault];
+    return [result copy];
+}
+
+- (NSAttributedString *)attributedStringForText:(NSString *)text {
+    __auto_type string = [NSMutableAttributedString new];
+    __auto_type attributes = [self attributesForText:text];
     
-    NSAttributedString *dot = [[NSAttributedString alloc] initWithString:@"." attributes:options];
-    NSAttributedString *result = [self array:parts componentsJoinedByAttributedString:dot];
-    return result;
+    for (JWTTokenTextTypeAppearanceAttributes *attribute in attributes) {
+        __auto_type attributes = @{
+                                   NSForegroundColorAttributeName : attribute.color,
+                                   NSFontAttributeName : attribute.font
+                                   };
+
+        __auto_type component = [[NSAttributedString alloc] initWithString:attribute.part attributes:attributes];
+        [string appendAttributedString:component];
+    }
+    return [string copy];
 }
 @end

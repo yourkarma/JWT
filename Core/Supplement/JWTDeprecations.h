@@ -18,7 +18,4 @@
 #define __available_in_release_version(version) __deprecated_msg("will be introduced in release version: " JWT_STR(version))
 #define __jwt_technical_debt(debt) __deprecated_msg("Don't forget to inspect it later." JWT_STR(debt))
 #define __deprecated_with_replacement(msg) __deprecated_msg("Use " JWT_STR(msg))
-
-#define JWT_FLUENT_STYLE_FOR_SWIFT_UNAVAILABLE_DESCRIPTION "Use methods from Setters categories"
-#define JWT_FLUENT_STYLE_FOR_SWIFT_UNAVAILABLE NS_SWIFT_UNAVAILABLE(JWT_FLUENT_STYLE_FOR_SWIFT_UNAVAILABLE_DESCRIPTION)
 #endif /* JWTDeprecations_h */

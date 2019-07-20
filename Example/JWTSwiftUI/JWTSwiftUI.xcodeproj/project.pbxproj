@@ -19,6 +19,7 @@
 		0A76C87C22ABD2B100B8A43A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A76C87A22ABD2B100B8A43A /* LaunchScreen.storyboard */; };
 		0A76C88422ABD2F200B8A43A /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C88322ABD2F200B8A43A /* HeaderView.swift */; };
 		0A76C88822ABE51800B8A43A /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C88722ABE51800B8A43A /* BottomView.swift */; };
+		0A93B1C522C7E13400A83549 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A93B1C222C7E13300A83549 /* String+Extension.swift */; };
 		0AEEA8B922B5400E00B67217 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEEA8B522B5400800B67217 /* JWT.framework */; };
 		0AEEA8BA22B5400E00B67217 /* JWT.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEEA8B522B5400800B67217 /* JWT.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -69,6 +70,7 @@
 		0A76C87D22ABD2B100B8A43A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A76C88322ABD2F200B8A43A /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		0A76C88722ABE51800B8A43A /* BottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView.swift; sourceTree = "<group>"; };
+		0A93B1C222C7E13300A83549 /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		0AEEA8AF22B5400800B67217 /* JWT.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JWT.xcodeproj; path = ../../Framework/JWT.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,6 +108,7 @@
 		0A76C86E22ABD2AF00B8A43A /* JWTSwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				0A93B1C222C7E13300A83549 /* String+Extension.swift */,
 				0A60395322B22BA700256661 /* JWTModel.swift */,
 				0A3B6AA622B03ABE009F3B33 /* SignatureValidationType.swift */,
 				0A3B6AA722B03ABE009F3B33 /* TokenDecoder.swift */,
@@ -257,6 +260,7 @@
 				0A76C87422ABD2AF00B8A43A /* ContentView.swift in Sources */,
 				0A3B6AAA22B03ABE009F3B33 /* TokenDecoder.swift in Sources */,
 				0A76C88822ABE51800B8A43A /* BottomView.swift in Sources */,
+				0A93B1C522C7E13400A83549 /* String+Extension.swift in Sources */,
 				0A76C88422ABD2F200B8A43A /* HeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
