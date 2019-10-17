@@ -48,6 +48,7 @@ script:
     - echo "Build dynamic universal for each platform (osx, ios)"
     - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT' -configuration Release -sdk macosx | xcpretty -c
     - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT' -configuration Release -sdk iphonesimulator | xcpretty -c
+    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT' -configuration Release -sdk appletvsimulator | xcpretty -c
 
     # Static Library.
     # We need to change order in case of xcodebuild bug.
@@ -59,6 +60,7 @@ script:
     - echo "Build iOS Static library"
     - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Static' -configuration Release -sdk macosx | xcpretty -c
     - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Static' -configuration Release -sdk iphonesimulator | xcpretty -c
+    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Static' -configuration Release -sdk appletvsimulator | xcpretty -c
 
     # Tests.
     # - echo Run tests
@@ -74,3 +76,6 @@ script:
     # UNCOMMENT WHEN READY!
     - echo Run Mac OS Tests
     - xcodebuild test -project 'Tests/Tests.xcodeproj' -scheme 'macOS_Tests' -sdk macosx | xcpretty -c
+    # tvOS tests
+    - echo Run tvOS Tests
+    - xcodebuild test -project 'Tests/Tests.xcodeproj' -scheme 'tvOS_Tests' -sdk appletvsimulator -destination 'platform=tvOS Simulator,name=Apple TV,OS=latest' | xcpretty -c
