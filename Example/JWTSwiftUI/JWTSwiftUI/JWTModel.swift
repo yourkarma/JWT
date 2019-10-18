@@ -10,13 +10,15 @@ import SwiftUI
 import Combine
 import JWT
 
-class JWTModel : BindableObject {
-    var willChange = PassthroughSubject<Void, Never>()
+class JWTModel : ObservableObject {
+    var objectWillChange = PassthroughSubject<Void, Never>().sink {
+        print("here!")
+    }
     var data: Storage {
         didSet {
             // special hook, hah!
             self.computeDecoding()
-            willChange.send(())
+            objectWillChange.send()
         }
     }
     var decodedData = Storage.DecodedData()

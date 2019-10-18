@@ -13,13 +13,7 @@ extension BottomView {
         @Binding var textValue : String
         var appearance = TokenTextAppearance()
         var body1: some View {
-            TextField($textValue, placeholder: Text("Input secret"), onEditingChanged: { (changed) in
-                if (changed) {
-                    // populate to something?
-                }
-            }, onCommit: {
-                
-            }).lineLimit(10).multilineTextAlignment(.center)//.truncationMode(.middle)
+            TextField("Input secret", text: $textValue).lineLimit(10).multilineTextAlignment(.center)
         }
         var body2: some View {
             Text(textValue).lineLimit(10).padding()
@@ -73,10 +67,7 @@ struct QqView : View {
             geometry in
 //            ScrollView(isScrollEnabled: true, alwaysBounceHorizontal: false, alwaysBounceVertical: true, showsHorizontalIndicator: false, showsVerticalIndicator: true) {
                 VStack {
-//                    TextField(self.$text)
-                    
-                    TextField(self.$text)
-                        .background(Color.red)
+                    TextField("", text: self.$text).background(Color.red)
                         .lineLimit(nil)
                         .frame(
                             minWidth: geometry.size.width,

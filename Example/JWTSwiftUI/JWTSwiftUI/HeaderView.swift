@@ -50,9 +50,7 @@ extension HeaderView {
         var body: some View {
             VStack {
 //                Text("Secret")
-                TextField($textValue, placeholder: Text("secret"), onEditingChanged: { (changed) in
-                }, onCommit: {})
-                
+                TextField("secret", text: $textValue)
                 Toggle(isOn: $isToogled, label: {
                     Text("Secret is base64")
                 })//.disabled(!settings.isBase64Available)
@@ -82,7 +80,7 @@ struct HeaderView : View {
     var body: some View {
         Form {
             Section(header: Text("Algorithm")) {
-                AlgorithmView(chosenAlgorithm: $encodedData.algorithmName, values: $encodedData.value.availableAlgorithmsNames)
+                AlgorithmView(chosenAlgorithm: $encodedData.algorithmName, values: $encodedData.wrappedValue.availableAlgorithmsNames)
             }
             Section(header: Text("Input secret")) {
                 SecretView(textValue: $encodedData.secret, isToogled: $settings.isBase64, settings: storage)
