@@ -11,13 +11,19 @@ import SwiftUI
 struct ContentView : View {
     @State var model: JWTModel
     func getBottomView () -> some View {
-        BottomView(encodedData: $model.data.encodedData, decodedData: model.decodedData)
+
+        BottomView(encodedData: Binding(get: {
+            self.model.data.encodedData
+        }) { (value) in
+            self.model.data.encodedData = value
+        }, decodedData: model.decodedData)
+//        BottomView(encodedData: $model.data.encodedData, decodedData: model.decodedData)
     }
     func getHeaderView () -> some View {
         HeaderView(settings: $model.data.settings, encodedData: $model.data.encodedData, storage: model.data)
     }
     var headerBody: some View {
-        TabbedView {
+        TabView {
             self.getHeaderView().tabItem {
                 Text("Settings")
             }
@@ -33,7 +39,7 @@ struct ContentView : View {
     }
     
     var body1: some View {
-        TabbedView {
+        TabView {
             getBottomView().tabItem {
                 Text("Decoding")
             }
