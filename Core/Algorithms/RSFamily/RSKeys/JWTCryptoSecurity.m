@@ -224,8 +224,20 @@
         SecPolicyRef secPolicy = SecPolicyCreateBasicX509();
         SecTrustRef trust;
         SecTrustCreateWithCertificates(certificate, secPolicy, &trust);
-        SecTrustResultType resultType;
-        SecTrustEvaluate(trust, &resultType);
+        if (@available(macOS 10.14, iOS 12.0, tvOS 12.0, watchOS 5.0, *)) {
+            CFErrorRef errorRef = NULL;
+            BOOL result = SecTrustEvaluateWithError(trust, &errorRef);
+            if (result == NO) {
+                NSError *error = (__bridge NSError *)errorRef;
+                NSLog(@"%s Error occured while retrieving public key from : %@", __PRETTY_FUNCTION__, error);
+                if (errorRef != NULL) {
+                    CFRelease(errorRef);
+                }
+            }
+        } else {
+            SecTrustResultType resultType;
+            SecTrustEvaluate(trust, &resultType);
+        }
         SecKeyRef publicKey = SecTrustCopyPublicKey(trust);
         (CFRelease(trust));
         (CFRelease(secPolicy));

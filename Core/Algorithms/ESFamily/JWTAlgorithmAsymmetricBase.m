@@ -193,20 +193,34 @@ SecKeyAlgorithm chooseAlgorithm(NSNumber *type, NSNumber *number) {
                 switch ((JWTAlgorithmAsymmetricBase__AlgorithmType)type.integerValue) {
                     case JWTAlgorithmAsymmetricBase__AlgorithmType__RS: return kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA256;
                     case JWTAlgorithmAsymmetricBase__AlgorithmType__ES: return kSecKeyAlgorithmECDSASignatureMessageX962SHA256;
-                    case JWTAlgorithmAsymmetricBase__AlgorithmType__PS: return kSecKeyAlgorithmRSASignatureMessagePSSSHA256;
+                    case JWTAlgorithmAsymmetricBase__AlgorithmType__PS: {
+                        if (@available(macOS 10.13, iOS 11.0, tvOS 11.0, watchOS 4.0, *)) {
+                            return kSecKeyAlgorithmRSASignatureMessagePSSSHA256;
+                        }
+                        break;
+                    }
                 }
             case JWTAlgorithmAsymmetricBase__AlgorithmNumber__384:
                 switch ((JWTAlgorithmAsymmetricBase__AlgorithmType)type.integerValue) {
                     case JWTAlgorithmAsymmetricBase__AlgorithmType__RS: return kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA384;
                     case JWTAlgorithmAsymmetricBase__AlgorithmType__ES: return kSecKeyAlgorithmECDSASignatureMessageX962SHA384;
-                    case JWTAlgorithmAsymmetricBase__AlgorithmType__PS: return kSecKeyAlgorithmRSASignatureMessagePSSSHA384;
-                    default: break;
+                    case JWTAlgorithmAsymmetricBase__AlgorithmType__PS: {
+                        if (@available(macOS 10.13, iOS 11.0, tvOS 11.0, watchOS 4.0, *)) {
+                            return kSecKeyAlgorithmRSASignatureMessagePSSSHA384;
+                        }
+                        break;
+                    }
                 }
             case JWTAlgorithmAsymmetricBase__AlgorithmNumber__512:
                 switch ((JWTAlgorithmAsymmetricBase__AlgorithmType)type.integerValue) {
                     case JWTAlgorithmAsymmetricBase__AlgorithmType__RS: return kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA512;
                     case JWTAlgorithmAsymmetricBase__AlgorithmType__ES: return kSecKeyAlgorithmECDSASignatureMessageX962SHA512;
-                    case JWTAlgorithmAsymmetricBase__AlgorithmType__PS: return kSecKeyAlgorithmRSASignatureMessagePSSSHA512;
+                    case JWTAlgorithmAsymmetricBase__AlgorithmType__PS: {
+                        if (@available(macOS 10.13, iOS 11.0, tvOS 11.0, watchOS 4.0, *)) {
+                            return kSecKeyAlgorithmRSASignatureMessagePSSSHA512;
+                        }
+                        break;
+                    }
                 }
         }
         return NULL;
