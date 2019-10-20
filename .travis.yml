@@ -10,7 +10,7 @@ before_install:
     # install
     # - rvm use 2.2.2 --install --binary --fuzzy
     # - gem install cocoapods --no-rdoc --no-ri --no-document --quiet
-    - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
+    - gem install xcpretty --no-document
     # - pod --version
     # - pod setup --silent > /dev/null
     # - pod repo update --silent
