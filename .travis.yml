@@ -79,4 +79,4 @@ script:
     - xcodebuild test -project 'Tests/Tests.xcodeproj' -scheme 'macOS_Tests' -sdk macosx | xcpretty -c
     # tvOS tests
     - echo Run tvOS Tests
-    - xcodebuild test -project 'Tests/Tests.xcodeproj' -scheme 'tvOS_Tests' -sdk appletvsimulator -destination 'platform=tvOS Simulator,name=Apple TV,OS=latest' | xcpretty -c
+    - xcodebuild test -project 'Tests/Tests.xcodeproj' -scheme 'tvOS_Tests' -sdk appletvsimulator -destination 'platform=tvOS Simulator,name=Apple TV 4K,OS=latest' | xcpretty -c
