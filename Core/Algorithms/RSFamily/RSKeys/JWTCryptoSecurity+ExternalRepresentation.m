@@ -15,7 +15,7 @@
         return nil;
     }
     
-    if (SecKeyCopyExternalRepresentation != NULL) {
+    if (@available(macOS 10.12, iOS 10.0, tvOS 10.0, watchOS 3.0, *)) {
         CFErrorRef copyError = NULL;
         NSData *result = (NSData *)CFBridgingRelease(SecKeyCopyExternalRepresentation(key, &copyError));
         if (error && copyError != NULL) {
@@ -23,8 +23,8 @@
             return nil;
         }
         return result;
-    }
-    else {
+        
+    } else {
         return nil;
     }
 }

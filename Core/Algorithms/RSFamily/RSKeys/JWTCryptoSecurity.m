@@ -71,7 +71,7 @@
                                  (__bridge NSString*)kSecAttrKeySizeInBits : @(sizeInBits)
                                  };
     
-    if (SecKeyCreateWithData != NULL) {
+    if (@available(macOS 10.12, iOS 10.0, tvOS 10.0, watchOS 3.0, *)) {
         CFErrorRef createError = NULL;
         SecKeyRef key = SecKeyCreateWithData((__bridge CFDataRef)data, (__bridge CFDictionaryRef)attributes, &createError);
         if (error && createError != NULL) {
