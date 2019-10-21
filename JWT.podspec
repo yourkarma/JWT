@@ -23,6 +23,7 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.8'
   s.tvos.deployment_target = '9.0'
   s.source_files = 'Core/**/*.{h,m}'
+  s.private_header_files = 'Core/**/*Subclass.{hm}'
   s.module_name = s.name
   s.module_map  = "Core/FrameworkSupplement/Map.modulemap"
   #s.osx.exclude_files = 'JWT/**/*JWTAlgorithmRS*.{h,m}'
