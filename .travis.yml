@@ -1,7 +1,7 @@
 language: objective-c
 matrix:
     include:
-        - osx_image: xcode9.4
+        - osx_image: xcode11.1
         # - osx_image: xcode8.3
 
 before_install:
@@ -10,7 +10,7 @@ before_install:
     # install
     # - rvm use 2.2.2 --install --binary --fuzzy
     # - gem install cocoapods --no-rdoc --no-ri --no-document --quiet
-    - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
+    - gem install xcpretty --no-document
     # - pod --version
     # - pod setup --silent > /dev/null
     # - pod repo update --silent
@@ -67,15 +67,16 @@ script:
     # - pod install --project-directory=Tests
     - echo Run iOS Tests
     # 32-bit tests
-    - echo 32-bit tests
-    - xcodebuild test -project 'Tests/Tests.xcodeproj' -scheme 'iOS_Tests' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 5,OS=latest' | xcpretty -c
-    # 64-bit tests
+    # TODO: Add xsimctl invocation to install iPhone 5 or 5s simulators.
+    # - echo 32-bit tests
+    # - xcodebuild test -project 'Tests/Tests.xcodeproj' -scheme 'iOS_Tests' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 5,OS=latest' | xcpretty -c
+    # # 64-bit tests
     - echo 64-bit tests
-    - xcodebuild test -project 'Tests/Tests.xcodeproj' -scheme 'iOS_Tests' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 5s,OS=latest' | xcpretty -c
+    - xcodebuild test -project 'Tests/Tests.xcodeproj' -scheme 'iOS_Tests' -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=latest' | xcpretty -c
     # mac OS tests
     # UNCOMMENT WHEN READY!
     - echo Run Mac OS Tests
     - xcodebuild test -project 'Tests/Tests.xcodeproj' -scheme 'macOS_Tests' -sdk macosx | xcpretty -c
     # tvOS tests
     - echo Run tvOS Tests
-    - xcodebuild test -project 'Tests/Tests.xcodeproj' -scheme 'tvOS_Tests' -sdk appletvsimulator -destination 'platform=tvOS Simulator,name=Apple TV,OS=latest' | xcpretty -c
+    - xcodebuild test -project 'Tests/Tests.xcodeproj' -scheme 'tvOS_Tests' -sdk appletvsimulator -destination 'platform=tvOS Simulator,name=Apple TV 4K,OS=latest' | xcpretty -c

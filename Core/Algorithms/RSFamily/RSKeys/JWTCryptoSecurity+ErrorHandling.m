@@ -15,7 +15,7 @@
     }
     // appropriate for Xcode 9 and higher.
     // rewrite it later?
-    if (@available(iOS 11.3, *)) {
+    if (@available(macOS 10.3, iOS 11.3, tvOS 11.3, watchOS 4.3, *)) {
         NSString *message = (NSString *)CFBridgingRelease(SecCopyErrorMessageString(status, NULL)) ?: @"Unknown error message";
         return [NSError errorWithDomain:NSOSStatusErrorDomain code:status userInfo:@{NSLocalizedDescriptionKey : message}];
     }

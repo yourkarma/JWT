@@ -184,31 +184,44 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmNumber) {
 #import <Security/Security.h>
 #if JWT_CRYPTO_MODERN_API_IS_ALLOWED
 SecKeyAlgorithm chooseAlgorithm(NSNumber *type, NSNumber *number) {
-    if (SecKeyIsAlgorithmSupported == NULL) {
-        return NULL;
-    }
-    else {
+    if (@available(macOS 10.12, iOS 10.0, tvOS 10.0, watchOS 3.0, *)) {
         switch ((JWTAlgorithmAsymmetricBase__AlgorithmNumber)number.integerValue) {
             case JWTAlgorithmAsymmetricBase__AlgorithmNumber__256:
                 switch ((JWTAlgorithmAsymmetricBase__AlgorithmType)type.integerValue) {
                     case JWTAlgorithmAsymmetricBase__AlgorithmType__RS: return kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA256;
                     case JWTAlgorithmAsymmetricBase__AlgorithmType__ES: return kSecKeyAlgorithmECDSASignatureMessageX962SHA256;
-                    case JWTAlgorithmAsymmetricBase__AlgorithmType__PS: return kSecKeyAlgorithmRSASignatureMessagePSSSHA256;
+                    case JWTAlgorithmAsymmetricBase__AlgorithmType__PS: {
+                        if (@available(macOS 10.13, iOS 11.0, tvOS 11.0, watchOS 4.0, *)) {
+                            return kSecKeyAlgorithmRSASignatureMessagePSSSHA256;
+                        }
+                        break;
+                    }
                 }
             case JWTAlgorithmAsymmetricBase__AlgorithmNumber__384:
                 switch ((JWTAlgorithmAsymmetricBase__AlgorithmType)type.integerValue) {
                     case JWTAlgorithmAsymmetricBase__AlgorithmType__RS: return kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA384;
                     case JWTAlgorithmAsymmetricBase__AlgorithmType__ES: return kSecKeyAlgorithmECDSASignatureMessageX962SHA384;
-                    case JWTAlgorithmAsymmetricBase__AlgorithmType__PS: return kSecKeyAlgorithmRSASignatureMessagePSSSHA384;
-                    default: break;
+                    case JWTAlgorithmAsymmetricBase__AlgorithmType__PS: {
+                        if (@available(macOS 10.13, iOS 11.0, tvOS 11.0, watchOS 4.0, *)) {
+                            return kSecKeyAlgorithmRSASignatureMessagePSSSHA384;
+                        }
+                        break;
+                    }
                 }
             case JWTAlgorithmAsymmetricBase__AlgorithmNumber__512:
                 switch ((JWTAlgorithmAsymmetricBase__AlgorithmType)type.integerValue) {
                     case JWTAlgorithmAsymmetricBase__AlgorithmType__RS: return kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA512;
                     case JWTAlgorithmAsymmetricBase__AlgorithmType__ES: return kSecKeyAlgorithmECDSASignatureMessageX962SHA512;
-                    case JWTAlgorithmAsymmetricBase__AlgorithmType__PS: return kSecKeyAlgorithmRSASignatureMessagePSSSHA512;
+                    case JWTAlgorithmAsymmetricBase__AlgorithmType__PS: {
+                        if (@available(macOS 10.13, iOS 11.0, tvOS 11.0, watchOS 4.0, *)) {
+                            return kSecKeyAlgorithmRSASignatureMessagePSSSHA512;
+                        }
+                        break;
+                    }
                 }
         }
+        return NULL;
+    } else {
         return NULL;
     }
 }
@@ -232,35 +245,33 @@ NS_AVAILABLE(10_12, 10_0)
 
 @implementation JWTAlgorithmAsymmetricBase__After10 (SignAndVerify)
 - (NSData *)signData:(NSData *)plainData key:(SecKeyRef)privateKey error:(NSError *__autoreleasing *)error {
-    if (SecKeyIsAlgorithmSupported == NULL) {
-        if (error) {
-            *error = [JWTAlgorithmAsymmetricFamilyErrorDescription errorWithCode:JWTAlgorithmAsymmetricFamilyErrorAlgorithmIsNotSupported];
-        }
-        return nil;
-    }
-    else {
+    if (@available(macOS 10.12, iOS 10.0, tvOS 10.0, watchOS 3.0, *)) {
         CFErrorRef theError = NULL;
         NSData *result = (NSData *)CFBridgingRelease(SecKeyCreateSignature(privateKey, self.algorithm, (__bridge CFDataRef)plainData, &theError));
         if (error && theError) {
             *error = (__bridge NSError *)(theError);
         }
         return result;
-    }
-}
-- (BOOL)verifyData:(NSData *)plainData signature:(NSData *)signature key:(SecKeyRef)publicKey error:(NSError *__autoreleasing *)error {
-    if (SecKeyIsAlgorithmSupported == NULL) {
+    } else {
         if (error) {
             *error = [JWTAlgorithmAsymmetricFamilyErrorDescription errorWithCode:JWTAlgorithmAsymmetricFamilyErrorAlgorithmIsNotSupported];
         }
-        return NO;
+        return nil;
     }
-    else {
+}
+- (BOOL)verifyData:(NSData *)plainData signature:(NSData *)signature key:(SecKeyRef)publicKey error:(NSError *__autoreleasing *)error {
+    if (@available(macOS 10.12, iOS 10.0, tvOS 10.0, watchOS 3.0, *)) {
         CFErrorRef theError = NULL;
         BOOL result = SecKeyVerifySignature(publicKey, self.algorithm, (__bridge CFDataRef)plainData, (__bridge CFDataRef)signature, &theError);
         if (error && theError) {
             *error = (__bridge NSError *)(theError);
         }
         return result;
+    } else {
+        if (error) {
+            *error = [JWTAlgorithmAsymmetricFamilyErrorDescription errorWithCode:JWTAlgorithmAsymmetricFamilyErrorAlgorithmIsNotSupported];
+        }
+        return NO;
     }
 }
 @end
