@@ -18,7 +18,7 @@
 }
 
 - (BOOL)verifyValue:(NSObject *)value withTrustedValue:(NSObject *)trustedValue {
-    return [value isEqualTo:trustedValue] == self.equal;
+    return [value isEqual:trustedValue] == self.equal;
 }
 
 @end
@@ -47,7 +47,7 @@
 @implementation JWTClaimBaseVariationWithEqualityForString
 - (BOOL)verifyValue:(NSObject *)value withTrustedValue:(NSObject *)trustedValue {
     if ([value isKindOfClass:NSString.class] && [trustedValue isKindOfClass:NSString.class]) {
-        return [(NSString *)value isEqualTo:(NSString *)trustedValue] == self.equal;
+        return [(NSString *)value isEqualToString:(NSString *)trustedValue] == self.equal;
     }
     return [super verifyValue:value withTrustedValue:trustedValue];
 }
