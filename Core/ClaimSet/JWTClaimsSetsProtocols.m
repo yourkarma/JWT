@@ -7,6 +7,3 @@
 //
 
 #import "JWTClaimsSetsProtocols.h"
-
-@implementation JWTClaimsSetsProtocols
-@end

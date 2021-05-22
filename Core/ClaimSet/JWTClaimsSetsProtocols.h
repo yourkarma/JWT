@@ -10,10 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface JWTClaimsSetsProtocols : NSObject
-
-@end
-
 @protocol JWTClaimProtocol <NSCopying>
 @property (copy, nonatomic, readonly) NSString *name;
 @property (nonatomic, readonly) NSObject *value;
@@ -56,9 +52,5 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) id <JWTClaimsAccessorProtocol> accessor;
 - (BOOL)verifyClaimsSet:(id<JWTClaimsSetProtocol>)theClaimsSet withTrustedClaimsSet:(id<JWTClaimsSetProtocol>)trustedClaimsSet;
 @end
-
-@protocol JWTClaimsSetFacadeProtocol <JWTClaimsAccessorProtocol, JWTClaimsSetSerializerProtocol, JWTClaimsSetVerifierProtocol>
-@end
-
 
 NS_ASSUME_NONNULL_END
