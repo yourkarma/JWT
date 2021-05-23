@@ -38,8 +38,7 @@
 }
 
 - (instancetype)init {
-    self = [super init];
-    if (self) {
+    if (self = [super init]) {
         self.claimsAndNames = [self.class createClaimsAndNames];
     }
     return self;
