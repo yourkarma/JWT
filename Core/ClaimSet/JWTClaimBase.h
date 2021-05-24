@@ -12,10 +12,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JWTClaimBase : NSObject <JWTClaimProtocol>
-@property (nonatomic, readwrite) NSObject *value;
-
-/// Necessary for ClaimBuilder.
-- (instancetype)configuredWithValue:(NSObject *)value;
 @end
 
 NS_ASSUME_NONNULL_END

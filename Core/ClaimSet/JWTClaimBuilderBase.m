@@ -13,10 +13,7 @@
 
 - (nonnull id<JWTClaimProtocol>)claimWithName:(nonnull NSString *)name value:(nonnull NSObject *)value {
     __auto_type claim = [self.accessor claimByName:name];
-    if ([(NSObject *)claim isKindOfClass:JWTClaimBase.class]) {
-        return [(JWTClaimBase *)claim configuredWithValue:value];
-    }
-    return nil;
+    return [claim copyWithValue:value];
 }
 
 @end

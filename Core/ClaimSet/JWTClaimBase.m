@@ -8,6 +8,9 @@
 
 #import "JWTClaimBase.h"
 
+@interface JWTClaimBase ()
+@property (nonatomic, readwrite) NSObject *value;
+@end
 @implementation JWTClaimBase
 @synthesize value = _value;
 - (NSString *)name { return @""; }
@@ -17,8 +20,7 @@
     }
     return self;
 }
-
-- (instancetype)configuredWithValue:(NSObject *)value {
+- (instancetype)copyWithValue:(NSObject *)value {
     return [[self.class alloc] initWithValue:value];
 }
 
