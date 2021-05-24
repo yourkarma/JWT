@@ -60,7 +60,7 @@
 		0A1DA5292659A6190041E737 /* JWTClaimsAccessorBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A1DA5272659A6190041E737 /* JWTClaimsAccessorBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A1DA52A2659A6190041E737 /* JWTClaimsAccessorBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DA5282659A6190041E737 /* JWTClaimsAccessorBase.m */; };
 		0A1DA52B2659A6190041E737 /* JWTClaimsAccessorBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DA5282659A6190041E737 /* JWTClaimsAccessorBase.m */; };
-		0A1DA52F265B88E70041E737 /* JWTClaimBuilderBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A1DA52D265B88E70041E737 /* JWTClaimBuilderBase.h */; };
+		0A1DA52F265B88E70041E737 /* JWTClaimBuilderBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A1DA52D265B88E70041E737 /* JWTClaimBuilderBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A1DA530265B88E70041E737 /* JWTClaimBuilderBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DA52E265B88E70041E737 /* JWTClaimBuilderBase.m */; };
 		0A1DA531265B88E80041E737 /* JWTClaimBuilderBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DA52E265B88E70041E737 /* JWTClaimBuilderBase.m */; };
 		0A1F0D9624E05F1800A8B488 /* JWTClaimsSetsProtocols.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A1F0D9424E05F1800A8B488 /* JWTClaimsSetsProtocols.h */; settings = {ATTRIBUTES = (Public, ); }; };
