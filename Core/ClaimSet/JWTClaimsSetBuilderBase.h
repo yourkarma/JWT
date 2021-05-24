@@ -1,5 +1,5 @@
 //
-//  JWTClaimsSetBaseBuilder.h
+//  JWTClaimsSetBuilderBase.h
 //  JWT
 //
 //  Created by Dmitry Lobanov on 10.08.2020.
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface JWTClaimsSetBaseBuilder : NSObject <JWTClaimsSetBuilderProtocol>
+@interface JWTClaimsSetBuilderBase : NSObject <JWTClaimsSetBuilderProtocol>
 
 @end
 
