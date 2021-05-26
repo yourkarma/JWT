@@ -7,8 +7,37 @@
 //
 
 #import "JWTClaimsSetSerializerBase.h"
+#import "JWTClaimVariations.h"
 
 @implementation JWTClaimsSetSerializerBase
+
+- (NSObject *)deserializedValue:(NSObject *)value forClaimWithName:(NSString *)name {
+    if ([name isEqualToString:JWTClaimBaseConcreteNotBefore.name] ||
+        [name isEqualToString:JWTClaimBaseConcreteExpirationTime.name] ||
+        [name isEqualToString:JWTClaimBaseConcreteIssuedAt.name]
+        ) {
+        /// We have to apply date time conversion.
+        if ([value isKindOfClass:NSNumber.class]) {
+            return [NSDate dateWithTimeIntervalSince1970:[(NSNumber *)value doubleValue]];
+        }
+    }
+    return value;
+}
+
+- (NSObject *)serializedClaimValue:(id<JWTClaimProtocol>)claim {
+    __auto_type name = claim.name;
+    __auto_type value = claim.value;
+    if ([name isEqualToString:JWTClaimBaseConcreteNotBefore.name] ||
+        [name isEqualToString:JWTClaimBaseConcreteExpirationTime.name] ||
+        [name isEqualToString:JWTClaimBaseConcreteIssuedAt.name]
+        ) {
+        /// We have to apply date time conversion.
+        if ([value isKindOfClass:NSDate.class]) {
+            return @([(NSDate *)value timeIntervalSince1970]);
+        }
+    }
+    return value;
+}
 
 - (nonnull id<JWTClaimsSetProtocol>)claimsSetFromDictionary:(nonnull NSDictionary *)dictionary {
     
@@ -21,7 +50,8 @@
     for (NSString *key in dictionary) {
         __auto_type claim = [self.claimsProvider claimByName:key];
         if (claim != nil) {
-            [result addObject:[claim copyWithValue:dictionary[key]]];
+            __auto_type value = [self deserializedValue:dictionary[key] forClaimWithName:key];
+            [result addObject:[claim copyWithValue:value]];
         }
     }
     
@@ -42,7 +72,7 @@
     
     for (id<JWTClaimProtocol> value in claimsSet.claims) {
         if ([self.claimsProvider claimByName:value.name] != nil) {
-            result[value.name] = value.value;
+            result[value.name] = [self serializedClaimValue:value];
         }
     }
     
@@ -52,7 +82,5 @@
     
     return [NSDictionary dictionaryWithDictionary:result];
 }
-
-@synthesize claimsSetProvider;
 
 @end
