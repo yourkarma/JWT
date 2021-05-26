@@ -21,6 +21,10 @@
     return self;
 }
 
+- (instancetype)init {
+    return [self initWithClaims:@[]];
+}
+
 // MARK: - NSCopying
 - (nonnull id)copyWithZone:(nullable NSZone *)zone {
     return [self copyWithClaims:self.claims];
