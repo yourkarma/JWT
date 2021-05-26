@@ -1,5 +1,5 @@
 //
-//  JWTClaimsAccessorBase.h
+//  JWTClaimsProviderBase.h
 //  JWT
 //
 //  Created by Dmitry Lobanov on 22.05.2021.

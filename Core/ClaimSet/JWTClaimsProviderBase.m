@@ -1,12 +1,12 @@
 //
-//  JWTClaimsAccessorBase.m
+//  JWTClaimsProviderBase.m
 //  JWT
 //
 //  Created by Dmitry Lobanov on 22.05.2021.
 //  Copyright © 2021 JWTIO. All rights reserved.
 //
 
-#import "JWTClaimsAccessorBase.h"
+#import "JWTClaimsProviderBase.h"
 #import "JWTClaimVariations.h"
 
 @interface JWTClaimsProviderBase ()
@@ -49,7 +49,7 @@
 }
 
 - (nonnull id<JWTClaimProtocol>)claimByName:(nonnull NSString *)name {
-    return self.claimsAndNames[name];
+    return [self.claimsAndNames[name] copy];
 }
 
 @end

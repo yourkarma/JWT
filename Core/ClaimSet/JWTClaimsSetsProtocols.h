@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol JWTClaimProtocol <NSCopying>
+@property (copy, nonatomic, readonly, class) NSString *name;
 @property (copy, nonatomic, readonly) NSString *name;
 @property (nonatomic, readonly) NSObject *value;
 - (BOOL)verifyValue:(NSObject *)value withTrustedValue:(NSObject *)trustedValue;

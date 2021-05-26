@@ -64,24 +64,26 @@
 
 // MARK: - Base Concrete Claims
 @implementation JWTClaimBaseConcreteIssuer
-- (NSString *)name { return @"iss"; }
++ (NSString *)name { return @"iss"; }
 @end
 
 @implementation JWTClaimBaseConcreteSubject
-- (NSString *)name { return @"sub"; }
++ (NSString *)name { return @"sub"; }
 @end
 
 @implementation JWTClaimBaseConcreteAudienceEqualSingle
++ (NSString *)name { return @"aud"; }
 @end
 
 @implementation JWTClaimBaseConcreteAudienceInSet
++ (NSString *)name { return @"aud"; }
 @end
 
 // trustedValue - current date
 // value - expiration date
 // trustedValue < value, so
 @implementation JWTClaimBaseConcreteExpirationTime
-- (NSString *)name { return @"exp"; }
++ (NSString *)name { return @"exp"; }
 - (BOOL)trustedValueAtLeft { return YES; }
 - (NSComparisonResult)expectedComparison {
     return NSOrderedAscending;
@@ -94,7 +96,7 @@
 // trustedValue >= value, which means:
 // !(trustedValue < value) or NOT OrderedAscending
 @implementation JWTClaimBaseConcreteNotBefore
-- (NSString *)name { return @"nbf"; }
++ (NSString *)name { return @"nbf"; }
 - (BOOL)trustedValueAtLeft { return YES; }
 - (NSComparisonResult)expectedComparison {
     return NSOrderedAscending;
@@ -107,7 +109,7 @@
 // value < trustedValue, so
 // trustedValue > value
 @implementation JWTClaimBaseConcreteIssuedAt
-- (NSString *)name { return @"iat"; }
++ (NSString *)name { return @"iat"; }
 - (BOOL)trustedValueAtLeft { return YES; }
 - (NSComparisonResult)expectedComparison {
     return NSOrderedDescending;
@@ -115,14 +117,14 @@
 @end
 
 @implementation JWTClaimBaseConcreteJWTID
-- (NSString *)name { return @"jti"; }
++ (NSString *)name { return @"jti"; }
 @end
 
 @implementation JWTClaimBaseConcreteType
-- (NSString *)name { return @"typ"; }
++ (NSString *)name { return @"typ"; }
 @end
 
 @implementation JWTClaimBaseConcreteScope
-- (NSString *)name { return @"scope"; }
++ (NSString *)name { return @"scope"; }
 @end
 

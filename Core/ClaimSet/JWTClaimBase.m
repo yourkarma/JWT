@@ -26,7 +26,8 @@
 }
 
 // MARK: - JWTClaimProtocol
-- (NSString *)name { return @""; }
++ (NSString *)name { return @""; }
+- (NSString *)name { return self.class.name; }
 - (instancetype)copyWithValue:(NSObject *)value {
     return [[self.class alloc] initWithValue:value];
 }
