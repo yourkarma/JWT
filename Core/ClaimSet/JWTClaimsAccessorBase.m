@@ -9,11 +9,11 @@
 #import "JWTClaimsAccessorBase.h"
 #import "JWTClaimVariations.h"
 
-@interface JWTClaimsAccessorBase ()
+@interface JWTClaimsProviderBase ()
 @property (copy, nonatomic, readwrite) NSDictionary *claimsAndNames;
 @end
 
-@implementation JWTClaimsAccessorBase
+@implementation JWTClaimsProviderBase
 + (NSDictionary *)createClaimsAndNames {
     __auto_type issuer = [JWTClaimBaseConcreteIssuer new];
     __auto_type subject = [JWTClaimBaseConcreteSubject new];

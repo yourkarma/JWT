@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)copyWithClaims:(NSArray <id<JWTClaimProtocol>>*)claims;
 @end
 
-@protocol JWTClaimsAccessorProtocol
+@protocol JWTClaimsProviderProtocol
 @property (copy, nonatomic, readonly) NSArray <NSString *> *availableClaimsNames;
 - (id<JWTClaimProtocol>)claimByName:(NSString *)name;
 @end
@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @protocol JWTClaimBuilderProtocol
-@property (nonatomic, readonly) id <JWTClaimsAccessorProtocol> accessor;
+@property (nonatomic, readonly) id <JWTClaimsProviderProtocol> claimsProvider;
 - (id<JWTClaimProtocol>)claimWithName:(NSString *)name value:(NSObject *)value;
 @end
 
@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @protocol JWTClaimsSetSerializerProtocol
-@property (nonatomic, readonly) id <JWTClaimsAccessorProtocol> accessor;
+@property (nonatomic, readonly) id <JWTClaimsProviderProtocol> claimsProvider;
 @property (nonatomic, readonly) id <JWTClaimBuilderProtocol> claimBuilder;
 @property (nonatomic, readonly) id <JWTClaimsSetBuilderProtocol> claimsSetBuilder;
 - (NSDictionary *)dictionaryFromClaimsSet:(id<JWTClaimsSetProtocol>)claimsSet;
@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @protocol JWTClaimsSetVerifierProtocol
-@property (nonatomic, readonly) id <JWTClaimsAccessorProtocol> accessor;
+@property (nonatomic, readonly) id <JWTClaimsProviderProtocol> claimsProvider;
 - (BOOL)verifyClaimsSet:(id<JWTClaimsSetProtocol>)theClaimsSet withTrustedClaimsSet:(id<JWTClaimsSetProtocol>)trustedClaimsSet;
 @end
 

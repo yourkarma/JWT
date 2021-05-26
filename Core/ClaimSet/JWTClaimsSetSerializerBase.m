@@ -22,8 +22,7 @@
     __auto_type result = [NSMutableArray new];
     
     for (NSString *key in dictionary) {
-        ///
-        __auto_type claim = [self.accessor claimByName:key];
+        __auto_type claim = [self.claimsProvider claimByName:key];
         if (claim != nil) {
             [self.claimBuilder claimWithName:claim.name value:claim.value];
             [result addObject:claim];
@@ -46,10 +45,7 @@
     __auto_type result = [NSMutableDictionary new];
     
     for (id<JWTClaimProtocol> value in claimsSet.claims) {
-//        if (value.name.length == 0) {
-//            continue;
-//        }
-        if ([self.accessor claimByName:value.name] != nil) {
+        if ([self.claimsProvider claimByName:value.name] != nil) {
             result[value.name] = value.value;
         }
     }

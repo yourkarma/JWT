@@ -22,8 +22,8 @@
         return NO;
     }
         
-    for (NSString *key in self.accessor.availableClaimsNames) {
-        __auto_type claim = [self.accessor claimByName:key];
+    for (NSString *key in self.claimsProvider.availableClaimsNames) {
+        __auto_type claim = [self.claimsProvider claimByName:key];
         if (claim == nil) {
             return NO;
         }

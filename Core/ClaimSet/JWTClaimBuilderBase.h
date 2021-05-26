@@ -12,7 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JWTClaimBuilderBase : NSObject <JWTClaimBuilderProtocol>
-@property (nonatomic, readwrite) id<JWTClaimsAccessorProtocol> accessor;
+@property (nonatomic, readwrite) id<JWTClaimsProviderProtocol> claimsProvider;
 @end
 
 NS_ASSUME_NONNULL_END

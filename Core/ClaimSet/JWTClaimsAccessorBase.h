@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface JWTClaimsAccessorBase : NSObject <JWTClaimsAccessorProtocol>
+@interface JWTClaimsProviderBase : NSObject <JWTClaimsProviderProtocol>
 
 @end
 

@@ -12,7 +12,7 @@
 @implementation JWTClaimBuilderBase
 
 - (nonnull id<JWTClaimProtocol>)claimWithName:(nonnull NSString *)name value:(nonnull NSObject *)value {
-    __auto_type claim = [self.accessor claimByName:name];
+    __auto_type claim = [self.claimsProvider claimByName:name];
     return [claim copyWithValue:value];
 }
 
