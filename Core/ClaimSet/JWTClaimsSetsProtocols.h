@@ -27,25 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<JWTClaimProtocol>)claimByName:(NSString *)name;
 @end
 
-@protocol JWTClaimsSetFieldSerializerProtocol
-/// Serialize one type of field (?)
-/// For example, you could serialize date or time or any field.
-@end
-
-@protocol JWTClaimBuilderProtocol
-@property (nonatomic, readonly) id <JWTClaimsProviderProtocol> claimsProvider;
-- (id<JWTClaimProtocol>)claimWithName:(NSString *)name value:(NSObject *)value;
-@end
-
-@protocol JWTClaimsSetBuilderProtocol
-@property (nonatomic, readonly) id <JWTClaimsSetProtocol> claimsSetProvider;
-- (id<JWTClaimsSetProtocol>)claimsSetWithClaims:(NSArray <id<JWTClaimProtocol>>*)claims;
-@end
-
 @protocol JWTClaimsSetSerializerProtocol
 @property (nonatomic, readonly) id <JWTClaimsProviderProtocol> claimsProvider;
-@property (nonatomic, readonly) id <JWTClaimBuilderProtocol> claimBuilder;
-@property (nonatomic, readonly) id <JWTClaimsSetBuilderProtocol> claimsSetBuilder;
+@property (nonatomic, readonly) id <JWTClaimsSetProtocol> claimsSetProvider;
 - (NSDictionary *)dictionaryFromClaimsSet:(id<JWTClaimsSetProtocol>)claimsSet;
 - (id<JWTClaimsSetProtocol>)claimsSetFromDictionary:(NSDictionary *)dictionary;
 @end
