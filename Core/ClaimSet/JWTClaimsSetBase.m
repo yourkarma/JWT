@@ -30,4 +30,29 @@
 - (instancetype)copyWithClaims:(NSArray<id<JWTClaimProtocol>> *)claims {
     return [[self.class alloc] initWithClaims:claims];
 }
+
+- (void)appendClaim:(id<JWTClaimProtocol>)claim {
+    if (claim == nil) {
+        return;
+    }
+    __auto_type value = (NSMutableArray *)[self.claims mutableCopy];
+    [value addObject:claim];
+    self.claims = [value copy];
+}
+
+- (void)removeClaimByName:(NSString *)name {
+    if (name == nil) {
+        return;
+    }
+    
+    NSInteger index = [self.claims indexOfObjectPassingTest:^BOOL(id<JWTClaimProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        return [obj.name isEqualToString:name];
+    }];
+    
+    if (index != NSNotFound) {
+        __auto_type value = (NSMutableArray *)[self.claims mutableCopy];
+        [value removeObjectAtIndex:index];
+        self.claims = [value copy];
+    }
+}
 @end

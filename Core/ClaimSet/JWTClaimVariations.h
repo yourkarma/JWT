@@ -30,19 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface JWTClaimBaseVariationWithInclusionInSet : JWTClaimBase
 @end
 
-// TODO(3.0): Claim aud should check include in collection?
-// Add claims specification tests.
-// "iss" (Issuer) Claim
-// "sub" (Subject) Claim
-// "aud" (Audience) Claim
-// "exp" (Expiration Time) Claim
-// "nbf" (Not Before) Claim
-// "iat" (Issued At) Claim
-// "jti" (JWT ID) Claim
-// "typ" (Type) Claim
-// "scope" (Scope) Claim
-
-
+// MARK: - Base Concrete Claims
 @interface JWTClaimBaseConcreteIssuer : JWTClaimBaseVariationWithEqualityForString
 @end
 

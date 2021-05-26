@@ -10,9 +10,6 @@
 
 @implementation JWTClaimsSetSerializerBase
 
-@synthesize claimBuilder = _claimBuilder;
-@synthesize claimsSetBuilder = _claimsSetBuilder;
-
 - (nonnull id<JWTClaimsSetProtocol>)claimsSetFromDictionary:(nonnull NSDictionary *)dictionary {
     
     if (dictionary.count == 0) {
@@ -24,8 +21,7 @@
     for (NSString *key in dictionary) {
         __auto_type claim = [self.claimsProvider claimByName:key];
         if (claim != nil) {
-            [self.claimBuilder claimWithName:claim.name value:claim.value];
-            [result addObject:claim];
+            [result addObject:[claim copyWithValue:dictionary[key]]];
         }
     }
     
@@ -33,7 +29,7 @@
         return nil;
     }
     
-    return [self.claimsSetBuilder claimsSetWithClaims:result];
+    return [self.claimsSetProvider copyWithClaims:result];
 }
 
 - (nonnull NSDictionary *)dictionaryFromClaimsSet:(nonnull id<JWTClaimsSetProtocol>)claimsSet {
@@ -56,5 +52,7 @@
     
     return [NSDictionary dictionaryWithDictionary:result];
 }
+
+@synthesize claimsSetProvider;
 
 @end

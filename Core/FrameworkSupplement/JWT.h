@@ -46,9 +46,7 @@ FOUNDATION_EXPORT const unsigned char JWTVersionString[];
 // New Claims
 #import <JWT/JWTClaimsSetsProtocols.h>
 #import <JWT/JWTClaimBase.h>
-#import <JWT/JWTClaimBuilderBase.h>
 #import <JWT/JWTClaimsSetBase.h>
-#import <JWT/JWTClaimsSetBuilderBase.h>
 #import <JWT/JWTClaimVariations.h>
 #import <JWT/JWTClaimsSetSerializerBase.h>
 #import <JWT/JWTClaimsSetVerifierBase.h>
