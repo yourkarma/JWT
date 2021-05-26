@@ -44,6 +44,12 @@
     return self;
 }
 
+// MARK: - NSCopying
+- (id)copyWithZone:(NSZone *)zone {
+    return [[self.class alloc] init];
+}
+
+// MARK: - JWTClaimsProviderProtocol
 - (NSArray<NSString *> *)availableClaimsNames {
     return self.claimsAndNames.allKeys;
 }

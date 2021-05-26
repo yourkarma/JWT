@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeClaimByName:(NSString *)name;
 @end
 
-@protocol JWTClaimsProviderProtocol
+@protocol JWTClaimsProviderProtocol <NSCopying>
 @property (copy, nonatomic, readonly) NSArray <NSString *> *availableClaimsNames;
 - (id<JWTClaimProtocol>)claimByName:(NSString *)name;
 @end
