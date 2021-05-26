@@ -61,7 +61,7 @@
 		0A1DA52A2659A6190041E737 /* JWTClaimsProviderBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DA5282659A6190041E737 /* JWTClaimsProviderBase.m */; };
 		0A1DA52B2659A6190041E737 /* JWTClaimsProviderBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DA5282659A6190041E737 /* JWTClaimsProviderBase.m */; };
 		0A1F0D9624E05F1800A8B488 /* JWTClaimsSetsProtocols.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A1F0D9424E05F1800A8B488 /* JWTClaimsSetsProtocols.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0A1F2386265EBBE400A72A83 /* JWTClaimsSetDSLBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A1F2384265EBBE400A72A83 /* JWTClaimsSetDSLBase.h */; };
+		0A1F2386265EBBE400A72A83 /* JWTClaimsSetDSLBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A1F2384265EBBE400A72A83 /* JWTClaimsSetDSLBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A1F2387265EBBE400A72A83 /* JWTClaimsSetDSLBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1F2385265EBBE400A72A83 /* JWTClaimsSetDSLBase.m */; };
 		0A1F2388265EBBE400A72A83 /* JWTClaimsSetDSLBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1F2385265EBBE400A72A83 /* JWTClaimsSetDSLBase.m */; };
 		0A40613E211AD8DF00D0842B /* JWTCryptoSecurity+ExternalRepresentation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A40613C211AD8DF00D0842B /* JWTCryptoSecurity+ExternalRepresentation.h */; settings = {ATTRIBUTES = (Public, ); }; };
