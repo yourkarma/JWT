@@ -13,19 +13,26 @@
 @end
 @implementation JWTClaimBase
 @synthesize value = _value;
-- (NSString *)name { return @""; }
 - (instancetype)initWithValue:(NSObject *)value {
     if (self = [super init]) {
         self.value = value;
     }
     return self;
 }
+
+// MARK: - NSCopying
+- (nonnull id)copyWithZone:(nullable NSZone *)zone {
+    return [self copyWithValue:self.value];
+}
+
+// MARK: - JWTClaimProtocol
+- (NSString *)name { return @""; }
 - (instancetype)copyWithValue:(NSObject *)value {
     return [[self.class alloc] initWithValue:value];
 }
 
-- (BOOL)verifyValue:(nonnull NSObject *)value withTrustedValue:(nonnull NSObject *)trustedValue { return NO; }
-
-- (nonnull id)copyWithZone:(nullable NSZone *)zone { return [[self.class alloc] initWithValue:self.value]; }
+- (BOOL)verifyValue:(nonnull NSObject *)value withTrustedValue:(nonnull NSObject *)trustedValue {
+    return NO;
+}
 
 @end

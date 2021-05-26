@@ -13,18 +13,21 @@
 @end
 
 @implementation JWTClaimsSetBase
-
 @synthesize claims = _claims;
-
-- (nonnull instancetype)initWithClaims:(nonnull NSArray<id<JWTClaimProtocol>> *)claims {
+- (instancetype)initWithClaims:(nonnull NSArray<id<JWTClaimProtocol>> *)claims {
     if (self = [super init]) {
         self.claims = claims;
     }
     return self;
 }
 
+// MARK: - NSCopying
 - (nonnull id)copyWithZone:(nullable NSZone *)zone {
-    return [[self.class alloc] initWithClaims:self.claims];
+    return [self copyWithClaims:self.claims];
 }
 
+// MARK: - JWTClaimsSetProtocol
+- (instancetype)copyWithClaims:(NSArray<id<JWTClaimProtocol>> *)claims {
+    return [[self.class alloc] initWithClaims:claims];
+}
 @end

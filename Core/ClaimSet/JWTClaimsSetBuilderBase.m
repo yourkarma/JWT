@@ -11,7 +11,7 @@
 @implementation JWTClaimsSetBuilderBase
 
 - (nonnull id<JWTClaimsSetProtocol>)claimsSetWithClaims:(nonnull NSArray<id<JWTClaimProtocol>> *)claims {
-    return [[JWTClaimsSetBase alloc] initWithClaims:claims];
+    return [self.claimsSetProvider copyWithClaims:claims];
 }
 
 @end
