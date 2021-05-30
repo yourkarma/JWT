@@ -29,8 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol JWTClaimsSetProtocol <NSCopying>
 @property (copy, nonatomic, readonly) NSArray <id<JWTClaimProtocol>>* claims;
 - (instancetype)copyWithClaims:(NSArray <id<JWTClaimProtocol>>*)claims;
+- (id<JWTClaimProtocol>)claimByName:(NSString *)name;
 - (void)appendClaim:(id<JWTClaimProtocol>)claim;
 - (void)removeClaimByName:(NSString *)name;
+@property (assign, nonatomic, readonly) BOOL isEmpty;
 @end
 
 @protocol JWTClaimsProviderProtocol <NSCopying>

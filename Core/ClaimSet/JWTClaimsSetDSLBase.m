@@ -20,14 +20,9 @@
     if (claim == nil) {
         return nil;
     }
-    NSInteger index = [self.claimsSetProvider.claims indexOfObjectPassingTest:^BOOL(id<JWTClaimProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        return [obj.name isEqualToString:name];
-    }];
-    if (index != NSNotFound) {
-        return self.claimsSetProvider.claims[index].value;
-    }
-    return nil;
+    return [self.claimsSetProvider claimByName:name].value;
 }
+
 - (void)setValue:(NSObject *)value forName:(NSString *)name {
     __auto_type claim = [self.claimsProvider claimByName:name];
     if (claim == nil) {

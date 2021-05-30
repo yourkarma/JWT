@@ -26,11 +26,7 @@
     self.expirationDateTimestamp = 1234567;
     self.notBeforeDateTimestamp = 1234321;
     self.issuedAtTimestamp = 1234333;
-    
-//    __auto_type accessor = [[JWTClaimsProviderBase alloc] init];
-//    __auto_type serializer = [[JWTClaimsSetSerializerBase alloc] init];
-//    serializer.claimsProvider = [[JWTClaimsProviderBase alloc] init];
-    
+
     __auto_type claimsProvider = [[JWTClaimsProviderBase alloc] init];
     __auto_type claimsSetProvider = [[JWTClaimsSetBase alloc] init];
     __auto_type claimsSet = [[JWTClaimsSetDSLBase alloc] init];
@@ -72,15 +68,15 @@
 }
 - (void)test {
     [self testHaveEnoughKeys:@(9) inDictionary:self.serialized];
-    [self testDictionary:self.serialized hasValue:self.deserialized.issuer forKey:@"iss" name:@"issuer"];
-    [self testDictionary:self.serialized hasValue:self.deserialized.subject forKey:@"sub" name:@"subject"];
-    [self testDictionary:self.serialized hasValue:self.deserialized.audience forKey:@"aud" name:@"audience"];
-    [self testDictionary:self.serialized hasValue:@(self.expirationDateTimestamp) forKey:@"exp" name:@"expirationDate"];
-    [self testDictionary:self.serialized hasValue:@(self.notBeforeDateTimestamp) forKey:@"nbf" name:@"notBeforeDate"];
-    [self testDictionary:self.serialized hasValue:@(self.issuedAtTimestamp) forKey:@"iat" name:@"issuedAtDate"];
-    [self testDictionary:self.serialized hasValue:self.deserialized.identifier forKey:@"jti" name:@"identifier(jti)"];
-    [self testDictionary:self.serialized hasValue:self.deserialized.type forKey:@"typ" name:@"type"];
-    [self testDictionary:self.serialized hasValue:self.deserialized.scope forKey:@"scope" name:@"scope"];
+    [self testDictionary:self.serialized hasValue:self.deserialized.issuer forKey:JWTClaimsNames.issuer name:@"issuer"];
+    [self testDictionary:self.serialized hasValue:self.deserialized.subject forKey:JWTClaimsNames.subject name:@"subject"];
+    [self testDictionary:self.serialized hasValue:self.deserialized.audience forKey:JWTClaimsNames.audience name:@"audience"];
+    [self testDictionary:self.serialized hasValue:@(self.expirationDateTimestamp) forKey:JWTClaimsNames.expirationTime name:@"expirationDate"];
+    [self testDictionary:self.serialized hasValue:@(self.notBeforeDateTimestamp) forKey:JWTClaimsNames.notBefore name:@"notBeforeDate"];
+    [self testDictionary:self.serialized hasValue:@(self.issuedAtTimestamp) forKey:JWTClaimsNames.issuedAt name:@"issuedAtDate"];
+    [self testDictionary:self.serialized hasValue:self.deserialized.identifier forKey:JWTClaimsNames.jwtID name:@"identifier(jti)"];
+    [self testDictionary:self.serialized hasValue:self.deserialized.type forKey:JWTClaimsNames.type name:@"type"];
+    [self testDictionary:self.serialized hasValue:self.deserialized.scope forKey:JWTClaimsNames.scope name:@"scope"];
 }
 @end
 
@@ -118,14 +114,14 @@
     }];
 }
 - (void)test {
-    [self testDeserializeProperty:self.deserialized.issuer comparedToValue:[self.serialized objectForKey:@"iss"] name:@"iss"];
-    [self testDeserializeProperty:self.deserialized.subject comparedToValue:[self.serialized objectForKey:@"sub"] name:@"sub"];
-    [self testDeserializeProperty:self.deserialized.audience comparedToValue:[self.serialized objectForKey:@"aud"] name:@"aud"];
-    [self testDeserializeProperty:self.deserialized.expirationDate comparedToValue:[NSDate dateWithTimeIntervalSince1970:[[self.serialized objectForKey:@"exp"] doubleValue]] name:@"exp"];
-    [self testDeserializeProperty:self.deserialized.notBeforeDate comparedToValue:[NSDate dateWithTimeIntervalSince1970:[[self.serialized objectForKey:@"nbf"] doubleValue]] name:@"nbf"];
-    [self testDeserializeProperty:self.deserialized.issuedAt comparedToValue:[NSDate dateWithTimeIntervalSince1970:[[self.serialized objectForKey:@"iat"] doubleValue]] name:@"iat"];
-    [self testDeserializeProperty:self.deserialized.identifier comparedToValue:[self.serialized objectForKey:@"jti"] name:@"jti"];
-    [self testDeserializeProperty:self.deserialized.type comparedToValue:[self.serialized objectForKey:@"typ"] name:@"typ"];
-    [self testDeserializeProperty:self.deserialized.scope comparedToValue:[self.serialized objectForKey:@"scope"] name:@"scope"];
+    [self testDeserializeProperty:self.deserialized.issuer comparedToValue:self.serialized[JWTClaimsNames.issuer] name:JWTClaimsNames.issuer];
+    [self testDeserializeProperty:self.deserialized.subject comparedToValue:self.serialized[JWTClaimsNames.subject] name:JWTClaimsNames.subject];
+    [self testDeserializeProperty:self.deserialized.audience comparedToValue:self.serialized[JWTClaimsNames.audience] name:JWTClaimsNames.audience];
+    [self testDeserializeProperty:self.deserialized.expirationDate comparedToValue:[NSDate dateWithTimeIntervalSince1970:[self.serialized[JWTClaimsNames.expirationTime] doubleValue]] name:JWTClaimsNames.expirationTime];
+    [self testDeserializeProperty:self.deserialized.notBeforeDate comparedToValue:[NSDate dateWithTimeIntervalSince1970:[self.serialized[JWTClaimsNames.notBefore] doubleValue]] name:JWTClaimsNames.notBefore];
+    [self testDeserializeProperty:self.deserialized.issuedAt comparedToValue:[NSDate dateWithTimeIntervalSince1970:[self.serialized[JWTClaimsNames.issuedAt] doubleValue]] name:JWTClaimsNames.issuedAt];
+    [self testDeserializeProperty:self.deserialized.identifier comparedToValue:self.serialized[JWTClaimsNames.jwtID] name:JWTClaimsNames.jwtID];
+    [self testDeserializeProperty:self.deserialized.type comparedToValue:self.serialized[JWTClaimsNames.type] name:JWTClaimsNames.type];
+    [self testDeserializeProperty:self.deserialized.scope comparedToValue:self.serialized[JWTClaimsNames.scope] name:JWTClaimsNames.scope];
 }
 @end

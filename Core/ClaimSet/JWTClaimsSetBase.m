@@ -9,13 +9,13 @@
 #import "JWTClaimsSetBase.h"
 
 @interface JWTClaimsSetBase ()
-@property (copy, nonatomic, readwrite) NSArray <id<JWTClaimProtocol>>* claims;
+@property (strong, nonatomic, readwrite) NSMutableDictionary <NSString *, id<JWTClaimProtocol>> *namesAndClaims;
 @end
 
 @implementation JWTClaimsSetBase
 - (instancetype)initWithClaims:(nonnull NSArray<id<JWTClaimProtocol>> *)claims {
     if (self = [super init]) {
-        self.claims = claims;
+        self.namesAndClaims = [NSMutableDictionary dictionaryWithObjects:claims forKeys:[claims valueForKey:@"name"]];
     }
     return self;
 }
@@ -30,32 +30,41 @@
 }
 
 // MARK: - JWTClaimsSetProtocol
+- (NSArray<id<JWTClaimProtocol>> *)claims {
+    return self.namesAndClaims.allValues;
+}
+
 - (instancetype)copyWithClaims:(NSArray<id<JWTClaimProtocol>> *)claims {
     return [[self.class alloc] initWithClaims:claims];
 }
 
+- (id<JWTClaimProtocol>)claimByName:(NSString *)name {
+    if (name == nil) {
+        return nil;
+    }
+    return self.namesAndClaims[name];
+}
+
 - (void)appendClaim:(id<JWTClaimProtocol>)claim {
-    if (claim == nil) {
+    if (claim == nil || claim.name == nil) {
         return;
     }
-    __auto_type value = (NSMutableArray *)[self.claims mutableCopy];
-    [value addObject:claim];
-    self.claims = [value copy];
+    
+    if (self.namesAndClaims[claim.name]) {
+        return;
+    }
+    
+    self.namesAndClaims[claim.name] = claim;
 }
 
 - (void)removeClaimByName:(NSString *)name {
     if (name == nil) {
         return;
     }
-    
-    NSInteger index = [self.claims indexOfObjectPassingTest:^BOOL(id<JWTClaimProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        return [obj.name isEqualToString:name];
-    }];
-    
-    if (index != NSNotFound) {
-        __auto_type value = (NSMutableArray *)[self.claims mutableCopy];
-        [value removeObjectAtIndex:index];
-        self.claims = [value copy];
-    }
+    [self.namesAndClaims removeObjectForKey:name];
+}
+
+- (BOOL)isEmpty {
+    return self.namesAndClaims.count == 0;
 }
 @end
