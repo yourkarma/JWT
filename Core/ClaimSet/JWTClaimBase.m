@@ -32,8 +32,4 @@
     return [[self.class alloc] initWithValue:value];
 }
 
-- (BOOL)verifyValue:(nonnull NSObject *)value withTrustedValue:(nonnull NSObject *)trustedValue {
-    return NO;
-}
-
 @end
