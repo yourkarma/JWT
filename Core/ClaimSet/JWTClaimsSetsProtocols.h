@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSObject *)deserializedClaimValue:(NSObject *)value forName:(NSString *)name;
 @end
 
-@protocol JWTClaimsSetProtocol <NSCopying>
+@protocol JWTClaimsSetStorageProtocol <NSCopying>
 @property (copy, nonatomic, readonly) NSArray <id<JWTClaimProtocol>>* claims;
 - (instancetype)copyWithClaims:(NSArray <id<JWTClaimProtocol>>*)claims;
 - (id<JWTClaimProtocol>)claimByName:(NSString *)name;
@@ -42,9 +42,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)unregisterClaimForClaimName:(NSString *)name;
 @end
 
+@protocol JWTClaimsSetProtocol <JWTClaimsSetStorageProtocol>
+@property (copy, nonatomic, readonly) id <JWTClaimsProviderProtocol> claimsProvider;
+@end
+
 @protocol JWTClaimsSetSerializerProtocol
 @property (nonatomic, readonly) id <JWTClaimsProviderProtocol> claimsProvider;
-@property (nonatomic, readonly) id <JWTClaimsSetProtocol> claimsSetProvider;
+@property (nonatomic, readonly) id <JWTClaimsSetStorageProtocol> claimsSetStorage;
 - (void)registerSerializer:(id<JWTClaimSerializerProtocol>)serializer forClaimName:(NSString *)name;
 - (void)unregisterSerializerForClaimName:(NSString *)name;
 - (NSDictionary *)dictionaryFromClaimsSet:(id<JWTClaimsSetProtocol>)claimsSet;

@@ -9,7 +9,7 @@
 #import <JWT/JWT.h>
 
 @interface JWTClaimsSerializerBaseTests : XCTestCase
-@property (strong, nonatomic, readwrite) JWTClaimsSetDSLBase *deserialized;
+@property (strong, nonatomic, readwrite) JWTClaimsSetBase *deserialized;
 @property (copy, nonatomic, readwrite) NSDictionary *serialized;
 
 @property (assign, nonatomic, readwrite) NSTimeInterval expirationDateTimestamp;
@@ -28,10 +28,8 @@
     self.issuedAtTimestamp = 1234333;
 
     __auto_type claimsProvider = [[JWTClaimsProviderBase alloc] init];
-    __auto_type claimsSetProvider = [[JWTClaimsSetBase alloc] init];
-    __auto_type claimsSet = [[JWTClaimsSetDSLBase alloc] init];
+    __auto_type claimsSet = [[JWTClaimsSetBase alloc] init];
     claimsSet.claimsProvider = claimsProvider;
-    claimsSet.claimsSetProvider = claimsSetProvider
     ;
     self.deserialized = ({
         
@@ -49,9 +47,9 @@
     
     __auto_type serializer = [[JWTClaimsSetSerializerBase alloc] init];
     serializer.claimsProvider = claimsProvider;
-    serializer.claimsSetProvider = claimsSetProvider;
+    serializer.claimsSetStorage = claimsSet;
     self.serialized = ({
-        __auto_type serialized = [serializer dictionaryFromClaimsSet:self.deserialized.claimsSetProvider];
+        __auto_type serialized = [serializer dictionaryFromClaimsSet:self.deserialized];
         serialized;
     });
 }
@@ -96,15 +94,14 @@
                    @"scope": @"https://www.googleapis.com/auth/devstorage.read_write"
                    };
     __auto_type claimsProvider = [[JWTClaimsProviderBase alloc] init];
-    __auto_type claimsSetProvider = [[JWTClaimsSetBase alloc] init];
+    __auto_type claimsSetStorage = [[JWTClaimsSetBase alloc] init];
     __auto_type serializer = [[JWTClaimsSetSerializerBase alloc] init];
     serializer.claimsProvider = claimsProvider;
-    serializer.claimsSetProvider = claimsSetProvider;
+    serializer.claimsSetStorage = claimsSetStorage;
     
     __auto_type result = [serializer claimsSetFromDictionary:self.serialized];
-    self.deserialized = [[JWTClaimsSetDSLBase alloc] init];
+    self.deserialized = [[[JWTClaimsSetBase alloc] init] copyWithClaims:result.claims];
     self.deserialized.claimsProvider = claimsProvider;
-    self.deserialized.claimsSetProvider = result;
 }
 - (void)testDeserializeProperty:(id)property comparedToValue:(id)value name:(NSString *)name {
     __auto_type propertyKey = name;

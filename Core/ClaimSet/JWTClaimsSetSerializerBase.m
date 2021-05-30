@@ -75,7 +75,7 @@
         return nil;
     }
     
-    return [self.claimsSetProvider copyWithClaims:result];
+    return [self.claimsSetStorage copyWithClaims:result];
 }
 
 - (nonnull NSDictionary *)dictionaryFromClaimsSet:(nonnull id<JWTClaimsSetProtocol>)claimsSet {
