@@ -37,22 +37,22 @@
     [self.claimsSetProvider appendClaim:[claim copyWithValue:value]];
 }
 
-- (NSString *)issuer { return (NSString *)[self valueForName:JWTClaimBaseConcreteIssuer.name]; }
-- (void)setIssuer:(NSString *)value { [self setValue:value forName:JWTClaimBaseConcreteIssuer.name]; }
-- (NSString *)subject { return (NSString *)[self valueForName:JWTClaimBaseConcreteSubject.name]; }
-- (void)setSubject:(NSString *)value { [self setValue:value forName:JWTClaimBaseConcreteSubject.name]; }
-- (NSString *)audience { return (NSString *)[self valueForName:JWTClaimBaseConcreteAudienceEqualSingle.name]; }
-- (void)setAudience:(NSString *)value { [self setValue:value forName:JWTClaimBaseConcreteAudienceEqualSingle.name]; }
-- (NSDate *)expirationDate { return [self valueForName:JWTClaimBaseConcreteExpirationTime.name]; }
-- (void)setExpirationDate:(NSDate *)value { [self setValue:value forName:JWTClaimBaseConcreteExpirationTime.name]; }
-- (NSDate *)notBeforeDate { return [self valueForName:JWTClaimBaseConcreteNotBefore.name]; }
-- (void)setNotBeforeDate:(NSDate *)value { [self setValue:value forName:JWTClaimBaseConcreteNotBefore.name]; }
-- (NSDate *)issuedAt { return [self valueForName:JWTClaimBaseConcreteIssuedAt.name]; }
-- (void)setIssuedAt:(NSDate *)value { [self setValue:value forName:JWTClaimBaseConcreteIssuedAt.name]; }
-- (NSString *)identifier { return [self valueForName:JWTClaimBaseConcreteJWTID.name]; }
-- (void)setIdentifier:(NSString *)value { [self setValue:value forName:JWTClaimBaseConcreteJWTID.name]; }
-- (NSString *)type { return [self valueForName:JWTClaimBaseConcreteType.name]; }
-- (void)setType:(NSString *)value { [self setValue:value forName:JWTClaimBaseConcreteType.name]; }
-- (NSString *)scope { return [self valueForName:JWTClaimBaseConcreteScope.name]; }
-- (void)setScope:(NSString *)value { [self setValue:value forName:JWTClaimBaseConcreteScope.name]; }
+- (NSString *)issuer { return (NSString *)[self valueForName:JWTClaimVariations.issuer.name]; }
+- (void)setIssuer:(NSString *)value { [self setValue:value forName:JWTClaimVariations.issuer.name]; }
+- (NSString *)subject { return (NSString *)[self valueForName:JWTClaimVariations.subject.name]; }
+- (void)setSubject:(NSString *)value { [self setValue:value forName:JWTClaimVariations.subject.name]; }
+- (NSString *)audience { return (NSString *)[self valueForName:JWTClaimVariations.audience.name]; }
+- (void)setAudience:(NSString *)value { [self setValue:value forName:JWTClaimVariations.audience.name]; }
+- (NSDate *)expirationDate { return (NSDate *)[self valueForName:JWTClaimVariations.expirationTime.name]; }
+- (void)setExpirationDate:(NSDate *)value { [self setValue:value forName:JWTClaimVariations.expirationTime.name]; }
+- (NSDate *)notBeforeDate { return (NSDate *)[self valueForName:JWTClaimVariations.notBefore.name]; }
+- (void)setNotBeforeDate:(NSDate *)value { [self setValue:value forName:JWTClaimVariations.notBefore.name]; }
+- (NSDate *)issuedAt { return (NSDate *)[self valueForName:JWTClaimVariations.issuedAt.name]; }
+- (void)setIssuedAt:(NSDate *)value { [self setValue:value forName:JWTClaimVariations.issuedAt.name]; }
+- (NSString *)identifier { return (NSString *)[self valueForName:JWTClaimVariations.jwtID.name]; }
+- (void)setIdentifier:(NSString *)value { [self setValue:value forName:JWTClaimVariations.jwtID.name]; }
+- (NSString *)type { return (NSString *)[self valueForName:JWTClaimVariations.type.name]; }
+- (void)setType:(NSString *)value { [self setValue:value forName:JWTClaimVariations.type.name]; }
+- (NSString *)scope { return (NSString *)[self valueForName:JWTClaimVariations.scope.name]; }
+- (void)setScope:(NSString *)value { [self setValue:value forName:JWTClaimVariations.scope.name]; }
 @end
