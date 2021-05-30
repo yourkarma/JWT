@@ -10,7 +10,7 @@
 #import "JWTClaimVariations.h"
 
 @interface JWTClaimsProviderBase ()
-@property (copy, nonatomic, readwrite) NSDictionary *claimsAndNames;
+@property (strong, nonatomic, readwrite) NSMutableDictionary <NSString *, id<JWTClaimProtocol>> *claimsAndNames;
 @end
 
 @implementation JWTClaimsProviderBase
@@ -39,7 +39,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.claimsAndNames = [self.class createClaimsAndNames];
+        self.claimsAndNames = [NSMutableDictionary dictionaryWithDictionary:[self.class createClaimsAndNames]];
     }
     return self;
 }
@@ -55,7 +55,22 @@
 }
 
 - (nonnull id<JWTClaimProtocol>)claimByName:(nonnull NSString *)name {
-    return [self.claimsAndNames[name] copy];
+    __auto_type claim = self.claimsAndNames[name];
+    return [claim copyWithValue:claim.value];
+}
+
+- (void)registerClaim:(id<JWTClaimProtocol>)claim forClaimName:(NSString *)name {
+    if (name == nil) {
+        return;
+    }
+    self.claimsAndNames[name] = [claim copyWithValue:claim.value];
+}
+
+- (void)unregisterClaimForClaimName:(NSString *)name {
+    if (name == nil) {
+        return;
+    }
+    [self.claimsAndNames removeObjectForKey:name];
 }
 
 @end
