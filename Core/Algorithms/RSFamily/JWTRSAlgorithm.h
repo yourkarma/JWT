@@ -4,7 +4,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JWTAlgorithm.h"
+#import <JWT/JWTAlgorithm.h>
 @protocol JWTCryptoKeyProtocol;
 
 @protocol JWTAsymmetricKeysAlgorithm <JWTAlgorithm>

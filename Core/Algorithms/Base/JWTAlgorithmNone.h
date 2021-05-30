@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JWTAlgorithm.h"
+#import <JWT/JWTAlgorithm.h>
+
 extern NSString *const JWTAlgorithmNameNone;
 
 @interface JWTAlgorithmNone : NSObject <JWTAlgorithm>

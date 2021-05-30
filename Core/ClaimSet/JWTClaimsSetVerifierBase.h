@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <JWTClaimsSetsProtocols.h>
-#import <JWTClaimVerifierBase.h>
+#import <JWT/JWTClaimsSetsProtocols.h>
+#import <JWT/JWTClaimVerifierBase.h>
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JWTClaimsSetVerifierBase : NSObject <JWTClaimsSetVerifierProtocol>

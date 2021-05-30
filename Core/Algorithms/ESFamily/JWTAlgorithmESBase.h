@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JWTRSAlgorithm.h"
+#import <JWT/JWTRSAlgorithm.h>
+
 extern NSString *const JWTAlgorithmNameES256;
 extern NSString *const JWTAlgorithmNameES384;
 extern NSString *const JWTAlgorithmNameES512;

@@ -6,7 +6,7 @@
 //  Copyright © 2016 JWTIO. All rights reserved.
 //
 
-#import "JWTCoding.h"
+#import <JWT/JWTCoding.h>
 
 @protocol JWTAlgorithm;
 @class JWTClaimsSet;

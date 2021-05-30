@@ -7,7 +7,7 @@
 //
 
 #import <JWT/JWT.h>
-#import "JWTClaimsSetsProtocols.h"
+#import <JWT/JWTClaimsSetsProtocols.h>
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JWTClaimsSetDSLBase : JWTClaimsSetBase

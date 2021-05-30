@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <JWTClaimsSetsProtocols.h>
-#import <JWTClaimSerializerBase.h>
+#import <JWT/JWTClaimsSetsProtocols.h>
+#import <JWT/JWTClaimSerializerBase.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

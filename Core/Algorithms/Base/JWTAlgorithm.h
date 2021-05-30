@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JWTDeprecations.h"
+#import <JWT/JWTDeprecations.h>
 
 @protocol JWTAlgorithm <NSObject>
 

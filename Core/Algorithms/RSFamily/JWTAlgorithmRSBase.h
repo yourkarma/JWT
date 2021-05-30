@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JWTRSAlgorithm.h"
-#import "JWTAlgorithmErrorDescription.h"
+#import <JWT/JWTRSAlgorithm.h>
+#import <JWT/JWTAlgorithmErrorDescription.h>
+
 extern NSString *const JWTAlgorithmRSFamilyErrorDomain;
 typedef NS_ENUM(NSInteger, JWTAlgorithmRSFamilyError) {
     JWTAlgorithmRSFamilyErrorIncorrectHashComputation = -100,

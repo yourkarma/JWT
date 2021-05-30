@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JWTClaimsSet.h"
+#import <JWT/JWTClaimsSet.h>
 
 @interface JWTClaimsSetVerifier : NSObject
 

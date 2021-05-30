@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JWTClaimVerifierBase.h"
+#import <JWT/JWTClaimVerifierBase.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

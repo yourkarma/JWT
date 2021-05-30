@@ -6,8 +6,8 @@
 //  Copyright © 2016 JWTIO. All rights reserved.
 //
 
-#import "JWTCoding.h"
-#import "JWTDeprecations.h"
+#import <JWT/JWTCoding.h>
+#import <JWT/JWTDeprecations.h>
 @class JWTClaimsSet;
 
 extern NSString *JWTCodingResultHeaders __deprecated_with_replacement("JWTCodingResultComponents.Headers");

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <JWTClaimsSetsProtocols.h>
+#import <JWT/JWTClaimsSetsProtocols.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
