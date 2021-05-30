@@ -13,7 +13,6 @@
 @end
 
 @implementation JWTClaimsSetBase
-@synthesize claims = _claims;
 - (instancetype)initWithClaims:(nonnull NSArray<id<JWTClaimProtocol>> *)claims {
     if (self = [super init]) {
         self.claims = claims;

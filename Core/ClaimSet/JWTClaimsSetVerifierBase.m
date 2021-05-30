@@ -11,30 +11,30 @@
 #import "JWTClaimVerifierVariations.h"
 
 @interface JWTClaimsSetVerifierBase ()
-@property (copy, nonatomic, readwrite) NSMutableDictionary <NSString *, id<JWTClaimVerifierProtocol>> *namesAndVerifiers;
+@property (strong, nonatomic, readwrite) NSMutableDictionary <NSString *, id<JWTClaimVerifierProtocol>> *namesAndVerifiers;
 @end
 
 @implementation JWTClaimsSetVerifierBase
 + (NSDictionary *)createNamesAndVerifiers {
-    __auto_type issuer = JWTClaimVariations.issuer;
-    __auto_type subject = JWTClaimVariations.subject;
-    __auto_type audience = JWTClaimVariations.audience;
-    __auto_type expirationTime = JWTClaimVariations.expirationTime;
-    __auto_type notBefore = JWTClaimVariations.notBefore;
-    __auto_type issuedAt = JWTClaimVariations.issuedAt;
-    __auto_type jwtId = JWTClaimVariations.jwtID;
-    __auto_type type = JWTClaimVariations.type;
-    __auto_type scope = JWTClaimVariations.scope;
+    __auto_type issuer = JWTClaimsNames.issuer;
+    __auto_type subject = JWTClaimsNames.subject;
+    __auto_type audience = JWTClaimsNames.audience;
+    __auto_type expirationTime = JWTClaimsNames.expirationTime;
+    __auto_type notBefore = JWTClaimsNames.notBefore;
+    __auto_type issuedAt = JWTClaimsNames.issuedAt;
+    __auto_type jwtId = JWTClaimsNames.jwtID;
+    __auto_type type = JWTClaimsNames.type;
+    __auto_type scope = JWTClaimsNames.scope;
     return @{
-        issuer.name : JWTClaimVerifierVariations.issuer,
-        subject.name : JWTClaimVerifierVariations.subject,
-        audience.name : JWTClaimVerifierVariations.audienceEqualSingle,
-        expirationTime.name : JWTClaimVerifierVariations.expirationTime,
-        notBefore.name : JWTClaimVerifierVariations.notBefore,
-        issuedAt.name : JWTClaimVerifierVariations.issuedAt,
-        jwtId.name : JWTClaimVerifierVariations.jwtID,
-        type.name : JWTClaimVerifierVariations.type,
-        scope.name : JWTClaimVerifierVariations.scope,
+        issuer : JWTClaimVerifierVariations.issuer,
+        subject : JWTClaimVerifierVariations.subject,
+        audience : JWTClaimVerifierVariations.audienceEqualSingle,
+        expirationTime : JWTClaimVerifierVariations.expirationTime,
+        notBefore : JWTClaimVerifierVariations.notBefore,
+        issuedAt : JWTClaimVerifierVariations.issuedAt,
+        jwtId : JWTClaimVerifierVariations.jwtID,
+        type : JWTClaimVerifierVariations.type,
+        scope : JWTClaimVerifierVariations.scope,
     };
 }
 - (instancetype)init {

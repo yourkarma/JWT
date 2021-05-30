@@ -11,18 +11,18 @@
 #import "JWTClaimSerializerVariations.h"
 
 @interface JWTClaimsSetSerializerBase ()
-@property (copy, nonatomic, readwrite) NSMutableDictionary <NSString *, id<JWTClaimSerializerProtocol>> *namesAndSerializers;
+@property (strong, nonatomic, readwrite) NSMutableDictionary <NSString *, id<JWTClaimSerializerProtocol>> *namesAndSerializers;
 @end
 
 @implementation JWTClaimsSetSerializerBase
 + (NSDictionary *)createNamesAndSerializers {
-    __auto_type expirationTime = JWTClaimVariations.expirationTime;
-    __auto_type notBefore = JWTClaimVariations.notBefore;
-    __auto_type issuedAt = JWTClaimVariations.issuedAt;
+    __auto_type expirationTime = JWTClaimsNames.expirationTime;
+    __auto_type notBefore = JWTClaimsNames.notBefore;
+    __auto_type issuedAt = JWTClaimsNames.issuedAt;
     return @{
-        expirationTime.name : JWTClaimSerializerVariations.dateAndTimestamp,
-        notBefore.name : JWTClaimSerializerVariations.dateAndTimestamp,
-        issuedAt.name : JWTClaimSerializerVariations.dateAndTimestamp,
+        expirationTime : JWTClaimSerializerVariations.dateAndTimestamp,
+        notBefore : JWTClaimSerializerVariations.dateAndTimestamp,
+        issuedAt : JWTClaimSerializerVariations.dateAndTimestamp,
     };
 }
 - (instancetype)init {
