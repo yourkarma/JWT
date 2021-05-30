@@ -7,6 +7,29 @@
 //
 
 #import "JWTClaimVariations.h"
+
+NSString *JWTRegisteredClaimNameIssuer = @"iss";
+NSString *JWTRegisteredClaimNameSubject = @"sub";
+NSString *JWTRegisteredClaimNameAudience = @"aud";
+NSString *JWTRegisteredClaimNameExpirationTime = @"exp";
+NSString *JWTRegisteredClaimNameNotBefore = @"nbf";
+NSString *JWTRegisteredClaimNameIssuedAt = @"iat";
+NSString *JWTRegisteredClaimNameJWTID = @"jti";
+NSString *JWTRegisteredClaimNameType = @"typ";
+NSString *JWTRegisteredClaimNameScope = @"scope";
+
+@implementation JWTClaimsNames
++ (NSString *)issuer { return JWTRegisteredClaimNameIssuer; }
++ (NSString *)subject { return JWTRegisteredClaimNameSubject; }
++ (NSString *)audience { return JWTRegisteredClaimNameAudience; }
++ (NSString *)expirationTime { return JWTRegisteredClaimNameExpirationTime; }
++ (NSString *)notBefore { return JWTRegisteredClaimNameNotBefore; }
++ (NSString *)issuedAt { return JWTRegisteredClaimNameIssuedAt; }
++ (NSString *)jwtID { return JWTRegisteredClaimNameJWTID; }
++ (NSString *)type { return JWTRegisteredClaimNameType; }
++ (NSString *)scope { return JWTRegisteredClaimNameScope; }
+@end
+
 @interface JWTClaimBaseConcreteIssuer : JWTClaimBase @end
 @interface JWTClaimBaseConcreteSubject : JWTClaimBase @end
 @interface JWTClaimBaseConcreteAudience : JWTClaimBase @end
@@ -49,37 +72,37 @@
 
 // MARK: - Base Concrete Claims
 @implementation JWTClaimBaseConcreteIssuer
-+ (NSString *)name { return @"iss"; }
++ (NSString *)name { return JWTRegisteredClaimNameIssuer; }
 @end
 
 @implementation JWTClaimBaseConcreteSubject
-+ (NSString *)name { return @"sub"; }
++ (NSString *)name { return JWTRegisteredClaimNameSubject; }
 @end
 
 @implementation JWTClaimBaseConcreteAudience
-+ (NSString *)name { return @"aud"; }
++ (NSString *)name { return JWTRegisteredClaimNameAudience; }
 @end
 
 @implementation JWTClaimBaseConcreteExpirationTime
-+ (NSString *)name { return @"exp"; }
++ (NSString *)name { return JWTRegisteredClaimNameExpirationTime; }
 @end
 
 @implementation JWTClaimBaseConcreteNotBefore
-+ (NSString *)name { return @"nbf"; }
++ (NSString *)name { return JWTRegisteredClaimNameNotBefore; }
 @end
 
 @implementation JWTClaimBaseConcreteIssuedAt
-+ (NSString *)name { return @"iat"; }
++ (NSString *)name { return JWTRegisteredClaimNameIssuedAt; }
 @end
 
 @implementation JWTClaimBaseConcreteJWTID
-+ (NSString *)name { return @"jti"; }
++ (NSString *)name { return JWTRegisteredClaimNameJWTID; }
 @end
 
 @implementation JWTClaimBaseConcreteType
-+ (NSString *)name { return @"typ"; }
++ (NSString *)name { return JWTRegisteredClaimNameType; }
 @end
 
 @implementation JWTClaimBaseConcreteScope
-+ (NSString *)name { return @"scope"; }
++ (NSString *)name { return JWTRegisteredClaimNameScope; }
 @end
