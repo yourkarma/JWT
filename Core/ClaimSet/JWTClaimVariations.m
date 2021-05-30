@@ -7,58 +7,43 @@
 //
 
 #import "JWTClaimVariations.h"
+@interface JWTClaimBaseConcreteIssuer : JWTClaimBase @end
+@interface JWTClaimBaseConcreteSubject : JWTClaimBase @end
+@interface JWTClaimBaseConcreteAudience : JWTClaimBase @end
+@interface JWTClaimBaseConcreteExpirationTime : JWTClaimBase @end
+@interface JWTClaimBaseConcreteNotBefore : JWTClaimBase @end
+@interface JWTClaimBaseConcreteIssuedAt : JWTClaimBase @end
+@interface JWTClaimBaseConcreteJWTID : JWTClaimBase @end
+@interface JWTClaimBaseConcreteType : JWTClaimBase @end
+@interface JWTClaimBaseConcreteScope : JWTClaimBase @end
 
-@implementation JWTClaimBaseVariationWithEquality
-
-- (instancetype)init {
-    if (self = [super init]) {
-        self.equal = YES;
-    }
-    return self;
+@implementation JWTClaimVariations
++ (id<JWTClaimProtocol>)issuer {
+    return [JWTClaimBaseConcreteIssuer new];
 }
-
-- (BOOL)verifyValue:(NSObject *)value withTrustedValue:(NSObject *)trustedValue {
-    return [value isEqual:trustedValue] == self.equal;
++ (id<JWTClaimProtocol>)subject {
+    return [JWTClaimBaseConcreteSubject new];
 }
-
-@end
-
-
-@implementation JWTClaimBaseVariationWithComparison
-
-- (BOOL)verifyValue:(NSObject *)value withTrustedValue:(NSObject *)trustedValue {
-    if (self.trustedValueAtLeft) {
-        __auto_type swap = value;
-        value = trustedValue;
-        trustedValue = swap;
-    }
-    if ([value respondsToSelector:@selector(compare:)]) {
-        __auto_type result = (NSComparisonResult)[value performSelector:@selector(compare:) withObject:trustedValue];
-        if (self.notEqual) {
-            return result != self.expectedComparison;
-        }
-        return result == self.expectedComparison;
-    }
-    return NO;
++ (id<JWTClaimProtocol>)audience {
+    return [JWTClaimBaseConcreteAudience new];
 }
-
-@end
-
-@implementation JWTClaimBaseVariationWithEqualityForString
-- (BOOL)verifyValue:(NSObject *)value withTrustedValue:(NSObject *)trustedValue {
-    if ([value isKindOfClass:NSString.class] && [trustedValue isKindOfClass:NSString.class]) {
-        return [(NSString *)value isEqualToString:(NSString *)trustedValue] == self.equal;
-    }
-    return [super verifyValue:value withTrustedValue:trustedValue];
++ (id<JWTClaimProtocol>)expirationTime {
+    return [JWTClaimBaseConcreteExpirationTime new];
 }
-@end
-
-@implementation JWTClaimBaseVariationWithInclusionInSet
-- (BOOL)verifyValue:(NSObject *)value withTrustedValue:(NSObject *)trustedValue {
-    if ([trustedValue isKindOfClass:NSSet.class]) {
-        return [(NSSet *)trustedValue containsObject:value];
-    }
-    return NO;
++ (id<JWTClaimProtocol>)notBefore {
+    return [JWTClaimBaseConcreteNotBefore new];
+}
++ (id<JWTClaimProtocol>)issuedAt {
+    return [JWTClaimBaseConcreteIssuedAt new];
+}
++ (id<JWTClaimProtocol>)jwtID {
+    return [JWTClaimBaseConcreteJWTID new];
+}
++ (id<JWTClaimProtocol>)type {
+    return [JWTClaimBaseConcreteType new];
+}
++ (id<JWTClaimProtocol>)scope {
+    return [JWTClaimBaseConcreteScope new];
 }
 @end
 
@@ -71,49 +56,20 @@
 + (NSString *)name { return @"sub"; }
 @end
 
-@implementation JWTClaimBaseConcreteAudienceEqualSingle
+@implementation JWTClaimBaseConcreteAudience
 + (NSString *)name { return @"aud"; }
 @end
 
-@implementation JWTClaimBaseConcreteAudienceInSet
-+ (NSString *)name { return @"aud"; }
-@end
-
-// trustedValue - current date
-// value - expiration date
-// trustedValue < value, so
 @implementation JWTClaimBaseConcreteExpirationTime
 + (NSString *)name { return @"exp"; }
-- (BOOL)trustedValueAtLeft { return YES; }
-- (NSComparisonResult)expectedComparison {
-    return NSOrderedAscending;
-}
 @end
 
-// trustedValue - current date
-// value - start date
-// value <= trustedValue, so
-// trustedValue >= value, which means:
-// !(trustedValue < value) or NOT OrderedAscending
 @implementation JWTClaimBaseConcreteNotBefore
 + (NSString *)name { return @"nbf"; }
-- (BOOL)trustedValueAtLeft { return YES; }
-- (NSComparisonResult)expectedComparison {
-    return NSOrderedAscending;
-}
-- (BOOL)notEqual { return YES; }
 @end
 
-// trustedValue - current date
-// value - issued at date
-// value < trustedValue, so
-// trustedValue > value
 @implementation JWTClaimBaseConcreteIssuedAt
 + (NSString *)name { return @"iat"; }
-- (BOOL)trustedValueAtLeft { return YES; }
-- (NSComparisonResult)expectedComparison {
-    return NSOrderedDescending;
-}
 @end
 
 @implementation JWTClaimBaseConcreteJWTID
@@ -127,4 +83,3 @@
 @implementation JWTClaimBaseConcreteScope
 + (NSString *)name { return @"scope"; }
 @end
-

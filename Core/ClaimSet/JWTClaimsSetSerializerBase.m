@@ -9,34 +9,32 @@
 #import "JWTClaimsSetSerializerBase.h"
 #import "JWTClaimVariations.h"
 
-@implementation JWTClaimsSetSerializerBase
+@interface JWTClaimsSetSerializerBase ()
+@property (copy, nonatomic, readwrite) NSMutableDictionary <NSString *, id<JWTClaimSerializerProtocol>> *namesAndSerializers;
+@end
 
-- (NSObject *)deserializedValue:(NSObject *)value forClaimWithName:(NSString *)name {
-    if ([name isEqualToString:JWTClaimBaseConcreteNotBefore.name] ||
-        [name isEqualToString:JWTClaimBaseConcreteExpirationTime.name] ||
-        [name isEqualToString:JWTClaimBaseConcreteIssuedAt.name]
-        ) {
-        /// We have to apply date time conversion.
-        if ([value isKindOfClass:NSNumber.class]) {
-            return [NSDate dateWithTimeIntervalSince1970:[(NSNumber *)value doubleValue]];
-        }
-    }
-    return value;
+@implementation JWTClaimsSetSerializerBase
+- (NSObject *)deserializedClaimValue:(NSObject *)value forName:(NSString *)name {
+    __auto_type serializer = self.namesAndSerializers[name] ?: [JWTClaimSerializerBase new];
+    return [serializer deserializedClaimValue:value forName:name];
 }
 
 - (NSObject *)serializedClaimValue:(id<JWTClaimProtocol>)claim {
     __auto_type name = claim.name;
-    __auto_type value = claim.value;
-    if ([name isEqualToString:JWTClaimBaseConcreteNotBefore.name] ||
-        [name isEqualToString:JWTClaimBaseConcreteExpirationTime.name] ||
-        [name isEqualToString:JWTClaimBaseConcreteIssuedAt.name]
-        ) {
-        /// We have to apply date time conversion.
-        if ([value isKindOfClass:NSDate.class]) {
-            return @([(NSDate *)value timeIntervalSince1970]);
-        }
+    __auto_type serializer = self.namesAndSerializers[name] ?: [JWTClaimSerializerBase new];
+    return [serializer serializedClaimValue:claim];
+}
+
+// MARK: - JWTClaimsSetSerializerProtocol
+- (void)registerSerializer:(id<JWTClaimSerializerProtocol>)serializer forClaimName:(NSString *)name {
+    if (name != nil) {
+        self.namesAndSerializers[name] = serializer;
     }
-    return value;
+}
+- (void)unregisterSerializerForClaimName:(NSString *)name {
+    if (name != nil) {
+        [self.namesAndSerializers removeObjectForKey:name];
+    }
 }
 
 - (nonnull id<JWTClaimsSetProtocol>)claimsSetFromDictionary:(nonnull NSDictionary *)dictionary {
@@ -50,7 +48,7 @@
     for (NSString *key in dictionary) {
         __auto_type claim = [self.claimsProvider claimByName:key];
         if (claim != nil) {
-            __auto_type value = [self deserializedValue:dictionary[key] forClaimWithName:key];
+            __auto_type value = [self deserializedClaimValue:dictionary[key] forName:key];
             [result addObject:[claim copyWithValue:value]];
         }
     }

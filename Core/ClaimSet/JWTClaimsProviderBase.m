@@ -15,15 +15,15 @@
 
 @implementation JWTClaimsProviderBase
 + (NSDictionary *)createClaimsAndNames {
-    __auto_type issuer = [JWTClaimBaseConcreteIssuer new];
-    __auto_type subject = [JWTClaimBaseConcreteSubject new];
-    __auto_type audience = [JWTClaimBaseConcreteAudience new];
-    __auto_type expirationTime = [JWTClaimBaseConcreteExpirationTime new];
-    __auto_type notBefore = [JWTClaimBaseConcreteNotBefore new];
-    __auto_type issuedAt = [JWTClaimBaseConcreteIssuedAt new];
-    __auto_type jwtId = [JWTClaimBaseConcreteJWTID new];
-    __auto_type type = [JWTClaimBaseConcreteType new];
-    __auto_type scope = [JWTClaimBaseConcreteScope new];
+    __auto_type issuer = JWTClaimVariations.issuer;
+    __auto_type subject = JWTClaimVariations.subject;
+    __auto_type audience = JWTClaimVariations.audience;
+    __auto_type expirationTime = JWTClaimVariations.expirationTime;
+    __auto_type notBefore = JWTClaimVariations.notBefore;
+    __auto_type issuedAt = JWTClaimVariations.issuedAt;
+    __auto_type jwtId = JWTClaimVariations.jwtID;
+    __auto_type type = JWTClaimVariations.type;
+    __auto_type scope = JWTClaimVariations.scope;
     return @{
         issuer.name : issuer,
         subject.name : subject,
