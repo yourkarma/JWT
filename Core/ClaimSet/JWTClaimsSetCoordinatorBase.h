@@ -13,11 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JWTClaimsSetCoordinatorBase : NSObject <JWTClaimsSetCoordinatorProtocol>
 @property (strong, nonatomic, readwrite) id <JWTClaimsProviderProtocol> claimsProvider;
-@property (copy, nonatomic, readwrite) id <JWTClaimsSetStorageProtocol> claimsSetStorage;
+@property (copy, nonatomic, readwrite) id <JWTClaimsSetProtocol> claimsSetStorage;
 @property (strong, nonatomic, readwrite) id <JWTClaimsSetSerializerProtocol> claimsSetSerializer;
 @property (strong, nonatomic, readwrite) id <JWTClaimsSetVerifierProtocol> claimsSetVerifier;
-@property (copy, nonatomic, readonly) id <JWTClaimsSetCoordinatorProtocol> (^configureClaimsSet)(JWTClaimsSetBase *(^)(JWTClaimsSetBase *claimsSetDSL));
-- (instancetype)configureClaimsSet:(JWTClaimsSetBase *(^)(JWTClaimsSetBase *claimsSetDSL))claimsSet;
+- (instancetype)configureClaimsSet:(JWTClaimsSetDSLBase *(^)(JWTClaimsSetDSLBase *claimsSetDSL))claimsSet;
+#if DEPLOYMENT_RUNTIME_SWIFT
+#else
+@property (copy, nonatomic, readonly) id <JWTClaimsSetCoordinatorProtocol> (^configureClaimsSet)(JWTClaimsSetDSLBase *(^)(JWTClaimsSetDSLBase *claimsSetDSL));
+#endif
 @end
 
 NS_ASSUME_NONNULL_END

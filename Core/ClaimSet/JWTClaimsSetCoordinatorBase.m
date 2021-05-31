@@ -11,9 +11,10 @@
 #import "JWTClaimsSetBase.h"
 #import "JWTClaimsSetSerializerBase.h"
 #import "JWTClaimsSetVerifierBase.h"
+#import "JWTClaimsSetDSLBase.h"
 
 @interface JWTClaimsSetCoordinatorBase ()
-@property (copy, nonatomic, readwrite) id <JWTClaimsSetCoordinatorProtocol> (^configureClaimsSet)(JWTClaimsSetBase *(^)(JWTClaimsSetBase *claimsSetDSL));
+@property (copy, nonatomic, readwrite) id <JWTClaimsSetCoordinatorProtocol> (^configureClaimsSet)(JWTClaimsSetDSLBase *(^)(JWTClaimsSetDSLBase *claimsSetDSL));
 @end
 
 @implementation JWTClaimsSetCoordinatorBase
@@ -21,7 +22,6 @@
     self.claimsSetSerializer.claimsProvider = self.claimsProvider;
     self.claimsSetSerializer.claimsSetStorage = self.claimsSetStorage;
     self.claimsSetVerifier.claimsProvider = self.claimsProvider;
-    ((JWTClaimsSetBase *)self.claimsSetStorage).claimsProvider = self.claimsProvider;
 }
 - (instancetype)init {
     if (self = [super init]) {
@@ -42,7 +42,7 @@
     [self sanitize];
 }
 
-- (void)setClaimsSetStorage:(id<JWTClaimsSetStorageProtocol>)claimsSetStorage {
+- (void)setClaimsSetStorage:(id<JWTClaimsSetProtocol>)claimsSetStorage {
     _claimsSetStorage = claimsSetStorage;
     [self sanitize];
 }
@@ -57,18 +57,35 @@
     [self sanitize];
 }
 
-- (instancetype)configureClaimsSet:(JWTClaimsSetBase *(^)(JWTClaimsSetBase *claimsSetDSL))claimsSet {
+- (JWTClaimsSetDSLBase *)dslDesrciption {
+    return [[JWTClaimsSetDSLBase alloc] initWithClaimsProvider:self.claimsProvider claimsSetStorage:self.claimsSetStorage];
+}
+
+- (instancetype)configureClaimsSet:(JWTClaimsSetDSLBase *(^)(JWTClaimsSetDSLBase *claimsSetDSL))claimsSet {
     if (claimsSet) {
-        __auto_type value = claimsSet((JWTClaimsSetBase *)self.claimsSetStorage);
-        self.claimsSetStorage = value ?: [JWTClaimsSetBase new];
+        __auto_type dsl = self.dslDesrciption;
+        __auto_type value = claimsSet(dsl);
+        self.claimsSetStorage = value.claimsSetStorage ?: [JWTClaimsSetBase new];
     }
     return self;
+}
+
+- (void)registerClaim:(id<JWTClaimProtocol>)claim serializer:(id<JWTClaimSerializerProtocol>)serializer verifier:(id<JWTClaimVerifierProtocol>)verifier forClaimName:(NSString *)name {
+    [self.claimsProvider registerClaim:claim forClaimName:name];
+    [self.claimsSetSerializer registerSerializer:serializer forClaimName:name];
+    [self.claimsSetVerifier registerVerifier:verifier forClaimName:name];
+
+}
+- (void)unregisterClaimWithSerializerAndVerifierForClaimName:(NSString *)name {
+    [self.claimsProvider unregisterClaimForClaimName:name];
+    [self.claimsSetSerializer unregisterSerializerForClaimName:name];
+    [self.claimsSetVerifier unregisterVerifierForClaimName:name];
 }
 
 // MARK: - Fluent
 - (void)setupFluent {
     __weak typeof(self) weakSelf = self;
-    self.configureClaimsSet = ^(JWTClaimsSetBase *(^block)(JWTClaimsSetBase *claimsSetDSL)) {
+    self.configureClaimsSet = ^(JWTClaimsSetDSLBase *(^block)(JWTClaimsSetDSLBase *claimsSetDSL)) {
         return [weakSelf configureClaimsSet:block];
     };
 }

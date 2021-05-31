@@ -168,6 +168,9 @@
 		0AE4FFA92665464800431728 /* JWTClaimsSetCoordinatorBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AE4FFA72665464800431728 /* JWTClaimsSetCoordinatorBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0AE4FFAA2665464800431728 /* JWTClaimsSetCoordinatorBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE4FFA82665464800431728 /* JWTClaimsSetCoordinatorBase.m */; };
 		0AE4FFAB2665464800431728 /* JWTClaimsSetCoordinatorBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE4FFA82665464800431728 /* JWTClaimsSetCoordinatorBase.m */; };
+		0AE4FFB326655DBA00431728 /* JWTClaimsSetDSLBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE4FFB126655DBA00431728 /* JWTClaimsSetDSLBase.m */; };
+		0AE4FFB426655DBA00431728 /* JWTClaimsSetDSLBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE4FFB126655DBA00431728 /* JWTClaimsSetDSLBase.m */; };
+		0AE4FFB526655DBA00431728 /* JWTClaimsSetDSLBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AE4FFB226655DBA00431728 /* JWTClaimsSetDSLBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -310,6 +313,8 @@
 		0AE4FF9E26639BB800431728 /* JWTClaimVerifierVariations.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JWTClaimVerifierVariations.m; sourceTree = "<group>"; };
 		0AE4FFA72665464800431728 /* JWTClaimsSetCoordinatorBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JWTClaimsSetCoordinatorBase.h; sourceTree = "<group>"; };
 		0AE4FFA82665464800431728 /* JWTClaimsSetCoordinatorBase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSetCoordinatorBase.m; sourceTree = "<group>"; };
+		0AE4FFB126655DBA00431728 /* JWTClaimsSetDSLBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSetDSLBase.m; sourceTree = "<group>"; };
+		0AE4FFB226655DBA00431728 /* JWTClaimsSetDSLBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTClaimsSetDSLBase.h; sourceTree = "<group>"; };
 		A1951DB91758990700AF73D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A1951DCA1758990700AF73D9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -473,6 +478,8 @@
 				0A4CFBC724E1BD270037D3E6 /* JWTClaimsSetVerifierBase.m */,
 				0AE4FFA72665464800431728 /* JWTClaimsSetCoordinatorBase.h */,
 				0AE4FFA82665464800431728 /* JWTClaimsSetCoordinatorBase.m */,
+				0AE4FFB226655DBA00431728 /* JWTClaimsSetDSLBase.h */,
+				0AE4FFB126655DBA00431728 /* JWTClaimsSetDSLBase.m */,
 				0A135F351E93E67A00A1D777 /* JWTClaim.h */,
 				0A135F361E93E67A00A1D777 /* JWTClaim.m */,
 				0A135F371E93E67A00A1D777 /* JWTClaimsSet.h */,
@@ -600,6 +607,7 @@
 				0A135F541E93E67A00A1D777 /* JWTAlgorithmNone.h in Headers */,
 				0A135F5A1E93E67A00A1D777 /* JWTAlgorithmDataHolderChain.h in Headers */,
 				0A4CFBD424E1EC5D0037D3E6 /* JWTClaimVariations.h in Headers */,
+				0AE4FFB526655DBA00431728 /* JWTClaimsSetDSLBase.h in Headers */,
 				0A135F5E1E93E67A00A1D777 /* JWTAlgorithmRSBase.h in Headers */,
 				0A4CF38222B50003007B2C28 /* JWTBuilder+FluentStyle.h in Headers */,
 				0A135F731E93E67A00A1D777 /* JWTCoding+VersionThree.h in Headers */,
@@ -748,6 +756,7 @@
 				0A9F3D86211EF85200E4CE8A /* JWTCoding+VersionTwo.m in Sources */,
 				0A1F238F2663946000A72A83 /* JWTClaimSerializerBase.m in Sources */,
 				0A9F3D88211EF85200E4CE8A /* JWTCoding.m in Sources */,
+				0AE4FFB426655DBA00431728 /* JWTClaimsSetDSLBase.m in Sources */,
 				0A9F3D8B211EF85200E4CE8A /* JWTBase64Coder.m in Sources */,
 				0A1DA52B2659A6190041E737 /* JWTClaimsProviderBase.m in Sources */,
 				0A1F2394266394DB00A72A83 /* JWTClaimSerializerVariations.m in Sources */,
@@ -763,6 +772,7 @@
 				0A135F6E1E93E67A00A1D777 /* JWTClaimsSetVerifier.m in Sources */,
 				0A5B4508210DA19B0027A234 /* JWTAlgorithmErrorDescription.m in Sources */,
 				0A5A157422AA97D600A81374 /* JWTAlgorithmDataHolder+FluentStyle.m in Sources */,
+				0AE4FFB326655DBA00431728 /* JWTClaimsSetDSLBase.m in Sources */,
 				0A135F7B1E93E67A00A1D777 /* JWTBase64Coder.m in Sources */,
 				0A40613F211AD8DF00D0842B /* JWTCryptoSecurity+ExternalRepresentation.m in Sources */,
 				0A135F6C1E93E67A00A1D777 /* JWTClaimsSetSerializer.m in Sources */,

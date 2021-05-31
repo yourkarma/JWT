@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class JWTClaimsSetBase;
+@class JWTClaimsSetDSLBase;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSObject *)deserializedClaimValue:(NSObject *)value forName:(NSString *)name;
 @end
 
-@protocol JWTClaimsSetStorageProtocol <NSCopying>
+@protocol JWTClaimsSetProtocol <NSCopying>
 @property (copy, nonatomic, readonly) NSArray <id<JWTClaimProtocol>>* claims;
 - (instancetype)copyWithClaims:(NSArray <id<JWTClaimProtocol>>*)claims;
 - (id<JWTClaimProtocol>)claimByName:(NSString *)name;
@@ -44,13 +44,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)unregisterClaimForClaimName:(NSString *)name;
 @end
 
-@protocol JWTClaimsSetProtocol <JWTClaimsSetStorageProtocol>
-@property (strong, nonatomic, readwrite) id <JWTClaimsProviderProtocol> claimsProvider;
-@end
-
 @protocol JWTClaimsSetSerializerProtocol
 @property (strong, nonatomic, readwrite) id <JWTClaimsProviderProtocol> claimsProvider;
-@property (copy, nonatomic, readwrite) id <JWTClaimsSetStorageProtocol> claimsSetStorage;
+@property (copy, nonatomic, readwrite) id <JWTClaimsSetProtocol> claimsSetStorage;
 - (void)registerSerializer:(id<JWTClaimSerializerProtocol>)serializer forClaimName:(NSString *)name;
 - (void)unregisterSerializerForClaimName:(NSString *)name;
 - (NSDictionary *)dictionaryFromClaimsSet:(id<JWTClaimsSetProtocol>)claimsSet;
@@ -66,12 +62,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol JWTClaimsSetCoordinatorProtocol
 @property (strong, nonatomic, readwrite) id <JWTClaimsProviderProtocol> claimsProvider;
-@property (copy, nonatomic, readwrite) id <JWTClaimsSetStorageProtocol> claimsSetStorage;
+@property (copy, nonatomic, readwrite) id <JWTClaimsSetProtocol> claimsSetStorage;
 @property (strong, nonatomic, readwrite) id <JWTClaimsSetSerializerProtocol> claimsSetSerializer;
 @property (strong, nonatomic, readwrite) id <JWTClaimsSetVerifierProtocol> claimsSetVerifier;
 
-@property (copy, nonatomic, readonly) id <JWTClaimsSetCoordinatorProtocol> (^configureClaimsSet)(JWTClaimsSetBase *(^)(JWTClaimsSetBase *claimsSetDSL));
-- (instancetype)configureClaimsSet:(JWTClaimsSetBase *(^)(JWTClaimsSetBase *claimsSetDSL))claimsSet;
+@property (strong, nonatomic, readonly) JWTClaimsSetDSLBase *dslDesrciption;
+
+- (instancetype)configureClaimsSet:(JWTClaimsSetDSLBase *(^)(JWTClaimsSetDSLBase *claimsSetDSL))claimsSet;
+
+#if DEPLOYMENT_RUNTIME_SWIFT
+#else
+@property (copy, nonatomic, readonly) id <JWTClaimsSetCoordinatorProtocol> (^configureClaimsSet)(JWTClaimsSetDSLBase *(^)(JWTClaimsSetDSLBase *claimsSetDSL));
+#endif
+
+- (void)registerClaim:(id<JWTClaimProtocol>)claim serializer:(id<JWTClaimSerializerProtocol>)serializer verifier:(id<JWTClaimVerifierProtocol>)verifier forClaimName:(NSString *)name;
+- (void)unregisterClaimWithSerializerAndVerifierForClaimName:(NSString *)name;
 @end
 
 NS_ASSUME_NONNULL_END
