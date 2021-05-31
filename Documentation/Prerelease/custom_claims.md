@@ -22,11 +22,11 @@ They have non-empty intersection which equals to `2...5`.
 ## Example Data.
 
 We may encode this special claim as two numbers that are separated by comma.
-Also let's define a special claim name for our purpose.
 
-Let's name it intersection.
+Let's call our claim as "intersection".
 
-```
+JSON for this claim `1...5` will be equal to
+```json
 {
 "intersection": "1,5"
 }

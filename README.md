@@ -19,44 +19,47 @@ A [JSON Web Token][] implementation in Objective-C.
 
 ## Custom Claims.
 
-### Intro.
+### Deprecation.
+Old ClaimsSet API has been deprecated and will be removed in API version 3.0.
 
-Consider the following problem.
-You have an integer interval and you would like to know if untrusted and trusted intervals intersection is empty or not.
+### Process.
 
-If they have intersection and it is not empty, then, we would like to say "yes" to untrusted value.
-Otherwise we treat it as malicious and discard it.
+1. Define custom serializer for a claim.
+2. Define custom verifier for a claim.
+3. Register new claim with serializer and verifier at claims set coordinator.
 
-In simple example, we may have
+### [Example](Documentation/Prerelease/custom_claims.md).
 
-```
-trustedValue
-// 1...5 
-untrustedValue
-// 2...6
-```
+```objective-c
+- (void)test {
+    /// Setup ClaimsSetCoordinator
+    __auto_type claim = JWTClaimVariations.intersectionOfIntervals;
+    __auto_type claimSerializer = JWTClaimSerializerVariations.interval;
+    __auto_type claimVerifier = JWTClaimVerifierVariations.intersection;
 
-They have non-empty intersection which equals to `2...4`.
+    id<JWTClaimsSetCoordinatorProtocol> claimsSetCoordinator = [JWTClaimsSetCoordinatorBase new];
+    [claimsSetCoordinator registerClaim:claim serializer:claimSerializer verifier:claimVerifier forClaimName:JWTClaimsNames.intersectionOfIntervals];
 
-### Example Data.
-
-We may encode this special claim as two numbers that are separated by comma.
-Also let's define a special claim name for our purpose.
-
-Let's name it intersection.
-
-```
-{
-intersection: "1,5"
+    __auto_type deserialized = ({
+        claimsSetCoordinator.configureClaimsSet(^JWTClaimsSetDSLBase *(JWTClaimsSetDSLBase *claimsSetDSL) {
+            claimsSetDSL.intersection = @[@(2), @(5)];
+            return claimsSetDSL;
+        });
+        self.claimsSetCoordinator.claimsSetStorage;
+    });
+    
+    __auto_type serialized = ({
+        __auto_type dictionary = [self.claimsSetCoordinator.claimsSetSerializer dictionaryFromClaimsSet:deserialized];
+        dictionary;
+    });
+    
+    __auto_type result = @{
+        JWTClaimsNames.intersectionOfIntervals : @"2,5"
+    };
+    XCTAssertEqual(serialized.count, 1);
+    XCTAssertEqualObjects(serialized, result);
 }
 ```
-
-### Example.
-We have to define three components for our case.
-
-Define a claim.
-Define a serializer.
-Define a verifier.
 
 ## EC algorithms support.
 
