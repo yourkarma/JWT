@@ -54,6 +54,9 @@
 		0AD2D6702114914F00104C72 /* JWTReadmeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4517210DD82E0027A234 /* JWTReadmeTests.m */; };
 		0AD2D6712114915200104C72 /* JWTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4515210DD81E0027A234 /* JWTTests.m */; };
 		0AD2D6722114915500104C72 /* JWTIssuesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4519210DD83B0027A234 /* JWTIssuesTests.m */; };
+		0AE4FFA32663C78400431728 /* JWTClaimsCustomClaimsBaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE4FFA22663C78400431728 /* JWTClaimsCustomClaimsBaseTests.m */; };
+		0AE4FFA52663C85D00431728 /* JWTClaimsCustomClaimsBaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE4FFA22663C78400431728 /* JWTClaimsCustomClaimsBaseTests.m */; };
+		0AE4FFA62663C85D00431728 /* JWTClaimsCustomClaimsBaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE4FFA22663C78400431728 /* JWTClaimsCustomClaimsBaseTests.m */; };
 		EC0B56772358C9FC002EB309 /* JWTReadmeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4517210DD82E0027A234 /* JWTReadmeTests.m */; };
 		EC0B56782358C9FC002EB309 /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD2D64B2113141D00104C72 /* MF_Base64Additions.m */; };
 		EC0B56792358C9FC002EB309 /* JWTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4515210DD81E0027A234 /* JWTTests.m */; };
@@ -145,6 +148,7 @@
 		0AD2D61121130F6100104C72 /* JWT.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JWT.xcodeproj; path = ../Framework/JWT.xcodeproj; sourceTree = "<group>"; };
 		0AD2D64A2113141D00104C72 /* MF_Base64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MF_Base64Additions.h; sourceTree = "<group>"; };
 		0AD2D64B2113141D00104C72 /* MF_Base64Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MF_Base64Additions.m; sourceTree = "<group>"; };
+		0AE4FFA22663C78400431728 /* JWTClaimsCustomClaimsBaseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsCustomClaimsBaseTests.m; sourceTree = "<group>"; };
 		EC0B56932358C9FC002EB309 /* tvOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tvOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC0B56962358DC8B002EB309 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = tvOS_Tests/Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -243,6 +247,7 @@
 			children = (
 				0A1DA539265B92830041E737 /* JWTClaimsSerializerBaseTests.m */,
 				0A5B451B210DDFBB0027A234 /* JWTClaimsSerializerTests.m */,
+				0AE4FFA22663C78400431728 /* JWTClaimsCustomClaimsBaseTests.m */,
 			);
 			path = ClaimSet;
 			sourceTree = "<group>";
@@ -515,6 +520,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AE4FFA32663C78400431728 /* JWTClaimsCustomClaimsBaseTests.m in Sources */,
 				0A5B4518210DD82E0027A234 /* JWTReadmeTests.m in Sources */,
 				0AD2D6522113141D00104C72 /* MF_Base64Additions.m in Sources */,
 				0A5B4516210DD81E0027A234 /* JWTTests.m in Sources */,
@@ -531,6 +537,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AE4FFA52663C85D00431728 /* JWTClaimsCustomClaimsBaseTests.m in Sources */,
 				0AD2D6532113167D00104C72 /* MF_Base64Additions.m in Sources */,
 				0AD2D66E2114901200104C72 /* JWTAlgorithmNoneTests.m in Sources */,
 				0AD2D6712114915200104C72 /* JWTTests.m in Sources */,
@@ -547,6 +554,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AE4FFA62663C85D00431728 /* JWTClaimsCustomClaimsBaseTests.m in Sources */,
 				EC0B56772358C9FC002EB309 /* JWTReadmeTests.m in Sources */,
 				EC0B56782358C9FC002EB309 /* MF_Base64Additions.m in Sources */,
 				EC0B56792358C9FC002EB309 /* JWTTests.m in Sources */,
