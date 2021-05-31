@@ -17,7 +17,7 @@ untrustedValue
 // 2...6
 ```
 
-They have non-empty intersection which equals to `2...4`.
+They have non-empty intersection which equals to `2...5`.
 
 ## Example Data.
 
@@ -28,7 +28,7 @@ Let's name it intersection.
 
 ```
 {
-intersection: "1,5"
+"intersection": "1,5"
 }
 ```
 
@@ -36,9 +36,9 @@ intersection: "1,5"
 
 We have to define three components for our case.
 
-Define a claim.
-Define a serializer.
-Define a verifier.
+1. Define a claim.
+2. Define a serializer.
+3. Define a verifier.
 
 ## Define a claim.
 
@@ -51,8 +51,6 @@ Define a verifier.
 @implementation JWTClaimsNames (Custom)
 + (NSString *)intersectionOfIntervals { return @"intersectionOfIntervals"; }
 @end
-
-/// Define a claim.
 
 /// Define a claim
 @interface JWTClaimCustomIntersectionOfIntervals : JWTClaimBase
@@ -218,7 +216,7 @@ Define a verifier.
 }
 ```
 
-## Use with Decoding and encoding
+## Use with decoding and encoding.
 
 ```objective-c
 - (void)testEncodingAndDecodingViaCoordinator {
