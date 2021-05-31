@@ -12,8 +12,51 @@ A [JSON Web Token][] implementation in Objective-C.
 
 # What's new in master and bleeding edge.
 
+* Version Three release (?)
+* [Custom Claims](Documentation/Prerelease/custom_claims.md).
 * EC algorithms support.
 * Keys extraction from Pem files has been updated.
+
+## Custom Claims.
+
+### Intro.
+
+Consider the following problem.
+You have an integer interval and you would like to know if untrusted and trusted intervals intersection is empty or not.
+
+If they have intersection and it is not empty, then, we would like to say "yes" to untrusted value.
+Otherwise we treat it as malicious and discard it.
+
+In simple example, we may have
+
+```
+trustedValue
+// 1...5 
+untrustedValue
+// 2...6
+```
+
+They have non-empty intersection which equals to `2...4`.
+
+### Example Data.
+
+We may encode this special claim as two numbers that are separated by comma.
+Also let's define a special claim name for our purpose.
+
+Let's name it intersection.
+
+```
+{
+intersection: "1,5"
+}
+```
+
+### Example.
+We have to define three components for our case.
+
+Define a claim.
+Define a serializer.
+Define a verifier.
 
 ## EC algorithms support.
 
