@@ -13,8 +13,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JWTClaimsSetSerializerBase : NSObject <JWTClaimsSetSerializerProtocol>
-@property (nonatomic, readwrite) id <JWTClaimsProviderProtocol> claimsProvider;
-@property (nonatomic, readwrite) id <JWTClaimsSetStorageProtocol> claimsSetStorage;
+@property (strong, nonatomic, readwrite) id <JWTClaimsProviderProtocol> claimsProvider;
+@property (copy, nonatomic, readwrite) id <JWTClaimsSetStorageProtocol> claimsSetStorage;
 @end
 
 NS_ASSUME_NONNULL_END

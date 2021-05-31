@@ -12,10 +12,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JWTClaimsSetBase : NSObject <JWTClaimsSetProtocol>
-@property (copy, nonatomic, readwrite) id <JWTClaimsProviderProtocol> claimsProvider;
+@property (strong, nonatomic, readwrite) id <JWTClaimsProviderProtocol> claimsProvider;
 @end
 
 @interface JWTClaimsSetBase (DSL)
+- (NSObject *)dslValueForName:(NSString *)name;
+- (void)dslSetValue:(NSObject *)value forName:(NSString *)name;
 @property (copy, nonatomic, readwrite) NSString *issuer;
 @property (copy, nonatomic, readwrite) NSString *subject;
 @property (copy, nonatomic, readwrite) NSString *audience;

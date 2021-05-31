@@ -25,6 +25,11 @@
     return [self initWithClaims:@[]];
 }
 
+- (instancetype)configuredWithClaimsProvider:(id<JWTClaimsProviderProtocol>)claimsProvider {
+    self.claimsProvider = claimsProvider;
+    return self;
+}
+
 // MARK: - NSCopying
 - (nonnull id)copyWithZone:(nullable NSZone *)zone {
     return [self copyWithClaims:self.claims];
@@ -36,7 +41,7 @@
 }
 
 - (instancetype)copyWithClaims:(NSArray<id<JWTClaimProtocol>> *)claims {
-    return [[self.class alloc] initWithClaims:claims];
+    return [[[self.class alloc] initWithClaims:claims] configuredWithClaimsProvider:self.claimsProvider];
 }
 
 - (id<JWTClaimProtocol>)claimByName:(NSString *)name {
@@ -70,12 +75,8 @@
 }
 @end
 
-@interface JWTClaimsSetBase (DSL_Support)
-- (NSObject *)dslValueForName:(NSString *)name;
-- (void)dslSetValue:(NSObject *)value forName:(NSString *)name;
-@end
+@implementation JWTClaimsSetBase (DSL)
 
-@implementation JWTClaimsSetBase (DSL_Support)
 - (NSObject *)dslValueForName:(NSString *)name {
     __auto_type claim = [self.claimsProvider claimByName:name];
     if (claim == nil) {
@@ -91,10 +92,6 @@
     [self removeClaimByName:name];
     [self appendClaim:[claim copyWithValue:value]];
 }
-@end
-
-@implementation JWTClaimsSetBase (DSL)
-
 
 // MARK: - DSL
 - (NSString *)issuer { return (NSString *)[self dslValueForName:JWTClaimsNames.issuer]; }

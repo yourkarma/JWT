@@ -56,6 +56,9 @@
 }
 
 - (nonnull id<JWTClaimsSetProtocol>)claimsSetFromDictionary:(nonnull NSDictionary *)dictionary {
+    if (dictionary == nil) {
+        return nil;
+    }
     
     if (dictionary.count == 0) {
         return nil;
@@ -79,8 +82,11 @@
 }
 
 - (nonnull NSDictionary *)dictionaryFromClaimsSet:(nonnull id<JWTClaimsSetProtocol>)claimsSet {
-    ///
-    if (claimsSet.claims.count == 0) {
+    if (claimsSet == nil) {
+        return nil;
+    }
+    
+    if (claimsSet.isEmpty) {
         return nil;
     }
     

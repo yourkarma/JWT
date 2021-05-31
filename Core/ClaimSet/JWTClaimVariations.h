@@ -34,15 +34,15 @@ extern NSString *JWTRegisteredClaimNameScope;
 @end
 
 @interface JWTClaimsNames : NSObject
-@property(copy, nonatomic, readwrite, class) NSString *issuer;
-@property(copy, nonatomic, readwrite, class) NSString *subject;
-@property(copy, nonatomic, readwrite, class) NSString *audience;
-@property(copy, nonatomic, readwrite, class) NSString *expirationTime;
-@property(copy, nonatomic, readwrite, class) NSString *notBefore;
-@property(copy, nonatomic, readwrite, class) NSString *issuedAt;
-@property(copy, nonatomic, readwrite, class) NSString *jwtID;
-@property(copy, nonatomic, readwrite, class) NSString *type;
-@property(copy, nonatomic, readwrite, class) NSString *scope;
+@property(copy, nonatomic, readonly, class) NSString *issuer;
+@property(copy, nonatomic, readonly, class) NSString *subject;
+@property(copy, nonatomic, readonly, class) NSString *audience;
+@property(copy, nonatomic, readonly, class) NSString *expirationTime;
+@property(copy, nonatomic, readonly, class) NSString *notBefore;
+@property(copy, nonatomic, readonly, class) NSString *issuedAt;
+@property(copy, nonatomic, readonly, class) NSString *jwtID;
+@property(copy, nonatomic, readonly, class) NSString *type;
+@property(copy, nonatomic, readonly, class) NSString *scope;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -38,15 +38,14 @@
 }
 
 - (instancetype)init {
-    if (self = [super init]) {
-        self.claimsAndNames = [NSMutableDictionary dictionaryWithDictionary:[self.class createClaimsAndNames]];
-    }
-    return self;
+    return [self initWithClaimsAndNames:self.class.createClaimsAndNames];
 }
 
-// MARK: - NSCopying
-- (id)copyWithZone:(NSZone *)zone {
-    return [[self.class alloc] init];
+- (instancetype)initWithClaimsAndNames:(NSDictionary *)dictionary {
+    if (self = [super init]) {
+        self.claimsAndNames = [NSMutableDictionary dictionaryWithDictionary:dictionary];
+    }
+    return self;
 }
 
 // MARK: - JWTClaimsProviderProtocol
