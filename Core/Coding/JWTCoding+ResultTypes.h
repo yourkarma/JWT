@@ -9,6 +9,7 @@
 #import <JWT/JWTCoding.h>
 #import <JWT/JWTDeprecations.h>
 @class JWTClaimsSet;
+@protocol JWTClaimsSetProtocol;
 
 extern NSString *JWTCodingResultHeaders __deprecated_with_replacement("JWTCodingResultComponents.Headers");
 extern NSString *JWTCodingResultPayload __deprecated_with_replacement("JWTCodingResultComponents.Payload");
@@ -48,11 +49,13 @@ extern NSString *JWTCodingResultPayload __deprecated_with_replacement("JWTCoding
 //  JWTCodingResultPayload : self.payload
 //}
 @property (copy, nonatomic, readonly) NSDictionary *headerAndPayloadDictionary;
-
 @property (copy, nonatomic, readonly) JWTClaimsSet *claimsSet;
+@property (copy, nonatomic, readonly) id<JWTClaimsSetProtocol> claimsSetStorage;
+
 - (instancetype)initWithHeadersAndPayload:(NSDictionary *)headersAndPayloadDictionary;
 - (instancetype)initWithHeaders:(NSDictionary *)headers withPayload:(NSDictionary *)payload;
 - (instancetype)initWithClaimsSet:(JWTClaimsSet *)claimsSet;
+- (instancetype)initWithClaimsSetStorage:(id<JWTClaimsSetProtocol>)claimsSetStorage;
 @end
 
 // Public
