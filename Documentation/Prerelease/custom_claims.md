@@ -32,7 +32,7 @@ JSON for this claim `1...5` will be equal to
 }
 ```
 
-## Exapmle.
+## Example.
 
 We have to define three components for our case.
 
