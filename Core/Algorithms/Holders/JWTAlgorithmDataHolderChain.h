@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JWTAlgorithmDataHolder.h"
+#import <JWT/JWTAlgorithmDataHolder.h>
 
 @interface JWTAlgorithmDataHolderChain : NSObject
 

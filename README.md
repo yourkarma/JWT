@@ -12,8 +12,54 @@ A [JSON Web Token][] implementation in Objective-C.
 
 # What's new in master and bleeding edge.
 
+* Version Three release (?)
+* [Custom Claims](Documentation/Prerelease/custom_claims.md).
 * EC algorithms support.
 * Keys extraction from Pem files has been updated.
+
+## Custom Claims.
+
+### Deprecation.
+Old ClaimsSet API has been deprecated and will be removed in API version 3.0.
+
+### Process.
+
+1. Define custom serializer for a claim.
+2. Define custom verifier for a claim.
+3. Register new claim with serializer and verifier at claims set coordinator.
+
+### [Example](Documentation/Prerelease/custom_claims.md).
+
+```objective-c
+- (void)test {
+    /// Setup ClaimsSetCoordinator
+    __auto_type claim = JWTClaimVariations.intersectionOfIntervals;
+    __auto_type claimSerializer = JWTClaimSerializerVariations.interval;
+    __auto_type claimVerifier = JWTClaimVerifierVariations.intersection;
+
+    id<JWTClaimsSetCoordinatorProtocol> claimsSetCoordinator = [JWTClaimsSetCoordinatorBase new];
+    [claimsSetCoordinator registerClaim:claim serializer:claimSerializer verifier:claimVerifier forClaimName:JWTClaimsNames.intersectionOfIntervals];
+
+    __auto_type deserialized = ({
+        claimsSetCoordinator.configureClaimsSet(^JWTClaimsSetDSLBase *(JWTClaimsSetDSLBase *claimsSetDSL) {
+            claimsSetDSL.intersection = @[@(2), @(5)];
+            return claimsSetDSL;
+        });
+        self.claimsSetCoordinator.claimsSetStorage;
+    });
+    
+    __auto_type serialized = ({
+        __auto_type dictionary = [self.claimsSetCoordinator.claimsSetSerializer dictionaryFromClaimsSet:deserialized];
+        dictionary;
+    });
+    
+    __auto_type result = @{
+        JWTClaimsNames.intersectionOfIntervals : @"2,5"
+    };
+    XCTAssertEqual(serialized.count, 1);
+    XCTAssertEqualObjects(serialized, result);
+}
+```
 
 ## EC algorithms support.
 

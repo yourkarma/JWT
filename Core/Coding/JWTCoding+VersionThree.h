@@ -6,7 +6,7 @@
 //  Copyright © 2016 JWTIO. All rights reserved.
 //
 
-#import "JWTCoding.h"
+#import <JWT/JWTCoding.h>
 
 // encode and decode options
 @protocol JWTAlgorithm;
@@ -17,6 +17,7 @@
 @class JWTAlgorithmDataHolderChain;
 @protocol JWTAlgorithmDataHolderProtocol;
 @class JWTCodingResultType;
+@protocol JWTClaimsSetCoordinatorProtocol;
 
 @interface JWT (VersionThree)
 + (JWTEncodingBuilder *)encodeWithHolders:(NSArray *)holders;
@@ -50,11 +51,13 @@
 #pragma mark - Create
 + (instancetype)encodePayload:(NSDictionary *)payload;
 + (instancetype)encodeClaimsSet:(JWTClaimsSet *)claimsSet;
++ (instancetype)encodeClaimsSetWithCoordinator:(id<JWTClaimsSetCoordinatorProtocol>)coordinator;
 
 #pragma mark - Internal
 @property (copy, nonatomic, readonly) NSDictionary *internalPayload;
 @property (copy, nonatomic, readonly) NSDictionary *internalHeaders;
 @property (nonatomic, readonly) JWTClaimsSet *internalClaimsSet;
+@property (nonatomic, readonly) id<JWTClaimsSetCoordinatorProtocol> internalClaimsSetCoordinator;
 @end
 
 @interface JWTEncodingBuilder (Coding)
@@ -68,6 +71,7 @@
 #pragma mark - Internal
 @property (copy, nonatomic, readonly) NSString *internalMessage;
 @property (nonatomic, readonly) JWTClaimsSet *internalClaimsSet;
+@property (nonatomic, readonly) id<JWTClaimsSetCoordinatorProtocol> internalClaimsSetCoordinator;
 @end
 
 @interface JWTDecodingBuilder (Coding)
@@ -85,9 +89,11 @@
 - (instancetype)payload:(NSDictionary *)payload;
 - (instancetype)headers:(NSDictionary *)headers;
 - (instancetype)claimsSet:(JWTClaimsSet *)claimsSet;
+- (instancetype)claimsSetCoordinator:(id<JWTClaimsSetCoordinatorProtocol>)claimsSetCoordinator;
 @end
 
 @interface JWTDecodingBuilder (Setters)
 - (instancetype)message:(NSString *)message;
 - (instancetype)claimsSet:(JWTClaimsSet *)claimsSet;
+- (instancetype)claimsSetCoordinator:(id<JWTClaimsSetCoordinatorProtocol>)claimsSetCoordinator;
 @end

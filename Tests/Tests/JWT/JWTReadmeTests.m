@@ -14,6 +14,55 @@
 @implementation JWTReadmeTests
 
 - (void)testVersionThree {
+    [XCTContext runActivityNamed:@"ClaimsSetCoordinator should work properly" block:^(id<XCTActivity>  _Nonnull activity) {
+        id<JWTClaimsSetCoordinatorProtocol> claimsSetCoordinator = [JWTClaimsSetCoordinatorBase new];
+        __auto_type claimsSetDSL = claimsSetCoordinator.dslDesrciption;
+        // fill it
+        claimsSetDSL.issuer = @"Facebook";
+        claimsSetDSL.subject = @"Token";
+        claimsSetDSL.audience = @"https://jwt.io";
+        
+        claimsSetCoordinator.claimsSetStorage = claimsSetDSL.claimsSetStorage;
+        // encode it
+        __auto_type secret = @"secret";
+        __auto_type algorithmName = @"HS384";
+        __auto_type headers = @{@"custom":@"value"};
+
+        id<JWTAlgorithmDataHolderProtocol>holder = [JWTAlgorithmHSFamilyDataHolder new].algorithmName(algorithmName).secret(secret);
+
+        JWTCodingResultType *result = [JWTEncodingBuilder encodeClaimsSetWithCoordinator:claimsSetCoordinator].headers(headers).addHolder(holder).result;
+
+        NSString *encodedToken = result.successResult.encoded;
+        if (result.successResult) {
+            // handle encoded result
+            NSLog(@"encoded result: %@", result.successResult.encoded);
+        }
+        else {
+            // handle error
+            NSLog(@"encode failed, error: %@", result.errorResult.error);
+        }
+
+        // decode it
+        // you can set any property that you want, all properties are optional
+        __auto_type trustedClaimsSet = claimsSetDSL.claimsSetStorage;
+
+        NSNumber *options = @(JWTCodingDecodingOptionsNone);
+        NSString *yourJwt = encodedToken; // from previous example
+        JWTCodingResultType *decodedResult = [JWTDecodingBuilder decodeMessage:yourJwt].claimsSetCoordinator(claimsSetCoordinator).addHolder(holder).options(options).and.result;
+
+        if (decodedResult.successResult) {
+            // handle decoded result
+            NSLog(@"decoded result: %@", decodedResult.successResult.headerAndPayloadDictionary);
+            NSLog(@"headers: %@", decodedResult.successResult.headers);
+            NSLog(@"payload: %@", decodedResult.successResult.payload);
+            NSLog(@"trustedClaimsSet: %@", [claimsSetCoordinator.claimsSetSerializer dictionaryFromClaimsSet:trustedClaimsSet]);
+            NSLog(@"decodedClaimsSet: %@", [claimsSetCoordinator.claimsSetSerializer dictionaryFromClaimsSet:decodedResult.successResult.claimsSetStorage]);
+        }
+        else {
+            // handle error
+            NSLog(@"decode failed, error: %@", decodedResult.errorResult.error);
+        }
+    }];
     [XCTContext runActivityNamed:@"API should work well with EC algorithms" block:^(id<XCTActivity>  _Nonnull activity) {
         NSString *privatePemFilename = @"ec256-private";
         NSString *publicPemFilename = @"ec256-public";
@@ -196,7 +245,7 @@
         // or add them as chain
         [JWTDecodingBuilder decodeMessage:token].chain(chain);
     }];
-    [XCTContext runActivityNamed:@"API should api work correctly" block:^(id<XCTActivity> _Nonnull activity){
+    [XCTContext runActivityNamed:@"API should work correctly" block:^(id<XCTActivity> _Nonnull activity){
         JWTClaimsSet *claimsSet = [[JWTClaimsSet alloc] init];
         // fill it
         claimsSet.issuer = @"Facebook";
@@ -235,6 +284,8 @@
             NSLog(@"decoded result: %@", decodedResult.successResult.headerAndPayloadDictionary);
             NSLog(@"headers: %@", decodedResult.successResult.headers);
             NSLog(@"payload: %@", decodedResult.successResult.payload);
+            NSLog(@"trustedClaimsSet: %@", [JWTClaimsSetSerializer dictionaryWithClaimsSet:trustedClaimsSet]);
+            NSLog(@"decodedClaimsSet: %@", [JWTClaimsSetSerializer dictionaryWithClaimsSet:decodedResult.successResult.claimsSet]);
         }
         else {
             // handle error

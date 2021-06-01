@@ -6,8 +6,8 @@
 //  Copyright © 2019 JWTIO. All rights reserved.
 //
 
-#import "JWTCoding+VersionTwo.h"
-#import "JWTDeprecations.h"
+#import <JWT/JWTCoding+VersionTwo.h>
+#import <JWT/JWTDeprecations.h>
 
 #if DEPLOYMENT_RUNTIME_SWIFT
 #else

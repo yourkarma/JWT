@@ -6,8 +6,8 @@
 //  Copyright © 2018 JWTIO. All rights reserved.
 //
 
-#import "JWTCryptoSecurity.h"
 #import <Security/Security.h>
+#import <JWT/JWTCryptoSecurity.h>
 
 @interface JWTCryptoSecurity (ExternalRepresentation)
 + (NSData *)externalRepresentationForKey:(SecKeyRef)key error:(NSError *__autoreleasing*)error;

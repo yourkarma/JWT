@@ -6,9 +6,9 @@
 //  Copyright © 2019 JWTIO. All rights reserved.
 //
 
-#import "JWTCoding+VersionThree.h"
 #import <CoreFoundation/CoreFoundation.h>
-#import "JWTDeprecations.h"
+#import <JWT/JWTCoding+VersionThree.h>
+#import <JWT/JWTDeprecations.h>
 
 #if DEPLOYMENT_RUNTIME_SWIFT
 #else
@@ -27,11 +27,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (copy, nonatomic, readonly) JWTEncodingBuilder *(^payload)(NSDictionary *payload);
 @property (copy, nonatomic, readonly) JWTEncodingBuilder *(^headers)(NSDictionary *headers);
 @property (copy, nonatomic, readonly) JWTEncodingBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
+@property (copy, nonatomic, readonly) JWTEncodingBuilder *(^claimsSetCoordinator)(id<JWTClaimsSetCoordinatorProtocol> claimsSetCoordinator);
 @end
 
 @interface JWTDecodingBuilder (FluentStyle)
 @property (copy, nonatomic, readonly) JWTDecodingBuilder *(^message)(NSString *message);
 @property (copy, nonatomic, readonly) JWTDecodingBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
+@property (copy, nonatomic, readonly) JWTEncodingBuilder *(^claimsSetCoordinator)(id<JWTClaimsSetCoordinatorProtocol> claimsSetCoordinator);
 @end
 
 NS_ASSUME_NONNULL_END

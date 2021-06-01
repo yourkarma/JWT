@@ -7,12 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JWTClaimsSet.h"
+#import <JWT/JWTClaimsSet.h>
 
 @interface JWTClaimsSetVerifier : NSObject
 
 + (BOOL)verifyClaimsSet:(JWTClaimsSet *)theClaimsSet withTrustedClaimsSet:(JWTClaimsSet *)trustedClaimsSet;
-
-+ (BOOL)verifyClaimsSetDictionary:(NSDictionary *)theClaimsSetDictionary withTrustedClaimsSet:(JWTClaimsSet *)trustedClaimsSet;
 
 @end

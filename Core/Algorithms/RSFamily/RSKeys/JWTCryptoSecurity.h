@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <Security/Security.h>
-#import "JWTDeprecations.h"
+#import <JWT/JWTDeprecations.h>
+
 // Thanks for https://github.com/TakeScoop/SwiftyRSA!
 @interface JWTCryptoSecurityKeysTypes : NSObject
 + (NSString *)RSA;

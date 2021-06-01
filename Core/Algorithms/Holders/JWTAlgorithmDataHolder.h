@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JWTAlgorithm.h"
-#import "JWTDeprecations.h"
-#import "JWTBase64Coder.h"
+#import <JWT/JWTAlgorithm.h>
+#import <JWT/JWTDeprecations.h>
+#import <JWT/JWTBase64Coder.h>
 
 // TODO: available in 3.0
 // All methods with secret as NSString in algorithms will be deprecated or removed.

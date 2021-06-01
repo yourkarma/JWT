@@ -33,6 +33,7 @@ NSString *JWTCodingResultPayload = @"payload";
 @property (copy, nonatomic, readwrite) NSDictionary *headers;
 @property (copy, nonatomic, readwrite) NSDictionary *payload;
 @property (copy, nonatomic, readwrite) JWTClaimsSet *claimsSet;
+@property (copy, nonatomic, readwrite) id<JWTClaimsSetProtocol> claimsSetStorage;
 @end
 
 // Protected?
@@ -47,6 +48,7 @@ NSString *JWTCodingResultPayload = @"payload";
 @synthesize headers = _headers;
 @synthesize payload = _payload;
 @synthesize claimsSet = _claimsSet;
+@synthesize claimsSetStorage = _claimsSetStorage;
 //Not used yet. Could be replacement for _encoded.
 @synthesize token = _token;
 
@@ -88,6 +90,13 @@ NSString *JWTCodingResultPayload = @"payload";
 - (instancetype)initWithClaimsSet:(JWTClaimsSet *)claimsSet {
     if (self = [super init]) {
         self.claimsSet = claimsSet;
+    }
+    return self;
+}
+
+- (instancetype)initWithClaimsSetStorage:(id<JWTClaimsSetProtocol>)claimsSetStorage {
+    if (self = [super init]) {
+        self.claimsSetStorage = claimsSetStorage;
     }
     return self;
 }

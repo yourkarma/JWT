@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "JWTClaimsSet.h"
+#import <JWT/JWTClaimsSet.h>
 
 @interface JWTClaimsSetSerializer : NSObject
 

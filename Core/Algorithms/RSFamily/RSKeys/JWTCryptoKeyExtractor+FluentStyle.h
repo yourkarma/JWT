@@ -6,8 +6,8 @@
 //  Copyright © 2019 JWTIO. All rights reserved.
 //
 
-#import "JWTCryptoKeyExtractor.h"
-#import "JWTDeprecations.h"
+#import <JWT/JWTCryptoKeyExtractor.h>
+#import <JWT/JWTDeprecations.h>
 
 #if DEPLOYMENT_RUNTIME_SWIFT
 #else
