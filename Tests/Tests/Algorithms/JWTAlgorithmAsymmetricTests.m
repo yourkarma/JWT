@@ -9,8 +9,6 @@
 #import <JWT/JWT.h>
 
 @interface JWTAlgorithmAsymmetricTestsHelperAssetAccessor : NSObject
-//+ (instancetype)wrong;
-//- (instancetype)wrong;
 @property (copy, nonatomic, readwrite) NSString *folder;
 - (instancetype)initWithFolder:(NSString *)folder;
 - (instancetype)initWithAlgorithmType:(NSString *)type shaSize:(NSNumber *)size;
@@ -99,14 +97,6 @@
     // split name into type and size.
     // just lowercase everything.
     return [self initWithFolder:name.lowercaseString];
-    // old.
-    __auto_type splitted = [self.class typeAndSizeFromAlgorithmName:name];
-    if (splitted.count != 2) {
-        return nil;
-    }
-    __auto_type type = (NSString *)splitted.firstObject;
-    __auto_type size = @([splitted.lastObject integerValue]);
-    return [self initWithAlgorithmType:type shaSize:size];
 }
 @end
 

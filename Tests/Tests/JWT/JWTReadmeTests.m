@@ -245,53 +245,6 @@
         // or add them as chain
         [JWTDecodingBuilder decodeMessage:token].chain(chain);
     }];
-    [XCTContext runActivityNamed:@"API should work correctly" block:^(id<XCTActivity> _Nonnull activity){
-        JWTClaimsSet *claimsSet = [[JWTClaimsSet alloc] init];
-        // fill it
-        claimsSet.issuer = @"Facebook";
-        claimsSet.subject = @"Token";
-        claimsSet.audience = @"https://jwt.io";
-
-        // encode it
-        NSString *secret = @"secret";
-        NSString *algorithmName = @"HS384";
-        NSDictionary *headers = @{@"custom":@"value"};
-
-        id<JWTAlgorithmDataHolderProtocol>holder = [JWTAlgorithmHSFamilyDataHolder new].algorithmName(algorithmName).secret(secret);
-
-        JWTCodingResultType *result = [JWTEncodingBuilder encodeClaimsSet:claimsSet].headers(headers).addHolder(holder).result;
-
-        NSString *encodedToken = result.successResult.encoded;
-        if (result.successResult) {
-            // handle encoded result
-            NSLog(@"encoded result: %@", result.successResult.encoded);
-        }
-        else {
-            // handle error
-            NSLog(@"encode failed, error: %@", result.errorResult.error);
-        }
-
-        // decode it
-        // you can set any property that you want, all properties are optional
-        JWTClaimsSet *trustedClaimsSet = [claimsSet copy];
-
-        NSNumber *options = @(JWTCodingDecodingOptionsNone);
-        NSString *yourJwt = encodedToken; // from previous example
-        JWTCodingResultType *decodedResult = [JWTDecodingBuilder decodeMessage:yourJwt].claimsSet(claimsSet).addHolder(holder).options(options).and.result;
-
-        if (decodedResult.successResult) {
-            // handle decoded result
-            NSLog(@"decoded result: %@", decodedResult.successResult.headerAndPayloadDictionary);
-            NSLog(@"headers: %@", decodedResult.successResult.headers);
-            NSLog(@"payload: %@", decodedResult.successResult.payload);
-            NSLog(@"trustedClaimsSet: %@", [JWTClaimsSetSerializer dictionaryWithClaimsSet:trustedClaimsSet]);
-            NSLog(@"decodedClaimsSet: %@", [JWTClaimsSetSerializer dictionaryWithClaimsSet:decodedResult.successResult.claimsSet]);
-        }
-        else {
-            // handle error
-            NSLog(@"decode failed, error: %@", decodedResult.errorResult.error);
-        }
-    }];
 }
 
 - (void)testOthers {
