@@ -8,13 +8,43 @@
 
 #import <Foundation/Foundation.h>
 #import <JWT/JWTClaimSerializerBase.h>
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JWTClaimSerializerVariations : NSObject
-+ (id<JWTClaimSerializerProtocol>)dateAndTimestamp;
+
+/// Discussion
+/// @return JWTClaimSerializerBaseConcreteDateAndTimestamp
+///
++ (id<JWTClaimSerializerProtocol>)dateAndTimestampTransform;
+
+/// Discussion
+/// @return JWTClaimSerializerBase
+///
++ (id<JWTClaimSerializerProtocol>)identityTransform;
 @end
 
+/// Discussion
+/// This serializer converts NSDate to a json value via timeIntervalSince1970.
+///
+/// Conversion
+///
+/// JSON Timestamp
+/// Claim NSDate
+///
+/// Encoding and Decoding
+///     Decode JSON -> Claim `dateWithTimeIntervalSince1970`
+///     Encode Claim -> JSON `timeIntervalSince1970`
+///
+/// Examples
+///
+/// JSON
+/// {
+/// ... "time": 12362387432,
+/// }
+///
+/// Date
+/// NSDate *date = [NSDate dateWithTimeIntervalSince1970:12362387432];
+///
 @interface JWTClaimSerializerBaseConcreteDateAndTimestamp : JWTClaimSerializerBase
 @end
 

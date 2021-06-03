@@ -20,9 +20,9 @@
     __auto_type notBefore = JWTClaimsNames.notBefore;
     __auto_type issuedAt = JWTClaimsNames.issuedAt;
     return @{
-        expirationTime : JWTClaimSerializerVariations.dateAndTimestamp,
-        notBefore : JWTClaimSerializerVariations.dateAndTimestamp,
-        issuedAt : JWTClaimSerializerVariations.dateAndTimestamp,
+        expirationTime : JWTClaimSerializerVariations.dateAndTimestampTransform,
+        notBefore : JWTClaimSerializerVariations.dateAndTimestampTransform,
+        issuedAt : JWTClaimSerializerVariations.dateAndTimestampTransform,
     };
 }
 - (instancetype)init {
