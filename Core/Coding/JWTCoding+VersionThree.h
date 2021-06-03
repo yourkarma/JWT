@@ -10,7 +10,6 @@
 
 // encode and decode options
 @protocol JWTAlgorithm;
-@class JWTClaimsSet;
 @class JWTCodingBuilder;
 @class JWTEncodingBuilder;
 @class JWTDecodingBuilder;
@@ -50,13 +49,11 @@
 @interface JWTEncodingBuilder : JWTCodingBuilder
 #pragma mark - Create
 + (instancetype)encodePayload:(NSDictionary *)payload;
-+ (instancetype)encodeClaimsSet:(JWTClaimsSet *)claimsSet;
 + (instancetype)encodeClaimsSetWithCoordinator:(id<JWTClaimsSetCoordinatorProtocol>)coordinator;
 
 #pragma mark - Internal
 @property (copy, nonatomic, readonly) NSDictionary *internalPayload;
 @property (copy, nonatomic, readonly) NSDictionary *internalHeaders;
-@property (nonatomic, readonly) JWTClaimsSet *internalClaimsSet;
 @property (nonatomic, readonly) id<JWTClaimsSetCoordinatorProtocol> internalClaimsSetCoordinator;
 @end
 
@@ -70,7 +67,6 @@
 
 #pragma mark - Internal
 @property (copy, nonatomic, readonly) NSString *internalMessage;
-@property (nonatomic, readonly) JWTClaimsSet *internalClaimsSet;
 @property (nonatomic, readonly) id<JWTClaimsSetCoordinatorProtocol> internalClaimsSetCoordinator;
 @end
 
@@ -88,12 +84,10 @@
 @interface JWTEncodingBuilder (Setters)
 - (instancetype)payload:(NSDictionary *)payload;
 - (instancetype)headers:(NSDictionary *)headers;
-- (instancetype)claimsSet:(JWTClaimsSet *)claimsSet;
 - (instancetype)claimsSetCoordinator:(id<JWTClaimsSetCoordinatorProtocol>)claimsSetCoordinator;
 @end
 
 @interface JWTDecodingBuilder (Setters)
 - (instancetype)message:(NSString *)message;
-- (instancetype)claimsSet:(JWTClaimsSet *)claimsSet;
 - (instancetype)claimsSetCoordinator:(id<JWTClaimsSetCoordinatorProtocol>)claimsSetCoordinator;
 @end

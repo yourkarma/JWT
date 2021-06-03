@@ -26,13 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface JWTEncodingBuilder (FluentStyle)
 @property (copy, nonatomic, readonly) JWTEncodingBuilder *(^payload)(NSDictionary *payload);
 @property (copy, nonatomic, readonly) JWTEncodingBuilder *(^headers)(NSDictionary *headers);
-@property (copy, nonatomic, readonly) JWTEncodingBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
 @property (copy, nonatomic, readonly) JWTEncodingBuilder *(^claimsSetCoordinator)(id<JWTClaimsSetCoordinatorProtocol> claimsSetCoordinator);
 @end
 
 @interface JWTDecodingBuilder (FluentStyle)
 @property (copy, nonatomic, readonly) JWTDecodingBuilder *(^message)(NSString *message);
-@property (copy, nonatomic, readonly) JWTDecodingBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
 @property (copy, nonatomic, readonly) JWTEncodingBuilder *(^claimsSetCoordinator)(id<JWTClaimsSetCoordinatorProtocol> claimsSetCoordinator);
 @end
 

@@ -32,7 +32,6 @@ NSString *JWTCodingResultPayload = @"payload";
 @protocol JWTMutableCodingResultTypeSuccessDecodedProtocol <JWTCodingResultTypeSuccessDecodedProtocol>
 @property (copy, nonatomic, readwrite) NSDictionary *headers;
 @property (copy, nonatomic, readwrite) NSDictionary *payload;
-@property (copy, nonatomic, readwrite) JWTClaimsSet *claimsSet;
 @property (copy, nonatomic, readwrite) id<JWTClaimsSetProtocol> claimsSetStorage;
 @end
 
@@ -47,7 +46,6 @@ NSString *JWTCodingResultPayload = @"payload";
 @synthesize encoded = _encoded;
 @synthesize headers = _headers;
 @synthesize payload = _payload;
-@synthesize claimsSet = _claimsSet;
 @synthesize claimsSetStorage = _claimsSetStorage;
 //Not used yet. Could be replacement for _encoded.
 @synthesize token = _token;
@@ -85,13 +83,6 @@ NSString *JWTCodingResultPayload = @"payload";
     NSDictionary *headers = headersAndPayloadDictionary[JWTCodingResultComponents.Headers];
     NSDictionary *payload = headersAndPayloadDictionary[JWTCodingResultComponents.Payload];
     return [self initWithHeaders:headers withPayload:payload];
-}
-
-- (instancetype)initWithClaimsSet:(JWTClaimsSet *)claimsSet {
-    if (self = [super init]) {
-        self.claimsSet = claimsSet;
-    }
-    return self;
 }
 
 - (instancetype)initWithClaimsSetStorage:(id<JWTClaimsSetProtocol>)claimsSetStorage {
