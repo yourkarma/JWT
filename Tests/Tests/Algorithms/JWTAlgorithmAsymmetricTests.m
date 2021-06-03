@@ -194,8 +194,8 @@
     self.payloadDictionary = @{@"hello" : @"world"};
     self.headersDictionary = @{@"alg" : self.name, @"typ" : @"JWT"};
     self.fullDictionary = @{
-                            JWTCodingResultComponents.Headers : self.headersDictionary,
-                            JWTCodingResultComponents.Payload : self.payloadDictionary
+                            JWTCodingResultComponents.headers : self.headersDictionary,
+                            JWTCodingResultComponents.payload : self.payloadDictionary
                             };
 
 //    self.payload = @"payload";

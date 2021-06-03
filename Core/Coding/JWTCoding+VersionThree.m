@@ -461,7 +461,7 @@
     }
     
     if (claimsSetCoordinator) {
-        __auto_type untrustedClaimsSet = [claimsSetCoordinator.claimsSetSerializer claimsSetFromDictionary:decodedDictionary[JWTCodingResultComponents.Payload]];
+        __auto_type untrustedClaimsSet = [claimsSetCoordinator.claimsSetSerializer claimsSetFromDictionary:decodedDictionary[JWTCodingResultComponents.payload]];
         __auto_type trustedClaimsSet = claimsSetCoordinator.claimsSetStorage;
         __auto_type claimsVerified = [claimsSetCoordinator.claimsSetVerifier verifyClaimsSet:untrustedClaimsSet withTrustedClaimsSet:trustedClaimsSet];
         if (!claimsVerified) {
@@ -471,8 +471,8 @@
     }
     
     if (decodedDictionary) {
-        NSDictionary *headers = decodedDictionary[JWTCodingResultComponents.Headers];
-        NSDictionary *payload = decodedDictionary[JWTCodingResultComponents.Payload];
+        NSDictionary *headers = decodedDictionary[JWTCodingResultComponents.headers];
+        NSDictionary *payload = decodedDictionary[JWTCodingResultComponents.payload];
         id<JWTClaimsSetProtocol> claimsSetStorage = nil;
         
         // extract claims from payload.
@@ -626,8 +626,8 @@
     }
     
     NSDictionary *result = @{
-                             JWTCodingResultComponents.Headers : header,
-                             JWTCodingResultComponents.Payload : payload
+                             JWTCodingResultComponents.headers : header,
+                             JWTCodingResultComponents.payload : payload
                              };
     
     return result;

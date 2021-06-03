@@ -8,17 +8,17 @@
 
 #import "JWTCoding+ResultTypes.h"
 
-NSString *JWTCodingResultHeaders = @"header";
-NSString *JWTCodingResultPayload = @"payload";
+static NSString *JWTCodingResultHeaders = @"headers";
+static NSString *JWTCodingResultPayload = @"payload";
 
 @implementation JWT (ResultTypes) @end
 
 @implementation JWTCodingResultComponents
-+ (NSString *)Headers {
-    return @"header";
++ (NSString *)headers {
+    return JWTCodingResultHeaders;
 }
-+ (NSString *)Payload {
-    return @"payload";
++ (NSString *)payload {
+    return JWTCodingResultPayload;
 }
 @end
 
@@ -53,8 +53,8 @@ NSString *JWTCodingResultPayload = @"payload";
 - (NSDictionary *)headerAndPayloadDictionary {
     if (self.headers && self.payload) {
         return @{
-                 JWTCodingResultComponents.Headers: self.headers,
-                 JWTCodingResultComponents.Payload: self.payload
+                 JWTCodingResultComponents.headers: self.headers,
+                 JWTCodingResultComponents.payload: self.payload
         };
     }
     return nil;
@@ -80,8 +80,8 @@ NSString *JWTCodingResultPayload = @"payload";
 }
 
 - (instancetype)initWithHeadersAndPayload:(NSDictionary *)headersAndPayloadDictionary {
-    NSDictionary *headers = headersAndPayloadDictionary[JWTCodingResultComponents.Headers];
-    NSDictionary *payload = headersAndPayloadDictionary[JWTCodingResultComponents.Payload];
+    NSDictionary *headers = headersAndPayloadDictionary[JWTCodingResultComponents.headers];
+    NSDictionary *payload = headersAndPayloadDictionary[JWTCodingResultComponents.payload];
     return [self initWithHeaders:headers withPayload:payload];
 }
 
