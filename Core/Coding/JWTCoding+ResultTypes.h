@@ -40,10 +40,16 @@
 @property (copy, nonatomic, readonly) NSDictionary *headers;
 @property (copy, nonatomic, readonly) NSDictionary *payload;
 
-// dictionary @{
-//  JWTCodingResultHeaders : self.headers,
-//  JWTCodingResultPayload : self.payload
-//}
+/// This is a dictionary that contains header and payload.
+///
+/// @discussion
+/// You may access to its guts via `JWTCodingResultComponents`.
+///
+/// dictionary = {
+///   JWTCodingResultComponents.headers : headers,
+///   JWTCodingResultComponents.payload : payload
+/// }
+///
 @property (copy, nonatomic, readonly) NSDictionary *headerAndPayloadDictionary;
 @property (copy, nonatomic, readonly) id<JWTClaimsSetProtocol> claimsSetStorage;
 
