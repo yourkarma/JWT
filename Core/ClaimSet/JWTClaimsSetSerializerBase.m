@@ -68,7 +68,8 @@
     
     for (NSString *key in dictionary) {
         __auto_type claim = [self.claimsProvider claimByName:key];
-        if (claim != nil) {
+        __auto_type skipVerification = self.skipClaimsProviderLookupCheck;
+        if (skipVerification || claim != nil) {
             __auto_type value = [self deserializedClaimValue:dictionary[key] forName:key];
             [result addObject:[claim copyWithValue:value]];
         }
@@ -93,7 +94,9 @@
     __auto_type result = [NSMutableDictionary new];
     
     for (id<JWTClaimProtocol> value in claimsSet.claims) {
-        if ([self.claimsProvider claimByName:value.name] != nil) {
+        __auto_type claim = [self.claimsProvider claimByName:value.name];
+        __auto_type skipVerification = self.skipClaimsProviderLookupCheck;
+        if (skipVerification || claim != nil) {
             result[value.name] = [self serializedClaimValue:value];
         }
     }
