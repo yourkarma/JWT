@@ -147,7 +147,7 @@ extension JWTModel.Storage.DecodedData {
         }
     }
     var decodedInformation: DecodedInfoType {
-        return decodedInfo()
+        self.decodedInfo()
     }
 }
 
@@ -157,7 +157,7 @@ extension JWTModel.Storage.EncodedData {
         return JWTAlgorithmFactory.algorithms()
     }
     var availableAlgorithmsNames: [String] {
-        return self.availableAlgorithms.map{$0.name}
+        return self.availableAlgorithms.map(\.name)
     }
 }
 

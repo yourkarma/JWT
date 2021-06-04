@@ -94,8 +94,7 @@ extension ViewController {
         self.refreshUI()
     }
     func signatureReactOnVerifiedToken(verified: Bool) {
-        let type = verified ? SignatureValidationType.Valid : SignatureValidationType.Invalid
-        self.model.signatureValidation = type
+        self.model.signatureValidation = verified ? .valid : .invalid
         self.refreshSignature()
     }
 }

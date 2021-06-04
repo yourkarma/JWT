@@ -12,9 +12,9 @@ import JWTDesktopSwiftToolkit
 
 extension ViewController {
     class Model {
-        var appearance = TokenTextAppearance()
-        var decoder = TokenDecoder()
-        var signatureValidation = SignatureValidationType.Unknown
+        var appearance: TokenTextAppearance = .init()
+        var decoder: TokenDecoder = .init()
+        var signatureValidation: SignatureValidationType = .unknown
     }
     
     enum DataSeedType {

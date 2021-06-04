@@ -7,8 +7,8 @@
 //
 
 import Foundation
-extension Array {
+public extension Array {
     func safeObject(index: Array.Index) -> Element? {
-        return index >= self.count ? nil : self[index]
+        self.indices.contains(index) ? self[index] : nil
     }
 }

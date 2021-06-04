@@ -9,20 +9,20 @@
 import Cocoa
 
 public enum TokenTextType : Int {
-    case Default = 0
-    case Header
-    case Payload
-    case Signature
+    case `default` = 0
+    case header
+    case payload
+    case signature
     public var color : NSColor {
         var color = NSColor.black
         switch self {
-        case .Default:
+        case .default:
             color = NSColor.black
-        case .Header:
+        case .header:
             color = NSColor.red
-        case .Payload:
+        case .payload:
             color = NSColor.magenta
-        case .Signature:
+        case .signature:
             color = NSColor(calibratedRed: 0, green: 185/255.0, blue: 241/255.0, alpha: 1.0)
         }
         return color
@@ -48,15 +48,15 @@ public enum TokenTextType : Int {
 public class TokenTextSerialization {
     func textPart(parts: [String], type: TokenTextType) -> String? {
         switch type {
-        case .Header:
+        case .header:
             return parts.first
-        case .Payload:
+        case .payload:
             return parts.safeObject(index: 1)
-        case .Signature:
+        case .signature:
             if (parts.count > 2) {
                 return parts[2..<parts.count].joined(separator: ".")
             }
-        case .Default:
+        case .default:
             return nil
         }
         return nil
@@ -76,7 +76,7 @@ public class TokenTextAppearance {
         // restore them like this:
         // color text if you can
         var resultParts: [NSAttributedString] = [];
-        for typeNumber in TokenTextType.Header.rawValue ... TokenTextType.Signature.rawValue {
+        for typeNumber in TokenTextType.header.rawValue ... TokenTextType.signature.rawValue {
             guard let type = TokenTextType(rawValue: typeNumber) else {
                 continue;
             }
@@ -88,7 +88,7 @@ public class TokenTextAppearance {
             }
         }
         
-        let attributes = TokenTextType.Default.encodedTextAttributes
+        let attributes = TokenTextType.default.encodedTextAttributes
         
         let dot = NSAttributedString(string: ".", attributes: attributes)
         let result = self.attributesJoinedBy(resultParts, by: dot)

@@ -119,10 +119,10 @@ class DecriptedViewController: NSViewController {
     func color(indexPath: IndexPath) -> NSColor {
         var color = NSColor.black
         if self.cachedErrorDictionary != nil {
-            color = TokenTextType.Header.color
+            color = TokenTextType.header.color
         }
         else if (self.cachedResultArray != nil) {
-            color = (indexPath.item == 0 ? TokenTextType.Header : TokenTextType.Payload).color
+            color = (indexPath.item == 0 ? TokenTextType.header : TokenTextType.payload).color
         }
         return color
     }

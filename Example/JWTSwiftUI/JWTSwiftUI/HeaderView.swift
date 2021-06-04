@@ -26,7 +26,8 @@ extension HeaderView {
             }
         }
         var body2: some View {
-            Picker(selection: $chosenAlgorithm, label: Text("Choose algorithm")) {        ForEach(self.v(), id: \.0) { value in
+            Picker(selection: $chosenAlgorithm, label: Text("Choose algorithm")) {
+                    ForEach(self.v(), id: \.0) { value in
                     Text(value.1).tag(value.1)
                 }
 //                ForEach(self.v().identified(by: \.0)) { value in

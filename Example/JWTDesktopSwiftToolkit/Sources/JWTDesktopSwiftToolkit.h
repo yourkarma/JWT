@@ -2,11 +2,10 @@
 //  JWTDesktopSwiftToolkit.h
 //  JWTDesktopSwiftToolkit
 //
-//  Created by Dmitry Lobanov on 08/06/2019.
-//  Copyright © 2019 JWTIO. All rights reserved.
+//  Created by Dmitry Lobanov on 04.06.2021.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for JWTDesktopSwiftToolkit.
 FOUNDATION_EXPORT double JWTDesktopSwiftToolkitVersionNumber;
