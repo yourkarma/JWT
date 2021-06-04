@@ -64,25 +64,17 @@ extension ViewController {
         // We should add an option to skip verification in decoding section.
         // invalid signature doesn't mean that you can't decode JWT.
         
-        if let jwtVerified = try? self.model.decoder.decode(token: string, skipVerification: false, object: self) {
-            self.signatureReactOnVerifiedToken(verified: !jwtVerified.isEmpty)
+        if let jwtVerified = self.model.decoder.decode(token: string, skipVerification: false, object: self) {
+            let notVerified = jwtVerified.successResult?.headerAndPayloadDictionary?.isEmpty == true
+            self.signatureReactOnVerifiedToken(verified: !notVerified)
         }
         else {
             self.signatureReactOnVerifiedToken(verified: false)
         }
-        
-        var result: JWTCodingResultType? = nil
+                
         let shouldSkipVerification = self.signatureVerificationCheckButton.integerValue == 1
-        do {
-            if let decoded = try self.model.decoder.decode(token: string, skipVerification: shouldSkipVerification, object: self) {
-                result = JWTCodingResultType(successResult: JWTCodingResultTypeSuccess(headersAndPayload: decoded))
-            }
-        }
-        catch let error {
-            result = JWTCodingResultType(errorResult: JWTCodingResultTypeError(error: error))
-        }
+        let result = self.model.decoder.decode(token: string, skipVerification: shouldSkipVerification, object: self)
         
-//        self.decriptedViewController.builder = self.model.decoder.builder
         self.decriptedViewController.resultType = result
     }
     
@@ -282,7 +274,7 @@ class ViewController: NSViewController {
     }
     
     func defaultDataSetup() {
-        let seed = DataSeedType.hs256.dataSeed//rs256.dataSeed
+        let seed = DataSeedType.rs256.dataSeed//rs256.dataSeed
         self.defaultDataSetup(algorithmName: seed.algorithmName, secret: seed.secret, token: seed.token)
     }
     
