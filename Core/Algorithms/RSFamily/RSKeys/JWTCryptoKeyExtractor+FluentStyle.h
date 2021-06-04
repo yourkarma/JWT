@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Fluent ( Objective-C exclusive ).
 @interface JWTCryptoKeyExtractor (FluentStyle)
-@property (copy, nonatomic, readonly) JWTCryptoKeyExtractor * (^keyBuilder)(JWTCryptoKeyBuilder *keyBuilder);
+@property (copy, nonatomic, readonly) JWTCryptoKeyExtractor * (^keyBuilder)(JWTCryptoKeyBuilder *keyBuilder) NS_SWIFT_UNAVAILABLE("");
 @end
 
 NS_ASSUME_NONNULL_END

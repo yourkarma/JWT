@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)configureClaimsSet:(JWTClaimsSetDSLBase *(^)(JWTClaimsSetDSLBase *claimsSetDSL))claimsSet;
 #if DEPLOYMENT_RUNTIME_SWIFT
 #else
-@property (copy, nonatomic, readonly) id <JWTClaimsSetCoordinatorProtocol> (^configureClaimsSet)(JWTClaimsSetDSLBase *(^)(JWTClaimsSetDSLBase *claimsSetDSL));
+@property (copy, nonatomic, readonly) id <JWTClaimsSetCoordinatorProtocol> (^configureClaimsSet)(JWTClaimsSetDSLBase *(^)(JWTClaimsSetDSLBase *claimsSetDSL)) NS_SWIFT_UNAVAILABLE("");
 #endif
 @end
 
