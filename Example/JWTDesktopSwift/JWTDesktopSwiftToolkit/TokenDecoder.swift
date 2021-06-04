@@ -15,35 +15,33 @@ public protocol TokenDecoderNecessaryDataObject__Protocol {
     var isBase64EncodedSecret: Bool {get}
 }
 
-public class TokenDecoder {
-    private lazy var theDecoder: TokenDecoder = {
-        return JWTTokenDecoder__V3()
-    }()
-    var builder: JWTBuilder?
-    var resultType: JWTCodingResultType?
+private protocol TokenDecoderProtocol {
+    func decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol) -> JWTCodingResultType?
+}
+
+public struct TokenDecoder: TokenDecoderProtocol {
+    private let theDecoder: TokenDecoderProtocol = JWTTokenDecoder__V3()
     
-    public func decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol?) throws -> [AnyHashable : Any]?  {
+    public func decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol?) -> JWTCodingResultType?  {
         guard let theObject = object else {
             return nil
         }
-        return try self.theDecoder._decode(token: token, skipVerification: skipVerification, object: theObject)
+        return self.theDecoder.decode(token: token, skipVerification: skipVerification, object: theObject)
     }
     
-    // MARK: Subclass
-    func _decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol) throws -> [AnyHashable : Any]?  {
-        return nil
+    func decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol) -> JWTCodingResultType? {
+        self.theDecoder.decode(token: token, skipVerification: skipVerification, object: object)
     }
-    
     public init() {}
 }
 
-class JWTTokenDecoder__V2: TokenDecoder {
-    override func _decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol) throws -> [AnyHashable : Any]? {
+private struct JWTTokenDecoder__V2: TokenDecoderProtocol {
+    func decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol) -> JWTCodingResultType? {
         // do work here.
         print("JWT ENCODED TOKEN \(String(describing: token))")
         let algorithmName = object.chosenAlgorithmName
         print("JWT Algorithm NAME \(algorithmName)")
-        let builder = JWTBuilder.decodeMessage(token).algorithmName(algorithmName)!.options(skipVerification as NSNumber)
+        let builder = JWTBuilder.decodeMessage(token).algorithmName(algorithmName)?.options(skipVerification as NSNumber)
         if (algorithmName != JWTAlgorithmNameNone) {
             if let secretData = object.chosenSecretData, object.isBase64EncodedSecret {
                 _ = builder?.secretData(secretData)
@@ -53,23 +51,23 @@ class JWTTokenDecoder__V2: TokenDecoder {
             }
         }
         
-        self.builder = builder
-        
         guard let decoded = builder?.decode else {
             print("JWT ERROR \(String(describing: builder?.jwtError))")
             if let error = builder?.jwtError {
-                throw error
+                return .init(errorResult: .init(error: error))
             }
-            return nil
+            else {
+                return nil
+            }
         }
-        
+
         print("JWT DICTIONARY \(decoded)")
-        return decoded
+        return .init(successResult: .init(headersAndPayload: decoded))
     }
 }
 
-class JWTTokenDecoder__V3: TokenDecoder {
-    override func _decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol) throws -> [AnyHashable : Any]? {
+private struct JWTTokenDecoder__V3: TokenDecoderProtocol {
+    func decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol) -> JWTCodingResultType? {
         print("JWT ENCODED TOKEN \(String(describing: token))")
         let algorithmName = object.chosenAlgorithmName
         print("JWT Algorithm NAME \(algorithmName)")
@@ -81,10 +79,6 @@ class JWTTokenDecoder__V3: TokenDecoder {
             return nil
         }
         
-//        let a = Bundle.main.infoDictionary?["DEPLOYMENT_RUNTIME_SWIFT"]
-//
-//        print("deployment swift: \(a!)")
-        
         var holder: JWTAlgorithmDataHolderProtocol? = nil
         switch algorithm {
         case is JWTAlgorithmRSBase, is JWTAlgorithmAsymmetricBase:
@@ -95,13 +89,13 @@ class JWTTokenDecoder__V3: TokenDecoder {
             catch let error {
                 // throw if needed
                 print("JWT internalError: \(error.localizedDescription)")
-                throw error
+                return .init(errorResult: .init(error: error))
             }
             
             // TODO: remove dependency.
             // Aware of last part.
             // DataHolder MUST have a secretData ( empty data is perfect, if you use verifyKey )
-            holder = JWTAlgorithmRSFamilyDataHolder().verifyKey(key).algorithmName(algorithmName).secretData(Data())
+            holder = JWTAlgorithmRSFamilyDataHolder().verifyKey(key).algorithmName(algorithmName)
         case is JWTAlgorithmHSBase:
             let aHolder = JWTAlgorithmHSFamilyDataHolder()
             if let theSecretData = secretData, isBase64EncodedSecret {
@@ -115,21 +109,22 @@ class JWTTokenDecoder__V3: TokenDecoder {
             holder = JWTAlgorithmNoneDataHolder()
         default: break
         }
-
-        let builder = JWTDecodingBuilder.decodeMessage(token).addHolder(holder)?.options(skipVerification as NSNumber)
+        
+        let builder = JWTDecodingBuilder.decodeMessage(token).claimsSetCoordinator(JWTClaimsSetCoordinatorBase.init()).addHolder(holder)?.options(skipVerification as NSNumber)
         guard let result = builder?.result else {
             return nil
         }
         
         if let success = result.successResult {
             print("JWT RESULT: \(String(describing: success.debugDescription)) -> \(String(describing: success.headerAndPayloadDictionary?.debugDescription))")
-            return success.headerAndPayloadDictionary
+            return result
         }
         else if let error = result.errorResult {
             print("JWT ERROR: \(String(describing: error.debugDescription)) -> \(String(describing: error.error?.localizedDescription))")
-            throw error.error
+            return result
         }
-        
-        return nil
+        else {
+            return nil
+        }
     }
 }
