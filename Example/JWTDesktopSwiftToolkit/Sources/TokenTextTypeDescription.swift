@@ -6,116 +6,85 @@
 //  Copyright © 2016 JWTIO. All rights reserved.
 //
 
-import Cocoa
+import SwiftUI
 
+// MARK: Token text type.
 public enum TokenTextType : Int {
-    case `default` = 0
+    case unknown = 0
     case header
     case payload
     case signature
-    public var color : NSColor {
-        var color = NSColor.black
-        switch self {
-        case .default:
-            color = NSColor.black
-        case .header:
-            color = NSColor.red
-        case .payload:
-            color = NSColor.magenta
-        case .signature:
-            color = NSColor(calibratedRed: 0, green: 185/255.0, blue: 241/255.0, alpha: 1.0)
-        }
-        return color
-    }
+    case dot
     
-    var encodedTextAttributes: [NSAttributedString.Key: Any] {
+    static var typicalSchemeComponents : [Self] {
+        return [.header, .dot, .payload, .dot, .signature]
+    }
+}
+
+// MARK: NSAttributes.
+extension TokenTextType {
+    fileprivate var encodedTextAttributes: [NSAttributedString.Key: Any] {
         return encodedTextAttributes(type: self)
     }
     
-    func encodedTextAttributes(type: TokenTextType) -> [NSAttributedString.Key: Any] {
+    fileprivate func encodedTextAttributes(type: TokenTextType) -> [NSAttributedString.Key: Any] {
         var attributes = self.defaultEncodedTextAttributes()
         attributes[NSAttributedString.Key.foregroundColor] = type.color
         return attributes
-    }
-    
-    func defaultEncodedTextAttributes() -> [NSAttributedString.Key: Any] {
-        return [
-            NSAttributedString.Key.font : NSFont.boldSystemFont(ofSize: 22)
-            ]
-    }
+    }    
 }
 
-public class TokenTextSerialization {
-    func textPart(parts: [String], type: TokenTextType) -> String? {
+// MARK: Serialization
+fileprivate class TokenTextSerialization {
+    public init() {}
+    fileprivate func textPart(parts: [String], type: TokenTextType) -> String? {
         switch type {
+        case .unknown: return nil
         case .header:
             return parts.first
         case .payload:
-            return parts.safeObject(index: 1)
-        case .signature:
-            if (parts.count > 2) {
-                return parts[2..<parts.count].joined(separator: ".")
-            }
-        case .default:
-            return nil
+            guard parts.count > 1 else { return nil }
+            return parts[1]
+        case .signature: if parts.count > 2 { return parts[2..<parts.count].joined(separator: ".") } else { return nil }
+        case .dot: return "."
         }
-        return nil
     }
-    public init() {}
 }
 
+// MARK: Appearance.
 public class TokenTextAppearance {
-    let serialization = TokenTextSerialization()
-    public func encodedAttributedString(text: String) -> NSAttributedString? {
-        return self.encodedAttributedString(text: text, tokenSerialization: self.serialization)
-    }
-    func encodedAttributedString(text: String, tokenSerialization: TokenTextSerialization) -> NSAttributedString? {
+    private let serialization = TokenTextSerialization()
+    fileprivate func encodedAttributes(text: String, tokenSerialization: TokenTextSerialization) -> [(String, Attributes)] {
         let parts = text.components(separatedBy: ".")
-        // next step, determine text color!
-        // add missing dots.
-        // restore them like this:
-        // color text if you can
-        var resultParts: [NSAttributedString] = [];
-        for typeNumber in TokenTextType.header.rawValue ... TokenTextType.signature.rawValue {
-            guard let type = TokenTextType(rawValue: typeNumber) else {
-                continue;
+        
+        return TokenTextType.typicalSchemeComponents.flatMap { (type) -> [(String, Attributes)] in
+            if let part = tokenSerialization.textPart(parts: parts, type: type) {
+                let color = type.color
+                let font = type.font
+                return [(part, Attributes(color: color, font: font))]
             }
-            
-            if let currentPart = tokenSerialization.textPart(parts: parts, type: type) {
-                let attributes = type.encodedTextAttributes
-                let currentAttributedString = NSAttributedString(string: currentPart, attributes: attributes)
-                resultParts.append(currentAttributedString)
-            }
+            return []
         }
-        
-        let attributes = TokenTextType.default.encodedTextAttributes
-        
-        let dot = NSAttributedString(string: ".", attributes: attributes)
-        let result = self.attributesJoinedBy(resultParts, by: dot)
-        return result
     }
     public init() {}
 }
 
-extension TokenTextAppearance {
-    func attributesJoinedBy(_ attributes: [NSAttributedString], by: NSAttributedString) -> NSAttributedString? {
-        var array = attributes
-        //        return attributes.reduce(NSAttributedString(string: ""), { (result, string) -> NSAttributedString in
-        //            let mutableResult = NSMutableAttributedString(attributedString: result)
-        //            mutableResult.append(by)
-        //            mutableResult.append(string)
-        //            return mutableResult
-        //        })
-        
-        if let first = array.first {
-            array.removeFirst()
-            return array.reduce(first, { (result, string) -> NSAttributedString in
-                let mutableResult = NSMutableAttributedString(attributedString: result)
-                mutableResult.append(by)
-                mutableResult.append(string)
-                return mutableResult
-            })
+
+// MARK: Appearance.Public.
+public extension TokenTextAppearance {
+    func encodedAttributes(text: String) -> [(String, Attributes)] {
+        return self.encodedAttributes(text: text, tokenSerialization: self.serialization)
+    }
+    
+    func encodedAttributedString(text: String) -> NSAttributedString? {
+        return self.encodedAttributes(text: text, tokenSerialization: self.serialization).reduce(NSMutableAttributedString()) { (result, pair) in
+            let (part, attributes) = pair
+            let string = NSAttributedString(string: part, attributes: [
+                .foregroundColor : attributes.color,
+                .font : attributes.font
+                ])
+            result.append(string)
+            return result
         }
-        return nil
     }
 }

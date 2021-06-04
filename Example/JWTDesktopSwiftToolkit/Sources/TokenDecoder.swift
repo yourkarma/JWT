@@ -8,46 +8,68 @@
 
 import Foundation
 import JWT
-public protocol TokenDecoderNecessaryDataObject__Protocol {
-    var chosenAlgorithmName: String {get}
-    var chosenSecret: String? {get}
-    var chosenSecretData: Data? {get}
+
+public protocol TokenDecoderDataTransferObjectProtocol {
+    var algorithmName: String {get}
+    var secret: String? {get}
+    var secretData: Data? {get}
     var isBase64EncodedSecret: Bool {get}
+    var shouldSkipSignatureVerification: Bool {get}
 }
 
 private protocol TokenDecoderProtocol {
-    func decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol) -> JWTCodingResultType?
+    func decode(token: String?, object: TokenDecoderDataTransferObjectProtocol) -> JWTCodingResultType?
 }
 
 public struct TokenDecoder: TokenDecoderProtocol {
     private let theDecoder: TokenDecoderProtocol = JWTTokenDecoder__V3()
     
-    public func decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol?) -> JWTCodingResultType?  {
+    public func decode(token: String?, object: TokenDecoderDataTransferObjectProtocol?) -> JWTCodingResultType?  {
         guard let theObject = object else {
             return nil
         }
-        return self.theDecoder.decode(token: token, skipVerification: skipVerification, object: theObject)
+        return self.theDecoder.decode(token: token, object: theObject)
     }
     
-    func decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol) -> JWTCodingResultType? {
-        self.theDecoder.decode(token: token, skipVerification: skipVerification, object: object)
+    func decode(token: String?, object: TokenDecoderDataTransferObjectProtocol) -> JWTCodingResultType? {
+        self.theDecoder.decode(token: token, object: object)
     }
     public init() {}
 }
 
+public extension TokenDecoder {
+    struct TokenDecoderDataTransferObject : TokenDecoderDataTransferObjectProtocol {
+        public init(algorithmName: String, secret: String? = nil, secretData: Data? = nil, isBase64EncodedSecret: Bool, shouldSkipSignatureVerification: Bool) {
+            self.algorithmName = algorithmName
+            self.secret = secret
+            self.secretData = secretData
+            self.isBase64EncodedSecret = isBase64EncodedSecret
+            self.shouldSkipSignatureVerification = shouldSkipSignatureVerification
+        }
+        
+        public var algorithmName: String
+        public var secret: String?
+        public var secretData: Data?
+        public var isBase64EncodedSecret: Bool
+        public var shouldSkipSignatureVerification: Bool
+        
+    }
+}
+
 private struct JWTTokenDecoder__V2: TokenDecoderProtocol {
-    func decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol) -> JWTCodingResultType? {
+    func decode(token: String?, object: TokenDecoderDataTransferObjectProtocol) -> JWTCodingResultType? {
         // do work here.
         print("JWT ENCODED TOKEN \(String(describing: token))")
-        let algorithmName = object.chosenAlgorithmName
+        let algorithmName = object.algorithmName
+        let skipVerification = object.shouldSkipSignatureVerification
         print("JWT Algorithm NAME \(algorithmName)")
         let builder = JWTBuilder.decodeMessage(token).algorithmName(algorithmName)?.options(skipVerification as NSNumber)
         if (algorithmName != JWTAlgorithmNameNone) {
-            if let secretData = object.chosenSecretData, object.isBase64EncodedSecret {
+            if let secretData = object.secretData, object.isBase64EncodedSecret {
                 _ = builder?.secretData(secretData)
             }
             else {
-                _ = builder?.secret(object.chosenSecret)
+                _ = builder?.secret(object.secret)
             }
         }
         
@@ -67,12 +89,13 @@ private struct JWTTokenDecoder__V2: TokenDecoderProtocol {
 }
 
 private struct JWTTokenDecoder__V3: TokenDecoderProtocol {
-    func decode(token: String?, skipVerification: Bool, object: TokenDecoderNecessaryDataObject__Protocol) -> JWTCodingResultType? {
+    func decode(token: String?, object: TokenDecoderDataTransferObjectProtocol) -> JWTCodingResultType? {
         print("JWT ENCODED TOKEN \(String(describing: token))")
-        let algorithmName = object.chosenAlgorithmName
+        let algorithmName = object.algorithmName
+        let skipVerification = object.shouldSkipSignatureVerification
         print("JWT Algorithm NAME \(algorithmName)")
-        let secretData = object.chosenSecretData
-        let secret = object.chosenSecret
+        let secretData = object.secretData
+        let secret = object.secret
         let isBase64EncodedSecret = object.isBase64EncodedSecret
         
         guard let algorithm = JWTAlgorithmFactory.algorithm(byName: algorithmName) else {
