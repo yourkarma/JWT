@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 import JWT
+import JWTDesktopSwiftToolkit
 
 class JWTModel : ObservableObject {
     var objectWillChange = PassthroughSubject<Void, Never>().sink {
@@ -33,7 +34,7 @@ class JWTModel : ObservableObject {
         self.computeDecoding()
     }
 
-    func getObject() -> TokenDecoder.TokenDecoderObject {
+    func getObject() -> TokenDecoder.TokenDecoderDataTransferObject {
         let settings = self.data.settings
         let encodedData = self.data.encodedData
         let algorithmName = encodedData.algorithmName
@@ -42,7 +43,7 @@ class JWTModel : ObservableObject {
         let isBase64EncodedSecret = settings.isBase64
         let shouldSkipSignatureVerification = settings.skipSignatureVerification
 
-        return TokenDecoder.TokenDecoderObject(algorithmName: algorithmName, secret: secret, secretData: secretData, isBase64EncodedSecret: isBase64EncodedSecret, shouldSkipSignatureVerification: shouldSkipSignatureVerification)
+        return .init(algorithmName: algorithmName, secret: secret, secretData: secretData, isBase64EncodedSecret: isBase64EncodedSecret, shouldSkipSignatureVerification: shouldSkipSignatureVerification)
     }
 
     func computeEncoding() {
@@ -58,15 +59,15 @@ class JWTModel : ObservableObject {
         var forSignatureObject = object
         forSignatureObject.shouldSkipSignatureVerification = false
 
-        self.decodedData.verified = (try? self.decoder.decode(token: token, object: forSignatureObject) != nil) == .none ? SignatureValidationType.invalid : SignatureValidationType.valid
+        self.decodedData.verified = (self.decoder.decode(token: token, object: forSignatureObject)?.errorResult != nil) ? .invalid : .valid
 
-        do {
-            if let decoded = try self.decoder.decode(token: token, object: object) {
-                self.decodedData.result = .success(decoded as! [String : Any])
+        if let decoded = self.decoder.decode(token: token, object: object) {
+            if let successResult = decoded.successResult {
+                self.decodedData.result = .success(successResult.headerAndPayloadDictionary as! [String : Any])
             }
-        }
-        catch let error {
-            self.decodedData.result = .failure(error)
+            else if let errorResult = decoded.errorResult {
+                self.decodedData.result = .failure(errorResult.error)
+            }
         }
     }
 }
@@ -168,7 +169,7 @@ extension JWTModel.Storage.DecodedData {
         case header
         case payload
         case unknown
-        var color: Color {
+        var uiColor: UIColor {
             switch self {
             case .error:
                 return SignatureValidationType.invalid.color
@@ -179,6 +180,9 @@ extension JWTModel.Storage.DecodedData {
             case .unknown:
                 return TokenTextType.unknown.color
             }
+        }
+        var color: Color {
+            .init(self.uiColor)
         }
     }
 }

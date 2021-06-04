@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import JWTDesktopSwiftToolkit
 
 extension BottomView {
     struct EncryptedView : View {
@@ -53,7 +54,7 @@ extension BottomView {
         var validation: SignatureValidationType
         var body: some View {
             Text(validation.title)
-            .background(validation.color)
+                .background(Color.init(validation.color))
         }
     }
 }
