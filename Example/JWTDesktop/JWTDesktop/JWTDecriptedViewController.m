@@ -9,6 +9,7 @@
 #import "JWTDecriptedViewController.h"
 #import "JWTDecriptedCollectionViewItem.h"
 #import "JWTTokenTextTypeDescription.h"
+
 @interface JWTDecriptedViewController ()
 @property (weak) IBOutlet NSCollectionView *collectionView;
 @property (copy, nonatomic, readwrite) NSString *collectionViewItemIdentifier;
@@ -68,10 +69,13 @@
     if (self.resultType) {
         if (self.resultType.successResult) {
             NSDictionary *result = self.resultType.successResult.headerAndPayloadDictionary;
-            NSDictionary *claims = [JWTClaimsSetSerializer dictionaryWithClaimsSet:self.resultType.successResult.claimsSet];
+            __auto_type claimsSetStorage = self.resultType.successResult.claimsSetStorage;
+            __auto_type serializer = [JWTClaimsSetSerializerBase new];
+            serializer.skipClaimsProviderLookupCheck = YES;
+            NSDictionary *claims = [serializer dictionaryFromClaimsSet:claimsSetStorage];
             self.cachedResultArray = @[
-                                       @{@"header" : result[JWTCodingResultComponents.Headers] ?: @""},
-                                       @{@"payload" : result[JWTCodingResultComponents.Payload] ?: @""},
+                                       @{@"header" : result[JWTCodingResultComponents.headers] ?: @""},
+                                       @{@"payload" : result[JWTCodingResultComponents.payload] ?: @""},
                                        @{@"claimsSet" : claims ?: @""}
                                        ];
         }
