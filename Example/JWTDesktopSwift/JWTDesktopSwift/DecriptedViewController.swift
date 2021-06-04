@@ -69,10 +69,14 @@ class DecriptedViewController: NSViewController {
         self.cachedResultArray = nil
         self.cachedErrorDictionary = nil
         if let resultType = self.resultType {
-            if let result = resultType.successResult?.headerAndPayloadDictionary {
+            if let successResult = resultType.successResult, let dictionary = successResult.headerAndPayloadDictionary {
+                let serializer = JWTClaimsSetSerializerBase.init()
+                serializer.skipClaimsProviderLookupCheck = true
+                let value = successResult.claimsSetStorage.flatMap(serializer.dictionary)
                 self.cachedResultArray = [
-                    ["header" : result[JWTCodingResultComponents.headers!] ?? ""],
-                    ["payload": result[JWTCodingResultComponents.payload!] ?? ""]
+                    ["header" : dictionary[JWTCodingResultComponents.headers!] ?? ""],
+                    ["payload": dictionary[JWTCodingResultComponents.payload!] ?? ""],
+                    ["claims": value ?? ""]
                 ]
             }
             else {
