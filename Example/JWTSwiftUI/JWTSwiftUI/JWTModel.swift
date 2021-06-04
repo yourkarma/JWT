@@ -34,7 +34,7 @@ class JWTModel : ObservableObject {
         self.computeDecoding()
     }
 
-    func getObject() -> TokenDecoder.TokenDecoderDataTransferObject {
+    func getObject() -> TokenDecoder.DataTransferObject {
         let settings = self.data.settings
         let encodedData = self.data.encodedData
         let algorithmName = encodedData.algorithmName

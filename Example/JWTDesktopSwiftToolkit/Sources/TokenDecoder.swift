@@ -38,7 +38,7 @@ public struct TokenDecoder: TokenDecoderProtocol {
 }
 
 public extension TokenDecoder {
-    struct TokenDecoderDataTransferObject : TokenDecoderDataTransferObjectProtocol {
+    struct DataTransferObject : TokenDecoderDataTransferObjectProtocol {
         public init(algorithmName: String, secret: String? = nil, secretData: Data? = nil, isBase64EncodedSecret: Bool, shouldSkipSignatureVerification: Bool) {
             self.algorithmName = algorithmName
             self.secret = secret
