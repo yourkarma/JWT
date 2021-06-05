@@ -42,7 +42,7 @@ extension BottomView {
         var body: some View {
             VStack {
                 ForEach(self.decodedInformation, id: \.0) { value in
-                    Text("\(value.0): \(String(describing: value.1))").lineLimit(10).multilineTextAlignment(.center)
+                    Text("\(value.0.rawValue): \(String(describing: value.1))").lineLimit(10).multilineTextAlignment(.center)
                 }
             }
         }

@@ -13,12 +13,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-    var model = JWTModel(data: JWTModel.Storage.HS256())
+    var model: JWTModel = .init(data: JWTModel.Storage.HS256())
     
     func createController() -> UIViewController {
-        return UIHostingController(rootView:
-            ContentView(model: model)
-        )
+        UIHostingController(rootView: ContentView(model: self.model))
     }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
