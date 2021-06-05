@@ -8,7 +8,8 @@
 
 import Foundation
 import JWT
-public protocol TokenDecoderNecessaryDataObject__Protocol {
+
+public protocol TokenDecoderDataTransferObjectProtocol {
     var algorithmName: String {get}
     var secret: String? {get}
     var secretData: Data? {get}
@@ -16,72 +17,77 @@ public protocol TokenDecoderNecessaryDataObject__Protocol {
     var shouldSkipSignatureVerification: Bool {get}
 }
 
-public class TokenDecoder {
-    private lazy var theDecoder: TokenDecoder = {
-        return JWTTokenDecoder__V3()
-    }()
+private protocol TokenDecoderProtocol {
+    func decode(token: String?, object: TokenDecoderDataTransferObjectProtocol) -> JWTCodingResultType?
+}
+
+public struct TokenDecoder: TokenDecoderProtocol {
+    private let theDecoder: TokenDecoderProtocol = JWTTokenDecoder__V3()
     
-    fileprivate var builder: JWTBuilder?
-    fileprivate var resultType: JWTCodingResultType?
-    
-    // MARK: Subclass
-    fileprivate func _decode(token: String?, object: TokenDecoderNecessaryDataObject__Protocol) throws -> [AnyHashable : Any]?  {
-        return nil
+    public func decode(token: String?, object: TokenDecoderDataTransferObjectProtocol?) -> JWTCodingResultType?  {
+        guard let object = object else { return nil }
+        return self.theDecoder.decode(token: token, object: object)
     }
     
+    func decode(token: String?, object: TokenDecoderDataTransferObjectProtocol) -> JWTCodingResultType? {
+        self.theDecoder.decode(token: token, object: object)
+    }
     public init() {}
 }
 
 public extension TokenDecoder {
-    struct TokenDecoderObject : TokenDecoderNecessaryDataObject__Protocol {
+    struct DataTransferObject: TokenDecoderDataTransferObjectProtocol {
+        public init(algorithmName: String, secret: String? = nil, secretData: Data? = nil, isBase64EncodedSecret: Bool, shouldSkipSignatureVerification: Bool) {
+            self.algorithmName = algorithmName
+            self.secret = secret
+            self.secretData = secretData
+            self.isBase64EncodedSecret = isBase64EncodedSecret
+            self.shouldSkipSignatureVerification = shouldSkipSignatureVerification
+        }
+        
         public var algorithmName: String
         public var secret: String?
         public var secretData: Data?
         public var isBase64EncodedSecret: Bool
         public var shouldSkipSignatureVerification: Bool
+        
     }
 }
 
-public extension TokenDecoder {
-    func decode(token: String?, object: TokenDecoderNecessaryDataObject__Protocol?) throws -> [AnyHashable : Any]?  {
-        guard let theObject = object else {
-            return nil
-        }
-        return try self.theDecoder._decode(token: token, object: theObject)
-    }
-}
-
-fileprivate class JWTTokenDecoder__V2: TokenDecoder {
-    override func _decode(token: String?, object: TokenDecoderNecessaryDataObject__Protocol) throws -> [AnyHashable : Any]? {
+private struct JWTTokenDecoder__V2: TokenDecoderProtocol {
+    func decode(token: String?, object: TokenDecoderDataTransferObjectProtocol) -> JWTCodingResultType? {
         // do work here.
         print("JWT ENCODED TOKEN \(String(describing: token))")
         let algorithmName = object.algorithmName
         let skipVerification = object.shouldSkipSignatureVerification
         print("JWT Algorithm NAME \(algorithmName)")
-        let builder = JWTBuilder.decodeMessage(token).algorithmName(algorithmName)!.options(skipVerification as NSNumber)
+        let builder = JWTBuilder.decodeMessage(token).algorithmName(algorithmName)?.options(skipVerification as NSNumber)
         if (algorithmName != JWTAlgorithmNameNone) {
             if let secretData = object.secretData, object.isBase64EncodedSecret {
-                _ = builder.secretData(secretData)
+                _ = builder?.secretData(secretData)
             }
             else {
-                _ = builder.secret(object.secret)
+                _ = builder?.secret(object.secret)
             }
         }
         
-        self.builder = builder
-        
-        guard let decoded = builder.decode else {
-            print("JWT ERROR \(String(describing: builder.jwtError))")
-            return nil
+        guard let decoded = builder?.decode else {
+            print("JWT ERROR \(String(describing: builder?.jwtError))")
+            if let error = builder?.jwtError {
+                return .init(errorResult: .init(error: error))
+            }
+            else {
+                return nil
+            }
         }
-        
+
         print("JWT DICTIONARY \(decoded)")
-        return decoded
+        return .init(successResult: .init(headersAndPayload: decoded))
     }
 }
 
-fileprivate class JWTTokenDecoder__V3: TokenDecoder {
-    override func _decode(token: String?, object: TokenDecoderNecessaryDataObject__Protocol) throws -> [AnyHashable : Any]? {
+private struct JWTTokenDecoder__V3: TokenDecoderProtocol {
+    func decode(token: String?, object: TokenDecoderDataTransferObjectProtocol) -> JWTCodingResultType? {
         print("JWT ENCODED TOKEN \(String(describing: token))")
         let algorithmName = object.algorithmName
         let skipVerification = object.shouldSkipSignatureVerification
@@ -94,10 +100,6 @@ fileprivate class JWTTokenDecoder__V3: TokenDecoder {
             return nil
         }
         
-//        let a = Bundle.main.infoDictionary?["DEPLOYMENT_RUNTIME_SWIFT"]
-//
-//        print("deployment swift: \(a!)")
-        
         var holder: JWTAlgorithmDataHolderProtocol? = nil
         switch algorithm {
         case is JWTAlgorithmRSBase, is JWTAlgorithmAsymmetricBase:
@@ -108,9 +110,12 @@ fileprivate class JWTTokenDecoder__V3: TokenDecoder {
             catch let error {
                 // throw if needed
                 print("JWT internalError: \(error.localizedDescription)")
-                throw error
+                return .init(errorResult: .init(error: error))
             }
             
+            // TODO: remove dependency.
+            // Aware of last part.
+            // DataHolder MUST have a secretData ( empty data is perfect, if you use verifyKey )
             holder = JWTAlgorithmRSFamilyDataHolder().verifyKey(key).algorithmName(algorithmName)
         case is JWTAlgorithmHSBase:
             let aHolder = JWTAlgorithmHSFamilyDataHolder()
@@ -126,20 +131,21 @@ fileprivate class JWTTokenDecoder__V3: TokenDecoder {
         default: break
         }
         
-        let builder = JWTDecodingBuilder.decodeMessage(token).addHolder(holder)?.options(skipVerification as NSNumber)
+        let builder = JWTDecodingBuilder.decodeMessage(token).claimsSetCoordinator(JWTClaimsSetCoordinatorBase.init()).addHolder(holder)?.options(skipVerification as NSNumber)
         guard let result = builder?.result else {
             return nil
         }
         
         if let success = result.successResult {
             print("JWT RESULT: \(String(describing: success.debugDescription)) -> \(String(describing: success.headerAndPayloadDictionary?.debugDescription))")
-            return success.headerAndPayloadDictionary
+            return result
         }
         else if let error = result.errorResult {
             print("JWT ERROR: \(String(describing: error.debugDescription)) -> \(String(describing: error.error?.localizedDescription))")
-            throw error.error
+            return result
         }
-        
-        return nil
+        else {
+            return nil
+        }
     }
 }

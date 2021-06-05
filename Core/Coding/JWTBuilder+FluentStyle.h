@@ -18,57 +18,57 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Sets jwtMessage and returns the JWTBuilder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^message)(NSString *message);
+@property (copy, nonatomic, readonly) JWTBuilder *(^message)(NSString *message) NS_SWIFT_UNAVAILABLE("");
 
 /**
  Sets jwtPayload and returns the JWTBuilder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^payload)(NSDictionary *payload);
+@property (copy, nonatomic, readonly) JWTBuilder *(^payload)(NSDictionary *payload) NS_SWIFT_UNAVAILABLE("");
 
 /**
  Sets jwtHeaders and returns the JWTBuilder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^headers)(NSDictionary *headers);
+@property (copy, nonatomic, readonly) JWTBuilder *(^headers)(NSDictionary *headers) NS_SWIFT_UNAVAILABLE("");
 
 /**
  Sets jwtClaimsSet and returns the JWTBuilder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^claimsSet)(JWTClaimsSet *claimsSet);
+@property (copy, nonatomic, readonly) JWTBuilder *(^claimsSet)(JWTClaimsSet *claimsSet) NS_SWIFT_UNAVAILABLE("");
 
 /**
  Sets jwtSecret and returns the JWTBuilder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^secret)(NSString *secret);
+@property (copy, nonatomic, readonly) JWTBuilder *(^secret)(NSString *secret) NS_SWIFT_UNAVAILABLE("");
 
 /**
  Sets jwtSecretData and returns the JWTBuilder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^secretData)(NSData *secretData);
+@property (copy, nonatomic, readonly) JWTBuilder *(^secretData)(NSData *secretData) NS_SWIFT_UNAVAILABLE("");
 
 /**
  Sets jwtPrivateKeyCertificatePassphrase and returns the JWTBuilder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^privateKeyCertificatePassphrase)(NSString *privateKeyCertificatePassphrase);
+@property (copy, nonatomic, readonly) JWTBuilder *(^privateKeyCertificatePassphrase)(NSString *privateKeyCertificatePassphrase) NS_SWIFT_UNAVAILABLE("");
 
 /**
  Sets jwtAlgorithm and returns the JWTBuilder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm);
+@property (copy, nonatomic, readonly) JWTBuilder *(^algorithm)(id<JWTAlgorithm>algorithm) NS_SWIFT_UNAVAILABLE("");
 
 /**
  Sets jwtAlgorithmName and returns the JWTBuilder to allow for method chaining. See list of names in appropriate headers.
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^algorithmName)(NSString *algorithmName);
+@property (copy, nonatomic, readonly) JWTBuilder *(^algorithmName)(NSString *algorithmName) NS_SWIFT_UNAVAILABLE("");
 
 /**
  Sets jwtOptions and returns the JWTBuilder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^options)(NSNumber *options);
+@property (copy, nonatomic, readonly) JWTBuilder *(^options)(NSNumber *options) NS_SWIFT_UNAVAILABLE("");
 
 /**
  Sets algorithmWhitelist and returns the JWTBuilder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTBuilder *(^whitelist)(NSArray *whitelist);
+@property (copy, nonatomic, readonly) JWTBuilder *(^whitelist)(NSArray *whitelist) NS_SWIFT_UNAVAILABLE("");
 @end
 
 NS_ASSUME_NONNULL_END

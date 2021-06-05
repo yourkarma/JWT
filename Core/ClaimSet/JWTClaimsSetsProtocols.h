@@ -72,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #if DEPLOYMENT_RUNTIME_SWIFT
 #else
-@property (copy, nonatomic, readonly) id <JWTClaimsSetCoordinatorProtocol> (^configureClaimsSet)(JWTClaimsSetDSLBase *(^)(JWTClaimsSetDSLBase *claimsSetDSL));
+@property (copy, nonatomic, readonly) id <JWTClaimsSetCoordinatorProtocol> (^configureClaimsSet)(JWTClaimsSetDSLBase *(^)(JWTClaimsSetDSLBase *claimsSetDSL)) NS_SWIFT_UNAVAILABLE("");
 #endif
 
 - (void)registerClaim:(id<JWTClaimProtocol>)claim serializer:(id<JWTClaimSerializerProtocol>)serializer verifier:(id<JWTClaimVerifierProtocol>)verifier forClaimName:(NSString *)name;

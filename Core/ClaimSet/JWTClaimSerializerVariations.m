@@ -9,8 +9,11 @@
 #import "JWTClaimSerializerVariations.h"
 
 @implementation JWTClaimSerializerVariations
-+ (id<JWTClaimSerializerProtocol>)dateAndTimestamp {
++ (id<JWTClaimSerializerProtocol>)dateAndTimestampTransform {
     return [JWTClaimSerializerBaseConcreteDateAndTimestamp new];
+}
++ (id<JWTClaimSerializerProtocol>)identityTransform {
+    return [JWTClaimSerializerBase new];
 }
 @end
 

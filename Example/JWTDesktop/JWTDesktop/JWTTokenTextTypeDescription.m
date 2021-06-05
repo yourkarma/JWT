@@ -26,6 +26,9 @@
 @property (strong, nonatomic, readwrite) NSDictionary *textColors;
 @end
 @implementation JWTTokenTextTypeDescription
+- (NSDictionary *)encodedTextAttributesForType:(JWTTokenTextType)type {
+    return @{};
+}
 
 - (NSColor *)colorForType:(JWTTokenTextType)type {
     switch (type) {

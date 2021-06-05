@@ -18,42 +18,42 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Sets jwtSecret and returns the JWTAlgorithmBaseDataHolder to allow for method chaining
  */
- @property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^secret)(NSString *secret);
+ @property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^secret)(NSString *secret) NS_SWIFT_UNAVAILABLE("");
 
 /**
  Sets jwtSecretData and returns the JWTAlgorithmBaseDataHolder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^secretData)(NSData *secretData);
+@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^secretData)(NSData *secretData) NS_SWIFT_UNAVAILABLE("");
 
 /**
  Sets jwtAlgorithm and returns the JWTAlgorithmBaseDataHolder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^algorithm)(id<JWTAlgorithm>algorithm);
+@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^algorithm)(id<JWTAlgorithm>algorithm) NS_SWIFT_UNAVAILABLE("");
 
 /**
  Sets jwtAlgorithmName and returns the JWTAlgorithmBaseDataHolder to allow for method chaining. See list of names in appropriate headers.
  */
-@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^algorithmName)(NSString *algorithmName);
+@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^algorithmName)(NSString *algorithmName) NS_SWIFT_UNAVAILABLE("");
 
 /**
  Sets stringCoder and returns the JWTAlgorithmBaseDataHolder to allow for method chaining. See list of names in appropriate headers.
  */
-@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^stringCoder)(id<JWTStringCoder__Protocol> stringCoder);
+@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^stringCoder)(id<JWTStringCoderProtocol> stringCoder) NS_SWIFT_UNAVAILABLE("");
 @end
 
 @interface JWTAlgorithmRSFamilyDataHolder (FluentStyle)
 /**
  Sets jwtPrivateKeyCertificatePassphrase and returns the JWTAlgorithmRSFamilyDataHolder to allow for method chaining
  */
-@property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^privateKeyCertificatePassphrase)(NSString *privateKeyCertificatePassphrase);
-@property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^keyExtractorType)(NSString *keyExtractorType);
+@property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^privateKeyCertificatePassphrase)(NSString *privateKeyCertificatePassphrase) NS_SWIFT_UNAVAILABLE("");
+@property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^keyExtractorType)(NSString *keyExtractorType) NS_SWIFT_UNAVAILABLE("");
 
 // BUG:
 // If you set sign/verify keys, you should also set .secretData([NSData data]);
 // Yes, this is a bug.
 // Please, set it.
-@property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^signKey)(id<JWTCryptoKeyProtocol> signKey);
-@property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^verifyKey)(id<JWTCryptoKeyProtocol> verifyKey);
+@property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^signKey)(id<JWTCryptoKeyProtocol> signKey) NS_SWIFT_UNAVAILABLE("");
+@property (copy, nonatomic, readonly) JWTAlgorithmRSFamilyDataHolder *(^verifyKey)(id<JWTCryptoKeyProtocol> verifyKey) NS_SWIFT_UNAVAILABLE("");
 @end
 
 NS_ASSUME_NONNULL_END

@@ -69,10 +69,14 @@ class DecriptedViewController: NSViewController {
         self.cachedResultArray = nil
         self.cachedErrorDictionary = nil
         if let resultType = self.resultType {
-            if let result = resultType.successResult?.headerAndPayloadDictionary {
+            if let successResult = resultType.successResult, let dictionary = successResult.headerAndPayloadDictionary {
+                let serializer = JWTClaimsSetSerializerBase.init()
+                serializer.skipClaimsProviderLookupCheck = true
+                let value = successResult.claimsSetStorage.flatMap(serializer.dictionary)
                 self.cachedResultArray = [
-                    ["header" : result[JWTCodingResultComponents.headers!] ?? ""],
-                    ["payload": result[JWTCodingResultComponents.payload!] ?? ""]
+                    ["header" : dictionary[JWTCodingResultComponents.headers!] ?? ""],
+                    ["payload": dictionary[JWTCodingResultComponents.payload!] ?? ""],
+                    ["claims": value ?? ""]
                 ]
             }
             else {
@@ -115,10 +119,10 @@ class DecriptedViewController: NSViewController {
     func color(indexPath: IndexPath) -> NSColor {
         var color = NSColor.black
         if self.cachedErrorDictionary != nil {
-            color = TokenTextType.Header.color
+            color = TokenTextType.header.color
         }
         else if (self.cachedResultArray != nil) {
-            color = (indexPath.item == 0 ? TokenTextType.Header : TokenTextType.Payload).color
+            color = (indexPath.item == 0 ? TokenTextType.header : TokenTextType.payload).color
         }
         return color
     }

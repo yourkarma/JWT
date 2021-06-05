@@ -44,7 +44,7 @@
 /**
  Sets stringCoder and returns the JWTAlgorithmBaseDataHolder to allow for method chaining. See list of names in appropriate headers.
  */
-@property (copy, nonatomic, readwrite) JWTAlgorithmBaseDataHolder *(^stringCoder)(id<JWTStringCoder__Protocol> stringCoder);
+@property (copy, nonatomic, readwrite) JWTAlgorithmBaseDataHolder *(^stringCoder)(id<JWTStringCoderProtocol> stringCoder);
 @end
 
 @interface JWTAlgorithmBaseDataHolder (Convertions)
@@ -101,7 +101,7 @@
         return [weakSelf algorithmName:algorithmName];
     };
 
-    self.stringCoder = ^(id <JWTStringCoder__Protocol> stringCoder) {
+    self.stringCoder = ^(id <JWTStringCoderProtocol> stringCoder) {
         return [weakSelf stringCoder:stringCoder];
     };
 }
@@ -130,7 +130,7 @@
 @synthesize internalSecretData;
 @synthesize internalStringCoder = _internalStringCoder;
 
-- (id<JWTStringCoder__Protocol>)internalStringCoder {
+- (id<JWTStringCoderProtocol>)internalStringCoder {
     return _internalStringCoder ?: [JWTBase64Coder new];
 }
 
@@ -182,7 +182,7 @@
     return self;
 }
 
-- (instancetype)stringCoder:(id<JWTStringCoder__Protocol>)stringCoder {
+- (instancetype)stringCoder:(id<JWTStringCoderProtocol>)stringCoder {
     self.internalStringCoder = stringCoder;
     return self;
 }

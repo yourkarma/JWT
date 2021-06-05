@@ -9,22 +9,19 @@
 import SwiftUI
 import Combine
 import JWT
+import JWTDesktopSwiftToolkit
 
-class JWTModel : ObservableObject {
-    var objectWillChange = PassthroughSubject<Void, Never>().sink {
-        print("here!")
-    }
-    var data: Storage {
+class JWTModel: ObservableObject {
+    @Published var data: Storage {
         didSet {
-            // special hook, hah!
             self.computeDecoding()
-            objectWillChange.send()
         }
     }
-    var decodedData = Storage.DecodedData()
 
-    var decoder = TokenDecoder()
-    var appearance = TokenTextAppearance()
+    @Published var decodedData: Storage.DecodedData = .init()
+
+    var decoder: TokenDecoder = .init()
+    var appearance: TokenTextAppearance = .init()
     public init(data: Storage) {
         self.data = data
         // update data right after init or in stored property setter?
@@ -33,7 +30,7 @@ class JWTModel : ObservableObject {
         self.computeDecoding()
     }
 
-    func getObject() -> TokenDecoder.TokenDecoderObject {
+    func getObject() -> TokenDecoder.DataTransferObject {
         let settings = self.data.settings
         let encodedData = self.data.encodedData
         let algorithmName = encodedData.algorithmName
@@ -42,7 +39,7 @@ class JWTModel : ObservableObject {
         let isBase64EncodedSecret = settings.isBase64
         let shouldSkipSignatureVerification = settings.skipSignatureVerification
 
-        return TokenDecoder.TokenDecoderObject(algorithmName: algorithmName, secret: secret, secretData: secretData, isBase64EncodedSecret: isBase64EncodedSecret, shouldSkipSignatureVerification: shouldSkipSignatureVerification)
+        return .init(algorithmName: algorithmName, secret: secret, secretData: secretData, isBase64EncodedSecret: isBase64EncodedSecret, shouldSkipSignatureVerification: shouldSkipSignatureVerification)
     }
 
     func computeEncoding() {
@@ -58,15 +55,15 @@ class JWTModel : ObservableObject {
         var forSignatureObject = object
         forSignatureObject.shouldSkipSignatureVerification = false
 
-        self.decodedData.verified = (try? self.decoder.decode(token: token, object: forSignatureObject) != nil) == .none ? SignatureValidationType.invalid : SignatureValidationType.valid
+        self.decodedData.verified = (self.decoder.decode(token: token, object: forSignatureObject)?.errorResult != nil) ? .invalid : .valid
 
-        do {
-            if let decoded = try self.decoder.decode(token: token, object: object) {
-                self.decodedData.result = .success(decoded as! [String : Any])
+        if let decoded = self.decoder.decode(token: token, object: object) {
+            if let successResult = decoded.successResult {
+                self.decodedData.result = .success(successResult.headerAndPayloadDictionary as! [String: Any])
             }
-        }
-        catch let error {
-            self.decodedData.result = .failure(error)
+            else if let errorResult = decoded.errorResult {
+                self.decodedData.result = .failure(errorResult.error)
+            }
         }
     }
 }
@@ -74,10 +71,10 @@ class JWTModel : ObservableObject {
 // MARK: Data.
 extension JWTModel {
     struct Storage {
-        var settings = Settings()
-        var encodedData = EncodedData()
+        var settings: Settings = .init()
+        var encodedData: EncodedData = .init()
         var isBase64Available: Bool {
-            return settings.isBase64 && getSecretData() != nil
+            self.settings.isBase64 && self.getSecretData() != nil
         }
         fileprivate func getSecretData() -> Data? {
             let secret = encodedData.secret
@@ -110,10 +107,10 @@ extension JWTModel.Storage {
 // MARK: DecodedData structure.
 extension JWTModel.Storage {
     struct DecodedData {
-        var result: Result<[String : Any], Error> = .success([:])
-        var verified = SignatureValidationType.unknown // BottomView.SignatureView
-        var decoded: [String : Any] {
-            guard case let (.success(value)) = self.result else {
+        var result: Result<[String: Any], Error> = .success([:])
+        var verified: SignatureValidationType = .unknown
+        var decoded: [String: Any] {
+            guard case let .success(value) = self.result else {
                 return [:]
             }
             return value
@@ -129,35 +126,37 @@ extension JWTModel.Storage {
 
 // MARK: decodedInformation
 extension JWTModel.Storage.DecodedData {
-    typealias DecodedInfoType = [(String, String)]
-    func decodedInfo() -> DecodedInfoType {
+    typealias DecodedInfoType = [(DecodedInformation, String)]
+    private func decodedInfo() -> DecodedInfoType {
         if let error = self.error {
-            return [(DecodedInformation.error.rawValue, String.json(["error": error]) )]
+            return [
+                (.error, String.json(["error": error.localizedDescription]))
+            ]
         }
         else if let headers = decoded[JWTCodingResultComponents.headers!] as? [String: Any], let payload = decoded[JWTCodingResultComponents.payload!] as? [String: Any] {
             return [
-                (DecodedInformation.header.rawValue, String.json(headers)),
-                (DecodedInformation.payload.rawValue, String.json(payload))
+                (.header, String.json(headers)),
+                (.payload, String.json(payload))
             ]
         }
         else {
             return [
-                (DecodedInformation.unknown.rawValue, String.json(["unknown": "unknown"]))
+                (.unknown, String.json(["unknown": "unknown"]))
             ]
         }
     }
     var decodedInformation: DecodedInfoType {
-        return decodedInfo()
+        self.decodedInfo()
     }
 }
 
 // MARK: Algorithms.
 extension JWTModel.Storage.EncodedData {
     var availableAlgorithms: [JWTAlgorithm] {
-        return JWTAlgorithmFactory.algorithms()
+        JWTAlgorithmFactory.algorithms()
     }
     var availableAlgorithmsNames: [String] {
-        return self.availableAlgorithms.map{$0.name}
+        self.availableAlgorithms.map(\.name)
     }
 }
 
@@ -168,17 +167,16 @@ extension JWTModel.Storage.DecodedData {
         case header
         case payload
         case unknown
-        var color: Color {
+        var uiColor: UIColor {
             switch self {
-            case .error:
-                return SignatureValidationType.invalid.color
-            case .header:
-                return TokenTextType.header.color
-            case .payload:
-                return TokenTextType.payload.color
-            case .unknown:
-                return TokenTextType.unknown.color
+            case .error: return SignatureValidationType.invalid.color
+            case .header: return TokenTextType.header.color
+            case .payload: return TokenTextType.payload.color
+            case .unknown: return TokenTextType.unknown.color
             }
+        }
+        var color: Color {
+            .init(self.uiColor)
         }
     }
 }
@@ -186,9 +184,9 @@ extension JWTModel.Storage.DecodedData {
 //MARK: Data Seed
 extension JWTModel.Storage {
     static func create(algorithmName: String, secret: String, token: String) -> Self {
-        let encodedData = EncodedData(algorithmName: algorithmName, secret: secret, token: token)
-        let settings = Settings(isBase64: true, skipSignatureVerification: true)
-        return JWTModel.Storage(settings: settings, encodedData: encodedData)
+        let encodedData: EncodedData = .init(algorithmName: algorithmName, secret: secret, token: token)
+        let settings: Settings = .init(isBase64: true, skipSignatureVerification: false)
+        return .init(settings: settings, encodedData: encodedData)
     }
     static func HS256() -> Self {
         let algorithmName = JWTAlgorithmNameHS256

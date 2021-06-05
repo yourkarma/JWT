@@ -8,17 +8,17 @@
 
 #import "JWTCoding+ResultTypes.h"
 
-NSString *JWTCodingResultHeaders = @"header";
-NSString *JWTCodingResultPayload = @"payload";
+static NSString *JWTCodingResultHeaders = @"headers";
+static NSString *JWTCodingResultPayload = @"payload";
 
 @implementation JWT (ResultTypes) @end
 
 @implementation JWTCodingResultComponents
-+ (NSString *)Headers {
-    return @"header";
++ (NSString *)headers {
+    return JWTCodingResultHeaders;
 }
-+ (NSString *)Payload {
-    return @"payload";
++ (NSString *)payload {
+    return JWTCodingResultPayload;
 }
 @end
 
@@ -32,7 +32,6 @@ NSString *JWTCodingResultPayload = @"payload";
 @protocol JWTMutableCodingResultTypeSuccessDecodedProtocol <JWTCodingResultTypeSuccessDecodedProtocol>
 @property (copy, nonatomic, readwrite) NSDictionary *headers;
 @property (copy, nonatomic, readwrite) NSDictionary *payload;
-@property (copy, nonatomic, readwrite) JWTClaimsSet *claimsSet;
 @property (copy, nonatomic, readwrite) id<JWTClaimsSetProtocol> claimsSetStorage;
 @end
 
@@ -47,7 +46,6 @@ NSString *JWTCodingResultPayload = @"payload";
 @synthesize encoded = _encoded;
 @synthesize headers = _headers;
 @synthesize payload = _payload;
-@synthesize claimsSet = _claimsSet;
 @synthesize claimsSetStorage = _claimsSetStorage;
 //Not used yet. Could be replacement for _encoded.
 @synthesize token = _token;
@@ -55,8 +53,8 @@ NSString *JWTCodingResultPayload = @"payload";
 - (NSDictionary *)headerAndPayloadDictionary {
     if (self.headers && self.payload) {
         return @{
-                 JWTCodingResultComponents.Headers: self.headers,
-                 JWTCodingResultComponents.Payload: self.payload
+                 JWTCodingResultComponents.headers: self.headers,
+                 JWTCodingResultComponents.payload: self.payload
         };
     }
     return nil;
@@ -82,16 +80,9 @@ NSString *JWTCodingResultPayload = @"payload";
 }
 
 - (instancetype)initWithHeadersAndPayload:(NSDictionary *)headersAndPayloadDictionary {
-    NSDictionary *headers = headersAndPayloadDictionary[JWTCodingResultComponents.Headers];
-    NSDictionary *payload = headersAndPayloadDictionary[JWTCodingResultComponents.Payload];
+    NSDictionary *headers = headersAndPayloadDictionary[JWTCodingResultComponents.headers];
+    NSDictionary *payload = headersAndPayloadDictionary[JWTCodingResultComponents.payload];
     return [self initWithHeaders:headers withPayload:payload];
-}
-
-- (instancetype)initWithClaimsSet:(JWTClaimsSet *)claimsSet {
-    if (self = [super init]) {
-        self.claimsSet = claimsSet;
-    }
-    return self;
 }
 
 - (instancetype)initWithClaimsSetStorage:(id<JWTClaimsSetProtocol>)claimsSetStorage {

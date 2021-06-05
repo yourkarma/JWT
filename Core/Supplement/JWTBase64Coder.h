@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol JWTStringCoder__Protocol <NSObject>
+@protocol JWTStringCoderProtocol <NSObject>
 - (NSString *)stringWithData:(NSData *)data;
 - (NSData *)dataWithString:(NSString *)string;
 @end
@@ -20,11 +20,11 @@
 + (NSData *)dataWithBase64UrlEncodedString:(NSString *)urlEncodedString;
 @end
 
-@interface JWTBase64Coder (JWTStringCoder__Protocol) <JWTStringCoder__Protocol> @end
+@interface JWTBase64Coder (JWTStringCoderProtocol) <JWTStringCoderProtocol> @end
 
 
-@interface JWTStringCoder__For__Encoding : NSObject
+@interface JWTStringCoderForEncoding : NSObject
 @property (assign, nonatomic, readwrite) NSStringEncoding stringEncoding;
 + (instancetype)utf8Encoding;
 @end
-@interface JWTStringCoder__For__Encoding (JWTStringCoder__Protocol) <JWTStringCoder__Protocol> @end
+@interface JWTStringCoderForEncoding (JWTStringCoderProtocol) <JWTStringCoderProtocol> @end

@@ -9,69 +9,49 @@
 import SwiftUI
 
 // MARK: Token text type.
-public enum TokenTextType : Int {
+public enum TokenTextType: Int {
     case unknown = 0
     case header
     case payload
     case signature
     case dot
-    public var color : Color {
-        switch self {
-        case .unknown: return .black
-        case .header: return .red
-        case .payload: return .purple
-        case .signature: return .init(red: 0, green: 185/255.0, blue: 241/255.0, opacity: 1.0)
-        case .dot: return .black
-        }
-    }
-    public var font : Font {
-        Font.system(size: 22, design: .rounded)
-    }
     
-    static var typicalSchemeComponents : [Self] {
-        return [.header, .dot, .payload, .dot, .signature]
+    static var typicalSchemeComponents: [Self] {
+        [.header, .dot, .payload, .dot, .signature]
     }
 }
 
 // MARK: NSAttributes.
 extension TokenTextType {
     fileprivate var encodedTextAttributes: [NSAttributedString.Key: Any] {
-        return encodedTextAttributes(type: self)
+        encodedTextAttributes(type: self)
     }
     
     fileprivate func encodedTextAttributes(type: TokenTextType) -> [NSAttributedString.Key: Any] {
         var attributes = self.defaultEncodedTextAttributes()
         attributes[NSAttributedString.Key.foregroundColor] = type.color
         return attributes
-    }
-    
-    fileprivate func defaultEncodedTextAttributes() -> [NSAttributedString.Key: Any] {
-        return [
-            NSAttributedString.Key.font : Font.system(size: 22, design: .rounded)
-        ]
-    }
+    }    
 }
 
 // MARK: Serialization
 fileprivate class TokenTextSerialization {
-    public init() {}
     fileprivate func textPart(parts: [String], type: TokenTextType) -> String? {
         switch type {
         case .unknown: return nil
-        case .header:
-            return parts.first
-        case .payload:
-            guard parts.count > 1 else { return nil }
-            return parts[1]
-        case .signature: if parts.count > 2 { return parts[2..<parts.count].joined(separator: ".") } else { return nil }
+        case .header: return parts.first
+        case .payload where parts.count > 1: return parts[1]
+        case .signature where parts.count > 2: return parts[2..<parts.count].joined(separator: ".")
         case .dot: return "."
+        default: return nil
         }
     }
+    public init() {}
 }
 
 // MARK: Appearance.
 public class TokenTextAppearance {
-    private let serialization = TokenTextSerialization()
+    private let serialization: TokenTextSerialization = .init()
     fileprivate func encodedAttributes(text: String, tokenSerialization: TokenTextSerialization) -> [(String, Attributes)] {
         let parts = text.components(separatedBy: ".")
         
@@ -90,21 +70,16 @@ public class TokenTextAppearance {
 
 // MARK: Appearance.Public.
 public extension TokenTextAppearance {
-    struct Attributes {
-        public let color: Color
-        public let font: Font
-    }
-
-    func encodedAttributes(text: String) -> [(String, Attributes)] {
-        return self.encodedAttributes(text: text, tokenSerialization: self.serialization)
+    func encodedAttributes(text: String) -> [(string: String, attributes: Attributes)] {
+        self.encodedAttributes(text: text, tokenSerialization: self.serialization)
     }
     
     func encodedAttributedString(text: String) -> NSAttributedString? {
-        return self.encodedAttributes(text: text, tokenSerialization: self.serialization).reduce(NSMutableAttributedString()) { (result, pair) in
+        self.encodedAttributes(text: text, tokenSerialization: self.serialization).reduce(NSMutableAttributedString()) { (result, pair) in
             let (part, attributes) = pair
             let string = NSAttributedString(string: part, attributes: [
-                .foregroundColor : attributes.color,
-                .font : attributes.font
+                .foregroundColor: attributes.color,
+                .font: attributes.font
                 ])
             result.append(string)
             return result

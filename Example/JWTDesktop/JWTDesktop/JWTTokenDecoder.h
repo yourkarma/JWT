@@ -16,9 +16,9 @@
 @property (assign, nonatomic, readonly) BOOL isBase64EncodedSecret;
 @end
 
-@interface JWTTokenDecoder : NSObject
-@property (strong, nonatomic, readonly) JWTBuilder *builder;
-@property (strong, nonatomic, readonly) JWTCodingResultType *resultType;
+@protocol JWTTokenDecoderProtocol
+- (JWTCodingResultType *)decodeToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification necessaryDataObject:(id<JWTTokenDecoderNecessaryDataObject__Protocol>)object;
+@end
 
-- (NSDictionary *)decodeToken:(NSString *)token skipSignatureVerification:(BOOL)skipVerification error:(NSError *__autoreleasing*)error necessaryDataObject:(id<JWTTokenDecoderNecessaryDataObject__Protocol>)object;
+@interface JWTTokenDecoder : NSObject <JWTTokenDecoderProtocol>
 @end

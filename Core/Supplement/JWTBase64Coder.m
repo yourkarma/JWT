@@ -112,14 +112,14 @@
 }
 @end
 
-@implementation JWTStringCoder__For__Encoding
+@implementation JWTStringCoderForEncoding
 + (instancetype)utf8Encoding {
-    JWTStringCoder__For__Encoding *coding = [self new];
+    __auto_type coding = (JWTStringCoderForEncoding *)[self new];
     coding.stringEncoding = NSUTF8StringEncoding;
     return coding;
 }
 @end
-@implementation JWTStringCoder__For__Encoding (JWTStringCoder__Protocol)
+@implementation JWTStringCoderForEncoding (JWTStringCoderProtocol)
 - (NSString *)stringWithData:(NSData *)data {
     return [[NSString alloc] initWithData:data encoding:self.stringEncoding];
 }

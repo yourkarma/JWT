@@ -21,6 +21,9 @@
 @property (weak) IBOutlet NSTextField *secretLabel;
 @property (weak) IBOutlet NSTextField *secretTextField;
 @property (weak) IBOutlet NSButton *secretIsBase64EncodedCheckButton;
+@property (weak) IBOutlet NSTextField *signatureLabel;
+@property (weak) IBOutlet NSButton *signatureVerificationCheckButton;
+
 
 @property (unsafe_unretained) IBOutlet NSTextView *encodedTextView;
 @property (unsafe_unretained) IBOutlet NSTextView *decodedTextView;
@@ -28,6 +31,7 @@
 @property (weak) IBOutlet NSView * decriptedView;
 @property (strong, nonatomic, readwrite) JWTDecriptedViewController *decriptedViewController;
 @property (weak) IBOutlet NSTextField *signatureStatusLabel;
+
 
 @property (strong, nonatomic, readwrite) ViewController__Model *model;
 @end
@@ -107,19 +111,14 @@
         [textStorage setAttributes:dictionary range:range];
     }];
     
-    NSError *error = nil;
-    NSDictionary *result = [self.model.decoder decodeToken:string skipSignatureVerification:YES error:&error necessaryDataObject:self];
-    
-    NSLog(@"1. CODER: %@ -> %@",self.model.decoder, self.model.decoder.resultType);
-    
-    BOOL signatureVerified = [self.model.decoder decodeToken:string skipSignatureVerification:NO error:&error necessaryDataObject:self] != nil;
+    BOOL signatureVerified = [self.model.decoder decodeToken:string skipSignatureVerification:NO necessaryDataObject:self].errorResult == nil;
     [self signatureReactOnVerifiedToken:signatureVerified];
     
-    NSLog(@"2. CODER: %@ -> %@",self.model.decoder, self.model.decoder.resultType);
+    __auto_type shouldSkipVerification = self.signatureVerificationCheckButton.integerValue == 1;
+    __auto_type result = [self.model.decoder decodeToken:string skipSignatureVerification:shouldSkipVerification necessaryDataObject:self];
     
     // will be udpated.
-    JWTCodingResultType *resultType = error ? [[JWTCodingResultType alloc] initWithErrorResult:[[JWTCodingResultTypeError alloc] initWithError:error]] : self.model.decoder.resultType;
-    self.decriptedViewController.resultType = resultType;
+    self.decriptedViewController.resultType = result;
 }
 
 #pragma mark - Signature Customization
@@ -157,6 +156,14 @@
     self.secretIsBase64EncodedCheckButton.integerValue = NO;
     [self.secretIsBase64EncodedCheckButton setTarget:self];
     [self.secretIsBase64EncodedCheckButton setAction:@selector(checkBoxState:)];
+    
+    // skip signature verification
+    self.signatureLabel.stringValue = @"Signature";
+    
+    self.signatureVerificationCheckButton.title = @"Skip signature verification";
+    self.signatureVerificationCheckButton.integerValue = 0;
+    [self.signatureVerificationCheckButton setTarget:self];
+    [self.signatureVerificationCheckButton setAction:@selector(checkBoxState:)];
 }
 
 - (void)setupBottom {

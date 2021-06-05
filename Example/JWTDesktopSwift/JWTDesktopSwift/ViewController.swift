@@ -12,29 +12,32 @@ import JWTDesktopSwiftToolkit
 
 
 // MARK: - Supply JWT Methods
-extension ViewController: TokenDecoderNecessaryDataObject__Protocol {
-    var chosenAlgorithmName: String {
-        return self.algorithmPopUpButton.selectedItem?.title ?? ""
+extension ViewController {
+    func tokenDataTransferObject() -> TokenDecoder.DataTransferObject {
+        let algorithmName = self.algorithmPopUpButton.selectedItem?.title ?? ""
+        let secret = self.secretTextField.stringValue
+        let secretData: Data? = self.getSecretData
+        let isBase64EncodedSecret = self.secretIsBase64EncodedCheckButton.integerValue == 1
+        let shouldSkipSignatureVerification = self.signatureVerificationCheckButton.integerValue == 1
+        return .init(algorithmName: algorithmName, secret: secret, secretData: secretData, isBase64EncodedSecret: isBase64EncodedSecret, shouldSkipSignatureVerification: shouldSkipSignatureVerification)
     }
     
-    var chosenSecretData: Data? {
-        let secret = self.chosenSecret;
+    func tokenDataTransferObjectShouldCheckSignature() -> TokenDecoder.DataTransferObject {
+        var result = self.tokenDataTransferObject()
+        result.shouldSkipSignatureVerification = false
+        return result
+    }
+    
+    var getSecretData: Data? {
+        let secret = self.secretTextField.stringValue
         
-        let isBase64Encoded = self.isBase64EncodedSecret;
-        guard let theSecret = secret, let result = Data(base64Encoded: theSecret), isBase64Encoded else {
+        let isBase64Encoded = self.secretIsBase64EncodedCheckButton.integerValue == 1
+        guard let result = Data(base64Encoded: secret), isBase64Encoded else {
             self.secretIsBase64EncodedCheckButton.integerValue = 0
             return nil
         }
         
         return result
-    }
-    
-    var chosenSecret: String? {
-        return self.secretTextField.stringValue
-    }
-    
-    var isBase64EncodedSecret: Bool {
-        return self.secretIsBase64EncodedCheckButton.integerValue == 1
     }
 }
 
@@ -64,25 +67,16 @@ extension ViewController {
         // We should add an option to skip verification in decoding section.
         // invalid signature doesn't mean that you can't decode JWT.
         
-        if let jwtVerified = try? self.model.decoder.decode(token: string, skipVerification: false, object: self) {
-            self.signatureReactOnVerifiedToken(verified: !jwtVerified.isEmpty)
+        if let jwtVerified = self.model.decoder.decode(token: string, object: self.tokenDataTransferObjectShouldCheckSignature()) {
+            let notVerified = jwtVerified.successResult?.headerAndPayloadDictionary?.isEmpty == true
+            self.signatureReactOnVerifiedToken(verified: !notVerified)
         }
         else {
             self.signatureReactOnVerifiedToken(verified: false)
         }
         
-        var result: JWTCodingResultType? = nil
-        let shouldSkipVerification = self.signatureVerificationCheckButton.integerValue == 1
-        do {
-            if let decoded = try self.model.decoder.decode(token: string, skipVerification: shouldSkipVerification, object: self) {
-                result = JWTCodingResultType(successResult: JWTCodingResultTypeSuccess(headersAndPayload: decoded))
-            }
-        }
-        catch let error {
-            result = JWTCodingResultType(errorResult: JWTCodingResultTypeError(error: error))
-        }
+        let result = self.model.decoder.decode(token: string, object: self.tokenDataTransferObject())
         
-//        self.decriptedViewController.builder = self.model.decoder.builder
         self.decriptedViewController.resultType = result
     }
     
@@ -102,8 +96,7 @@ extension ViewController {
         self.refreshUI()
     }
     func signatureReactOnVerifiedToken(verified: Bool) {
-        let type = verified ? SignatureValidationType.Valid : SignatureValidationType.Invalid
-        self.model.signatureValidation = type
+        self.model.signatureValidation = verified ? .valid : .invalid
         self.refreshSignature()
     }
 }
@@ -282,7 +275,7 @@ class ViewController: NSViewController {
     }
     
     func defaultDataSetup() {
-        let seed = DataSeedType.hs256.dataSeed//rs256.dataSeed
+        let seed = DataSeedType.rs256.dataSeed//rs256.dataSeed
         self.defaultDataSetup(algorithmName: seed.algorithmName, secret: seed.secret, token: seed.token)
     }
     
