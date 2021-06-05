@@ -17,6 +17,7 @@
 @protocol JWTAlgorithmDataHolderProtocol;
 @class JWTCodingResultType;
 @protocol JWTClaimsSetCoordinatorProtocol;
+@protocol JWTStringCoderProtocol;
 
 @interface JWT (VersionThree)
 + (JWTEncodingBuilder *)encodeWithHolders:(NSArray *)holders;
@@ -35,6 +36,7 @@
 #pragma mark - Internal
 @property (nonatomic, readonly) JWTAlgorithmDataHolderChain *internalChain;
 @property (copy, nonatomic, readonly) NSNumber *internalOptions;
+@property (strong, nonatomic, readonly) id <JWTStringCoderProtocol> internalTokenCoder;
 @end
 
 @interface JWTCodingBuilder (Sugar)
@@ -79,6 +81,7 @@
 - (instancetype)chain:(JWTAlgorithmDataHolderChain *)chain;
 - (instancetype)options:(NSNumber *)options;
 - (instancetype)addHolder:(id<JWTAlgorithmDataHolderProtocol>)holder;
+- (instancetype)tokenCoder:(id<JWTStringCoderProtocol>)tokenCoder;
 @end
 
 @interface JWTEncodingBuilder (Setters)

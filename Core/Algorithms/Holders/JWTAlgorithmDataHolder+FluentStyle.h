@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Sets stringCoder and returns the JWTAlgorithmBaseDataHolder to allow for method chaining. See list of names in appropriate headers.
  */
-@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^stringCoder)(id<JWTStringCoder__Protocol> stringCoder) NS_SWIFT_UNAVAILABLE("");
+@property (copy, nonatomic, readonly) JWTAlgorithmBaseDataHolder *(^stringCoder)(id<JWTStringCoderProtocol> stringCoder) NS_SWIFT_UNAVAILABLE("");
 @end
 
 @interface JWTAlgorithmRSFamilyDataHolder (FluentStyle)

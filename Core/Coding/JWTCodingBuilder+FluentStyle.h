@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (copy, nonatomic, readonly) JWTCodingBuilder *(^modifyChain)(JWTAlgorithmDataHolderChain *(^block)(JWTAlgorithmDataHolderChain * chain)) NS_SWIFT_UNAVAILABLE("");
 @property (copy, nonatomic, readonly) JWTCodingBuilder *(^options)(NSNumber *options) NS_SWIFT_UNAVAILABLE("");
 @property (copy, nonatomic, readonly) JWTCodingBuilder *(^addHolder)(id<JWTAlgorithmDataHolderProtocol> holder) NS_SWIFT_UNAVAILABLE("");
+@property (copy, nonatomic, readonly) JWTCodingBuilder *(^tokenCoder)(id<JWTStringCoderProtocol> tokenCoder) NS_SWIFT_UNAVAILABLE("");
 @end
 
 @interface JWTEncodingBuilder (FluentStyle)

@@ -26,9 +26,10 @@
 @property (strong, nonatomic, readwrite) id <JWTAlgorithm> internalAlgorithm;
 
 /**
- The <JWTStringCoder__Protocol> string coder. It converts data to string and vice versa.
+ The <JWTStringCoderProtocol> string coder. It converts data to string and vice versa.
+ Used only for secret <-> secretData conversions.
  */
-@property (strong, nonatomic, readwrite) id <JWTStringCoder__Protocol> internalStringCoder;
+@property (strong, nonatomic, readwrite) id <JWTStringCoderProtocol> internalStringCoder;
 @end
 
 @interface JWTAlgorithmBaseDataHolder : NSObject <JWTAlgorithmDataHolderProtocol>
@@ -52,7 +53,7 @@
 - (instancetype)secret:(NSString *)secret;
 - (instancetype)algorithm:(id<JWTAlgorithm>)algorithm;
 - (instancetype)algorithmName:(NSString *)algorithmName;
-- (instancetype)stringCoder:(id<JWTStringCoder__Protocol>)stringCoder;
+- (instancetype)stringCoder:(id<JWTStringCoderProtocol>)stringCoder;
 @end
 
 @protocol JWTAlgorithmDataHolderCreateProtocol <NSObject>

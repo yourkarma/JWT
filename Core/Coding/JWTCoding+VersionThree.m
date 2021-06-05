@@ -38,6 +38,7 @@
 #pragma mark - Internal
 @property (strong, nonatomic, readwrite) JWTAlgorithmDataHolderChain *internalChain;
 @property (copy, nonatomic, readwrite) NSNumber *internalOptions;
+@property (strong, nonatomic, readwrite) id <JWTStringCoderProtocol> internalTokenCoder;
 
 #pragma mark - Fluent
 @property (copy, nonatomic, readwrite) JWTCodingBuilder *(^chain)(JWTAlgorithmDataHolderChain *chain);
@@ -46,6 +47,7 @@
 @property (copy, nonatomic, readwrite) JWTCodingBuilder *(^options)(NSNumber *options);
 @property (copy, nonatomic, readwrite) JWTCodingBuilder *(^addHolder)(id<JWTAlgorithmDataHolderProtocol> holder);
 @property (copy, nonatomic, readwrite) JWTCodingBuilder *(^constructHolder)(id<JWTAlgorithmDataHolderProtocol>(^block)(id<JWTAlgorithmDataHolderProtocol> holder));
+@property (copy, nonatomic, readwrite) JWTCodingBuilder *(^tokenCoder)(id<JWTStringCoderProtocol> tokenCoder);
 
 @end
 
@@ -64,6 +66,10 @@
 }
 - (instancetype)addHolder:(id<JWTAlgorithmDataHolderProtocol>)holder {
     self.internalChain = [self.internalChain chainByAppendingHolder:holder];
+    return self;
+}
+- (instancetype)tokenCoder:(id<JWTStringCoderProtocol>)tokenCoder {
+    self.internalTokenCoder = tokenCoder;
     return self;
 }
 - (void)setupFluent {
@@ -103,6 +109,10 @@
         }
         return weakSelf;
     };
+    
+    self.tokenCoder = ^(id<JWTStringCoderProtocol> tokenCoder) {
+        return [weakSelf tokenCoder:tokenCoder];
+    };
 }
 @end
 
@@ -116,6 +126,7 @@
 - (instancetype)initWithChain:(JWTAlgorithmDataHolderChain *)chain {
     if (self = [super init]) {
         self.internalChain = chain;
+        self.internalTokenCoder = [JWTStringCoderForEncoding utf8Encoding];
         [self setupFluent];
     }
     return self;
@@ -319,19 +330,10 @@
         theSecretData = theSecretData ?: [NSData data];
     }
     if (theSecretData && [theAlgorithm respondsToSelector:@selector(signHash:key:error:)]) {
-          NSData *signedOutputData = [theAlgorithm signHash:[signingInput dataUsingEncoding:NSUTF8StringEncoding] key:theSecretData error:&algorithmError];
+        __auto_type hash = [self.internalTokenCoder dataWithString:signingInput];
+        __auto_type signedOutputData = [theAlgorithm signHash:hash key:theSecretData error:&algorithmError];
         signedOutput = [JWTBase64Coder base64UrlEncodedStringWithData:signedOutputData];
     }
-//    if (theSecretData && [theAlgorithm respondsToSelector:@selector(encodePayloadData:withSecret:)]) {
-//        // not sure that it is correct.
-//        NSData *signedOutputData = [theAlgorithm encodePayloadData:[signingInput dataUsingEncoding:NSUTF8StringEncoding] withSecret:theSecretData];
-//        signedOutput = [JWTBase64Coder base64UrlEncodedStringWithData:signedOutputData];
-//    }
-    // not used now.
-//    else {
-//        NSData *signedOutputData = [theAlgorithm encodePayload:signingInput withSecret:self.jwtSecret];
-//        signedOutput = [JWTBase64Coder base64UrlEncodedStringWithData:signedOutputData];
-//    }
 
     if (algorithmError) {
         // algorithmError
@@ -578,17 +580,9 @@
 
         NSError *algorithmError = nil;
         if (theSecretData && [algorithm respondsToSelector:@selector(verifyHash:signature:key:error:)]) {
-            signatureValid =
-            //[algorithm verifySignedInput:signingInput withSignature:signedPart verificationKeyData:theSecretData];
-            [algorithm verifyHash:[signingInput dataUsingEncoding:NSUTF8StringEncoding] signature:[JWTBase64Coder dataWithBase64UrlEncodedString:signedPart] key:theSecretData error:&algorithmError];
+            __auto_type hash = [self.internalTokenCoder dataWithString:signingInput];
+            signatureValid = [algorithm verifyHash:hash signature:[JWTBase64Coder dataWithBase64UrlEncodedString:signedPart] key:theSecretData error:&algorithmError];
         }
-//        if (theSecretData && [algorithm respondsToSelector:@selector(verifySignedInput:withSignature:verificationKeyData:)]) {
-//            signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKeyData:theSecretData];
-//
-//            // Not used now.
-////        } else {
-////            signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKey:theSecret];
-//        }
         
         if (algorithmError) {
             if (theError) {
