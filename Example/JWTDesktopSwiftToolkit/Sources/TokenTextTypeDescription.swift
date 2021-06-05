@@ -9,22 +9,22 @@
 import SwiftUI
 
 // MARK: Token text type.
-public enum TokenTextType : Int {
+public enum TokenTextType: Int {
     case unknown = 0
     case header
     case payload
     case signature
     case dot
     
-    static var typicalSchemeComponents : [Self] {
-        return [.header, .dot, .payload, .dot, .signature]
+    static var typicalSchemeComponents: [Self] {
+        [.header, .dot, .payload, .dot, .signature]
     }
 }
 
 // MARK: NSAttributes.
 extension TokenTextType {
     fileprivate var encodedTextAttributes: [NSAttributedString.Key: Any] {
-        return encodedTextAttributes(type: self)
+        encodedTextAttributes(type: self)
     }
     
     fileprivate func encodedTextAttributes(type: TokenTextType) -> [NSAttributedString.Key: Any] {
@@ -36,24 +36,22 @@ extension TokenTextType {
 
 // MARK: Serialization
 fileprivate class TokenTextSerialization {
-    public init() {}
     fileprivate func textPart(parts: [String], type: TokenTextType) -> String? {
         switch type {
         case .unknown: return nil
-        case .header:
-            return parts.first
-        case .payload:
-            guard parts.count > 1 else { return nil }
-            return parts[1]
-        case .signature: if parts.count > 2 { return parts[2..<parts.count].joined(separator: ".") } else { return nil }
+        case .header: return parts.first
+        case .payload where parts.count > 1: return parts[1]
+        case .signature where parts.count > 2: return parts[2..<parts.count].joined(separator: ".")
         case .dot: return "."
+        default: return nil
         }
     }
+    public init() {}
 }
 
 // MARK: Appearance.
 public class TokenTextAppearance {
-    private let serialization = TokenTextSerialization()
+    private let serialization: TokenTextSerialization = .init()
     fileprivate func encodedAttributes(text: String, tokenSerialization: TokenTextSerialization) -> [(String, Attributes)] {
         let parts = text.components(separatedBy: ".")
         
@@ -72,7 +70,7 @@ public class TokenTextAppearance {
 
 // MARK: Appearance.Public.
 public extension TokenTextAppearance {
-    func encodedAttributes(text: String) -> [(String, Attributes)] {
+    func encodedAttributes(text: String) -> [(string: String, attributes: Attributes)] {
         return self.encodedAttributes(text: text, tokenSerialization: self.serialization)
     }
     
