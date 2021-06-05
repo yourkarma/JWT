@@ -1,7 +1,6 @@
 ### New Pull Request Checklist
 
 - [ ] I have searched for a similar pull request in the [project](https://github.com/yourkarma/JWT/pulls) and found none
-
 - [ ] I have updated this branch with the latest master to avoid conflicts (via merge from master or rebase)
 - [ ] I have added the required tests to prove the fix/feature I am adding
 - [ ] I have updated the documentation (if necessary)
