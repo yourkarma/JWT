@@ -59,7 +59,7 @@ class JWTModel: ObservableObject {
 
         if let decoded = self.decoder.decode(token: token, object: object) {
             if let successResult = decoded.successResult {
-                self.decodedData.result = .success(successResult.headerAndPayloadDictionary as! [String : Any])
+                self.decodedData.result = .success(successResult.headerAndPayloadDictionary as! [String: Any])
             }
             else if let errorResult = decoded.errorResult {
                 self.decodedData.result = .failure(errorResult.error)
@@ -71,8 +71,8 @@ class JWTModel: ObservableObject {
 // MARK: Data.
 extension JWTModel {
     struct Storage {
-        var settings = Settings()
-        var encodedData = EncodedData()
+        var settings: Settings = .init()
+        var encodedData: EncodedData = .init()
         var isBase64Available: Bool {
             self.settings.isBase64 && self.getSecretData() != nil
         }
@@ -107,9 +107,9 @@ extension JWTModel.Storage {
 // MARK: DecodedData structure.
 extension JWTModel.Storage {
     struct DecodedData {
-        var result: Result<[String : Any], Error> = .success([:])
+        var result: Result<[String: Any], Error> = .success([:])
         var verified: SignatureValidationType = .unknown
-        var decoded: [String : Any] {
+        var decoded: [String: Any] {
             guard case let .success(value) = self.result else {
                 return [:]
             }

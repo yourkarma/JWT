@@ -8,12 +8,12 @@
 
 import SwiftUI
 
-struct ContentView : View {
+struct ContentView: View {
     @ObservedObject var model: JWTModel
-    func getBottomView () -> some View {
+    func getBottomView() -> some View {
         BottomView(encodedData: self.$model.data.encodedData, decodedData: model.decodedData)
     }
-    func getHeaderView () -> some View {
+    func getHeaderView() -> some View {
         HeaderView(settings: self.$model.data.settings, encodedData: self.$model.data.encodedData, storage: self.model.data)
     }
     var headerBody: some View {
@@ -67,11 +67,3 @@ struct ContentView : View {
     }
 }
 
-#if DEBUG
-struct ContentView_Previews : PreviewProvider {
-    static var previews: some View {
-        //ContentView()
-        Text("abc")
-    }
-}
-#endif

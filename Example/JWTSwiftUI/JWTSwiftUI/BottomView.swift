@@ -10,22 +10,22 @@ import SwiftUI
 import JWTDesktopSwiftToolkit
 
 extension BottomView {
-    struct EncryptedView : View {
-        @Binding var textValue : String
-        var appearance = TokenTextAppearance()
+    struct EncryptedView: View {
+        @Binding var textValue: String
+        var appearance: TokenTextAppearance = .init()
         var body1: some View {
             TextField("Input secret", text: $textValue).lineLimit(10).multilineTextAlignment(.center)
         }
         var body2: some View {
             Text(textValue).lineLimit(10).padding()
         }
-        
+                
         var body3: some View {
-            Text("abc")
+            Text("Abc")
 //            List {
-////                ForEach(self.appearance.encodedAttributes(text: textValue)) { value in
-////                    Text(part)
-////                }
+//                ForEach(self.appearance.encodedAttributes(text: textValue)) { value in
+//                    Text(part)
+//                }
 //            }
         }
         
@@ -36,8 +36,7 @@ extension BottomView {
 }
 
 extension BottomView {
-    struct DecodedView : View {
-        var a: [String] = []
+    struct DecodedView: View {
         var decodedInformation: JWTModel.Storage.DecodedData.DecodedInfoType
         var body: some View {
             VStack {
@@ -50,16 +49,16 @@ extension BottomView {
 }
 
 extension BottomView {
-    struct SignatureView : View {
+    struct SignatureView: View {
         var validation: SignatureValidationType
         var body: some View {
-            Text(validation.title)
-                .background(Color.init(validation.color))
+            Text(validation.title).bold().foregroundColor(.white).padding(8)
+                .background(Color.init(validation.color)).cornerRadius(20)
         }
     }
 }
 
-struct QqView : View {
+struct QqView: View {
 //    @State var width: Length = 1
     static var bigText = "This is a test of the emergency broadcast system. This is only a test. If this were a real emergency, then you'd be up the creek without a paddle. But it's not so you're safe for the time being."
     @State var text: String = QqView.bigText
@@ -85,24 +84,14 @@ struct QqView : View {
     }
 }
 
-struct BottomView : View {
-    @Binding var encodedData : JWTModel.Storage.EncodedData
-    var decodedData : JWTModel.Storage.DecodedData
-//    @State var data2 : DynamicMember<JWTModel.Storage.JWT> =  DynamicMember(JWTModel(data: JWTModel.Storage.HS256()))
+struct BottomView: View {
+    @Binding var encodedData: JWTModel.Storage.EncodedData
+    var decodedData: JWTModel.Storage.DecodedData
     var body: some View {
         VStack {
-//            QqView()
             EncryptedView(textValue: $encodedData.token)
             DecodedView(decodedInformation: decodedData.decodedInformation)
             SignatureView(validation: decodedData.verified)
         }
     }
 }
-
-#if DEBUG
-struct BottomView_Previews : PreviewProvider {
-    static var previews: some View {
-        Text("abc")//BottomView()
-    }
-}
-#endif
