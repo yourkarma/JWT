@@ -16,7 +16,7 @@ public typealias ColorBridge = NSColor
 #endif
 
 public extension SignatureValidationType {
-    var color : ColorBridge {
+    var color: ColorBridge {
         switch self {
         case .unknown: return .darkGray
         case .valid: return .init(red: 0, green: 185/255.0, blue: 241/255.0, alpha: 1.0)
@@ -26,7 +26,7 @@ public extension SignatureValidationType {
 }
 
 public extension TokenTextType {
-    var color : ColorBridge {
+    var color: ColorBridge {
         switch self {
         case .unknown: return .black
         case .header: return .red

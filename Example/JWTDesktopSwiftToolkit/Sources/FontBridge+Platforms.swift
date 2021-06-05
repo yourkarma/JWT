@@ -17,7 +17,7 @@ public typealias FontBridge = NSFont
 
 public extension TokenTextType {
     func defaultEncodedTextAttributes() -> [NSAttributedString.Key: Any] {
-        return [.font : FontBridge.boldSystemFont(ofSize: 22)]
+        [.font: FontBridge.boldSystemFont(ofSize: 22)]
     }
     var font: FontBridge {
         .boldSystemFont(ofSize: 22)

@@ -25,10 +25,8 @@ public struct TokenDecoder: TokenDecoderProtocol {
     private let theDecoder: TokenDecoderProtocol = JWTTokenDecoder__V3()
     
     public func decode(token: String?, object: TokenDecoderDataTransferObjectProtocol?) -> JWTCodingResultType?  {
-        guard let theObject = object else {
-            return nil
-        }
-        return self.theDecoder.decode(token: token, object: theObject)
+        guard let object = object else { return nil }
+        return self.theDecoder.decode(token: token, object: object)
     }
     
     func decode(token: String?, object: TokenDecoderDataTransferObjectProtocol) -> JWTCodingResultType? {
@@ -38,7 +36,7 @@ public struct TokenDecoder: TokenDecoderProtocol {
 }
 
 public extension TokenDecoder {
-    struct DataTransferObject : TokenDecoderDataTransferObjectProtocol {
+    struct DataTransferObject: TokenDecoderDataTransferObjectProtocol {
         public init(algorithmName: String, secret: String? = nil, secretData: Data? = nil, isBase64EncodedSecret: Bool, shouldSkipSignatureVerification: Bool) {
             self.algorithmName = algorithmName
             self.secret = secret

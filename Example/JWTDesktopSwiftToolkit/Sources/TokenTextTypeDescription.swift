@@ -71,15 +71,15 @@ public class TokenTextAppearance {
 // MARK: Appearance.Public.
 public extension TokenTextAppearance {
     func encodedAttributes(text: String) -> [(string: String, attributes: Attributes)] {
-        return self.encodedAttributes(text: text, tokenSerialization: self.serialization)
+        self.encodedAttributes(text: text, tokenSerialization: self.serialization)
     }
     
     func encodedAttributedString(text: String) -> NSAttributedString? {
-        return self.encodedAttributes(text: text, tokenSerialization: self.serialization).reduce(NSMutableAttributedString()) { (result, pair) in
+        self.encodedAttributes(text: text, tokenSerialization: self.serialization).reduce(NSMutableAttributedString()) { (result, pair) in
             let (part, attributes) = pair
             let string = NSAttributedString(string: part, attributes: [
-                .foregroundColor : attributes.color,
-                .font : attributes.font
+                .foregroundColor: attributes.color,
+                .font: attributes.font
                 ])
             result.append(string)
             return result
