@@ -114,7 +114,7 @@
 
 @implementation JWTStringCoderForEncoding
 + (instancetype)utf8Encoding {
-    __auto_type coding = [self new];
+    __auto_type coding = (JWTStringCoderForEncoding *)[self new];
     coding.stringEncoding = NSUTF8StringEncoding;
     return coding;
 }
