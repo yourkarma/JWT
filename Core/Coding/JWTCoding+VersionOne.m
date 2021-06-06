@@ -128,7 +128,8 @@
     }
     
     NSString *signingInput = [@[headerSegment, payloadSegment] componentsJoinedByString:@"."];
-    NSData *signedOutputData = [theAlgorithm encodePayload:signingInput withSecret:theSecret];
+    __auto_type theAlgorithmHolder = [[JWTAlgorithmHolder alloc] initWithAlgorithm:theAlgorithm];
+    NSData *signedOutputData = [theAlgorithmHolder encodePayload:signingInput withSecret:theSecret];
     NSString *signedOutput = [JWTBase64Coder base64UrlEncodedStringWithData:signedOutputData];
     
     return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
@@ -256,7 +257,8 @@
         
         // Verify the signed part
         NSString *signingInput = [@[headerPart, payloadPart] componentsJoinedByString:@"."];
-        BOOL signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKey:theSecret];
+        __auto_type theAlgorithmHolder = [[JWTAlgorithmHolder alloc] initWithAlgorithm:algorithm];
+        BOOL signatureValid = [theAlgorithmHolder verifySignedInput:signingInput withSignature:signedPart verificationKey:theSecret];
         
         if (!signatureValid) {
             *theError = [JWTErrorDescription errorWithCode:JWTInvalidSignatureError];

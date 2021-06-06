@@ -289,12 +289,13 @@
         id<JWTRSAlgorithm> jwtRsAlgorithm = (id <JWTRSAlgorithm>) self.jwtAlgorithm;
         jwtRsAlgorithm.privateKeyCertificatePassphrase = self.jwtPrivateKeyCertificatePassphrase;
     }
-    if (self.jwtSecretData && [self.jwtAlgorithm respondsToSelector:@selector(encodePayloadData:withSecret:)]) {
-        NSData *signedOutputData = [self.jwtAlgorithm encodePayloadData:[signingInput dataUsingEncoding:NSUTF8StringEncoding] withSecret:self.jwtSecretData];
+    __auto_type theAlgorithmHolder = [[JWTAlgorithmHolder alloc] initWithAlgorithm:self.jwtAlgorithm];
+    if (self.jwtSecretData && [theAlgorithmHolder respondsToSelector:@selector(encodePayloadData:withSecret:)]) {
+        NSData *signedOutputData = [theAlgorithmHolder encodePayloadData:[signingInput dataUsingEncoding:NSUTF8StringEncoding] withSecret:self.jwtSecretData];
 
         signedOutput = [JWTBase64Coder base64UrlEncodedStringWithData:signedOutputData];
     } else {
-        NSData *signedOutputData = [self.jwtAlgorithm encodePayload:signingInput withSecret:self.jwtSecret];
+        NSData *signedOutputData = [theAlgorithmHolder encodePayload:signingInput withSecret:self.jwtSecret];
         signedOutput = [JWTBase64Coder base64UrlEncodedStringWithData:signedOutputData];
     }
 
@@ -419,11 +420,11 @@
         NSString *signingInput = [@[headerPart, payloadPart] componentsJoinedByString:@"."];
         BOOL signatureValid = NO;
 
-
-        if (secretData && [algorithm respondsToSelector:@selector(verifySignedInput:withSignature:verificationKeyData:)]) {
-            signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKeyData:secretData];
+        __auto_type theAlgorithmHolder = [[JWTAlgorithmHolder alloc] initWithAlgorithm:algorithm];
+        if (secretData && [theAlgorithmHolder respondsToSelector:@selector(verifySignedInput:withSignature:verificationKeyData:)]) {
+            signatureValid = [theAlgorithmHolder verifySignedInput:signingInput withSignature:signedPart verificationKeyData:secretData];
         } else {
-            signatureValid = [algorithm verifySignedInput:signingInput withSignature:signedPart verificationKey:theSecret];
+            signatureValid = [theAlgorithmHolder verifySignedInput:signingInput withSignature:signedPart verificationKey:theSecret];
         }
 
         if (!signatureValid) {
