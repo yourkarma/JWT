@@ -11,9 +11,60 @@
 #import "JWTAlgorithmRSBase.h"
 #import "JWTAlgorithmNone.h"
 #import "JWTAlgorithmAsymmetricBase.h"
+#import "JWTBase64Coder.h"
 
 // not implemented.
 // ES still not implemented. Look at implementation and readme in future releases.
+
+@implementation JWTAlgorithmHolder
+
+- (instancetype)initWithAlgorithm:(id<JWTAlgorithm>)algorithm {
+    if (self = [super init]) {
+        self.algorithm = algorithm;
+    }
+    return self;
+}
+
+- (NSString *)name {
+    return self.algorithm.name;
+}
+
+- (NSData *)signHash:(NSData *)hash key:(NSData *)key error:(NSError *__autoreleasing *)error {
+    return [self.algorithm signHash:hash key:key error:error];
+}
+
+- (BOOL)verifyHash:(NSData *)hash signature:(NSData *)signature key:(NSData *)key error:(NSError *__autoreleasing *)error {
+    return [self.algorithm verifyHash:hash signature:signature key:key error:error];
+}
+
+- (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
+    NSData *inputData = [theString dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *secretData = [theSecret dataUsingEncoding:NSUTF8StringEncoding];
+    //[JWTBase64Coder dataWithBase64UrlEncodedString:theSecret];
+    return [self encodePayloadData:inputData withSecret:secretData];
+}
+
+- (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData {
+    return [self signHash:theStringData key:theSecretData error:nil];
+}
+
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey {
+    NSData *inputData = [input dataUsingEncoding:NSUTF8StringEncoding]; //[JWTBase64Coder dataWithBase64UrlEncodedString:input];
+    NSData *signatureData = [JWTBase64Coder dataWithBase64UrlEncodedString:signature];
+    NSData *verificationKeyData = [verificationKey dataUsingEncoding:NSUTF8StringEncoding];
+
+    return [self verifyHash:inputData signature:signatureData key:verificationKeyData error:nil];
+    
+//    return [self verifySignedInput:input withSignature:signature verificationKeyData:verificationKeyData];
+}
+
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData {
+    NSData *signatureData = [JWTBase64Coder dataWithBase64UrlEncodedString:signature];
+    NSData *inputData = [input dataUsingEncoding:NSUTF8StringEncoding]; //[JWTBase64Coder dataWithBase64UrlEncodedString:input];
+    return [self verifyHash:inputData signature:signatureData key:verificationKeyData error:nil ];
+}
+
+@end
 
 @implementation JWTAlgorithmFactory
 
