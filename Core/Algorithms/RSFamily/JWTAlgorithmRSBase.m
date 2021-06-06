@@ -182,20 +182,6 @@ NSString *const JWTAlgorithmNameRS512 = @"RS512";
     }
 }
 
-- (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
-    return [self encodePayloadData:[theString dataUsingEncoding:NSUTF8StringEncoding] withSecret:[JWTBase64Coder dataWithBase64UrlEncodedString:theSecret]];
-}
-- (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData {
-    return [self signHash:theStringData key:theSecretData error:nil];
-}
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey {
-    NSData *certificateData = [JWTBase64Coder dataWithBase64UrlEncodedString:verificationKey];
-    return [self verifySignedInput:input withSignature:signature verificationKeyData:certificateData];
-}
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData {
-    return [self verifyHash:[input dataUsingEncoding:NSUTF8StringEncoding] signature:[JWTBase64Coder dataWithBase64UrlEncodedString:signature] key:verificationKeyData error:nil];
-}
-
 #pragma mark - Private ( Override-part depends on platform )
 - (BOOL)verifyData:(NSData *)plainData signature:(NSData *)signature key:(SecKeyRef)publicKey error:(NSError *__autoreleasing*)error {
     return NO;

@@ -42,6 +42,30 @@
 		0A80CF9B210917D800D5499C /* ec256.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF882109113D00D5499C /* ec256.cer */; };
 		0A80CF9C210917D800D5499C /* ec256.csr in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF892109113D00D5499C /* ec256.csr */; };
 		0A80CF9D210917D800D5499C /* ec256.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF8A2109113D00D5499C /* ec256.p12 */; };
+		0A883A8E266D660500DAF016 /* watchOS_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A883A8D266D660500DAF016 /* watchOS_Tests.m */; };
+		0A883A93266D66F200DAF016 /* JWTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4515210DD81E0027A234 /* JWTTests.m */; };
+		0A883A94266D66F200DAF016 /* JWTReadmeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4517210DD82E0027A234 /* JWTReadmeTests.m */; };
+		0A883A95266D66F300DAF016 /* JWTIssuesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4519210DD83B0027A234 /* JWTIssuesTests.m */; };
+		0A883A96266D66F500DAF016 /* JWTClaimsSerializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B451B210DDFBB0027A234 /* JWTClaimsSerializerTests.m */; };
+		0A883A97266D66F500DAF016 /* JWTClaimsCustomClaimsBaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE4FFA22663C78400431728 /* JWTClaimsCustomClaimsBaseTests.m */; };
+		0A883A98266D66F500DAF016 /* JWTClaimsSerializerBaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DA539265B92830041E737 /* JWTClaimsSerializerBaseTests.m */; };
+		0A883A99266D66F700DAF016 /* JWTAlgorithmAsymmetricTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B450F210DBDDB0027A234 /* JWTAlgorithmAsymmetricTests.m */; };
+		0A883A9A266D66F700DAF016 /* JWTAlgorithmHSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4511210DC0860027A234 /* JWTAlgorithmHSTests.m */; };
+		0A883A9B266D66F700DAF016 /* JWTAlgorithmNoneTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B4513210DCB7A0027A234 /* JWTAlgorithmNoneTests.m */; };
+		0A883A9C266D683500DAF016 /* rs256-wrong-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEC1E4DD77D0036CC3A /* rs256-wrong-private.pem */; };
+		0A883A9D266D683500DAF016 /* ec256-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF862109113D00D5499C /* ec256-private.pem */; };
+		0A883A9E266D683500DAF016 /* ec256.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF882109113D00D5499C /* ec256.cer */; };
+		0A883A9F266D683500DAF016 /* ec256.csr in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF892109113D00D5499C /* ec256.csr */; };
+		0A883AA0266D683500DAF016 /* rs256-private.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE71E4DD77D0036CC3A /* rs256-private.p12 */; };
+		0A883AA1266D683500DAF016 /* ec256.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF8A2109113D00D5499C /* ec256.p12 */; };
+		0A883AA2266D683500DAF016 /* rs256-private.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DE81E4DD77D0036CC3A /* rs256-private.pem */; };
+		0A883AA3266D683500DAF016 /* rs256-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEA1E4DD77D0036CC3A /* rs256-public.pem */; };
+		0A883AA4266D683500DAF016 /* ec256-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF872109113D00D5499C /* ec256-public.pem */; };
+		0A883AA5266D683500DAF016 /* rs256-wrong-public.pem in Resources */ = {isa = PBXBuildFile; fileRef = 044FEE891E52434300352625 /* rs256-wrong-public.pem */; };
+		0A883AA6266D683500DAF016 /* ec256-cer.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF93210912D300D5499C /* ec256-cer.pem */; };
+		0A883AA7266D683500DAF016 /* rs256-wrong-private.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEB1E4DD77D0036CC3A /* rs256-wrong-private.p12 */; };
+		0A883AA8266D683800DAF016 /* Certificates.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A5B450D210DB9EF0027A234 /* Certificates.xcassets */; };
+		0A883AA9266D781C00DAF016 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD2D61B21130F6100104C72 /* JWT.framework */; };
 		0ABF607F211497B200222F2D /* Certificates.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A5B450D210DB9EF0027A234 /* Certificates.xcassets */; };
 		0AD2D62D21130F9D00104C72 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD2D61B21130F6100104C72 /* JWT.framework */; };
 		0AD2D62E21130FC900104C72 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD2D61B21130F6100104C72 /* JWT.framework */; };
@@ -82,6 +106,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0A883AAA266D782100DAF016 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 04DEBCA21DBCDB8600C1DF52;
+			remoteInfo = JWT;
+		};
 		0ABF60862114982600222F2D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
@@ -145,6 +176,11 @@
 		0A80CF892109113D00D5499C /* ec256.csr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ec256.csr; sourceTree = "<group>"; };
 		0A80CF8A2109113D00D5499C /* ec256.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = ec256.p12; sourceTree = "<group>"; };
 		0A80CF93210912D300D5499C /* ec256-cer.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ec256-cer.pem"; sourceTree = "<group>"; };
+		0A883A77266D640500DAF016 /* watchOS_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = watchOS_Tests.m; sourceTree = "<group>"; };
+		0A883A79266D640500DAF016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A883A8B266D660500DAF016 /* watchOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = watchOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A883A8D266D660500DAF016 /* watchOS_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = watchOS_Tests.m; sourceTree = "<group>"; };
+		0A883A8F266D660500DAF016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0AD2D61121130F6100104C72 /* JWT.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JWT.xcodeproj; path = ../Framework/JWT.xcodeproj; sourceTree = "<group>"; };
 		0AD2D64A2113141D00104C72 /* MF_Base64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MF_Base64Additions.h; sourceTree = "<group>"; };
 		0AD2D64B2113141D00104C72 /* MF_Base64Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MF_Base64Additions.m; sourceTree = "<group>"; };
@@ -170,6 +206,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0A883A88266D660500DAF016 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A883AA9266D781C00DAF016 /* JWT.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EC0B567F2358C9FC002EB309 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -191,6 +235,8 @@
 				045147351D5E2FF0007B1D7A /* iOS_Tests */,
 				045147411D5E3004007B1D7A /* macOS_Tests */,
 				EC0B56952358DC6E002EB309 /* tvOS_Tests */,
+				0A883A76266D640500DAF016 /* watchOS_Tests */,
+				0A883A8C266D660500DAF016 /* watchOS_Tests */,
 				045147341D5E2FF0007B1D7A /* Products */,
 				0AD2D62C21130F9D00104C72 /* Frameworks */,
 			);
@@ -202,6 +248,7 @@
 				045147331D5E2FF0007B1D7A /* iOS_Tests.xctest */,
 				045147401D5E3004007B1D7A /* macOS_Tests.xctest */,
 				EC0B56932358C9FC002EB309 /* tvOS_Tests.xctest */,
+				0A883A8B266D660500DAF016 /* watchOS_Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -298,6 +345,24 @@
 			path = ec;
 			sourceTree = "<group>";
 		};
+		0A883A76266D640500DAF016 /* watchOS_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				0A883A77266D640500DAF016 /* watchOS_Tests.m */,
+				0A883A79266D640500DAF016 /* Info.plist */,
+			);
+			path = watchOS_Tests;
+			sourceTree = "<group>";
+		};
+		0A883A8C266D660500DAF016 /* watchOS_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				0A883A8D266D660500DAF016 /* watchOS_Tests.m */,
+				0A883A8F266D660500DAF016 /* Info.plist */,
+			);
+			path = watchOS_Tests;
+			sourceTree = "<group>";
+		};
 		0AD2D61221130F6100104C72 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -371,6 +436,24 @@
 			productReference = 045147401D5E3004007B1D7A /* macOS_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		0A883A8A266D660500DAF016 /* watchOS_Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0A883A90266D660500DAF016 /* Build configuration list for PBXNativeTarget "watchOS_Tests" */;
+			buildPhases = (
+				0A883A87266D660500DAF016 /* Sources */,
+				0A883A88266D660500DAF016 /* Frameworks */,
+				0A883A89266D660500DAF016 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0A883AAB266D782100DAF016 /* PBXTargetDependency */,
+			);
+			name = watchOS_Tests;
+			productName = watchOS_Tests;
+			productReference = 0A883A8B266D660500DAF016 /* watchOS_Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		EC0B56732358C9FC002EB309 /* tvOS_Tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EC0B56902358C9FC002EB309 /* Build configuration list for PBXNativeTarget "tvOS_Tests" */;
@@ -404,6 +487,10 @@
 					0451473F1D5E3004007B1D7A = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
+					0A883A8A266D660500DAF016 = {
+						CreatedOnToolsVersion = 12.5;
+						ProvisioningStyle = Automatic;
+					};
 					EC0B56732358C9FC002EB309 = {
 						ProvisioningStyle = Automatic;
 					};
@@ -431,6 +518,7 @@
 				045147321D5E2FF0007B1D7A /* iOS_Tests */,
 				0451473F1D5E3004007B1D7A /* macOS_Tests */,
 				EC0B56732358C9FC002EB309 /* tvOS_Tests */,
+				0A883A8A266D660500DAF016 /* watchOS_Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -493,6 +581,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0A883A89266D660500DAF016 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A883AA5266D683500DAF016 /* rs256-wrong-public.pem in Resources */,
+				0A883AA2266D683500DAF016 /* rs256-private.pem in Resources */,
+				0A883A9F266D683500DAF016 /* ec256.csr in Resources */,
+				0A883AA0266D683500DAF016 /* rs256-private.p12 in Resources */,
+				0A883A9D266D683500DAF016 /* ec256-private.pem in Resources */,
+				0A883AA8266D683800DAF016 /* Certificates.xcassets in Resources */,
+				0A883A9C266D683500DAF016 /* rs256-wrong-private.pem in Resources */,
+				0A883AA6266D683500DAF016 /* ec256-cer.pem in Resources */,
+				0A883A9E266D683500DAF016 /* ec256.cer in Resources */,
+				0A883AA7266D683500DAF016 /* rs256-wrong-private.p12 in Resources */,
+				0A883AA3266D683500DAF016 /* rs256-public.pem in Resources */,
+				0A883AA1266D683500DAF016 /* ec256.p12 in Resources */,
+				0A883AA4266D683500DAF016 /* ec256-public.pem in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EC0B56812358C9FC002EB309 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -550,6 +658,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0A883A87266D660500DAF016 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A883A98266D66F500DAF016 /* JWTClaimsSerializerBaseTests.m in Sources */,
+				0A883A9B266D66F700DAF016 /* JWTAlgorithmNoneTests.m in Sources */,
+				0A883A8E266D660500DAF016 /* watchOS_Tests.m in Sources */,
+				0A883A93266D66F200DAF016 /* JWTTests.m in Sources */,
+				0A883A94266D66F200DAF016 /* JWTReadmeTests.m in Sources */,
+				0A883A96266D66F500DAF016 /* JWTClaimsSerializerTests.m in Sources */,
+				0A883A99266D66F700DAF016 /* JWTAlgorithmAsymmetricTests.m in Sources */,
+				0A883A97266D66F500DAF016 /* JWTClaimsCustomClaimsBaseTests.m in Sources */,
+				0A883A9A266D66F700DAF016 /* JWTAlgorithmHSTests.m in Sources */,
+				0A883A95266D66F300DAF016 /* JWTIssuesTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EC0B56762358C9FC002EB309 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -570,6 +695,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0A883AAB266D782100DAF016 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = JWT;
+			targetProxy = 0A883AAA266D782100DAF016 /* PBXContainerItemProxy */;
+		};
 		0ABF60872114982600222F2D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = JWT;
@@ -843,6 +973,82 @@
 			};
 			name = Release;
 		};
+		0A883A91266D660500DAF016 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = watchOS_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.opensource.watchOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+			};
+			name = Debug;
+		};
+		0A883A92266D660500DAF016 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = watchOS_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.opensource.watchOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 7.4;
+			};
+			name = Release;
+		};
 		EC0B56912358C9FC002EB309 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -965,6 +1171,15 @@
 			buildConfigurations = (
 				045147461D5E3004007B1D7A /* Debug */,
 				045147471D5E3004007B1D7A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0A883A90266D660500DAF016 /* Build configuration list for PBXNativeTarget "watchOS_Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A883A91266D660500DAF016 /* Debug */,
+				0A883A92266D660500DAF016 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -32,6 +32,7 @@
 
 @property (nonatomic, readonly, copy) NSString *name;
 
+@optional
 /**
  Encodes and encrypts the provided payload using the provided secret key
  @param theString The string to encode
@@ -57,7 +58,7 @@
  @param theSecretData The secret data to use for encryption
  @return An NSData object containing the encrypted payload, or nil if something went wrong.
  */
-- (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData;
+- (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData __deprecated_and_will_be_removed_in_release_version(JWTVersion_3_0_0);
 
 /**
  Verifies the provided signature using the signed input and verification key (as data)
@@ -66,5 +67,5 @@
  @param verificationKeyData The key data to use for verifying the signature
  @return YES if the provided signature is valid, NO otherwise
  */
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData;
+- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData __deprecated_and_will_be_removed_in_release_version(JWTVersion_3_0_0);
 @end

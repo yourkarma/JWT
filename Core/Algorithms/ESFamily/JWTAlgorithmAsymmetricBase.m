@@ -158,14 +158,6 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmNumber) {
     return NO;
 }
 
-- (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
-    return nil;
-}
-
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey {
-    return NO;
-}
-
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone {
     // create new.
@@ -346,19 +338,6 @@ NS_AVAILABLE(10_12, 10_0)
     }
 }
 
-- (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
-    return [self encodePayloadData:[theString dataUsingEncoding:NSUTF8StringEncoding] withSecret:[JWTBase64Coder dataWithBase64UrlEncodedString:theSecret]];
-}
-- (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData {
-    return [self signHash:theStringData key:theSecretData error:nil];
-}
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey {
-    NSData *certificateData = [JWTBase64Coder dataWithBase64UrlEncodedString:verificationKey];
-    return [self verifySignedInput:input withSignature:signature verificationKeyData:certificateData];
-}
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData {
-    return [self verifyHash:[input dataUsingEncoding:NSUTF8StringEncoding] signature:[JWTBase64Coder dataWithBase64UrlEncodedString:signature] key:verificationKeyData error:nil];
-}
 @end
 #endif
 

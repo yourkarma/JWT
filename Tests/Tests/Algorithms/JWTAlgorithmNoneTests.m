@@ -20,6 +20,7 @@
 - (instancetype)configuredByName:(NSString *)name;
 
 @property (strong, nonatomic, readwrite) id <JWTAlgorithm> algorithm;
+@property (strong, nonatomic, readwrite) JWTAlgorithmHolder *theAlgorithm;
 @end
 
 @implementation JWTAlgorithmTestsHelper__None
@@ -47,6 +48,7 @@
     }
     // choose configuration here?
     self.algorithm = [JWTAlgorithmFactory algorithmByName:name];
+    self.theAlgorithm = [[JWTAlgorithmHolder alloc] initWithAlgorithm:self.algorithm];
     return self;
 }
 @end
@@ -97,43 +99,43 @@
     }];
 
     [XCTContext runActivityNamed:@"should not encode payload and return emptry signature instead" block:^(id<XCTActivity> _Nonnull activity){
-        __auto_type encodedPayload = [helper.algorithm encodePayload:helper.payload withSecret:helper.secret];
-        XCTAssertEqualObjects([encodedPayload base64Encoding], helper.signedPayloadBase64);
+        __auto_type encodedPayload = [helper.theAlgorithm encodePayload:helper.payload withSecret:helper.secret];
+        XCTAssertEqualObjects([encodedPayload base64EncodedStringWithOptions:0], helper.signedPayloadBase64);
     }];
 
     [XCTContext runActivityNamed:@"should not encode payload data and return emptry signature instead" block:^(id<XCTActivity> _Nonnull activity){
         __auto_type payloadData = [NSData dataWithBase64String:[helper.payload base64String]];
         __auto_type secretData = [NSData dataWithBase64String:[helper.secret base64String]];
 
-        __auto_type encodedPayload = [helper.algorithm encodePayloadData:payloadData withSecret:secretData];
-        XCTAssertEqualObjects([encodedPayload base64Encoding], helper.signedPayloadBase64);
+        __auto_type encodedPayload = [helper.theAlgorithm encodePayloadData:payloadData withSecret:secretData];
+        XCTAssertEqualObjects([encodedPayload base64EncodedStringWithOptions:0], helper.signedPayloadBase64);
     }];
 
     [XCTContext runActivityNamed:@"should not verify JWT with a secret provided" block:^(id<XCTActivity> _Nonnull activity){
-        XCTAssertFalse([helper.algorithm verifySignedInput:helper.signedPayload withSignature:nil verificationKey:helper.secret]);
+        XCTAssertFalse([helper.theAlgorithm verifySignedInput:helper.signedPayload withSignature:nil verificationKey:helper.secret]);
     }];
 
     [XCTContext runActivityNamed:@"should not verify JWT with a signature provided" block:^(id<XCTActivity> _Nonnull activity){
-        XCTAssertFalse([helper.algorithm verifySignedInput:helper.signedPayload withSignature:helper.signature verificationKey:nil]);
+        XCTAssertFalse([helper.theAlgorithm verifySignedInput:helper.signedPayload withSignature:helper.signature verificationKey:nil]);
     }];
 
     [XCTContext runActivityNamed:@"should verify JWT with no signature and no secret provided" block:^(id<XCTActivity> _Nonnull activity){
-        XCTAssertTrue([helper.algorithm verifySignedInput:helper.signedPayload withSignature:nil verificationKey:nil]);
+        XCTAssertTrue([helper.theAlgorithm verifySignedInput:helper.signedPayload withSignature:nil verificationKey:nil]);
     }];
 
     [XCTContext runActivityNamed:@"should not verify JWT with a secret data provided" block:^(id<XCTActivity> _Nonnull activity){
         __auto_type secretData = [NSData dataWithBase64String:[helper.secret base64String]];
-        XCTAssertFalse([helper.algorithm verifySignedInput:helper.signedPayload withSignature:nil verificationKeyData:secretData]);
+        XCTAssertFalse([helper.theAlgorithm verifySignedInput:helper.signedPayload withSignature:nil verificationKeyData:secretData]);
     }];
 
     [XCTContext runActivityNamed:@"should not verify JWT with a signature data provided" block:^(id<XCTActivity> _Nonnull activity){
         __auto_type secretData = [NSData dataWithBase64String:nil];
-        XCTAssertFalse([helper.algorithm verifySignedInput:helper.signedPayload withSignature:helper.signature verificationKeyData:secretData]);
+        XCTAssertFalse([helper.theAlgorithm verifySignedInput:helper.signedPayload withSignature:helper.signature verificationKeyData:secretData]);
     }];
 
     [XCTContext runActivityNamed:@"should verify JWT with no signature and no secret data provided" block:^(id<XCTActivity> _Nonnull activity){
         __auto_type secretData = [NSData dataWithBase64String:nil];
-        XCTAssertTrue([helper.algorithm verifySignedInput:helper.signedPayload withSignature:nil verificationKeyData:secretData]);
+        XCTAssertTrue([helper.theAlgorithm verifySignedInput:helper.signedPayload withSignature:nil verificationKeyData:secretData]);
     }];
 }
 
