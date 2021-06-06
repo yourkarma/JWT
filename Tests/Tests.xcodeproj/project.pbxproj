@@ -65,6 +65,7 @@
 		0A883AA6266D683500DAF016 /* ec256-cer.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0A80CF93210912D300D5499C /* ec256-cer.pem */; };
 		0A883AA7266D683500DAF016 /* rs256-wrong-private.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 04857DEB1E4DD77D0036CC3A /* rs256-wrong-private.p12 */; };
 		0A883AA8266D683800DAF016 /* Certificates.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A5B450D210DB9EF0027A234 /* Certificates.xcassets */; };
+		0A883AA9266D781C00DAF016 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD2D61B21130F6100104C72 /* JWT.framework */; };
 		0ABF607F211497B200222F2D /* Certificates.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A5B450D210DB9EF0027A234 /* Certificates.xcassets */; };
 		0AD2D62D21130F9D00104C72 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD2D61B21130F6100104C72 /* JWT.framework */; };
 		0AD2D62E21130FC900104C72 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AD2D61B21130F6100104C72 /* JWT.framework */; };
@@ -105,6 +106,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0A883AAA266D782100DAF016 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 04DEBCA21DBCDB8600C1DF52;
+			remoteInfo = JWT;
+		};
 		0ABF60862114982600222F2D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0AD2D61121130F6100104C72 /* JWT.xcodeproj */;
@@ -202,6 +210,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A883AA9266D781C00DAF016 /* JWT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,6 +447,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				0A883AAB266D782100DAF016 /* PBXTargetDependency */,
 			);
 			name = watchOS_Tests;
 			productName = watchOS_Tests;
@@ -685,6 +695,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0A883AAB266D782100DAF016 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = JWT;
+			targetProxy = 0A883AAA266D782100DAF016 /* PBXContainerItemProxy */;
+		};
 		0ABF60872114982600222F2D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = JWT;
