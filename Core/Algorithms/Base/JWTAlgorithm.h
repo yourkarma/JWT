@@ -32,6 +32,7 @@
 
 @property (nonatomic, readonly, copy) NSString *name;
 
+@optional
 /**
  Encodes and encrypts the provided payload using the provided secret key
  @param theString The string to encode

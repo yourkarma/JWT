@@ -33,23 +33,4 @@ NSString *const JWTAlgorithmNameNone = @"none";
     return YES;
 }
 
-- (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
-    return [self encodePayloadData:[theSecret dataUsingEncoding:NSUTF8StringEncoding] withSecret:[theSecret dataUsingEncoding:NSUTF8StringEncoding]];
-}
-
-- (NSData *)encodePayloadData:(NSData *)theStringData withSecret:(NSData *)theSecretData
-{
-    return [self signHash:theStringData key:theSecretData error:nil];
-}
-
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey
-{
-    return [self verifySignedInput:input withSignature:signature verificationKeyData:[verificationKey dataUsingEncoding:NSUTF8StringEncoding]];
-}
-
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKeyData:(NSData *)verificationKeyData
-{
-    return [self verifyHash:[input dataUsingEncoding:NSUTF8StringEncoding] signature:[signature dataUsingEncoding:NSUTF8StringEncoding] key:verificationKeyData error:nil];
-}
-
 @end

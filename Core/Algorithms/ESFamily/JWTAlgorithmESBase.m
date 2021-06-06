@@ -42,13 +42,4 @@ NSString *const JWTAlgorithmNameES512 = @"ES512";
     return NO;
 }
 
-- (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
-    return nil;
-}
-
-
-- (BOOL)verifySignedInput:(NSString *)input withSignature:(NSString *)signature verificationKey:(NSString *)verificationKey {
-    return NO;
-}
-
 @end
