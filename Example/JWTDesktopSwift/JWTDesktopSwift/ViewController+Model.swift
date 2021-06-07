@@ -45,10 +45,10 @@ extension ViewController {
 // JWT
 extension ViewController.Model {
     var availableAlgorithms: [JWTAlgorithm] {
-        return JWTAlgorithmFactory.algorithms()
+        JWTAlgorithmFactory.algorithms
     }
     var availableAlgorithmsNames: [String] {
-        return self.availableAlgorithms.map {$0.name}
+        self.availableAlgorithms.map(\.name)
     }
 }
 

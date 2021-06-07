@@ -275,8 +275,9 @@ class ViewController: NSViewController {
     }
     
     func defaultDataSetup() {
-        let seed = DataSeedType.rs256.dataSeed//rs256.dataSeed
-        self.defaultDataSetup(algorithmName: seed.algorithmName, secret: seed.secret, token: seed.token)
+        let seed: DataSeedType = .hs256
+        let seedValue = seed.dataSeed
+        self.defaultDataSetup(algorithmName: seedValue.algorithmName, secret: seedValue.secret, token: seedValue.token)
     }
     
     override func viewWillAppear() {
