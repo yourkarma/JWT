@@ -185,6 +185,10 @@
                                     optionsDictionary,
                                     &items);                    // 2
     
+    if (CFArrayGetCount(items) == 0) {
+        securityError = errSecPkcs12VerifyFailure;
+    }
+    
     //
     if (securityError == 0) {                                   // 3
         CFDictionaryRef myIdentityAndTrust = CFArrayGetValueAtIndex (items, 0);
