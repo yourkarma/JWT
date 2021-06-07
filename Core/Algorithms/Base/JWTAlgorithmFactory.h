@@ -22,6 +22,6 @@
 @end
 
 @interface JWTAlgorithmFactory : NSObject
-@property (nonatomic, readonly) NSArray <id<JWTAlgorithm>> *algorithms;
+@property (nonatomic, readonly, class) NSArray <id<JWTAlgorithm>> *algorithms;
 + (id<JWTAlgorithm>)algorithmByName:(NSString *)name;
 @end

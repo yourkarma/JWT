@@ -100,6 +100,28 @@
 		0A5B452B2110AC810027A234 /* JWTCryptoSecurity+Extraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B45292110AC810027A234 /* JWTCryptoSecurity+Extraction.m */; };
 		0A6246FB205727550094B3A9 /* JWTAlgorithmAsymmetricBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A6246F9205727540094B3A9 /* JWTAlgorithmAsymmetricBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A6246FC205727550094B3A9 /* JWTAlgorithmAsymmetricBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6246FA205727540094B3A9 /* JWTAlgorithmAsymmetricBase.m */; };
+		0A883AE2266EBD5800DAF016 /* JWTClaimBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4CFBBB24E1B4670037D3E6 /* JWTClaimBase.m */; };
+		0A883AE3266EBD5800DAF016 /* JWTClaimVariations.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4CFBD324E1EC5D0037D3E6 /* JWTClaimVariations.m */; };
+		0A883AE4266EBD5800DAF016 /* JWTClaimsSetBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4CFBBF24E1B58E0037D3E6 /* JWTClaimsSetBase.m */; };
+		0A883AE5266EBD5800DAF016 /* JWTClaimsSetSerializerBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4CFBC324E1B6500037D3E6 /* JWTClaimsSetSerializerBase.m */; };
+		0A883AE6266EBD5800DAF016 /* JWTClaimsSetVerifierBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4CFBC724E1BD270037D3E6 /* JWTClaimsSetVerifierBase.m */; };
+		0A883AE7266EBD7500DAF016 /* JWTAlgorithmDataHolder+FluentStyle.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0A5A157122AA97D600A81374 /* JWTAlgorithmDataHolder+FluentStyle.h */; };
+		0A883AE8266EBD7500DAF016 /* JWTCryptoKeyExtractor+FluentStyle.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0A5A157522AA9B9D00A81374 /* JWTCryptoKeyExtractor+FluentStyle.h */; };
+		0A883AE9266EBD7500DAF016 /* JWTClaimsSetsProtocols.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0A1F0D9424E05F1800A8B488 /* JWTClaimsSetsProtocols.h */; };
+		0A883AEA266EBD7500DAF016 /* JWTClaimBase.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0A4CFBBA24E1B4670037D3E6 /* JWTClaimBase.h */; };
+		0A883AEB266EBD7500DAF016 /* JWTClaimVariations.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0A4CFBD224E1EC5D0037D3E6 /* JWTClaimVariations.h */; };
+		0A883AEC266EBD7500DAF016 /* JWTClaimsProviderBase.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0A1DA5272659A6190041E737 /* JWTClaimsProviderBase.h */; };
+		0A883AED266EBD7500DAF016 /* JWTClaimSerializerBase.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0A1F238B2663946000A72A83 /* JWTClaimSerializerBase.h */; };
+		0A883AEE266EBD7500DAF016 /* JWTClaimSerializerVariations.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0A1F2390266394DB00A72A83 /* JWTClaimSerializerVariations.h */; };
+		0A883AEF266EBD7500DAF016 /* JWTClaimVerifierBase.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0A1F2395266396C200A72A83 /* JWTClaimVerifierBase.h */; };
+		0A883AF0266EBD7500DAF016 /* JWTClaimVerifierVariations.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0AE4FF9D26639BB800431728 /* JWTClaimVerifierVariations.h */; };
+		0A883AF1266EBD7500DAF016 /* JWTClaimsSetBase.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0A4CFBBE24E1B58E0037D3E6 /* JWTClaimsSetBase.h */; };
+		0A883AF2266EBD7500DAF016 /* JWTClaimsSetSerializerBase.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0A4CFBC224E1B6500037D3E6 /* JWTClaimsSetSerializerBase.h */; };
+		0A883AF3266EBD7500DAF016 /* JWTClaimsSetVerifierBase.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0A4CFBC624E1BD270037D3E6 /* JWTClaimsSetVerifierBase.h */; };
+		0A883AF4266EBD7500DAF016 /* JWTClaimsSetCoordinatorBase.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0AE4FFA72665464800431728 /* JWTClaimsSetCoordinatorBase.h */; };
+		0A883AF5266EBD7600DAF016 /* JWTClaimsSetDSLBase.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0AE4FFB226655DBA00431728 /* JWTClaimsSetDSLBase.h */; };
+		0A883AF6266EBD7600DAF016 /* JWTCodingBuilder+FluentStyle.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0A5A156D22AA95CB00A81374 /* JWTCodingBuilder+FluentStyle.h */; };
+		0A883AF7266EBD7600DAF016 /* JWTBuilder+FluentStyle.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0A4CF38022B50003007B2C28 /* JWTBuilder+FluentStyle.h */; };
 		0A9F3D54211EF85200E4CE8A /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD2D6612113173D00104C72 /* MF_Base64Additions.m */; };
 		0A9F3D57211EF85200E4CE8A /* JWTAlgorithmFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A135F1B1E93E67A00A1D777 /* JWTAlgorithmFactory.m */; };
 		0A9F3D59211EF85200E4CE8A /* JWTAlgorithmNone.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A135F1D1E93E67A00A1D777 /* JWTAlgorithmNone.m */; };
@@ -180,6 +202,23 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				0A883AE7266EBD7500DAF016 /* JWTAlgorithmDataHolder+FluentStyle.h in CopyFiles */,
+				0A883AE8266EBD7500DAF016 /* JWTCryptoKeyExtractor+FluentStyle.h in CopyFiles */,
+				0A883AE9266EBD7500DAF016 /* JWTClaimsSetsProtocols.h in CopyFiles */,
+				0A883AEA266EBD7500DAF016 /* JWTClaimBase.h in CopyFiles */,
+				0A883AEB266EBD7500DAF016 /* JWTClaimVariations.h in CopyFiles */,
+				0A883AEC266EBD7500DAF016 /* JWTClaimsProviderBase.h in CopyFiles */,
+				0A883AED266EBD7500DAF016 /* JWTClaimSerializerBase.h in CopyFiles */,
+				0A883AEE266EBD7500DAF016 /* JWTClaimSerializerVariations.h in CopyFiles */,
+				0A883AEF266EBD7500DAF016 /* JWTClaimVerifierBase.h in CopyFiles */,
+				0A883AF0266EBD7500DAF016 /* JWTClaimVerifierVariations.h in CopyFiles */,
+				0A883AF1266EBD7500DAF016 /* JWTClaimsSetBase.h in CopyFiles */,
+				0A883AF2266EBD7500DAF016 /* JWTClaimsSetSerializerBase.h in CopyFiles */,
+				0A883AF3266EBD7500DAF016 /* JWTClaimsSetVerifierBase.h in CopyFiles */,
+				0A883AF4266EBD7500DAF016 /* JWTClaimsSetCoordinatorBase.h in CopyFiles */,
+				0A883AF5266EBD7600DAF016 /* JWTClaimsSetDSLBase.h in CopyFiles */,
+				0A883AF6266EBD7600DAF016 /* JWTCodingBuilder+FluentStyle.h in CopyFiles */,
+				0A883AF7266EBD7600DAF016 /* JWTBuilder+FluentStyle.h in CopyFiles */,
 				0A9F3D95211EF86C00E4CE8A /* MF_Base64Additions.h in CopyFiles */,
 				0A9F3D97211EF86C00E4CE8A /* JWTAlgorithm.h in CopyFiles */,
 				0A9F3D98211EF86C00E4CE8A /* JWTAlgorithmFactory.h in CopyFiles */,
@@ -316,7 +355,6 @@
 		0AE4FFB126655DBA00431728 /* JWTClaimsSetDSLBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSetDSLBase.m; sourceTree = "<group>"; };
 		0AE4FFB226655DBA00431728 /* JWTClaimsSetDSLBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTClaimsSetDSLBase.h; sourceTree = "<group>"; };
 		A1951DB91758990700AF73D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		A1951DCA1758990700AF73D9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -567,7 +605,6 @@
 			isa = PBXGroup;
 			children = (
 				A1951DB91758990700AF73D9 /* Foundation.framework */,
-				A1951DCA1758990700AF73D9 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -722,6 +759,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A883AE2266EBD5800DAF016 /* JWTClaimBase.m in Sources */,
+				0A883AE3266EBD5800DAF016 /* JWTClaimVariations.m in Sources */,
+				0A883AE4266EBD5800DAF016 /* JWTClaimsSetBase.m in Sources */,
+				0A883AE5266EBD5800DAF016 /* JWTClaimsSetSerializerBase.m in Sources */,
+				0A883AE6266EBD5800DAF016 /* JWTClaimsSetVerifierBase.m in Sources */,
 				0A9F3D54211EF85200E4CE8A /* MF_Base64Additions.m in Sources */,
 				0A9F3D57211EF85200E4CE8A /* JWTAlgorithmFactory.m in Sources */,
 				0A9F3D59211EF85200E4CE8A /* JWTAlgorithmNone.m in Sources */,
@@ -901,7 +943,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvos appletvsimulator macosx watchsimulator watchos";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -940,7 +981,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvos appletvsimulator macosx watchsimulator watchos";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -991,11 +1031,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
-				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Debug;
 		};
@@ -1036,10 +1072,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
-				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

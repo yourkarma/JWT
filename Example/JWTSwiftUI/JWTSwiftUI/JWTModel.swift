@@ -153,7 +153,7 @@ extension JWTModel.Storage.DecodedData {
 // MARK: Algorithms.
 extension JWTModel.Storage.EncodedData {
     var availableAlgorithms: [JWTAlgorithm] {
-        JWTAlgorithmFactory.algorithms()
+        JWTAlgorithmFactory.algorithms
     }
     var availableAlgorithmsNames: [String] {
         self.availableAlgorithms.map(\.name)
@@ -167,7 +167,7 @@ extension JWTModel.Storage.DecodedData {
         case header
         case payload
         case unknown
-        var uiColor: UIColor {
+        var uiColor: ColorBridge {
             switch self {
             case .error: return SignatureValidationType.invalid.color
             case .header: return TokenTextType.header.color
