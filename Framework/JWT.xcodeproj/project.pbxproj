@@ -316,7 +316,6 @@
 		0AE4FFB126655DBA00431728 /* JWTClaimsSetDSLBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWTClaimsSetDSLBase.m; sourceTree = "<group>"; };
 		0AE4FFB226655DBA00431728 /* JWTClaimsSetDSLBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTClaimsSetDSLBase.h; sourceTree = "<group>"; };
 		A1951DB91758990700AF73D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		A1951DCA1758990700AF73D9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -567,7 +566,6 @@
 			isa = PBXGroup;
 			children = (
 				A1951DB91758990700AF73D9 /* Foundation.framework */,
-				A1951DCA1758990700AF73D9 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
