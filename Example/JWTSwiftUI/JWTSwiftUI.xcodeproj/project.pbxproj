@@ -16,6 +16,20 @@
 		0A76C87C22ABD2B100B8A43A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A76C87A22ABD2B100B8A43A /* LaunchScreen.storyboard */; };
 		0A76C88422ABD2F200B8A43A /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C88322ABD2F200B8A43A /* HeaderView.swift */; };
 		0A76C88822ABE51800B8A43A /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C88722ABE51800B8A43A /* BottomView.swift */; };
+		0A883AB8266E166600DAF016 /* iOSJWTSwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A883AB7266E166600DAF016 /* iOSJWTSwiftUIApp.swift */; };
+		0A883ABC266E166900DAF016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A883ABB266E166900DAF016 /* Assets.xcassets */; };
+		0A883ABF266E166900DAF016 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A883ABE266E166900DAF016 /* Preview Assets.xcassets */; };
+		0A883AC4266E169900DAF016 /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C88722ABE51800B8A43A /* BottomView.swift */; };
+		0A883AC5266E169900DAF016 /* JWTModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A60395322B22BA700256661 /* JWTModel.swift */; };
+		0A883AC6266E169900DAF016 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C87322ABD2AF00B8A43A /* ContentView.swift */; };
+		0A883AC7266E169900DAF016 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C88322ABD2F200B8A43A /* HeaderView.swift */; };
+		0A883ACF266E191700DAF016 /* MacJWTSwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A883ACE266E191700DAF016 /* MacJWTSwiftUIApp.swift */; };
+		0A883AD3266E191A00DAF016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A883AD2266E191A00DAF016 /* Assets.xcassets */; };
+		0A883AD6266E191A00DAF016 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A883AD5266E191A00DAF016 /* Preview Assets.xcassets */; };
+		0A883ADC266E192500DAF016 /* JWTModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A60395322B22BA700256661 /* JWTModel.swift */; };
+		0A883ADD266E192500DAF016 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C88322ABD2F200B8A43A /* HeaderView.swift */; };
+		0A883ADE266E192500DAF016 /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C88722ABE51800B8A43A /* BottomView.swift */; };
+		0A883ADF266E192500DAF016 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C87322ABD2AF00B8A43A /* ContentView.swift */; };
 		0ABC6F58266A7EA800089885 /* JWTDesktopSwiftToolkit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ABC6F54266A7DAD00089885 /* JWTDesktopSwiftToolkit.framework */; };
 		0ABC6F63266A918000089885 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ABC6F62266A918000089885 /* JWT.framework */; };
 /* End PBXBuildFile section */
@@ -55,6 +69,19 @@
 		0A76C87D22ABD2B100B8A43A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A76C88322ABD2F200B8A43A /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		0A76C88722ABE51800B8A43A /* BottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomView.swift; sourceTree = "<group>"; };
+		0A883AB5266E166600DAF016 /* iOSJWTSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSJWTSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A883AB7266E166600DAF016 /* iOSJWTSwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSJWTSwiftUIApp.swift; sourceTree = "<group>"; };
+		0A883AB9266E166600DAF016 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		0A883ABB266E166900DAF016 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0A883ABE266E166900DAF016 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		0A883AC0266E166900DAF016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A883ACC266E191700DAF016 /* MacJWTSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacJWTSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A883ACE266E191700DAF016 /* MacJWTSwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacJWTSwiftUIApp.swift; sourceTree = "<group>"; };
+		0A883AD0266E191700DAF016 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		0A883AD2266E191A00DAF016 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0A883AD5266E191A00DAF016 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		0A883AD7266E191A00DAF016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A883AD8266E191A00DAF016 /* MacJWTSwiftUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacJWTSwiftUI.entitlements; sourceTree = "<group>"; };
 		0ABC6F4E266A7DAD00089885 /* JWTDesktopSwiftToolkit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JWTDesktopSwiftToolkit.xcodeproj; path = ../JWTDesktopSwiftToolkit/JWTDesktopSwiftToolkit.xcodeproj; sourceTree = "<group>"; };
 		0ABC6F5A266A908000089885 /* JWT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JWT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ABC6F62266A918000089885 /* JWT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JWT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +97,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0A883AB2266E166600DAF016 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A883AC9266E191700DAF016 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -78,6 +119,8 @@
 			children = (
 				0ABC6F4E266A7DAD00089885 /* JWTDesktopSwiftToolkit.xcodeproj */,
 				0A76C86E22ABD2AF00B8A43A /* JWTSwiftUI */,
+				0A883AB6266E166600DAF016 /* iOSJWTSwiftUI */,
+				0A883ACD266E191700DAF016 /* MacJWTSwiftUI */,
 				0A76C86D22ABD2AF00B8A43A /* Products */,
 				0ABC6F59266A908000089885 /* Frameworks */,
 			);
@@ -87,6 +130,8 @@
 			isa = PBXGroup;
 			children = (
 				0A76C86C22ABD2AF00B8A43A /* JWTSwiftUI.app */,
+				0A883AB5266E166600DAF016 /* iOSJWTSwiftUI.app */,
+				0A883ACC266E191700DAF016 /* MacJWTSwiftUI.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -112,6 +157,47 @@
 			isa = PBXGroup;
 			children = (
 				0A76C87822ABD2B100B8A43A /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		0A883AB6266E166600DAF016 /* iOSJWTSwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				0A883AB7266E166600DAF016 /* iOSJWTSwiftUIApp.swift */,
+				0A883AB9266E166600DAF016 /* ContentView.swift */,
+				0A883ABB266E166900DAF016 /* Assets.xcassets */,
+				0A883AC0266E166900DAF016 /* Info.plist */,
+				0A883ABD266E166900DAF016 /* Preview Content */,
+			);
+			path = iOSJWTSwiftUI;
+			sourceTree = "<group>";
+		};
+		0A883ABD266E166900DAF016 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				0A883ABE266E166900DAF016 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		0A883ACD266E191700DAF016 /* MacJWTSwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				0A883ACE266E191700DAF016 /* MacJWTSwiftUIApp.swift */,
+				0A883AD0266E191700DAF016 /* ContentView.swift */,
+				0A883AD2266E191A00DAF016 /* Assets.xcassets */,
+				0A883AD7266E191A00DAF016 /* Info.plist */,
+				0A883AD8266E191A00DAF016 /* MacJWTSwiftUI.entitlements */,
+				0A883AD4266E191A00DAF016 /* Preview Content */,
+			);
+			path = MacJWTSwiftUI;
+			sourceTree = "<group>";
+		};
+		0A883AD4266E191A00DAF016 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				0A883AD5266E191A00DAF016 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -154,18 +240,58 @@
 			productReference = 0A76C86C22ABD2AF00B8A43A /* JWTSwiftUI.app */;
 			productType = "com.apple.product-type.application";
 		};
+		0A883AB4266E166600DAF016 /* iOSJWTSwiftUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0A883AC1266E166900DAF016 /* Build configuration list for PBXNativeTarget "iOSJWTSwiftUI" */;
+			buildPhases = (
+				0A883AB1266E166600DAF016 /* Sources */,
+				0A883AB2266E166600DAF016 /* Frameworks */,
+				0A883AB3266E166600DAF016 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iOSJWTSwiftUI;
+			productName = iOSJWTSwiftUI;
+			productReference = 0A883AB5266E166600DAF016 /* iOSJWTSwiftUI.app */;
+			productType = "com.apple.product-type.application";
+		};
+		0A883ACB266E191700DAF016 /* MacJWTSwiftUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0A883AD9266E191A00DAF016 /* Build configuration list for PBXNativeTarget "MacJWTSwiftUI" */;
+			buildPhases = (
+				0A883AC8266E191700DAF016 /* Sources */,
+				0A883AC9266E191700DAF016 /* Frameworks */,
+				0A883ACA266E191700DAF016 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MacJWTSwiftUI;
+			productName = MacJWTSwiftUI;
+			productReference = 0A883ACC266E191700DAF016 /* MacJWTSwiftUI.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		0A76C86422ABD2AF00B8A43A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1100;
+				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "Dmitry Lobanov";
 				TargetAttributes = {
 					0A76C86B22ABD2AF00B8A43A = {
 						CreatedOnToolsVersion = 11.0;
+					};
+					0A883AB4266E166600DAF016 = {
+						CreatedOnToolsVersion = 12.5;
+					};
+					0A883ACB266E191700DAF016 = {
+						CreatedOnToolsVersion = 12.5;
 					};
 				};
 			};
@@ -189,6 +315,8 @@
 			projectRoot = "";
 			targets = (
 				0A76C86B22ABD2AF00B8A43A /* JWTSwiftUI */,
+				0A883AB4266E166600DAF016 /* iOSJWTSwiftUI */,
+				0A883ACB266E191700DAF016 /* MacJWTSwiftUI */,
 			);
 		};
 /* End PBXProject section */
@@ -214,6 +342,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0A883AB3266E166600DAF016 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A883ABF266E166900DAF016 /* Preview Assets.xcassets in Resources */,
+				0A883ABC266E166900DAF016 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A883ACA266E191700DAF016 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A883AD6266E191A00DAF016 /* Preview Assets.xcassets in Resources */,
+				0A883AD3266E191A00DAF016 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -227,6 +373,30 @@
 				0A76C87422ABD2AF00B8A43A /* ContentView.swift in Sources */,
 				0A76C88822ABE51800B8A43A /* BottomView.swift in Sources */,
 				0A76C88422ABD2F200B8A43A /* HeaderView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A883AB1266E166600DAF016 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A883AC4266E169900DAF016 /* BottomView.swift in Sources */,
+				0A883AC7266E169900DAF016 /* HeaderView.swift in Sources */,
+				0A883AC6266E169900DAF016 /* ContentView.swift in Sources */,
+				0A883AB8266E166600DAF016 /* iOSJWTSwiftUIApp.swift in Sources */,
+				0A883AC5266E169900DAF016 /* JWTModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A883AC8266E191700DAF016 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A883ACF266E191700DAF016 /* MacJWTSwiftUIApp.swift in Sources */,
+				0A883ADF266E192500DAF016 /* ContentView.swift in Sources */,
+				0A883ADD266E192500DAF016 /* HeaderView.swift in Sources */,
+				0A883ADC266E192500DAF016 /* JWTModel.swift in Sources */,
+				0A883ADE266E192500DAF016 /* BottomView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,6 +544,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.example.JWTSwiftUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -393,8 +564,97 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.example.JWTSwiftUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		0A883AC2266E166900DAF016 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"iOSJWTSwiftUI/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = iOSJWTSwiftUI/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.opensource.iOSJWTSwiftUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0A883AC3266E166900DAF016 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"iOSJWTSwiftUI/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = iOSJWTSwiftUI/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.opensource.iOSJWTSwiftUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		0A883ADA266E191A00DAF016 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MacJWTSwiftUI/MacJWTSwiftUI.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"MacJWTSwiftUI/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = MacJWTSwiftUI/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				PRODUCT_BUNDLE_IDENTIFIER = org.opensource.MacJWTSwiftUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		0A883ADB266E191A00DAF016 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MacJWTSwiftUI/MacJWTSwiftUI.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"MacJWTSwiftUI/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = MacJWTSwiftUI/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				PRODUCT_BUNDLE_IDENTIFIER = org.opensource.MacJWTSwiftUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -415,6 +675,24 @@
 			buildConfigurations = (
 				0A76C88122ABD2B100B8A43A /* Debug */,
 				0A76C88222ABD2B100B8A43A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0A883AC1266E166900DAF016 /* Build configuration list for PBXNativeTarget "iOSJWTSwiftUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A883AC2266E166900DAF016 /* Debug */,
+				0A883AC3266E166900DAF016 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0A883AD9266E191A00DAF016 /* Build configuration list for PBXNativeTarget "MacJWTSwiftUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A883ADA266E191A00DAF016 /* Debug */,
+				0A883ADB266E191A00DAF016 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

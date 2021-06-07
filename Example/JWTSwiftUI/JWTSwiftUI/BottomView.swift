@@ -29,8 +29,12 @@ extension BottomView {
 //            }
         }
         
+        var currentBody: some View {
+            TextEditor(text: self.$textValue).redacted(reason: .placeholder)
+        }
+        
         var body: some View {
-            body1
+            self.currentBody
         }
     }
 }
@@ -38,12 +42,24 @@ extension BottomView {
 extension BottomView {
     struct DecodedView: View {
         var decodedInformation: JWTModel.Storage.DecodedData.DecodedInfoType
-        var body: some View {
+        var currentBody: some View {
+            Form {
+                ForEach(self.decodedInformation, id: \.0) { value in
+                    Section(header: Text(value.0.rawValue)) {
+                        Text(String(describing: value.1)).bold().foregroundColor(value.0.color)
+                    }
+                }
+            }
+        }
+        var oldBody: some View {
             VStack {
                 ForEach(self.decodedInformation, id: \.0) { value in
                     Text("\(value.0.rawValue): \(String(describing: value.1))").lineLimit(10).multilineTextAlignment(.center)
                 }
             }
+        }
+        var body: some View {
+            self.currentBody
         }
     }
 }

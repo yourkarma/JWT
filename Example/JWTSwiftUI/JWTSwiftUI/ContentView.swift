@@ -62,8 +62,18 @@ struct ContentView: View {
             }
         }
     }
-    var body: some View {
+    var body5: some View {
+        #if os(macOS)
+        HSplitView {
+            getBottomView()
+            getHeaderView()
+        }
+        #else
         body4
+        #endif
+    }
+    var body: some View {
+        body5
     }
 }
 
