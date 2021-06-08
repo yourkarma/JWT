@@ -12,9 +12,10 @@ NSString *JWTErrorDomain = @"io.jwt";
 + (NSDictionary *)userDescriptionsAndCodes {
     static NSDictionary *userDescriptionsAndCodes = nil;
     return userDescriptionsAndCodes ?: (userDescriptionsAndCodes = @{
+        @(JWTUnexpectedError): @"JWT unexpected error",
         @(JWTInvalidFormatError): @"Invalid format! Try to check your encoding algorithm. Maybe you put too many dots as delimiters?",
         @(JWTUnsupportedAlgorithmError): @"Unsupported algorithm! You could implement it by yourself",
-        @(JWTAlgorithmNameMismatchError) : @"Algorithm doesn't match name in header.",
+        @(JWTAlgorithmNameMismatchError): @"Algorithm doesn't match name in header.",
         @(JWTInvalidSignatureError): @"Invalid signature! It seems that signed part of jwt mismatch generated part by algorithm provided in header.",
         @(JWTNoPayloadError): @"No payload! Hey, forget payload?",
         @(JWTNoHeaderError): @"No header! Hmm",
@@ -27,17 +28,18 @@ NSString *JWTErrorDomain = @"io.jwt";
         @(JWTBlacklistedAlgorithmError): @"Algorithm in blacklist? Try to check whitelist parameter",
         @(JWTDecodingHeaderError): @"Error decoding the JWT Header segment.",
         @(JWTDecodingPayloadError): @"Error decoding the JWT Payload segment.",
-        @(JWTDecodingHoldersChainEmptyError) : @"Error decoding the JWT algorithm and data holders chain is empty!",
-        @(JWTHolderSecretDataNotSetError) : @"Error encoding/decoding .secretData not set when using sign/verify keys. Bug. Workaround is simple. Set secretData: { holder.secretData([NSData data]); }"
+        @(JWTDecodingHoldersChainEmptyError): @"Error decoding the JWT algorithm and data holders chain is empty!",
+        @(JWTHolderSecretDataNotSetError): @"Error encoding/decoding .secretData not set when using sign/verify keys. Bug. Workaround is simple. Set secretData: { holder.secretData([NSData data]); }"
     });
 }
 
 + (NSDictionary *)errorDescriptionsAndCodes {
     static NSDictionary *errorDescriptionsAndCodes = nil;
     return errorDescriptionsAndCodes ?: (errorDescriptionsAndCodes = @{
+        @(JWTUnexpectedError): @"JWTUnexpectedError",
         @(JWTInvalidFormatError): @"JWTInvalidFormatError",
         @(JWTUnsupportedAlgorithmError): @"JWTUnsupportedAlgorithmError",
-        @(JWTAlgorithmNameMismatchError) :@"JWTAlgorithmNameMismatchError",
+        @(JWTAlgorithmNameMismatchError): @"JWTAlgorithmNameMismatchError",
         @(JWTInvalidSignatureError): @"JWTInvalidSignatureError",
         @(JWTNoPayloadError): @"JWTNoPayloadError",
         @(JWTNoHeaderError): @"JWTNoHeaderError",
@@ -50,8 +52,8 @@ NSString *JWTErrorDomain = @"io.jwt";
         @(JWTBlacklistedAlgorithmError): @"JWTBlacklistedAlgorithmError",
         @(JWTDecodingHeaderError): @"JWTDecodingHeaderError",
         @(JWTDecodingPayloadError): @"JWTDecodingPayloadError",
-        @(JWTDecodingHoldersChainEmptyError) :@"JWTDecodingHoldersChainEmptyError",
-        @(JWTHolderSecretDataNotSetError) : @"JWTHolderSecretDataNotSetError"
+        @(JWTDecodingHoldersChainEmptyError): @"JWTDecodingHoldersChainEmptyError",
+        @(JWTHolderSecretDataNotSetError): @"JWTHolderSecretDataNotSetError"
     });
 }
 
