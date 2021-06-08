@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Base64",
+        "repositoryURL": "https://github.com/lolgear/Base64",
+        "state": {
+          "branch": "distribution/swift_package_manager_support",
+          "revision": "015ce993db89e0212c1ea0d5aa845abb478d4313",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

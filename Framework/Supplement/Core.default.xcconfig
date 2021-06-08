@@ -1,4 +1,4 @@
-MODULEMAP_FILE = $(SOURCE_ROOT)/../Core/FrameworkSupplement/Map.modulemap;
+//MODULEMAP_FILE = $(SOURCE_ROOT)/../Sources/JWT/FrameworkSupplement/Map.modulemap;
 //FRAMEWORK_SEARCH_PATHS = $(inherited) "$(SOURCE_ROOT)/../../Release_Frameworks";
 //CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 INFOPLIST_FILE = Supplement/Info.plist
@@ -7,7 +7,7 @@ INFOPLIST_FILE = Supplement/Info.plist
 SUPPORTED_PLATFORMS = iphonesimulator iphoneos appletvos appletvsimulator macosx watchsimulator watchos
 
 // Deployment targets
-IPHONEOS_DEPLOYMENT_TARGET = 8.0
+IPHONEOS_DEPLOYMENT_TARGET = 9.0
 MACOSX_DEPLOYMENT_TARGET = 10.9
 TVOS_DEPLOYMENT_TARGET = 9.0
 WATCHOS_DEPLOYMENT_TARGET = 7.4
