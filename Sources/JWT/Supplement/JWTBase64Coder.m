@@ -23,7 +23,7 @@
 #if HAS_INCLUDE_MF_Base64Additions_AS_FRAMEWORK
 #import <Base64/MF_Base64Additions.h>
 #elif HAS_INCLUDE_MF_Base64Additions_AS_PLAIN_LIBRARY
-#import <JWT/MF_Base64Additions.h>
+#import "MF_Base64Additions.h"
 #endif
 
 @interface JWTBase64Coder ()
