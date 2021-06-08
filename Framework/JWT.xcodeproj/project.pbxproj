@@ -699,9 +699,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0451466E1D5E2A78007B1D7A /* Build configuration list for PBXNativeTarget "JWT-Static" */;
 			buildPhases = (
+				045146661D5E2A78007B1D7A /* CopyFiles */,
 				045146641D5E2A78007B1D7A /* Sources */,
 				045146651D5E2A78007B1D7A /* Frameworks */,
-				045146661D5E2A78007B1D7A /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -902,7 +902,6 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				MODULEMAP_FILE = Supplement/JWT.modulemap;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = JWT;
 				SKIP_INSTALL = YES;
@@ -929,7 +928,6 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				MODULEMAP_FILE = Supplement/JWT.modulemap;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = JWT;
 				SKIP_INSTALL = YES;
