@@ -7,7 +7,7 @@ INFOPLIST_FILE = Supplement/Info.plist
 SUPPORTED_PLATFORMS = iphonesimulator iphoneos appletvos appletvsimulator macosx watchsimulator watchos
 
 // Deployment targets
-IPHONEOS_DEPLOYMENT_TARGET = 8.0
+IPHONEOS_DEPLOYMENT_TARGET = 9.0
 MACOSX_DEPLOYMENT_TARGET = 10.9
 TVOS_DEPLOYMENT_TARGET = 9.0
 WATCHOS_DEPLOYMENT_TARGET = 7.4
