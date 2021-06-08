@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-// TODO: Discuss
-// Rename to error or not necessary?
 @interface JWTAlgorithmErrorDescription : NSObject
 + (NSError *)errorWithCode:(NSInteger)code;
 + (NSError *)errorWithExternalError:(NSError *)error;
