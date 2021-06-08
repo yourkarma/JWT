@@ -201,7 +201,7 @@
      @discussion
      If a pkcs12 that was created with only one private key in it and no certificate was tried used, this just crashed when accessing index 0 with the CFArrayGetValueAtIndex.
      */
-    if (items == nil || CFArrayGetCount(items) == 0) {
+    if (items != nil && CFArrayGetCount(items) == 0) {
         securityError = errSecPkcs12VerifyFailure;
     }
     
