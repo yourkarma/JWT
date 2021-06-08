@@ -54,10 +54,10 @@ script:
     # framework after static library is bad.
     # beer and wine order, heh.
     - echo "Build iOS Static library"
-    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Static' -configuration Release -sdk macosx | xcpretty -c
-    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Static' -configuration Release -sdk iphonesimulator | xcpretty -c
-    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Static' -configuration Release -sdk appletvsimulator | xcpretty -c
-    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-iOS-Static' -configuration Release -sdk watchsimulator | xcpretty -c
+    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-Static' -configuration Release -sdk macosx | xcpretty -c
+    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-Static' -configuration Release -sdk iphonesimulator | xcpretty -c
+    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-Static' -configuration Release -sdk appletvsimulator | xcpretty -c
+    - xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-Static' -configuration Release -sdk watchsimulator | xcpretty -c
     
     # Tests.
     - echo Run iOS Tests
