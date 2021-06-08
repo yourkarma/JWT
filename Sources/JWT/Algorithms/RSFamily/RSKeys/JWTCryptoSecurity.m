@@ -8,6 +8,8 @@
 
 #import <JWT/JWTCryptoSecurity.h>
 #import <JWT/JWTCryptoSecurity+ErrorHandling.h>
+#import <JWT/JWTErrorDescription.h>
+
 @interface JWTMemoryLayout : NSObject
 + (NSString *)typeUInt8;
 + (NSString *)typeCUnsignedChar;
@@ -129,18 +131,28 @@
     return NULL;
 }
 
-+ (void)removeKeyByTag:(NSString *)tag error:(NSError *__autoreleasing*)error; {
++ (BOOL)removeKeyByTag:(NSString *)tag error:(NSError *__autoreleasing*)error; {
     NSData *tagData = [tag dataUsingEncoding:NSUTF8StringEncoding];
     if (tagData == nil) {
         // tell that nothing to remove.
-        return;
+        if (error) {
+            *error = [JWTErrorDescription errorWithCode:JWTUnexpectedError];
+        }
+        return NO;
     }
     NSDictionary *removeAttributes = @{
                                        (__bridge NSString*)kSecClass: (__bridge NSString*)kSecClassKey,
                                        (__bridge NSString*)kSecAttrKeyType: (__bridge NSString*)kSecAttrKeyTypeRSA,
-                                       (__bridge NSString*)kSecAttrApplicationTag: tagData,
+                                       (__bridge NSString*)kSecAttrApplicationTag: tagData
                                        };
-    SecItemDelete((__bridge CFDictionaryRef)removeAttributes);
+    OSStatus status = SecItemDelete((__bridge CFDictionaryRef)removeAttributes);
+    if (status != errSecSuccess) {
+        if (error) {
+            *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:status userInfo:nil];
+        }
+    }
+    return status != errSecSuccess;
+    
 }
 @end
 
@@ -184,6 +196,14 @@
     securityError = SecPKCS12Import(inPKCS12Data,
                                     optionsDictionary,
                                     &items);                    // 2
+    
+    /**
+     @discussion
+     If a pkcs12 that was created with only one private key in it and no certificate was tried used, this just crashed when accessing index 0 with the CFArrayGetValueAtIndex.
+     */
+    if (items != nil && CFArrayGetCount(items) == 0) {
+        securityError = errSecPkcs12VerifyFailure;
+    }
     
     //
     if (securityError == 0) {                                   // 3

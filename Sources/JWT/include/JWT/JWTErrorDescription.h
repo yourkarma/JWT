@@ -11,7 +11,8 @@
 extern NSString *JWTErrorDomain;
 
 typedef NS_ENUM(NSInteger, JWTError) {
-    JWTInvalidFormatError = -100,
+    JWTUnexpectedError = -99,
+    JWTInvalidFormatError,
     JWTUnsupportedAlgorithmError,
     JWTAlgorithmNameMismatchError,
     JWTInvalidSignatureError,
