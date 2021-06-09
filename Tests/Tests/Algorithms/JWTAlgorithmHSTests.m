@@ -6,13 +6,12 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "MF_Base64Additions.h"
 #import <JWT/JWT.h>
 
 @interface JWTAlgorithmHSTestsHelper : NSObject
 @property (copy, nonatomic, readwrite) NSString *payload;
 @property (copy, nonatomic, readwrite) NSString *signedPayload;
-@property (copy, nonatomic, readwrite) NSString *signedPayloadBase64;
+@property (copy, nonatomic, readwrite) NSString *signedPayloadBase64UrlEncoded;
 @property (copy, nonatomic, readwrite) NSString *secret;
 @property (copy, nonatomic, readwrite) NSString *wrongSecret;
 @property (copy, nonatomic, readwrite) NSString *signature;
@@ -21,6 +20,8 @@
 
 @property (strong, nonatomic, readwrite) id <JWTAlgorithm> algorithm;
 @property (strong, nonatomic, readwrite) JWTAlgorithmHolder *theAlgorithm;
+
+@property (strong, nonatomic, readwrite) JWTBase64Coder *base64Coder;
 @end
 
 @implementation JWTAlgorithmHSTestsHelper
@@ -29,18 +30,18 @@
     return @{
              JWTAlgorithmNameHS256 : ^{
                  weakSelf.signedPayload = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9";
-                 weakSelf.signedPayloadBase64 = @"uC/LeRrOxXhZuYm0MKgmSIzi5Hn9+SMmvQoug3WkK6Q=";
+                 weakSelf.signedPayloadBase64UrlEncoded = @"uC_LeRrOxXhZuYm0MKgmSIzi5Hn9-SMmvQoug3WkK6Q";
                  weakSelf.signature = @"TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
              },
 
              JWTAlgorithmNameHS384 : ^{
                  weakSelf.signedPayload = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9";
-                 weakSelf.signedPayloadBase64 = @"s62aZf5ZLMSvjtBQpY4kiJbYxSu8wLAUop2D9nod5Eqgd+nyUCEj+iaDuVuI4gaJ";
+                 weakSelf.signedPayloadBase64UrlEncoded = @"s62aZf5ZLMSvjtBQpY4kiJbYxSu8wLAUop2D9nod5Eqgd-nyUCEj-iaDuVuI4gaJ";
                  weakSelf.signature = @"hnzqaUFa2kfSFnynQ_WBJ7-wpLCgsyEdilCkRKliadjVuG-hGnc1qhvIjlvxSie5";
              },
              JWTAlgorithmNameHS512 : ^{
                  weakSelf.signedPayload = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9";
-                 weakSelf.signedPayloadBase64 = @"KR3aqiPK+jqq4cl1U5H0vvNbvby5JzmlYYpciW9lINKw0o0tKYfayXR54xIUpR2Wz86voo5GpPlhtjxGNSoYng==";
+                 weakSelf.signedPayloadBase64UrlEncoded = @"KR3aqiPK-jqq4cl1U5H0vvNbvby5JzmlYYpciW9lINKw0o0tKYfayXR54xIUpR2Wz86voo5GpPlhtjxGNSoYng";
                  weakSelf.signature = @"SerC5MWQIs3fRH6ZD7gKKbq51TsyydXTvl23WpD9sA085SzQ7pK6M0TnYjFITNUkwuniGG5Is2OKJCEIHPn1Kg";
              }
              };
@@ -49,6 +50,7 @@
     self.payload = @"payload";
     self.secret = @"secret";
     self.wrongSecret = @"notTheSecret";
+    self.base64Coder = [JWTBase64Coder new];
 }
 - (instancetype)configuredByName:(NSString *)name {
     __auto_type configured = [self configurations][name];
@@ -104,15 +106,14 @@
     
     [XCTContext runActivityNamed:@"HMAC encodes the payload using SHA256" block:^(id<XCTActivity> _Nonnull activity) {
         __auto_type encodedPayload = [helper.theAlgorithm encodePayload:helper.payload withSecret:helper.secret];
-        XCTAssertEqualObjects([encodedPayload base64String], helper.signedPayloadBase64);
+        XCTAssertEqualObjects([helper.base64Coder stringWithData:encodedPayload], helper.signedPayloadBase64UrlEncoded);
     }];
     
     [XCTContext runActivityNamed:@"HMAC encodes the payload data using SHA256" block:^(id<XCTActivity> _Nonnull activity) {
-        __auto_type payloadData = [NSData dataWithBase64String:[helper.payload base64String]];
-        __auto_type secretData = [NSData dataWithBase64String:[helper.secret base64String]];
-        
+        __auto_type payloadData = [helper.base64Coder dataWithString:helper.payload];
+        __auto_type secretData = [helper.base64Coder dataWithString:helper.secret];        
         __auto_type encodedPayload = [helper.theAlgorithm encodePayloadData:payloadData withSecret:secretData];
-        XCTAssertEqualObjects([encodedPayload base64String], helper.signedPayloadBase64);
+        XCTAssertEqualObjects([helper.base64Coder stringWithData:encodedPayload], helper.signedPayloadBase64UrlEncoded);
     }];
     
     [XCTContext runActivityNamed:@"HMAC encodes the payload canonically" block:^(id<XCTActivity> _Nonnull activity) {
@@ -132,17 +133,17 @@
     }];
 
     [XCTContext runActivityNamed:@"should verify JWT with valid signature and secret Data" block:^(id<XCTActivity> _Nonnull activity) {
-        __auto_type secretData = [NSData dataWithBase64String:[helper.secret base64String]];
+        __auto_type secretData = [helper.base64Coder dataWithString:helper.secret];
         XCTAssertTrue([helper.theAlgorithm verifySignedInput:helper.signedPayload withSignature:helper.signature verificationKeyData:secretData]);
     }];
 
     [XCTContext runActivityNamed:@"should fail to verify JWT with invalid secret" block:^(id<XCTActivity> _Nonnull activity) {
-        __auto_type secretData = [NSData dataWithBase64String:[helper.wrongSecret base64String]];
+        __auto_type secretData = [helper.base64Coder dataWithString:helper.wrongSecret];
         XCTAssertFalse([helper.theAlgorithm verifySignedInput:helper.signedPayload withSignature:helper.signature verificationKeyData:secretData]);
     }];
 
     [XCTContext runActivityNamed:@"should fail to verify JWT with invalid signature" block:^(id<XCTActivity> _Nonnull activity) {
-        __auto_type secretData = [NSData dataWithBase64String:[helper.secret base64String]];
+        __auto_type secretData = [helper.base64Coder dataWithString:helper.secret];
         XCTAssertFalse([helper.theAlgorithm verifySignedInput:helper.signedPayload withSignature:nil verificationKeyData:secretData]);
     }];
 }

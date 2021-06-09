@@ -7,107 +7,7 @@
 
 #import <XCTest/XCTest.h>
 #import <JWT/JWT.h>
-
-@interface JWTAlgorithmAsymmetricTestsHelperAssetAccessor : NSObject
-@property (copy, nonatomic, readwrite) NSString *folder;
-- (instancetype)initWithFolder:(NSString *)folder;
-- (instancetype)initWithAlgorithmType:(NSString *)type shaSize:(NSNumber *)size;
-- (instancetype)initWithAlgorithName:(NSString *)name;
-@end
-
-@interface JWTAlgorithmAsymmetricTestsHelperAssetAccessor (Validation)
-- (instancetype)checked;
-- (BOOL)check;
-@end
-
-@interface JWTAlgorithmAsymmetricTestsHelperAssetAccessor (FolderAccess)
-- (NSString *)stringFromFileWithName:(NSString *)name;
-- (NSData *)dataFromFileWithName:(NSString *)name;
-@end
-
-@implementation JWTAlgorithmAsymmetricTestsHelperAssetAccessor (FolderAccess)
-- (NSString *)stringFromFileWithName:(NSString *)name {
-    __auto_type data = [self dataFromFileWithName:name];
-    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-}
-
-- (NSData *)dataFromFileWithName:(NSString *)name {
-    __auto_type path = [self.folder stringByAppendingPathComponent:name];
-    __auto_type asset = [[NSDataAsset alloc] initWithName:path bundle:[NSBundle bundleForClass:self.class]];
-    __auto_type data = asset.data;
-    return data;
-}
-@end
-
-@interface JWTAlgorithmAsymmetricTestsHelperAssetAccessor (Getters)
-@property (copy, nonatomic, readonly) NSString *privateKeyBase64;
-@property (copy, nonatomic, readonly) NSString *publicKeyBase64;
-@property (copy, nonatomic, readonly) NSString *certificateBase64;
-@property (copy, nonatomic, readonly) NSData *p12Data;
-@property (copy, nonatomic, readonly) NSString *p12Password;
-@end
-
-@implementation JWTAlgorithmAsymmetricTestsHelperAssetAccessor (Getters)
-- (NSString *)privateKeyBase64 {
-    return [self stringFromFileWithName:@"private.pem"];
-}
-- (NSString *)publicKeyBase64 {
-    return [self stringFromFileWithName:@"public.pem"];
-}
-- (NSString *)certificateBase64 {
-    return [self stringFromFileWithName:@"certificate.cer"];
-}
-- (NSData *)p12Data {
-    return [self dataFromFileWithName:@"private.p12"];
-}
-- (NSString *)p12Password {
-    return [self stringFromFileWithName:@"p12_password.txt"];
-}
-@end
-
-@implementation JWTAlgorithmAsymmetricTestsHelperAssetAccessor
-- (instancetype)initWithFolder:(NSString *)folder {
-    if (self = [super init]) {
-        self.folder = folder;
-        // check that data exists!
-        if (!self.check) {
-            return nil;
-        }
-    }
-    return self;
-}
-
-- (instancetype)initWithAlgorithmType:(NSString *)type shaSize:(NSNumber *)size {
-    return [self initWithFolder:[type stringByAppendingPathComponent:size.description]];
-}
-
-+ (NSArray *)typeAndSizeFromAlgorithmName:(NSString *)name {
-    if (name.length < 3) {
-        return nil;
-    }
-    __auto_type type = [name substringToIndex:2];
-    __auto_type size = [name substringFromIndex:2];
-    if (type == nil || size == nil) {
-        return nil;
-    }
-    return @[type, size];
-}
-
-- (instancetype)initWithAlgorithName:(NSString *)name {
-    // split name into type and size.
-    // just lowercase everything.
-    return [self initWithFolder:name.lowercaseString];
-}
-@end
-
-@implementation JWTAlgorithmAsymmetricTestsHelperAssetAccessor (Validation)
-- (instancetype)checked {
-    return self.check ? self : nil;
-}
-- (BOOL)check {
-    return self.privateKeyBase64 != nil;
-}
-@end
+#import "JWTAssetAccessor.h"
 
 @interface JWTAlgorithmAsymmetricTestsHelper : NSObject
 @property (copy, nonatomic, readwrite) NSDictionary *payloadDictionary;
@@ -123,8 +23,8 @@
 @property (copy, nonatomic, readwrite) NSString *token;
 @property (copy, nonatomic, readwrite) NSString *invalidToken;
 
-- (instancetype)configuredByAssetAccessor:(JWTAlgorithmAsymmetricTestsHelperAssetAccessor *)accessor;
-@property (strong, nonatomic, readwrite) JWTAlgorithmAsymmetricTestsHelperAssetAccessor *accessor;
+- (instancetype)configuredByAssetAccessor:(JWTAssetAccessor *)accessor;
+@property (strong, nonatomic, readwrite) JWTAssetAccessor *accessor;
 @end
 
 @interface JWTAlgorithmAsymmetricTestsHelper (Wrong)
@@ -162,29 +62,29 @@
     __weak __auto_type weakSelf = self;
     return @{
              JWTAlgorithmNameRS256 : ^{
-                 __auto_type accessor = [[JWTAlgorithmAsymmetricTestsHelperAssetAccessor alloc] initWithAlgorithName:self.name];
+                 __auto_type accessor = [[JWTAssetAccessor alloc] initWithAlgorithName:self.name];
                  [weakSelf configuredByAssetAccessor:accessor];
              },
              JWTAlgorithmNameRS384 : ^{
-                 __auto_type accessor = [[JWTAlgorithmAsymmetricTestsHelperAssetAccessor alloc] initWithAlgorithName:self.name];
+                 __auto_type accessor = [[JWTAssetAccessor alloc] initWithAlgorithName:self.name];
                  [weakSelf configuredByAssetAccessor:accessor];
              },
              JWTAlgorithmNameRS512 : ^{
-                 __auto_type accessor = [[JWTAlgorithmAsymmetricTestsHelperAssetAccessor alloc] initWithAlgorithName:self.name];
+                 __auto_type accessor = [[JWTAssetAccessor alloc] initWithAlgorithName:self.name];
                  [weakSelf configuredByAssetAccessor:accessor];
              },
              JWTAlgorithmNameES256 : ^{
-                 __auto_type accessor = [[JWTAlgorithmAsymmetricTestsHelperAssetAccessor alloc] initWithAlgorithName:self.name];
+                 __auto_type accessor = [[JWTAssetAccessor alloc] initWithAlgorithName:self.name];
                  [weakSelf configuredByAssetAccessor:accessor];
                  weakSelf.cryptoKeyBuilderParameters = @{JWTCryptoKey.parametersKeyBuilder : JWTCryptoKeyBuilder.new.keyTypeEC };
              },
              JWTAlgorithmNameES384 : ^{
-                 __auto_type accessor = [[JWTAlgorithmAsymmetricTestsHelperAssetAccessor alloc] initWithAlgorithName:self.name];
+                 __auto_type accessor = [[JWTAssetAccessor alloc] initWithAlgorithName:self.name];
                  [weakSelf configuredByAssetAccessor:accessor];
                  weakSelf.cryptoKeyBuilderParameters = @{JWTCryptoKey.parametersKeyBuilder : JWTCryptoKeyBuilder.new.keyTypeEC };
              },
              JWTAlgorithmNameES512 : ^{
-                 __auto_type accessor = [[JWTAlgorithmAsymmetricTestsHelperAssetAccessor alloc] initWithAlgorithName:self.name];
+                 __auto_type accessor = [[JWTAssetAccessor alloc] initWithAlgorithName:self.name];
                  [weakSelf configuredByAssetAccessor:accessor];
                  weakSelf.cryptoKeyBuilderParameters = @{JWTCryptoKey.parametersKeyBuilder : JWTCryptoKeyBuilder.new.keyTypeEC };
              }
@@ -220,7 +120,7 @@
     }
     return self;
 }
-- (instancetype)configuredByAssetAccessor:(JWTAlgorithmAsymmetricTestsHelperAssetAccessor *)accessor {
+- (instancetype)configuredByAssetAccessor:(JWTAssetAccessor *)accessor {
     if (accessor != nil) {
         self.accessor = accessor;
     }

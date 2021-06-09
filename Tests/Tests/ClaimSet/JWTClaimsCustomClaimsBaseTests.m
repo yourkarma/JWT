@@ -219,3 +219,66 @@
 }
 
 @end
+
+@interface JWTClaimsCustomClaimsDifferentNamesTests : XCTestCase
+@property (strong, nonatomic, readwrite) id<JWTClaimsSetCoordinatorProtocol> claimsSetCoordinator;
+@property (copy, nonatomic, readwrite) NSString *duplicateClaimName;
+@end
+
+@implementation JWTClaimsCustomClaimsDifferentNamesTests
+
+- (void)setUp {
+    self.duplicateClaimName = @"duplicateClaimName";
+    __auto_type claim = JWTClaimVariations.intersectionOfArrays;
+    __auto_type claimSerializer = JWTClaimSerializerVariations.array;
+    __auto_type claimVerifier = JWTClaimVerifierVariations.intersection;
+    
+
+    self.claimsSetCoordinator = [JWTClaimsSetCoordinatorBase new];
+//    [self.claimsSetCoordinator registerClaim:claim serializer:claimSerializer verifier:claimVerifier forClaimName:JWTClaimsNames.intersectionOfArrays];
+    [self.claimsSetCoordinator registerClaim:claim serializer:claimSerializer verifier:claimVerifier forClaimName:self.duplicateClaimName];
+}
+
+- (void)testSerialize {
+    __auto_type deserialized = ({
+        self.claimsSetCoordinator.configureClaimsSet(^JWTClaimsSetDSLBase * _Nonnull(JWTClaimsSetDSLBase * _Nonnull claimsSetDSL) {
+            [claimsSetDSL dslSetValue:@[@(2), @(5)] forName:self.duplicateClaimName];
+            return claimsSetDSL;
+        });
+        
+        self.claimsSetCoordinator.claimsSetStorage;
+    });
+    
+    __auto_type serialized = ({
+        __auto_type dictionary = [self.claimsSetCoordinator.claimsSetSerializer dictionaryFromClaimsSet:deserialized];
+        dictionary;
+    });
+    
+    __auto_type result = @{
+        self.duplicateClaimName : @"2,5"
+    };
+    XCTAssertEqual(serialized.count, 1);
+    XCTAssertEqualObjects(serialized, result);
+}
+
+- (void)testDeserialize {
+    __auto_type given = @{
+        self.duplicateClaimName : @"2,5"
+    };
+    
+    __auto_type deserialized = ({
+        self.claimsSetCoordinator.claimsSetStorage = [JWTClaimsSetBase new];
+        [self.claimsSetCoordinator.claimsSetSerializer claimsSetFromDictionary:given];
+    });
+    __auto_type result = ({
+        __auto_type dsl = self.claimsSetCoordinator.dslDesrciption;
+//        dsl.intersection = @[@(2), @(5)];
+        [dsl dslSetValue:@[@(2), @(5)] forName:self.duplicateClaimName];
+        dsl;
+    });
+    XCTAssertNotNil([result dslValueForName:self.duplicateClaimName]);
+    XCTAssertEqualObjects([result dslValueForName:self.duplicateClaimName], [deserialized claimByName:self.duplicateClaimName].value);
+}
+
+
+@end

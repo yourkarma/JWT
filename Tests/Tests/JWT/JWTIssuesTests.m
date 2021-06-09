@@ -7,15 +7,18 @@
 
 #import <XCTest/XCTest.h>
 #import <JWT/JWT.h>
+#import "JWTAssetAccessor.h"
+
 @interface JWTIssuesTests : XCTestCase
 
 @end
 
 @implementation JWTIssuesTests
 - (void)testIssues {
-    [XCTContext runActivityNamed:@"RS256 key should be read correctly from file" block:^(id<XCTActivity> _Nonnull activity) {
-        NSURL *url = [[NSBundle bundleForClass:self.class] URLForResource:@"rs256-public" withExtension:@"pem"];
-        id key = ((JWTCryptoSecurityComponent *)[[JWTCryptoSecurity componentsFromFile:url] componentsOfType:JWTCryptoSecurityComponents.Key].firstObject).content;//[JWTCryptoSecurity keyFromPemFileWithName:@"rs256-public"];
+    [XCTContext runActivityNamed:@"RS256 key should be read correctly from file. #121" block:^(id<XCTActivity> _Nonnull activity) {
+        __auto_type accessor = [[JWTAssetAccessor alloc] initWithFolder:@"rs256"];
+        __auto_type content = accessor.publicKeyBase64;
+        id key = ((JWTCryptoSecurityComponent *)[[JWTCryptoSecurity componentsFromFileContent:content] componentsOfType:JWTCryptoSecurityComponents.Key].firstObject).content;
         NSLog(@"%@ key: %@", self.debugDescription, key);
     }];
     [XCTContext runActivityNamed:@"RS256 signature verification crashes application #141" block:^(id<XCTActivity> _Nonnull activity) {
