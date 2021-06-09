@@ -113,7 +113,7 @@
     
     NSUInteger index = [[self algorithms] indexOfObjectPassingTest:^BOOL(id<JWTAlgorithm> obj, NSUInteger idx, BOOL *stop) {
         // lowercase comparison
-        return [obj.name.lowercaseString isEqualToString:algName.lowercaseString];
+        return [obj.name isEqualToString:algName];
     }];
     
     if (index != NSNotFound) {
