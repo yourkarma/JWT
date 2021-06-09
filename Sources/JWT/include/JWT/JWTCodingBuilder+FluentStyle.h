@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JWTDecodingBuilder (FluentStyle)
 @property (copy, nonatomic, readonly) JWTDecodingBuilder *(^message)(NSString *message) NS_SWIFT_UNAVAILABLE("");
-@property (copy, nonatomic, readonly) JWTEncodingBuilder *(^claimsSetCoordinator)(id<JWTClaimsSetCoordinatorProtocol> claimsSetCoordinator) NS_SWIFT_UNAVAILABLE("");
+@property (copy, nonatomic, readonly) JWTDecodingBuilder *(^claimsSetCoordinator)(id<JWTClaimsSetCoordinatorProtocol> claimsSetCoordinator) NS_SWIFT_UNAVAILABLE("");
 @end
 
 NS_ASSUME_NONNULL_END
