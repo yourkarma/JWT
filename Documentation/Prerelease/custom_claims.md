@@ -159,7 +159,7 @@ We have to define three components for our case.
 
 @implementation JWTClaimVariations (CustomDSL)
 + (id<JWTClaimProtocol>)intersectionOfIntervals {
-    return [JWTClaimCustomIntersectionOfArrays new];
+    return [JWTClaimCustomIntersectionOfIntervals new];
 }
 @end
 
@@ -169,7 +169,7 @@ We have to define three components for our case.
 
 @implementation JWTClaimSerializerVariations (CustomDSL)
 + (id<JWTClaimSerializerProtocol>)interval {
-    return [JWTClaimSerializerForArray new];
+    return [JWTClaimSerializerForInterval new];
 }
 @end
 

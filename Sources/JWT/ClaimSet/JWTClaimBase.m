@@ -10,6 +10,7 @@
 
 @interface JWTClaimBase ()
 @property (nonatomic, readwrite) NSObject *value;
+@property (copy, nonatomic, readwrite) NSString *name;
 @end
 @implementation JWTClaimBase
 @synthesize value = _value;
@@ -27,9 +28,16 @@
 
 // MARK: - JWTClaimProtocol
 + (NSString *)name { return @""; }
-- (NSString *)name { return self.class.name; }
+- (NSString *)name { return _name ?: self.class.name; }
 - (instancetype)copyWithValue:(NSObject *)value {
-    return [[self.class alloc] initWithValue:value];
+    typeof(self) result = [[self.class alloc] initWithValue:value];
+    result.name = self.name;
+    return result;
+}
+- (instancetype)copyWithName:(NSString *)name {
+    typeof(self) result = [[self.class alloc] initWithValue:self.value];
+    result.name = name;
+    return result;
 }
 
 @end

@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (copy, nonatomic, readonly) NSString *name;
 @property (nonatomic, readonly) NSObject *value;
 - (instancetype)copyWithValue:(NSObject *)value;
+- (instancetype)copyWithName:(NSString *)name;
 @end
 
 @protocol JWTClaimVerifierProtocol

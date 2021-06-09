@@ -62,7 +62,7 @@
     if (name == nil) {
         return;
     }
-    self.claimsAndNames[name] = [claim copyWithValue:claim.value];
+    self.claimsAndNames[name] = [[claim copyWithName:name] copyWithValue:claim.value];
 }
 
 - (void)unregisterClaimForClaimName:(NSString *)name {
