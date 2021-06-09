@@ -1,0 +1,45 @@
+name: Unit Tests
+
+on:
+  push:
+    branches: [ ci/github_actions ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  LC_CTYPE: en_US.UTF-8
+  LANG: en_US.UTF-8
+
+jobs:
+  caution:
+    runs-on:  macos-11
+    steps:
+      - run: echo "Do not forget to change runs-on (os target) to macos-latest when it become latest"
+  xcode:
+    runs-on: macos-11
+    strategy:
+      matrix:
+        include:
+          - scheme: macOS_Tests
+            sdk: macosx
+            destination: 'platform=macosx'
+          - scheme: iOS_Tests
+            sdk: iphonesimulator
+            destination: 'platform=iOS Simulator,name=iPhone 11,OS=latest'
+          - scheme: tvOS_Tests
+            sdk: appletvsimulator
+            destination: 'platform=tvOS Simulator,name=Apple TV,OS=latest'
+          - scheme: watchOS_Tests
+            sdk: watchsimulator
+            destination: 'platform=watchOS Simulator,name=Apple Watch Series 6 - 44mm,OS=latest'
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - run: gem install xcpretty --no-document
+      - run: ./Scripts/ci-xcode-select.sh
+      - run: xcodebuild test -project 'Tests/Tests.xcodeproj' -scheme "${{ matrix.scheme }}" -sdk "${{ matrix.sdk }}" -destination "${{ matrix.destination }}" | xcpretty && exit ${PIPESTATUS[0]}
