@@ -9,6 +9,7 @@
 #import <JWT/JWTCryptoSecurity.h>
 #import <JWT/JWTCryptoSecurity+ErrorHandling.h>
 #import <JWT/JWTErrorDescription.h>
+#import <JWT/JWTDeprecations.h>
 
 @interface JWTMemoryLayout : NSObject
 + (NSString *)typeUInt8;
@@ -238,13 +239,23 @@
     return securityError;
 }
 
++ (SecKeyRef)trustCopyKey:(SecTrustRef)trust {
+//    API_DEPRECATED_WITH_REPLACEMENT("SecTrustCopyKey", macos(10.7, 11.0), ios(2.0, 14.0), watchos(1.0, 7.0), tvos(9.0, 14.0));
+#if JWT_COMPILE_TIME_AVAILABILITY(JWT_macOS(110000), JWT_iOS(140000), JWT_tvOS(140000), JWT_watchOS(70000))
+    return SecTrustCopyKey(trust);
+#else
+    return SecTrustCopyPublicKey(trust);
+#endif
+}
 + (SecKeyRef)publicKeyFromCertificate:(NSData *)certificateData {
     SecCertificateRef certificate = SecCertificateCreateWithData(NULL, (__bridge CFDataRef)certificateData);
     if (certificate != NULL) {
         SecPolicyRef secPolicy = SecPolicyCreateBasicX509();
         SecTrustRef trust;
         SecTrustCreateWithCertificates(certificate, secPolicy, &trust);
-        if (@available(macOS 10.14, iOS 12.0, tvOS 12.0, watchOS 5.0, *)) {
+
+        //        if (@available(macOS 10.14, iOS 12.0, tvOS 12.0, watchOS 5.0, *)) {
+#if JWT_COMPILE_TIME_AVAILABILITY(JWT_macOS(101400), JWT_iOS(120000), JWT_tvOS(120000), JWT_watchOS(50000))
             CFErrorRef errorRef = NULL;
             BOOL result = SecTrustEvaluateWithError(trust, &errorRef);
             if (result == NO) {
@@ -254,11 +265,12 @@
                     CFRelease(errorRef);
                 }
             }
-        } else {
+#else
             SecTrustResultType resultType;
             SecTrustEvaluate(trust, &resultType);
-        }
-        SecKeyRef publicKey = SecTrustCopyPublicKey(trust);
+#endif
+
+        SecKeyRef publicKey = [self trustCopyKey:trust];
         (CFRelease(trust));
         (CFRelease(secPolicy));
         (CFRelease(certificate));
