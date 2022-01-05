@@ -7,21 +7,20 @@
 //
 
 #import "ViewController+Model.h"
-#import <JWT/JWT.h>
+@import JWT;
 
 @implementation ViewController (Model)
 
 @end
 
 @implementation ViewController__Model
-- (JWTTokenTextTypeAppearance *)tokenAppearance {
-    return _tokenAppearance ?: (_tokenAppearance = [JWTTokenTextTypeAppearance new]);
-}
-- (SignatureValidationDescription *)signatureValidationDescription {
-    return _signatureValidationDescription ?: (_signatureValidationDescription = [SignatureValidationDescription new]);
-}
-- (JWTTokenDecoder *)decoder {
-    return _decoder ?: (_decoder = [JWTTokenDecoder new]);
+- (instancetype)init {
+    if (self = [super init]) {
+        self.tokenAppearance = [JWTTokenTextTypeAppearance new];
+        self.signatureValidationDescription = [SignatureValidationDescription new];
+        self.decoder = [JWTTokenDecoder new];
+    }
+    return self;
 }
 @end
 

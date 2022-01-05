@@ -6,8 +6,8 @@
 //  Copyright © 2016 JWT. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-#import <JWT/JWT.h>
+@import Cocoa;
+@import JWT;
 
 @interface JWTDecriptedViewController : NSViewController
 

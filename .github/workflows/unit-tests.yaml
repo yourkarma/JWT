@@ -28,18 +28,15 @@ jobs:
             destination: 'platform=macosx'
           - scheme: JWT
             sdk: iphonesimulator
-            destination: 'platform=iOS Simulator,name=iPhone 11,OS=latest'
+            destination: 'platform=iOS Simulator,name=iPhone 13,OS=latest'
           - scheme: JWT
             sdk: appletvsimulator
             destination: 'platform=tvOS Simulator,name=Apple TV,OS=latest'
           - scheme: JWT
             sdk: watchsimulator
             destination: 'platform=watchOS Simulator,name=Apple Watch Series 6 - 44mm,OS=latest'
-
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: recursive
       - run: gem install xcpretty --no-document
       - run: ./Scripts/ci-xcode-select.sh
       - run: xcodebuild test -scheme "${{ matrix.scheme }}" -sdk "${{ matrix.sdk }}" -destination "${{ matrix.destination }}" | xcpretty && exit ${PIPESTATUS[0]}

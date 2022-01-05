@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -30,19 +30,8 @@
 		0A883ADD266E192500DAF016 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C88322ABD2F200B8A43A /* HeaderView.swift */; };
 		0A883ADE266E192500DAF016 /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C88722ABE51800B8A43A /* BottomView.swift */; };
 		0A883ADF266E192500DAF016 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C87322ABD2AF00B8A43A /* ContentView.swift */; };
-		0ABC6F58266A7EA800089885 /* JWTDesktopSwiftToolkit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ABC6F54266A7DAD00089885 /* JWTDesktopSwiftToolkit.framework */; };
-		0ABC6F63266A918000089885 /* JWT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ABC6F62266A918000089885 /* JWT.framework */; };
+		0AC002762786598E002167AD /* JWTDesktopSwiftToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 0AC002752786598E002167AD /* JWTDesktopSwiftToolkit */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		0ABC6F53266A7DAD00089885 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0ABC6F4E266A7DAD00089885 /* JWTDesktopSwiftToolkit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0ABC6F02266A793500089885;
-			remoteInfo = JWTDesktopSwiftToolkit;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		0AEEA8BB22B5400E00B67217 /* Embed Frameworks */ = {
@@ -82,9 +71,9 @@
 		0A883AD5266E191A00DAF016 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0A883AD7266E191A00DAF016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A883AD8266E191A00DAF016 /* MacJWTSwiftUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MacJWTSwiftUI.entitlements; sourceTree = "<group>"; };
-		0ABC6F4E266A7DAD00089885 /* JWTDesktopSwiftToolkit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JWTDesktopSwiftToolkit.xcodeproj; path = ../JWTDesktopSwiftToolkit/JWTDesktopSwiftToolkit.xcodeproj; sourceTree = "<group>"; };
 		0ABC6F5A266A908000089885 /* JWT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JWT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ABC6F62266A918000089885 /* JWT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JWT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AC00271278658F8002167AD /* JWTDesktopSwiftToolkit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = JWTDesktopSwiftToolkit; path = ../JWTDesktopSwiftToolkit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,8 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0ABC6F63266A918000089885 /* JWT.framework in Frameworks */,
-				0ABC6F58266A7EA800089885 /* JWTDesktopSwiftToolkit.framework in Frameworks */,
+				0AC002762786598E002167AD /* JWTDesktopSwiftToolkit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,7 +105,7 @@
 		0A76C86322ABD2AF00B8A43A = {
 			isa = PBXGroup;
 			children = (
-				0ABC6F4E266A7DAD00089885 /* JWTDesktopSwiftToolkit.xcodeproj */,
+				0AC00271278658F8002167AD /* JWTDesktopSwiftToolkit */,
 				0A76C86E22ABD2AF00B8A43A /* JWTSwiftUI */,
 				0A883AB6266E166600DAF016 /* iOSJWTSwiftUI */,
 				0A883ACD266E191700DAF016 /* MacJWTSwiftUI */,
@@ -202,14 +190,6 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		0ABC6F4F266A7DAD00089885 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0ABC6F54266A7DAD00089885 /* JWTDesktopSwiftToolkit.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		0ABC6F59266A908000089885 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -236,6 +216,9 @@
 			dependencies = (
 			);
 			name = JWTSwiftUI;
+			packageProductDependencies = (
+				0AC002752786598E002167AD /* JWTDesktopSwiftToolkit */,
+			);
 			productName = JWTSwiftUI;
 			productReference = 0A76C86C22ABD2AF00B8A43A /* JWTSwiftUI.app */;
 			productType = "com.apple.product-type.application";
@@ -306,12 +289,6 @@
 			mainGroup = 0A76C86322ABD2AF00B8A43A;
 			productRefGroup = 0A76C86D22ABD2AF00B8A43A /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 0ABC6F4F266A7DAD00089885 /* Products */;
-					ProjectRef = 0ABC6F4E266A7DAD00089885 /* JWTDesktopSwiftToolkit.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				0A76C86B22ABD2AF00B8A43A /* JWTSwiftUI */,
@@ -320,16 +297,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		0ABC6F54266A7DAD00089885 /* JWTDesktopSwiftToolkit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = JWTDesktopSwiftToolkit.framework;
-			remoteRef = 0ABC6F53266A7DAD00089885 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		0A76C86A22ABD2AF00B8A43A /* Resources */ = {
@@ -698,6 +665,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0AC002752786598E002167AD /* JWTDesktopSwiftToolkit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = JWTDesktopSwiftToolkit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0A76C86422ABD2AF00B8A43A /* Project object */;
 }

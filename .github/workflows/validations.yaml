@@ -14,8 +14,6 @@ jobs:
     runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: recursive
       - run: gem install xcpretty --no-document
       - run: set -o pipefail
       - run: swift --version

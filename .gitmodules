@@ -1,3 +1,0 @@
-[submodule "Dependencies/Base64"]
-	path = Dependencies/Base64
-	url = https://github.com/ekscrypto/Base64
