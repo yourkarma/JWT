@@ -5,8 +5,8 @@
 //  Created by Dmitry Lobanov on 24.05.2021.
 //
 
-#import <XCTest/XCTest.h>
-#import <JWT/JWT.h>
+@import XCTest;
+@import JWT;
 
 @interface JWTClaimsSerializerBaseTests : XCTestCase
 @property (strong, nonatomic, readwrite) id<JWTClaimsSetProtocol> deserialized;
