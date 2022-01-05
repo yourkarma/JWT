@@ -14,28 +14,26 @@ env:
   LANG: en_US.UTF-8
 
 jobs:
-  dynamic-library:
-    runs-on: macos-11
-    strategy:
-      matrix:
-        sdk: [macosx, iphonesimulator, appletvsimulator, watchsimulator]
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - run: gem install xcpretty --no-document
-      - run: ./Scripts/ci-xcode-select.sh
-      - run: xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT' -configuration Release -sdk ${{ matrix.sdk }} | xcpretty && exit ${PIPESTATUS[0]}
   static-library:
     runs-on: macos-11
     strategy:
       matrix:
-        sdk: [macosx, iphonesimulator, appletvsimulator, watchsimulator]
+        include:
+          - scheme: JWT
+            sdk: macosx
+            destination: 'platform=macosx'
+          - scheme: JWT
+            sdk: iphonesimulator
+            destination: 'platform=iOS Simulator,name=iPhone 13,OS=latest'
+          - scheme: JWT
+            sdk: appletvsimulator
+            destination: 'platform=tvOS Simulator,name=Apple TV,OS=latest'
+          - scheme: JWT
+            sdk: watchsimulator
+            destination: 'platform=watchOS Simulator,name=Apple Watch Series 6 - 44mm,OS=latest'
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: recursive
       - run: gem install xcpretty --no-document
       - run: set -o pipefail
       - run: ./Scripts/ci-xcode-select.sh
-      - run: xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-Static' -configuration Release -sdk ${{ matrix.sdk }} | xcpretty && exit ${PIPESTATUS[0]}
+      - run: xcodebuild clean build -scheme "${{ matrix.scheme }}" -sdk "${{ matrix.sdk }}" -destination "${{ matrix.destination }}" | xcpretty && exit ${PIPESTATUS[0]}
