@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <JWT/JWT.h>
+@import JWT;
 
 @protocol JWTTokenDecoderNecessaryDataObject__Protocol <NSObject>
 @property (copy, nonatomic, readonly) NSString *chosenAlgorithmName;

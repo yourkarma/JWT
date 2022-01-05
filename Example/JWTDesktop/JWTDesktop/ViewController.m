@@ -7,9 +7,7 @@
 //
 
 #import "ViewController.h"
-#import <JWT/JWT.h>
-#import <JWT/JWTAlgorithmFactory.h>
-#import <JWT/JWTAlgorithmNone.h>
+@import JWT;
 #import "JWTTokenTextTypeDescription.h"
 #import "SignatureValidationDescription.h"
 #import "JWTDecriptedViewController.h"
