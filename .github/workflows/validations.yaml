@@ -1,0 +1,26 @@
+name: Validations
+
+on:
+  push:
+    branches: [ ci/github_actions ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  validate-third-party-packages-managers:
+    runs-on: macos-11
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - run: gem install xcpretty --no-document
+      - run: set -o pipefail
+      - run: swift --version
+      - run: xcodebuild -version
+      - run: ./Scripts/ci-xcode-select.sh
+      # cocoapods
+      - run: pod lib lint --allow-warnings
+      # also add validation for spm later.

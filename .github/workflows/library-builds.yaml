@@ -1,0 +1,41 @@
+name: Library Builds
+
+on:
+  push:
+    branches: [ ci/github_actions ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  LC_CTYPE: en_US.UTF-8
+  LANG: en_US.UTF-8
+
+jobs:
+  dynamic-library:
+    runs-on: macos-11
+    strategy:
+      matrix:
+        sdk: [macosx, iphonesimulator, appletvsimulator, watchsimulator]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - run: gem install xcpretty --no-document
+      - run: ./Scripts/ci-xcode-select.sh
+      - run: xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT' -configuration Release -sdk ${{ matrix.sdk }} | xcpretty && exit ${PIPESTATUS[0]}
+  static-library:
+    runs-on: macos-11
+    strategy:
+      matrix:
+        sdk: [macosx, iphonesimulator, appletvsimulator, watchsimulator]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - run: gem install xcpretty --no-document
+      - run: set -o pipefail
+      - run: ./Scripts/ci-xcode-select.sh
+      - run: xcodebuild clean build -project Framework/JWT.xcodeproj -scheme 'JWT-Static' -configuration Release -sdk ${{ matrix.sdk }} | xcpretty && exit ${PIPESTATUS[0]}
