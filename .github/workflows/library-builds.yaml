@@ -2,7 +2,7 @@ name: Library Builds
 
 on:
   push:
-    branches: [ ci/github_actions ]
+    branches: [ ci/github_actions, master ]
   pull_request:
     branches: [ master ]
 
