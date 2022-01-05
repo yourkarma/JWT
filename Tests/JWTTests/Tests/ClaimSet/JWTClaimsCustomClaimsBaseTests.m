@@ -5,8 +5,8 @@
 //  Created by Dmitry Lobanov on 30.05.2021.
 //
 
-#import <XCTest/XCTest.h>
-#import <JWT/JWT.h>
+@import XCTest;
+@import JWT;
 
 /**
  Consider the following claims set.

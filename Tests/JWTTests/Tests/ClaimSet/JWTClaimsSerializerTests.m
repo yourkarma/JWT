@@ -5,8 +5,8 @@
 //  Created by Dmitry on 7/29/18.
 //
 
-#import <XCTest/XCTest.h>
-#import <JWT/JWT.h>
+@import XCTest;
+@import JWT;
 
 @interface JWTClaimsSerializerTests : XCTestCase
 @property (strong, nonatomic, readwrite) JWTClaimsSet *deserialized;

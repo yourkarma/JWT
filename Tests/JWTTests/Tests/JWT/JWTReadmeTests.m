@@ -5,8 +5,9 @@
 //  Created by Dmitry on 7/29/18.
 //
 
-#import <XCTest/XCTest.h>
-#import <JWT/JWT.h>
+@import XCTest;
+@import JWT;
+
 @interface JWTReadmeTests : XCTestCase
 
 @end
