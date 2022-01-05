@@ -623,7 +623,7 @@
                              JWTCodingResultComponents.headers : header,
                              JWTCodingResultComponents.payload : payload
                              };
-    
+    *theError = nil;
     return result;
 }
 
