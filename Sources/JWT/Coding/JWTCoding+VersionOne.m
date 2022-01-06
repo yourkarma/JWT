@@ -21,6 +21,12 @@
 
 #import <JWT/JWTErrorDescription.h>
 
+static inline void setError(NSError **error, NSError* value) {
+    if (error) {
+        *error = value;
+    }
+}
+
 @implementation JWT (VersionOne)
 #pragma mark - Private Methods
 + (NSString *)encodeSegment:(id)theSegment withError:(NSError **)error
@@ -105,9 +111,7 @@
     
     if (!headerSegment) {
         // encode header segment error
-        if (theError) {
-            *theError = [JWTErrorDescription errorWithCode:JWTEncodingHeaderError];
-        }
+        setError(theError, [JWTErrorDescription errorWithCode:JWTEncodingHeaderError]);
         return nil;
     }
     
@@ -115,15 +119,13 @@
     
     if (!payloadSegment) {
         // encode payment segment error
-        if (theError) {
-            *theError = [JWTErrorDescription errorWithCode:JWTEncodingPayloadError];
-        }
+        setError(theError, [JWTErrorDescription errorWithCode:JWTEncodingPayloadError]);
         return nil;
     }
     
     if (!theAlgorithm) {
         // error
-        *theError = [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError];
+        setError(theError, [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError]);
         return nil;
     }
     
@@ -167,7 +169,7 @@
             return dictionary;
         }
         else {
-            *theError = [JWTErrorDescription errorWithCode:JWTClaimsSetVerificationFailed];
+            setError(theError, [JWTErrorDescription errorWithCode:JWTClaimsSetVerificationFailed]);
             return nil;
         }
     }
@@ -196,9 +198,7 @@
     
     if (parts.count < 3) {
         // generate error?
-        if (theError) {
-            *theError = [JWTErrorDescription errorWithCode:JWTInvalidFormatError];
-        }
+        setError(theError, [JWTErrorDescription errorWithCode:JWTInvalidFormatError]);
         return nil;
     }
     
@@ -213,12 +213,12 @@
                                                     options:0
                                                       error:&jsonError];
     if (jsonError) {
-        *theError = [JWTErrorDescription errorWithCode:JWTDecodingHeaderError];
+        setError(theError, [JWTErrorDescription errorWithCode:JWTDecodingHeaderError]);
         return nil;
     }
     NSDictionary *header = (NSDictionary *)headerJSON;
     if (!header) {
-        *theError = [JWTErrorDescription errorWithCode:JWTNoHeaderError];
+        setError(theError, [JWTErrorDescription errorWithCode:JWTNoHeaderError]);
         return nil;
     }
     
@@ -228,7 +228,7 @@
         //It is insecure to trust the header's value for the algorithm, since
         //the signature hasn't been verified yet, so an algorithm must be provided
         if (!theAlgorithmName) {
-            *theError = [JWTErrorDescription errorWithCode:JWTUnspecifiedAlgorithmError];
+            setError(theError, [JWTErrorDescription errorWithCode:JWTUnspecifiedAlgorithmError]);
             return nil;
         }
         
@@ -236,14 +236,14 @@
         
         //If the algorithm in the header doesn't match what's expected, verification fails
         if (![theAlgorithmName isEqualToString:headerAlgorithmName]) {
-            *theError = [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError];
+            setError(theError, [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError]);
             return nil;
         }
         
         //If a whitelist is passed in, ensure the chosen algorithm is allowed
         if (theWhitelist) {
             if (![theWhitelist containsObject:theAlgorithmName]) {
-                *theError = [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError];
+                setError(theError, [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError]);
                 return nil;
             }
         }
@@ -251,7 +251,7 @@
         id<JWTAlgorithm> algorithm = [JWTAlgorithmFactory algorithmByName:theAlgorithmName];
         
         if (!algorithm) {
-            *theError = [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError];
+            setError(theError, [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError]);
             return nil;
         }
         
@@ -261,7 +261,7 @@
         BOOL signatureValid = [theAlgorithmHolder verifySignedInput:signingInput withSignature:signedPart verificationKey:theSecret];
         
         if (!signatureValid) {
-            *theError = [JWTErrorDescription errorWithCode:JWTInvalidSignatureError];
+            setError(theError, [JWTErrorDescription errorWithCode:JWTInvalidSignatureError]);
             return nil;
         }
     }
@@ -273,13 +273,13 @@
                                                      options:0
                                                        error:&jsonError];
     if (jsonError) {
-        *theError = [JWTErrorDescription errorWithCode:JWTDecodingPayloadError];
+        setError(theError, [JWTErrorDescription errorWithCode:JWTDecodingPayloadError]);
         return nil;
     }
     NSDictionary *payload = (NSDictionary *)payloadJSON;
     
     if (!payload) {
-        *theError = [JWTErrorDescription errorWithCode:JWTNoPayloadError];
+        setError(theError, [JWTErrorDescription errorWithCode:JWTNoPayloadError]);
         return nil;
     }
     
