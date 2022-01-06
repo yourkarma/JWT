@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface JWTAssetAccessor (Validation)
-- (instancetype)checked;
+- (nullable instancetype)checked;
 - (BOOL)check;
 @end
 
