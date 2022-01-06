@@ -283,12 +283,13 @@ NS_AVAILABLE(10_12, 10_0)
     return [mutableDictionary copy];
 }
 
-- (void)removeKeyItem:(id<JWTCryptoKeyProtocol>)item error:(NSError *__autoreleasing *)error {
+- (BOOL)removeKeyItem:(id<JWTCryptoKeyProtocol>)item error:(NSError *__autoreleasing *)error {
     NSError *theError = nil;
     [JWTCryptoSecurity removeKeyByTag:item.tag error:&theError];
-    if (theError && error) {
+    if (error) {
         *error = theError;
     }
+    return theError == nil;
 }
 
 - (NSData *)signHash:(NSData *)hash key:(NSData *)key error:(NSError *__autoreleasing *)error {    
