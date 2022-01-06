@@ -326,6 +326,9 @@
                                        ];
         for (NSString *name in algorithmNames) {
             __auto_type helper = [[JWTAlgorithmAsymmetricTestsHelper new] configuredByName:name];
+            if (helper.accessor.checked == nil) {
+                XCTFail("Warning. Accessor is invalid");
+            }
             if (helper.algorithm == nil) {
                 continue;
             }

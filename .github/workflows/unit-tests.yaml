@@ -18,14 +18,12 @@ jobs:
     runs-on:  macos-11
     steps:
       - run: echo "Do not forget to change runs-on (os target) to macos-latest when it become latest"
+      - run: echo "Do not forget to add macOS tests when Apple fix Apple.car catalog compilation for macOS"
   xcode:
     runs-on: macos-11
     strategy:
       matrix:
         include:
-          - scheme: JWT
-            sdk: macosx
-            destination: 'platform=macosx'
           - scheme: JWT
             sdk: iphonesimulator
             destination: 'platform=iOS Simulator,name=iPhone 13,OS=latest'

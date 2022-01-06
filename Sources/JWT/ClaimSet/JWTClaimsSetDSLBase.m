@@ -25,7 +25,7 @@
 @end
 
 @implementation JWTClaimsSetDSLBase (DSL)
-- (NSObject *)dslValueForName:(NSString *)name {
+- (nullable NSObject *)dslValueForName:(NSString *)name {
     __auto_type claim = [self.claimsProvider claimByName:name];
     if (claim == nil) {
         return nil;

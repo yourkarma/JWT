@@ -6,6 +6,7 @@
 //
 
 #import "JWTAssetAccessor.h"
+#import "resource_bundle_accessor.h"
 
 @implementation JWTAssetAccessor (FolderAccess)
 - (NSString *)stringFromFileWithName:(NSString *)name {
@@ -14,10 +15,16 @@
 }
 
 - (NSData *)dataFromFileWithName:(NSString *)name {
-    __auto_type path = [self.folder stringByAppendingPathComponent:name];
-    __auto_type asset = [[NSDataAsset alloc] initWithName:path bundle:[NSBundle bundleForClass:self.class]];
+    __auto_type asset = [self assetFromFileWithName:name];
     __auto_type data = asset.data;
     return data;
+}
+
+- (NSDataAsset *)assetFromFileWithName:(NSString *)name {
+    __auto_type path = [self.folder stringByAppendingPathComponent:name];
+    __auto_type bundle = SWIFTPM_MODULE_BUNDLE;
+    __auto_type asset = [[NSDataAsset alloc] initWithName:path bundle:bundle];
+    return asset;
 }
 @end
 
@@ -75,10 +82,10 @@
 @end
 
 @implementation JWTAssetAccessor (Validation)
-- (instancetype)checked {
+- (nullable instancetype)checked {
     return self.check ? self : nil;
 }
 - (BOOL)check {
-    return self.privateKeyBase64 != nil;
+    return [self assetFromFileWithName:@"private.pem"] != nil;
 }
 @end

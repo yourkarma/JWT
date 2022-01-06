@@ -19,6 +19,12 @@
 #import <JWT/JWTAlgorithmDataHolder+FluentStyle.h>
 #import <JWT/JWTCodingBuilder+FluentStyle.h>
 
+static inline void setError(NSError **error, NSError* value) {
+    if (error) {
+        *error = value;
+    }
+}
+
 @implementation JWT (VersionThree)
 + (JWTEncodingBuilder *)encodeWithHolders:(NSArray *)holders {
     return [JWTEncodingBuilder createWithHolders:holders];
@@ -274,18 +280,14 @@
     // do it!
     
     if (!theAlgorithm) {
-        if (theError) {
-            *theError = [JWTErrorDescription errorWithCode:JWTUnspecifiedAlgorithmError];
-        }
+        setError(theError, [JWTErrorDescription errorWithCode:JWTUnspecifiedAlgorithmError]);
         return nil;
     }
 
     NSString *theAlgorithmName = [theAlgorithm name];
     
     if (!theAlgorithmName) {
-        if (theError) {
-            *theError = [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError];
-        }
+        setError(theError, [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError]);
         return nil;
     }
     
@@ -298,24 +300,20 @@
     if (theHeaders.allKeys.count > 0) {
         [allHeaders addEntriesFromDictionary:theHeaders];
     }
-
-    NSString *headerSegment = [self encodeSegment:[allHeaders copy] withError:nil];
+    
+    NSString *headerSegment = [self.internalTokenCoder stringWithData:[self encodeSegment:[allHeaders copy] withError:nil]];
     
     if (!headerSegment) {
         // encode header segment error
-        if (theError) {
-            *theError = [JWTErrorDescription errorWithCode:JWTEncodingHeaderError];
-        }
+        setError(theError, [JWTErrorDescription errorWithCode:JWTEncodingHeaderError]);
         return nil;
     }
     
-    NSString *payloadSegment = [self encodeSegment:thePayload withError:nil];
+    NSString *payloadSegment = [self.internalTokenCoder stringWithData:[self encodeSegment:thePayload withError:nil]];
     
     if (!payloadSegment) {
         // encode payment segment error
-        if (theError) {
-            *theError = [JWTErrorDescription errorWithCode:JWTEncodingPayloadError];
-        }
+        setError(theError, [JWTErrorDescription errorWithCode:JWTEncodingPayloadError]);
         return nil;
     }
 
@@ -332,28 +330,24 @@
     if (theSecretData && [theAlgorithm respondsToSelector:@selector(signHash:key:error:)]) {
         __auto_type hash = [self.internalTokenCoder dataWithString:signingInput];
         __auto_type signedOutputData = [theAlgorithm signHash:hash key:theSecretData error:&algorithmError];
-        signedOutput = [JWTBase64Coder base64UrlEncodedStringWithData:signedOutputData];
+        signedOutput = [self.internalTokenCoder stringWithData:signedOutputData];
     }
 
     if (algorithmError) {
         // algorithmError
-        if (theError) {
-            *theError = algorithmError;
-        }
+        setError(theError, algorithmError);
         return nil;
     }
     if (!signedOutput) {
         // Make sure signing worked (e.g. we may have issues extracting the key from the PKCS12 bundle if passphrase is incorrect)
-        if (theError) {
-            *theError = [JWTErrorDescription errorWithCode:JWTEncodingSigningError];
-        }
+        setError(theError, [JWTErrorDescription errorWithCode:JWTEncodingSigningError]);
         return nil;
     }
     
     return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
 }
 
-- (NSString *)encodeSegment:(id)theSegment withError:(NSError *__autoreleasing*)error {
+- (NSData *)encodeSegment:(id)theSegment withError:(NSError *__autoreleasing*)error {
     NSData *encodedSegmentData = nil;
     
     if (theSegment) {
@@ -368,14 +362,8 @@
         NSLog(@"%@ Could not encode segment: %@", self.class, generatedError.localizedDescription);
         return nil;
     }
-    
-    NSString *encodedSegment = nil;
-    
-    if (encodedSegmentData) {
-        encodedSegment = [JWTBase64Coder base64UrlEncodedStringWithData:encodedSegmentData];
-    }
-    
-    return encodedSegment;
+        
+    return encodedSegmentData;
 }
 
 - (JWTCodingResultType *)result {
@@ -502,33 +490,27 @@
     
     if (parts.count < 3) {
         // generate error?
-        if (theError) {
-            *theError = [JWTErrorDescription errorWithCode:JWTInvalidFormatError];
-        }
+        setError(theError, [JWTErrorDescription errorWithCode:JWTInvalidFormatError]);
         return nil;
     }
     
     NSString *headerPart = parts[0];
     NSString *payloadPart = parts[1];
-    NSString *signedPart = parts[2];
+    NSString *signaturePart = parts[2];
     
     // decode headerPart
     NSError *jsonError = nil;
-    NSData *headerData = [JWTBase64Coder dataWithBase64UrlEncodedString:headerPart];
+    NSData *headerData = [self.internalTokenCoder dataWithString:headerPart];
     id headerJSON = [NSJSONSerialization JSONObjectWithData:headerData
                                                     options:0
                                                       error:&jsonError];
     if (jsonError) {
-        if (theError) {
-            *theError = [JWTErrorDescription errorWithCode:JWTDecodingHeaderError];
-        }
+        setError(theError, [JWTErrorDescription errorWithCode:JWTDecodingHeaderError]);
         return nil;
     }
     NSDictionary *header = (NSDictionary *)headerJSON;
     if (!header) {
-        if (theError) {
-            *theError = [JWTErrorDescription errorWithCode:JWTNoHeaderError];
-        }
+        setError(theError, [JWTErrorDescription errorWithCode:JWTNoHeaderError]);
         return nil;
     }
     
@@ -538,9 +520,7 @@
         //It is insecure to trust the header's value for the algorithm, since
         //the signature hasn't been verified yet, so an algorithm must be provided
         if (!theAlgorithmName) {
-            if (theError) {
-                *theError = [JWTErrorDescription errorWithCode:JWTUnspecifiedAlgorithmError];
-            }
+            setError(theError, [JWTErrorDescription errorWithCode:JWTUnspecifiedAlgorithmError]);
             return nil;
         }
         
@@ -548,9 +528,7 @@
         
         //If the algorithm in the header doesn't match what's expected, verification fails
         if (![theAlgorithmName isEqualToString:headerAlgorithmName]) {
-            if (theError) {
-                *theError = [JWTErrorDescription errorWithCode:JWTAlgorithmNameMismatchError];
-            }
+            setError(theError, [JWTErrorDescription errorWithCode:JWTAlgorithmNameMismatchError]);
             return nil;
         }
         
@@ -568,9 +546,7 @@
         }
         
         if (!algorithm) {
-            if (theError) {
-                *theError = [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError];
-            }
+            setError(theError, [JWTErrorDescription errorWithCode:JWTUnsupportedAlgorithmError]);
             return nil;
         }
         
@@ -581,41 +557,35 @@
         NSError *algorithmError = nil;
         if (theSecretData && [algorithm respondsToSelector:@selector(verifyHash:signature:key:error:)]) {
             __auto_type hash = [self.internalTokenCoder dataWithString:signingInput];
-            signatureValid = [algorithm verifyHash:hash signature:[JWTBase64Coder dataWithBase64UrlEncodedString:signedPart] key:theSecretData error:&algorithmError];
+            __auto_type signedInputData = [self.internalTokenCoder dataWithString:signaturePart];
+            signatureValid = [algorithm verifyHash:hash signature:signedInputData key:theSecretData error:&algorithmError];
         }
         
         if (algorithmError) {
-            if (theError) {
-                *theError = algorithmError;
-            }
+            setError(theError, algorithmError);
             return nil;
         }
         if (!signatureValid) {
-            if (theError) {
-                *theError = [JWTErrorDescription errorWithCode:JWTInvalidSignatureError];
-            }
+            setError(theError, [JWTErrorDescription errorWithCode:JWTInvalidSignatureError]);
             return nil;
         }
     }
     
     // and decode payload
     jsonError = nil;
-    NSData *payloadData = [JWTBase64Coder dataWithBase64UrlEncodedString:payloadPart];
+    NSData *payloadData = [self.internalTokenCoder dataWithString:payloadPart];
     id payloadJSON = [NSJSONSerialization JSONObjectWithData:payloadData
                                                      options:0
                                                        error:&jsonError];
     if (jsonError) {
-        if (theError) {
-            *theError = [JWTErrorDescription errorWithCode:JWTDecodingPayloadError];
-        }
+        setError(theError, [JWTErrorDescription errorWithCode:JWTDecodingPayloadError]);
         return nil;
     }
+    
     NSDictionary *payload = (NSDictionary *)payloadJSON;
     
     if (!payload) {
-        if (theError) {
-            *theError = [JWTErrorDescription errorWithCode:JWTNoPayloadError];
-        }
+        setError(theError, [JWTErrorDescription errorWithCode:JWTNoPayloadError]);
         return nil;
     }
     
@@ -623,7 +593,9 @@
                              JWTCodingResultComponents.headers : header,
                              JWTCodingResultComponents.payload : payload
                              };
-    *theError = nil;
+    
+    setError(theError, nil);
+    
     return result;
 }
 
