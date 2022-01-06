@@ -298,8 +298,8 @@
     if (theHeaders.allKeys.count > 0) {
         [allHeaders addEntriesFromDictionary:theHeaders];
     }
-
-    NSString *headerSegment = [self encodeSegment:[allHeaders copy] withError:nil];
+    
+    NSString *headerSegment = [self.internalTokenCoder stringWithData:[self encodeSegment:[allHeaders copy] withError:nil]];
     
     if (!headerSegment) {
         // encode header segment error
@@ -309,7 +309,7 @@
         return nil;
     }
     
-    NSString *payloadSegment = [self encodeSegment:thePayload withError:nil];
+    NSString *payloadSegment = [self.internalTokenCoder stringWithData:[self encodeSegment:thePayload withError:nil]];
     
     if (!payloadSegment) {
         // encode payment segment error
@@ -332,7 +332,7 @@
     if (theSecretData && [theAlgorithm respondsToSelector:@selector(signHash:key:error:)]) {
         __auto_type hash = [self.internalTokenCoder dataWithString:signingInput];
         __auto_type signedOutputData = [theAlgorithm signHash:hash key:theSecretData error:&algorithmError];
-        signedOutput = [JWTBase64Coder base64UrlEncodedStringWithData:signedOutputData];
+        signedOutput = [self.internalTokenCoder stringWithData:signedOutputData];
     }
 
     if (algorithmError) {
@@ -353,7 +353,7 @@
     return [@[headerSegment, payloadSegment, signedOutput] componentsJoinedByString:@"."];
 }
 
-- (NSString *)encodeSegment:(id)theSegment withError:(NSError *__autoreleasing*)error {
+- (NSData *)encodeSegment:(id)theSegment withError:(NSError *__autoreleasing*)error {
     NSData *encodedSegmentData = nil;
     
     if (theSegment) {
@@ -368,14 +368,8 @@
         NSLog(@"%@ Could not encode segment: %@", self.class, generatedError.localizedDescription);
         return nil;
     }
-    
-    NSString *encodedSegment = nil;
-    
-    if (encodedSegmentData) {
-        encodedSegment = [JWTBase64Coder base64UrlEncodedStringWithData:encodedSegmentData];
-    }
-    
-    return encodedSegment;
+        
+    return encodedSegmentData;
 }
 
 - (JWTCodingResultType *)result {
@@ -510,11 +504,11 @@
     
     NSString *headerPart = parts[0];
     NSString *payloadPart = parts[1];
-    NSString *signedPart = parts[2];
+    NSString *signaturePart = parts[2];
     
     // decode headerPart
     NSError *jsonError = nil;
-    NSData *headerData = [JWTBase64Coder dataWithBase64UrlEncodedString:headerPart];
+    NSData *headerData = [self.internalTokenCoder dataWithString:headerPart];
     id headerJSON = [NSJSONSerialization JSONObjectWithData:headerData
                                                     options:0
                                                       error:&jsonError];
@@ -581,7 +575,8 @@
         NSError *algorithmError = nil;
         if (theSecretData && [algorithm respondsToSelector:@selector(verifyHash:signature:key:error:)]) {
             __auto_type hash = [self.internalTokenCoder dataWithString:signingInput];
-            signatureValid = [algorithm verifyHash:hash signature:[JWTBase64Coder dataWithBase64UrlEncodedString:signedPart] key:theSecretData error:&algorithmError];
+            __auto_type signedInputData = [self.internalTokenCoder dataWithString:signaturePart];
+            signatureValid = [algorithm verifyHash:hash signature:signedInputData key:theSecretData error:&algorithmError];
         }
         
         if (algorithmError) {
@@ -600,7 +595,7 @@
     
     // and decode payload
     jsonError = nil;
-    NSData *payloadData = [JWTBase64Coder dataWithBase64UrlEncodedString:payloadPart];
+    NSData *payloadData = [self.internalTokenCoder dataWithString:payloadPart];
     id payloadJSON = [NSJSONSerialization JSONObjectWithData:payloadData
                                                      options:0
                                                        error:&jsonError];
@@ -610,6 +605,7 @@
         }
         return nil;
     }
+    
     NSDictionary *payload = (NSDictionary *)payloadJSON;
     
     if (!payload) {
@@ -623,7 +619,11 @@
                              JWTCodingResultComponents.headers : header,
                              JWTCodingResultComponents.payload : payload
                              };
-    *theError = nil;
+    
+    if (theError != nil) {
+        *theError = nil;
+    }
+    
     return result;
 }
 
