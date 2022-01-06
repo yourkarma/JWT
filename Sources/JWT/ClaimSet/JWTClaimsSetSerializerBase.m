@@ -55,7 +55,7 @@
     }
 }
 
-- (nonnull id<JWTClaimsSetProtocol>)claimsSetFromDictionary:(nonnull NSDictionary *)dictionary {
+- (nullable id<JWTClaimsSetProtocol>)claimsSetFromDictionary:(nonnull NSDictionary *)dictionary {
     if (dictionary == nil) {
         return nil;
     }
@@ -82,7 +82,7 @@
     return [self.claimsSetStorage copyWithClaims:result];
 }
 
-- (nonnull NSDictionary *)dictionaryFromClaimsSet:(nonnull id<JWTClaimsSetProtocol>)claimsSet {
+- (nullable NSDictionary *)dictionaryFromClaimsSet:(nonnull id<JWTClaimsSetProtocol>)claimsSet {
     if (claimsSet == nil) {
         return nil;
     }

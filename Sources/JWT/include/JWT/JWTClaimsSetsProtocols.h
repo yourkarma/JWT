@@ -50,8 +50,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (copy, nonatomic, readwrite) id <JWTClaimsSetProtocol> claimsSetStorage;
 - (void)registerSerializer:(id<JWTClaimSerializerProtocol>)serializer forClaimName:(NSString *)name;
 - (void)unregisterSerializerForClaimName:(NSString *)name;
-- (NSDictionary *)dictionaryFromClaimsSet:(id<JWTClaimsSetProtocol>)claimsSet;
-- (id<JWTClaimsSetProtocol>)claimsSetFromDictionary:(NSDictionary *)dictionary;
+- (nullable NSDictionary *)dictionaryFromClaimsSet:(id<JWTClaimsSetProtocol>)claimsSet;
+- (nullable id<JWTClaimsSetProtocol>)claimsSetFromDictionary:(NSDictionary *)dictionary;
 @end
 
 @protocol JWTClaimsSetVerifierProtocol

@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface JWTClaimsSetDSLBase (DSL)
-- (NSObject *)dslValueForName:(NSString *)name;
+- (nullable NSObject *)dslValueForName:(NSString *)name;
 - (void)dslSetValue:(NSObject *)value forName:(NSString *)name;
 @property (copy, nonatomic, readwrite) NSString *issuer;
 @property (copy, nonatomic, readwrite) NSString *subject;

@@ -52,6 +52,7 @@
             // success
             NSLog(@"%@ success: %@", self.debugDescription, verifyResult.successResult.payload);
             token = verifyResult.successResult.encoded;
+            NSLog(@"%@ token: %@", self.debugDescription, token);
         }
         else {
             // error
