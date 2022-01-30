@@ -6,7 +6,7 @@
 //
 //
 
-#import <JWT/JWTAlgorithmESBase.h>
+#import "JWTAlgorithmESBase.h"
 #import <CommonCrypto/CommonCryptor.h>
 NSString *const JWTAlgorithmNameES256 = @"ES256";
 NSString *const JWTAlgorithmNameES384 = @"ES384";

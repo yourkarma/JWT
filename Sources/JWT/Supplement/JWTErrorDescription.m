@@ -6,7 +6,7 @@
 //  Copyright © 2016 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTErrorDescription.h>
+#import "JWTErrorDescription.h"
 NSString *JWTErrorDomain = @"io.jwt";
 @implementation JWTErrorDescription
 + (NSDictionary *)userDescriptionsAndCodes {

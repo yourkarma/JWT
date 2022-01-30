@@ -6,7 +6,7 @@
 //  Copyright © 2016 Karma. All rights reserved.
 //
 
-#import <JWT/JWTClaim.h>
+#import "JWTClaim.h"
 
 // TODO(3.0): Claim aud should check include in collection?
 // Add claims specification tests.

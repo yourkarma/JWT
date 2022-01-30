@@ -6,7 +6,7 @@
 //  Copyright © 2020 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTClaimBase.h>
+#import "JWTClaimBase.h"
 
 @interface JWTClaimBase ()
 @property (nonatomic, readwrite) NSObject *value;

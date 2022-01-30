@@ -30,6 +30,8 @@
 		0A883ADD266E192500DAF016 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C88322ABD2F200B8A43A /* HeaderView.swift */; };
 		0A883ADE266E192500DAF016 /* BottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C88722ABE51800B8A43A /* BottomView.swift */; };
 		0A883ADF266E192500DAF016 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A76C87322ABD2AF00B8A43A /* ContentView.swift */; };
+		0AABB95827A6A3C0006718A0 /* JWTDesktopSwiftToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 0AABB95727A6A3C0006718A0 /* JWTDesktopSwiftToolkit */; };
+		0AABB95A27A6A3C4006718A0 /* JWTDesktopSwiftToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 0AABB95927A6A3C4006718A0 /* JWTDesktopSwiftToolkit */; };
 		0AC002762786598E002167AD /* JWTDesktopSwiftToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 0AC002752786598E002167AD /* JWTDesktopSwiftToolkit */; };
 /* End PBXBuildFile section */
 
@@ -89,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AABB95A27A6A3C4006718A0 /* JWTDesktopSwiftToolkit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AABB95827A6A3C0006718A0 /* JWTDesktopSwiftToolkit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +240,9 @@
 			dependencies = (
 			);
 			name = iOSJWTSwiftUI;
+			packageProductDependencies = (
+				0AABB95927A6A3C4006718A0 /* JWTDesktopSwiftToolkit */,
+			);
 			productName = iOSJWTSwiftUI;
 			productReference = 0A883AB5266E166600DAF016 /* iOSJWTSwiftUI.app */;
 			productType = "com.apple.product-type.application";
@@ -253,6 +260,9 @@
 			dependencies = (
 			);
 			name = MacJWTSwiftUI;
+			packageProductDependencies = (
+				0AABB95727A6A3C0006718A0 /* JWTDesktopSwiftToolkit */,
+			);
 			productName = MacJWTSwiftUI;
 			productReference = 0A883ACC266E191700DAF016 /* MacJWTSwiftUI.app */;
 			productType = "com.apple.product-type.application";
@@ -667,6 +677,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0AABB95727A6A3C0006718A0 /* JWTDesktopSwiftToolkit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = JWTDesktopSwiftToolkit;
+		};
+		0AABB95927A6A3C4006718A0 /* JWTDesktopSwiftToolkit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = JWTDesktopSwiftToolkit;
+		};
 		0AC002752786598E002167AD /* JWTDesktopSwiftToolkit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = JWTDesktopSwiftToolkit;

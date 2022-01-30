@@ -6,7 +6,7 @@
 //  Copyright © 2021 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTClaimSerializerVariations.h>
+#import "JWTClaimSerializerVariations.h"
 
 @implementation JWTClaimSerializerVariations
 + (id<JWTClaimSerializerProtocol>)dateAndTimestampTransform {

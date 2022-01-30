@@ -6,12 +6,12 @@
 //  Copyright © 2015 Karma. All rights reserved.
 //
 
-#import <JWT/JWTAlgorithmFactory.h>
-#import <JWT/JWTAlgorithmHSBase.h>
-#import <JWT/JWTAlgorithmRSBase.h>
-#import <JWT/JWTAlgorithmNone.h>
-#import <JWT/JWTAlgorithmAsymmetricBase.h>
-#import <JWT/JWTBase64Coder.h>
+#import "JWTAlgorithmFactory.h"
+#import "JWTAlgorithmHSBase.h"
+#import "JWTAlgorithmRSBase.h"
+#import "JWTAlgorithmNone.h"
+#import "JWTAlgorithmAsymmetricBase.h"
+#import "JWTBase64Coder.h"
 
 // not implemented.
 // ES still not implemented. Look at implementation and readme in future releases.

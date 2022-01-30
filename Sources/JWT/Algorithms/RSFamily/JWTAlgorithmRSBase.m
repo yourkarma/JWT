@@ -6,15 +6,15 @@
 //  Copyright © 2016 Karma. All rights reserved.
 //
 
-#import <JWT/JWTAlgorithmRSBase.h>
-#import <JWT/JWTBase64Coder.h>
-#import <JWT/JWTCryptoSecurity.h>
-#import <JWT/JWTCryptoKeyExtractor.h>
-#import <JWT/JWTCryptoKey.h>
-#import <JWT/JWTAlgorithmFactory.h>
+#import "JWTAlgorithmRSBase.h"
+#import "JWTBase64Coder.h"
+#import "JWTCryptoSecurity.h"
+#import "JWTCryptoKeyExtractor.h"
+#import "JWTCryptoKey.h"
+#import "JWTAlgorithmFactory.h"
 #import <CommonCrypto/CommonCrypto.h>
 
-#import <JWT/JWTAlgorithmErrorDescription+Subclass.h>
+#import "JWTAlgorithmErrorDescription+Subclass.h"
 NSString *const JWTAlgorithmRSFamilyErrorDomain = @"io.jwt.jwa.rs";
 
 @implementation JWTAlgorithmRSFamilyErrorDescription

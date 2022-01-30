@@ -6,8 +6,8 @@
 //  Copyright © 2016 Karma. All rights reserved.
 //
 
-#import <JWT/JWTAlgorithmHSBase.h>
-#import <JWT/JWTBase64Coder.h>
+#import "JWTAlgorithmHSBase.h"
+#import "JWTBase64Coder.h"
 #import <CommonCrypto/CommonCrypto.h>
 #import <CommonCrypto/CommonHMAC.h>
 

@@ -6,7 +6,7 @@
 //  Copyright © 2016 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTCoding+ResultTypes.h>
+#import "JWTCoding+ResultTypes.h"
 
 static NSString *JWTCodingResultHeaders = @"headers";
 static NSString *JWTCodingResultPayload = @"payload";

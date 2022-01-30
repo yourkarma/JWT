@@ -6,7 +6,7 @@
 //  Copyright © 2021 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTClaimVerifierVariations.h>
+#import "JWTClaimVerifierVariations.h"
 
 @implementation JWTClaimVerifierVariations
 + (id<JWTClaimVerifierProtocol>)issuer {

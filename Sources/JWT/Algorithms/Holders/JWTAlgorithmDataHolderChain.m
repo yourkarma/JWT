@@ -6,7 +6,7 @@
 //  Copyright © 2016 Karma. All rights reserved.
 //
 
-#import <JWT/JWTAlgorithmDataHolderChain.h>
+#import "JWTAlgorithmDataHolderChain.h"
 
 @interface JWTAlgorithmDataHolderChain()
 

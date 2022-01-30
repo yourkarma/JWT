@@ -6,7 +6,7 @@
 //  Copyright © 2020 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTClaimVariations.h>
+#import "JWTClaimVariations.h"
 
 NSString *JWTRegisteredClaimNameIssuer = @"iss";
 NSString *JWTRegisteredClaimNameSubject = @"sub";

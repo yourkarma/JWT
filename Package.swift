@@ -23,8 +23,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "JWT",
-            dependencies: ["Base64"],
-            exclude: ["FrameworkSupplement"]
+            dependencies: ["Base64"]
         ),
         .testTarget(
             name: "JWTTests",

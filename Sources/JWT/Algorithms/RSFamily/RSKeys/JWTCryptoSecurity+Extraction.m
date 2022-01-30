@@ -6,7 +6,7 @@
 //  Copyright © 2018 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTCryptoSecurity+Extraction.h>
+#import "JWTCryptoSecurity+Extraction.h"
 @implementation JWTCryptoSecurityComponent
 - (instancetype)initWithContent:(NSString *)content type:(NSString *)type {
     if (type == nil || content == nil) {

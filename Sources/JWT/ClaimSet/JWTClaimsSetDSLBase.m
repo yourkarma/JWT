@@ -6,8 +6,8 @@
 //  Copyright © 2021 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTClaimsSetDSLBase.h>
-#import <JWT/JWTClaimVariations.h>
+#import "JWTClaimsSetDSLBase.h"
+#import "JWTClaimVariations.h"
 
 @interface JWTClaimsSetDSLBase ()
 @property (strong, nonatomic, readwrite) id <JWTClaimsProviderProtocol> claimsProvider;

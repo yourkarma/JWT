@@ -6,9 +6,9 @@
 //  Copyright © 2016 Karma. All rights reserved.
 //
 
-#import <JWT/JWTClaimsSetVerifier.h>
-#import <JWT/JWTClaimsSetSerializer.h>
-#import <JWT/JWTClaim.h>
+#import "JWTClaimsSetVerifier.h"
+#import "JWTClaimsSetSerializer.h"
+#import "JWTClaim.h"
 
 @implementation JWTClaimsSetVerifier
 

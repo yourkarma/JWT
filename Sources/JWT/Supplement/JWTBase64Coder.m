@@ -6,7 +6,7 @@
 //
 //
 
-#import <JWT/JWTBase64Coder.h>
+#import "JWTBase64Coder.h"
 
 #ifndef HAS_INCLUDE_MF_Base64Additions_AS_FRAMEWORK
 #define HAS_INCLUDE_MF_Base64Additions_AS_FRAMEWORK (__has_include(<Base64/MF_Base64Additions.h>))

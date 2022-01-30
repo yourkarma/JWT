@@ -6,7 +6,7 @@
 //  Copyright © 2018 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTAlgorithmErrorDescription+Subclass.h>
+#import "JWTAlgorithmErrorDescription+Subclass.h"
 
 @implementation JWTAlgorithmErrorDescription (Subclass)
 + (NSString *)errorDomain {

@@ -6,9 +6,9 @@
 //  Copyright © 2020 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTClaimsSetVerifierBase.h>
-#import <JWT/JWTClaimVariations.h>
-#import <JWT/JWTClaimVerifierVariations.h>
+#import "JWTClaimsSetVerifierBase.h"
+#import "JWTClaimVariations.h"
+#import "JWTClaimVerifierVariations.h"
 
 @interface JWTClaimsSetVerifierBase ()
 @property (strong, nonatomic, readwrite) NSMutableDictionary <NSString *, id<JWTClaimVerifierProtocol>> *namesAndVerifiers;

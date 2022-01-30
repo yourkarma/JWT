@@ -6,7 +6,7 @@
 //  Copyright © 2018 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTCryptoSecurity+ExternalRepresentation.h>
+#import "JWTCryptoSecurity+ExternalRepresentation.h"
 
 @implementation JWTCryptoSecurity (ExternalRepresentation)
 

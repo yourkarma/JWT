@@ -6,12 +6,12 @@
 //  Copyright © 2017 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTCryptoKey.h>
-#import <JWT/JWTCryptoSecurity.h>
-#import <JWT/JWTCryptoSecurity+Extraction.h>
-#import <JWT/JWTCryptoSecurity+ExternalRepresentation.h>
-#import <JWT/JWTCryptoSecurity+ErrorHandling.h>
-#import <JWT/JWTBase64Coder.h>
+#import "JWTCryptoKey.h"
+#import "JWTCryptoSecurity.h"
+#import "JWTCryptoSecurity+Extraction.h"
+#import "JWTCryptoSecurity+ExternalRepresentation.h"
+#import "JWTCryptoSecurity+ErrorHandling.h"
+#import "JWTBase64Coder.h"
 @interface JWTCryptoKeyBuilder()
 + (NSString *)keyTypeRSA;
 + (NSString *)keyTypeEC;

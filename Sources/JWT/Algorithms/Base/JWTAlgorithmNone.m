@@ -6,7 +6,7 @@
 //  Copyright © 2015 Karma. All rights reserved.
 //
 
-#import <JWT/JWTAlgorithmNone.h>
+#import "JWTAlgorithmNone.h"
 NSString *const JWTAlgorithmNameNone = @"none";
 
 @implementation JWTAlgorithmNone

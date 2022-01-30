@@ -6,6 +6,6 @@
 //  Copyright (c) 2013 Karma. All rights reserved.
 //
 
-#import <JWT/JWTCoding.h>
+#import "JWTCoding.h"
 
 @implementation JWT @end

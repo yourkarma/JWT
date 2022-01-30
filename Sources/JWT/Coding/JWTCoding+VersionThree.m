@@ -6,18 +6,18 @@
 //  Copyright © 2016 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTCoding+VersionThree.h>
-#import <JWT/JWTAlgorithmDataHolderChain.h>
-#import <JWT/JWTRSAlgorithm.h>
-#import <JWT/JWTCoding+ResultTypes.h>
-#import <JWT/JWTAlgorithmFactory.h>
-#import <JWT/JWTErrorDescription.h>
-#import <JWT/JWTBase64Coder.h>
-#import <JWT/JWTClaimsSetsProtocols.h>
-#import <JWT/JWTClaimsSetDSLBase.h>
+#import "JWTCoding+VersionThree.h"
+#import "JWTAlgorithmDataHolderChain.h"
+#import "JWTRSAlgorithm.h"
+#import "JWTCoding+ResultTypes.h"
+#import "JWTAlgorithmFactory.h"
+#import "JWTErrorDescription.h"
+#import "JWTBase64Coder.h"
+#import "JWTClaimsSetsProtocols.h"
+#import "JWTClaimsSetDSLBase.h"
 
-#import <JWT/JWTAlgorithmDataHolder+FluentStyle.h>
-#import <JWT/JWTCodingBuilder+FluentStyle.h>
+#import "JWTAlgorithmDataHolder+FluentStyle.h"
+#import "JWTCodingBuilder+FluentStyle.h"
 
 static inline void setError(NSError **error, NSError* value) {
     if (error) {

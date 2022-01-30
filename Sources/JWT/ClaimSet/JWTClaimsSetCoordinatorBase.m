@@ -6,12 +6,12 @@
 //  Copyright © 2021 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTClaimsSetCoordinatorBase.h>
-#import <JWT/JWTClaimsProviderBase.h>
-#import <JWT/JWTClaimsSetBase.h>
-#import <JWT/JWTClaimsSetSerializerBase.h>
-#import <JWT/JWTClaimsSetVerifierBase.h>
-#import <JWT/JWTClaimsSetDSLBase.h>
+#import "JWTClaimsSetCoordinatorBase.h"
+#import "JWTClaimsProviderBase.h"
+#import "JWTClaimsSetBase.h"
+#import "JWTClaimsSetSerializerBase.h"
+#import "JWTClaimsSetVerifierBase.h"
+#import "JWTClaimsSetDSLBase.h"
 
 @interface JWTClaimsSetCoordinatorBase ()
 @property (copy, nonatomic, readwrite) id <JWTClaimsSetCoordinatorProtocol> (^configureClaimsSet)(JWTClaimsSetDSLBase *(^)(JWTClaimsSetDSLBase *claimsSetDSL));
