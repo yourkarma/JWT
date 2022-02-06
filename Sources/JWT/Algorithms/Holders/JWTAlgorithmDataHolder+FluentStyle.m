@@ -6,7 +6,7 @@
 //  Copyright © 2019 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTAlgorithmDataHolder+FluentStyle.h>
+#import "JWTAlgorithmDataHolder+FluentStyle.h"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-property-implementation"

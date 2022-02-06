@@ -6,14 +6,14 @@
 //  Copyright © 2016 Karma. All rights reserved.
 //
 
-#import <JWT/JWTAlgorithmDataHolder.h>
-#import <JWT/JWTAlgorithmFactory.h>
-#import <JWT/JWTAlgorithmNone.h>
-#import <JWT/JWTRSAlgorithm.h>
-#import <JWT/JWTAlgorithmHSBase.h>
-#import <JWT/JWTAlgorithmRSBase.h>
-#import <JWT/JWTBase64Coder.h>
-#import <JWT/JWTCryptoKey.h>
+#import "JWTAlgorithmDataHolder.h"
+#import "JWTAlgorithmFactory.h"
+#import "JWTAlgorithmNone.h"
+#import "JWTRSAlgorithm.h"
+#import "JWTAlgorithmHSBase.h"
+#import "JWTAlgorithmRSBase.h"
+#import "JWTBase64Coder.h"
+#import "JWTCryptoKey.h"
 
 @interface JWTAlgorithmBaseDataHolder()
 // not needed by algorithm adoption.

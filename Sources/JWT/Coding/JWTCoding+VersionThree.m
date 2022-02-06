@@ -6,18 +6,18 @@
 //  Copyright © 2016 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTCoding+VersionThree.h>
-#import <JWT/JWTAlgorithmDataHolderChain.h>
-#import <JWT/JWTRSAlgorithm.h>
-#import <JWT/JWTCoding+ResultTypes.h>
-#import <JWT/JWTAlgorithmFactory.h>
-#import <JWT/JWTErrorDescription.h>
-#import <JWT/JWTBase64Coder.h>
-#import <JWT/JWTClaimsSetsProtocols.h>
-#import <JWT/JWTClaimsSetDSLBase.h>
+#import "JWTCoding+VersionThree.h"
+#import "JWTAlgorithmDataHolderChain.h"
+#import "JWTRSAlgorithm.h"
+#import "JWTCoding+ResultTypes.h"
+#import "JWTAlgorithmFactory.h"
+#import "JWTErrorDescription.h"
+#import "JWTBase64Coder.h"
+#import "JWTClaimsSetsProtocols.h"
+#import "JWTClaimsSetDSLBase.h"
 
-#import <JWT/JWTAlgorithmDataHolder+FluentStyle.h>
-#import <JWT/JWTCodingBuilder+FluentStyle.h>
+#import "JWTAlgorithmDataHolder+FluentStyle.h"
+#import "JWTCodingBuilder+FluentStyle.h"
 
 static inline void setError(NSError **error, NSError* value) {
     if (error) {
@@ -45,6 +45,7 @@ static inline void setError(NSError **error, NSError* value) {
 @property (strong, nonatomic, readwrite) JWTAlgorithmDataHolderChain *internalChain;
 @property (copy, nonatomic, readwrite) NSNumber *internalOptions;
 @property (strong, nonatomic, readwrite) id <JWTStringCoderProtocol> internalTokenCoder;
+@property (strong, nonatomic, readwrite) id <JWTStringCoderProtocol> internalHashCoder;
 
 #pragma mark - Fluent
 @property (copy, nonatomic, readwrite) JWTCodingBuilder *(^chain)(JWTAlgorithmDataHolderChain *chain);
@@ -132,7 +133,8 @@ static inline void setError(NSError **error, NSError* value) {
 - (instancetype)initWithChain:(JWTAlgorithmDataHolderChain *)chain {
     if (self = [super init]) {
         self.internalChain = chain;
-        self.internalTokenCoder = [JWTStringCoderForEncoding utf8Encoding];
+        self.internalTokenCoder = [JWTBase64Coder withBase64String];
+        self.internalHashCoder = [JWTStringCoderForEncoding utf8Encoding];
         [self setupFluent];
     }
     return self;
@@ -328,7 +330,7 @@ static inline void setError(NSError **error, NSError* value) {
         theSecretData = theSecretData ?: [NSData data];
     }
     if (theSecretData && [theAlgorithm respondsToSelector:@selector(signHash:key:error:)]) {
-        __auto_type hash = [self.internalTokenCoder dataWithString:signingInput];
+        __auto_type hash = [self.internalHashCoder dataWithString:signingInput];
         __auto_type signedOutputData = [theAlgorithm signHash:hash key:theSecretData error:&algorithmError];
         signedOutput = [self.internalTokenCoder stringWithData:signedOutputData];
     }
@@ -556,7 +558,7 @@ static inline void setError(NSError **error, NSError* value) {
 
         NSError *algorithmError = nil;
         if (theSecretData && [algorithm respondsToSelector:@selector(verifyHash:signature:key:error:)]) {
-            __auto_type hash = [self.internalTokenCoder dataWithString:signingInput];
+            __auto_type hash = [self.internalHashCoder dataWithString:signingInput];
             __auto_type signedInputData = [self.internalTokenCoder dataWithString:signaturePart];
             signatureValid = [algorithm verifyHash:hash signature:signedInputData key:theSecretData error:&algorithmError];
         }

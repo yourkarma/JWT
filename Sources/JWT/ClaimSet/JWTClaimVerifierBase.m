@@ -6,7 +6,7 @@
 //  Copyright © 2021 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTClaimVerifierBase.h>
+#import "JWTClaimVerifierBase.h"
 
 @implementation JWTClaimVerifierBase
 - (BOOL)verifyValue:(NSObject *)value withTrustedValue:(NSObject *)trustedValue {

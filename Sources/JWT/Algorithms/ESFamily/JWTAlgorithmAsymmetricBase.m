@@ -5,12 +5,12 @@
 //  Created by Lobanov Dmitry on 12.03.2018.
 //
 
-#import <JWT/JWTAlgorithmAsymmetricBase.h>
-#import <JWT/JWTBase64Coder.h>
-#import <JWT/JWTCryptoSecurity.h>
-#import <JWT/JWTCryptoKeyExtractor.h>
-#import <JWT/JWTCryptoKey.h>
-#import <JWT/JWTAlgorithmFactory.h>
+#import "JWTAlgorithmAsymmetricBase.h"
+#import "JWTBase64Coder.h"
+#import "JWTCryptoSecurity.h"
+#import "JWTCryptoKeyExtractor.h"
+#import "JWTCryptoKey.h"
+#import "JWTAlgorithmFactory.h"
 #import <Availability.h>
 
 #ifndef IPHONE_SDK_VERSION_GREATER_THAN_10

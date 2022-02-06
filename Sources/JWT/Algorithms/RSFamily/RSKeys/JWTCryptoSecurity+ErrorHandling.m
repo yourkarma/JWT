@@ -6,8 +6,8 @@
 //  Copyright © 2018 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTCryptoSecurity+ErrorHandling.h>
-#import <JWT/JWTDeprecations.h>
+#import "JWTCryptoSecurity+ErrorHandling.h"
+#import "JWTDeprecations.h"
 
 @implementation JWTCryptoSecurity (ErrorHandling)
 + (NSError *)securityErrorWithOSStatus:(OSStatus)status {

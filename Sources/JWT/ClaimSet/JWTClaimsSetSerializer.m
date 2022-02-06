@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Karma. All rights reserved.
 //
 
-#import <JWT/JWTClaimsSetSerializer.h>
+#import "JWTClaimsSetSerializer.h"
 
 @implementation JWTClaimsSetSerializer
 

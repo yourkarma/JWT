@@ -6,7 +6,7 @@
 //  Copyright © 2019 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTCodingBuilder+FluentStyle.h>
+#import "JWTCodingBuilder+FluentStyle.h"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-property-implementation"

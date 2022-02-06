@@ -6,9 +6,9 @@
 //  Copyright © 2017 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTCryptoKeyExtractor.h>
-#import <JWT/JWTCryptoKey.h>
-#import <JWT/JWTBase64Coder.h>
+#import "JWTCryptoKeyExtractor.h"
+#import "JWTCryptoKey.h"
+#import "JWTBase64Coder.h"
 
 @interface JWTCryptoKeyExtractor ()
 @property (strong, nonatomic, readwrite) JWTCryptoKeyBuilder *internalKeyBuilder;

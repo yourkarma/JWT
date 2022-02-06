@@ -6,9 +6,9 @@
 //  Copyright © 2020 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTClaimsSetSerializerBase.h>
-#import <JWT/JWTClaimVariations.h>
-#import <JWT/JWTClaimSerializerVariations.h>
+#import "JWTClaimsSetSerializerBase.h"
+#import "JWTClaimVariations.h"
+#import "JWTClaimSerializerVariations.h"
 
 @interface JWTClaimsSetSerializerBase ()
 @property (strong, nonatomic, readwrite) NSMutableDictionary <NSString *, id<JWTClaimSerializerProtocol>> *namesAndSerializers;

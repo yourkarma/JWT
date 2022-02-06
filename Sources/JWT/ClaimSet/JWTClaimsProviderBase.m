@@ -6,8 +6,8 @@
 //  Copyright © 2021 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTClaimsProviderBase.h>
-#import <JWT/JWTClaimVariations.h>
+#import "JWTClaimsProviderBase.h"
+#import "JWTClaimVariations.h"
 
 @interface JWTClaimsProviderBase ()
 @property (strong, nonatomic, readwrite) NSMutableDictionary <NSString *, id<JWTClaimProtocol>> *claimsAndNames;

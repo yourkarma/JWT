@@ -6,10 +6,10 @@
 //  Copyright © 2017 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTCryptoSecurity.h>
-#import <JWT/JWTCryptoSecurity+ErrorHandling.h>
-#import <JWT/JWTErrorDescription.h>
-#import <JWT/JWTDeprecations.h>
+#import "JWTCryptoSecurity.h"
+#import "JWTCryptoSecurity+ErrorHandling.h"
+#import "JWTErrorDescription.h"
+#import "JWTDeprecations.h"
 
 @interface JWTMemoryLayout : NSObject
 + (NSString *)typeUInt8;

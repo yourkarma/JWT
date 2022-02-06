@@ -6,7 +6,7 @@
 //  Copyright © 2021 JWTIO. All rights reserved.
 //
 
-#import <JWT/JWTClaimSerializerBase.h>
+#import "JWTClaimSerializerBase.h"
 
 @implementation JWTClaimSerializerBase
 
