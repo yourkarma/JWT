@@ -45,6 +45,7 @@ static inline void setError(NSError **error, NSError* value) {
 @property (strong, nonatomic, readwrite) JWTAlgorithmDataHolderChain *internalChain;
 @property (copy, nonatomic, readwrite) NSNumber *internalOptions;
 @property (strong, nonatomic, readwrite) id <JWTStringCoderProtocol> internalTokenCoder;
+@property (strong, nonatomic, readwrite) id <JWTStringCoderProtocol> internalHashCoder;
 
 #pragma mark - Fluent
 @property (copy, nonatomic, readwrite) JWTCodingBuilder *(^chain)(JWTAlgorithmDataHolderChain *chain);
@@ -132,7 +133,8 @@ static inline void setError(NSError **error, NSError* value) {
 - (instancetype)initWithChain:(JWTAlgorithmDataHolderChain *)chain {
     if (self = [super init]) {
         self.internalChain = chain;
-        self.internalTokenCoder = [JWTStringCoderForEncoding utf8Encoding];
+        self.internalTokenCoder = [JWTBase64Coder withBase64String];
+        self.internalHashCoder = [JWTStringCoderForEncoding utf8Encoding];
         [self setupFluent];
     }
     return self;
@@ -328,7 +330,7 @@ static inline void setError(NSError **error, NSError* value) {
         theSecretData = theSecretData ?: [NSData data];
     }
     if (theSecretData && [theAlgorithm respondsToSelector:@selector(signHash:key:error:)]) {
-        __auto_type hash = [self.internalTokenCoder dataWithString:signingInput];
+        __auto_type hash = [self.internalHashCoder dataWithString:signingInput];
         __auto_type signedOutputData = [theAlgorithm signHash:hash key:theSecretData error:&algorithmError];
         signedOutput = [self.internalTokenCoder stringWithData:signedOutputData];
     }
@@ -556,7 +558,7 @@ static inline void setError(NSError **error, NSError* value) {
 
         NSError *algorithmError = nil;
         if (theSecretData && [algorithm respondsToSelector:@selector(verifyHash:signature:key:error:)]) {
-            __auto_type hash = [self.internalTokenCoder dataWithString:signingInput];
+            __auto_type hash = [self.internalHashCoder dataWithString:signingInput];
             __auto_type signedInputData = [self.internalTokenCoder dataWithString:signaturePart];
             signatureValid = [algorithm verifyHash:hash signature:signedInputData key:theSecretData error:&algorithmError];
         }
